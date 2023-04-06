@@ -182,7 +182,7 @@ public class MalioProcessor
                                       ClassName.get(ValidationResult.class));
       validateValidatorCounter++;
     }
-    validMethodBuilder.addStatement("return null");
+    validMethodBuilder.addStatement("return this.validationResult");
     typeSpec.addMethod(validMethodBuilder.build());
 
     this.writeFile(validatorElement,
