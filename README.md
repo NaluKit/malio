@@ -1,13 +1,12 @@
-# Malio
+# Malio - (in progress)
+---
+![License](https://img.shields.io/:license-apache-blue.svg)![GWT3/J2CL compatible](https://img.shields.io/badge/GWT3/J2CL-compatible-brightgreen.svg)[![Join the chat at https://gitter.im/Nalukit42/Lobby](https://badges.gitter.im/Nalukit42/Lobby.svg)](https://gitter.im/Nalukit42/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)[![Maven Central](https://img.shields.io/maven-central/v/com.github.nalukit/validation4g.svg?colorB=44cc11)](https://search.maven.org/artifact/com.github.nalukit/validation4g)[![CI](https://github.com/NaluKit/nalu/workflows/CI/badge.svg)](https://github.com/NaluKit/validation4g/actions)![Test](https://github.com/NaluKit/validation4g/workflows/Test/badge.svg)
+
+
+validation4g is a tiny lib to do basic checks on objects. ---Nalu is a tiny framework that helps you to create GWT based applications quite easily. Using the HTML 5 history for routing and navigation, Nalu supports the browser's back-, forward-, and reload-button by default and without any need to implement anything.Nalu supports:* Route based navigation* HTML links and programmatically routing thanks to a router* Browser's back- forward- and reload-button (In case the hasHistory-attribute of the `Application`-annotation is set to
 
 
 
-
-
-
-
-
----![License](https://img.shields.io/:license-apache-blue.svg)![GWT3/J2CL compatible](https://img.shields.io/badge/GWT3/J2CL-compatible-brightgreen.svg)[![Join the chat at https://gitter.im/Nalukit42/Lobby](https://badges.gitter.im/Nalukit42/Lobby.svg)](https://gitter.im/Nalukit42/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)[![Maven Central](https://img.shields.io/maven-central/v/com.github.nalukit/validation4g.svg?colorB=44cc11)](https://search.maven.org/artifact/com.github.nalukit/validation4g)[![CI](https://github.com/NaluKit/nalu/workflows/CI/badge.svg)](https://github.com/NaluKit/validation4g/actions)![Test](https://github.com/NaluKit/validation4g/workflows/Test/badge.svg)validation4g is a tiny lib to do basic checks on objects. ---Nalu is a tiny framework that helps you to create GWT based applications quite easily. Using the HTML 5 history for routing and navigation, Nalu supports the browser's back-, forward-, and reload-button by default and without any need to implement anything.Nalu supports:* Route based navigation* HTML links and programmatically routing thanks to a router* Browser's back- forward- and reload-button (In case the hasHistory-attribute of the `Application`-annotation is set to
 **true
 **)* An optional loader that will be executed at application start to load data from the server* Client side context, router and event bus which will be automatically injected in every controller, filter, loader and handler (Handlers have only access to the context and the event bus)* Filters to intercept routing.* Separation of views into a controller and a component with framework sided instantiation.* A controller life-cycle using `start`-, `mayStop`- and `stop`- similar to GWT Activities.* Popups* Controller based handler manager, that will remove all handlers from the event bus in case the controller is stopped to prevent memory leaks (handler registrations must be added to the manager).* UiBinder (nalu-plugin-gwt)* Composites to support smaller units* Controller & component caching* Component creation inside a controller to support GWT replacement rules and static factory methods* Multi Shell Support* (nearly) Every widget lib (tested with: GWT, GXT, Domino-UI, Elemento, Elemental2, GWT-Material)* Maven multi module projects to separate an application in smaller parts (module feature)* Tracking user routing (in case a tracker is added)## Basic ConceptNalu uses a hash to navigate.
 **Starting with version 1.1.0 Nalu supports the use of hash less URLs.
