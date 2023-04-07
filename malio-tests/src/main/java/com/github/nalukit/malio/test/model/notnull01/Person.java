@@ -2,7 +2,6 @@ package com.github.nalukit.malio.test.model.notnull01;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
-import com.github.nalukit.malio.shared.annotation.field.UseMalioValidator;
 
 @MalioValidator
 public class Person {
@@ -14,7 +13,6 @@ public class Person {
   private String firstName;
 
   @NotNull
-  @UseMalioValidator
   private Address address;
 
   public Person() {
