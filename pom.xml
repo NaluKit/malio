@@ -19,6 +19,7 @@
     <module>malio</module>
     <module>malio-processor</module>
     <module>malio-tests</module>
+    <module>malio-gwt2-tests</module>
   </modules>
 
   <inceptionYear>2023</inceptionYear>

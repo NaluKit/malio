@@ -3,32 +3,40 @@ package com.github.nalukit.malio.test;
 import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
-import com.github.nalukit.malio.test.model.notnull03.Person;
-import com.github.nalukit.malio.test.model.notnull03.PersonMalioValidator;
-import com.github.nalukit.malio.test.model.notnull03.helper.Address;
+import com.github.nalukit.malio.test.model.notnull01.Address;
+import com.github.nalukit.malio.test.model.notnull01.Person;
+import com.github.nalukit.malio.test.model.notnull01.PersonMalioValidator;
+import com.google.gwt.junit.client.GWTTestCase;
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+public class ValidatorNotNull01Test
+    extends GWTTestCase {
 
-public class ValidatorNotNull03Test {
+  @Override
+  public String getModuleName() {
+    return "com.github.nalukit.malio.MalioGwt2Test";
+  }
 
-  @Test
   public void testCheckOk() {
-    Person model = new Person("Flintstones", "Fred", new Address("Test Avenue 21", "123456", "Test City"));
-
+    Person model = new Person("Flintstones",
+                              "Fred",
+                              new Address("Test Avenue 21",
+                                          "123456",
+                                          "Test City"));
     try {
       PersonMalioValidator.INSTANCE.check(model);
+      //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
     } catch (MalioValidationException e) {
       fail();
     }
   }
 
-  @Test
   public void testValidateOk() {
-    Person           model  = new Person("Flintstones", "Fred", new Address("Test Avenue 21", "123456", "Test City"));
+    Person model = new Person("Flintstones",
+                              "Fred",
+                              new Address("Test Avenue 21",
+                                          "123456",
+                                          "Test City"));
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }
@@ -63,9 +71,7 @@ public class ValidatorNotNull03Test {
     } catch (MalioValidationException e) {
       //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
     }
-    //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
   }
-
 
   @Test
   public void testCheckFail03() {
@@ -81,12 +87,15 @@ public class ValidatorNotNull03Test {
     } catch (MalioValidationException e) {
       //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
     }
-    //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
   }
 
   @Test
   public void testValidateFail01() {
-    Person model = new Person(null, "Fred", new Address("Test Avenue 21", "123456", "Test City"));
+    Person model = new Person(null,
+                              "Fred",
+                              new Address("Test Avenue 21",
+                                          "123456",
+                                          "Test City"));
 
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
 
@@ -95,20 +104,24 @@ public class ValidatorNotNull03Test {
                  result.getMessages()
                        .size());
     ErrorMessage errorMessage = result.getMessages()
-                                     .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.notnull03.Person",
-                 errorMessage .getClassname());
+                                      .get(0);
+    assertEquals("com.github.nalukit.malio.test.model.notnull01.Person",
+                 errorMessage.getClassname());
     assertEquals("Person",
-                 errorMessage  .getSimpleClassname());
+                 errorMessage.getSimpleClassname());
     assertEquals("name",
-                 errorMessage   .getField());
+                 errorMessage.getField());
     assertEquals("n/a",
-                 errorMessage    .getMessage());
+                 errorMessage.getMessage());
   }
 
   @Test
   public void testValidateFail02() {
-    Person model = new Person(null, null, new Address("Test Avenue 21", "123456", "Test City"));
+    Person model = new Person(null,
+                              null,
+                              new Address("Test Avenue 21",
+                                          "123456",
+                                          "Test City"));
 
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
 
@@ -118,31 +131,35 @@ public class ValidatorNotNull03Test {
                        .size());
 
     ErrorMessage errorMessage01 = result.getMessages()
-                                     .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.notnull03.Person",
-                 errorMessage01 .getClassname());
+                                        .get(0);
+    assertEquals("com.github.nalukit.malio.test.model.notnull01.Person",
+                 errorMessage01.getClassname());
     assertEquals("Person",
-                 errorMessage01  .getSimpleClassname());
+                 errorMessage01.getSimpleClassname());
     assertEquals("name",
-                 errorMessage01   .getField());
+                 errorMessage01.getField());
     assertEquals("n/a",
-                 errorMessage01    .getMessage());
+                 errorMessage01.getMessage());
 
     ErrorMessage errorMessage02 = result.getMessages()
-                                     .get(1);
-    assertEquals("com.github.nalukit.malio.test.model.notnull03.Person",
-                 errorMessage02 .getClassname());
+                                        .get(1);
+    assertEquals("com.github.nalukit.malio.test.model.notnull01.Person",
+                 errorMessage02.getClassname());
     assertEquals("Person",
-                 errorMessage02  .getSimpleClassname());
+                 errorMessage02.getSimpleClassname());
     assertEquals("firstName",
-                 errorMessage02   .getField());
+                 errorMessage02.getField());
     assertEquals("n/a",
-                 errorMessage02    .getMessage());
+                 errorMessage02.getMessage());
   }
 
   @Test
   public void testValidateFail03() {
-    Person model = new Person("Fred", "Flintstones", new Address(null, "123456", "Test City"));
+    Person model = new Person("Fred",
+                              "Flintstones",
+                              new Address(null,
+                                          "123456",
+                                          "Test City"));
 
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
 
@@ -152,15 +169,15 @@ public class ValidatorNotNull03Test {
                        .size());
 
     ErrorMessage errorMessage01 = result.getMessages()
-                                     .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.notnull03.helper.Address",
-                 errorMessage01 .getClassname());
+                                        .get(0);
+    assertEquals("com.github.nalukit.malio.test.model.notnull01.Address",
+                 errorMessage01.getClassname());
     assertEquals("Address",
-                 errorMessage01  .getSimpleClassname());
+                 errorMessage01.getSimpleClassname());
     assertEquals("street",
-                 errorMessage01   .getField());
+                 errorMessage01.getField());
     assertEquals("n/a",
-                 errorMessage01    .getMessage());
+                 errorMessage01.getMessage());
   }
 
 }

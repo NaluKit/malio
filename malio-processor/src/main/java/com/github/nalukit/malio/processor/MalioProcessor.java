@@ -343,7 +343,6 @@ public class MalioProcessor
 
   private TypeSpec.Builder createConstraintTypeSpec(Element validatorElement,
                                                     VariableElement variableElement) {
-    System.out.println(variableElement.asType());
     return TypeSpec.classBuilder(this.createConstraintClassName(validatorElement.getSimpleName()
                                                                                 .toString(),
                                                                 variableElement.getSimpleName()
@@ -954,7 +953,6 @@ public class MalioProcessor
                                 .build();
     try {
       javaFile.writeTo(this.processingEnv.getFiler());
-      System.out.println(element.toString());
     } catch (IOException e) {
       throw new ProcessorException("Unable to write generated file: >>" +
                                    element.toString() +
