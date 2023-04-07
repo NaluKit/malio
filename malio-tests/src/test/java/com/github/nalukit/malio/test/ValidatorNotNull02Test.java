@@ -1,28 +1,10 @@
-/*
- * Copyright © 2023 Frank Hossfeld, Philipp Kohl
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.shared.messages.LocalizedMessages;
-import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
+import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
-import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.notnull02.Person;
 import com.github.nalukit.malio.test.model.notnull02.PersonMalioValidator;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,15 +15,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class ValidatorNotNull02Test {
 
-  @Before
-  public void setup() {
-    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
-  }
-
   @Test
   public void testCheckOk() {
-    Person model = new Person("Flintstones",
-                              "Fred");
+    Person model = new Person("Flintstones", "Fred");
 
     try {
       PersonMalioValidator.INSTANCE.check(model);
@@ -52,36 +28,30 @@ public class ValidatorNotNull02Test {
 
   @Test
   public void testValidateOk() {
-    Person           model  = new Person("Flintstones",
-                                         "Fred");
+    Person           model  = new Person("Flintstones", "Fred");
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }
 
   @Test
   public void testCheckFail01() {
-    Person model = new Person(null,
-                              "Fred");
+    Person model = new Person(null, "Fred");
 
-    MalioValidationException thrown = assertThrows(MalioValidationException.class,
-                                                   () -> PersonMalioValidator.INSTANCE.check(model));
-    //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
+    MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
+//    assertTrue(thrown.getMessage().contentEquals("asd sad "));
   }
 
   @Test
   public void testCheckFail02() {
-    Person model = new Person(null,
-                              null);
+    Person model = new Person(null, null);
 
-    MalioValidationException thrown = assertThrows(MalioValidationException.class,
-                                                   () -> PersonMalioValidator.INSTANCE.check(model));
-    //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
+    MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
+//    assertTrue(thrown.getMessage().contentEquals("asd sad "));
   }
 
   @Test
   public void testValidateFail01() {
-    Person model = new Person(null,
-                              "Fred");
+    Person model = new Person(null, "Fred");
 
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
 
@@ -90,21 +60,20 @@ public class ValidatorNotNull02Test {
                  result.getMessages()
                        .size());
     ErrorMessage errorMessage = result.getMessages()
-                                      .get(0);
+                                     .get(0);
     assertEquals("com.github.nalukit.malio.test.model.notnull02.AbstractPerson",
-                 errorMessage.getClassname());
+                 errorMessage .getClassname());
     assertEquals("AbstractPerson",
-                 errorMessage.getSimpleClassname());
+                 errorMessage  .getSimpleClassname());
     assertEquals("name",
-                 errorMessage.getField());
-    assertEquals("Object must not be null!",
-                 errorMessage.getMessage());
+                 errorMessage   .getField());
+    assertEquals("n/a",
+                 errorMessage    .getMessage());
   }
 
   @Test
   public void testValidateFail02() {
-    Person model = new Person(null,
-                              null);
+    Person model = new Person(null, null);
 
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
 
@@ -114,26 +83,28 @@ public class ValidatorNotNull02Test {
                        .size());
 
     ErrorMessage errorMessage01 = result.getMessages()
-                                        .get(0);
+                                     .get(0);
     assertEquals("com.github.nalukit.malio.test.model.notnull02.Person",
-                 errorMessage01.getClassname());
+                 errorMessage01 .getClassname());
     assertEquals("Person",
-                 errorMessage01.getSimpleClassname());
+                 errorMessage01  .getSimpleClassname());
     assertEquals("firstName",
-                 errorMessage01.getField());
-    assertEquals("Object must not be null!",
-                 errorMessage01.getMessage());
+                 errorMessage01   .getField());
+    assertEquals("n/a",
+                 errorMessage01    .getMessage());
 
     ErrorMessage errorMessage02 = result.getMessages()
-                                        .get(1);
+                                     .get(1);
     assertEquals("com.github.nalukit.malio.test.model.notnull02.AbstractPerson",
-                 errorMessage02.getClassname());
+                 errorMessage02 .getClassname());
     assertEquals("AbstractPerson",
-                 errorMessage02.getSimpleClassname());
+                 errorMessage02  .getSimpleClassname());
     assertEquals("name",
-                 errorMessage02.getField());
-    assertEquals("Object must not be null!",
-                 errorMessage02.getMessage());
+                 errorMessage02   .getField());
+    assertEquals("n/a",
+                 errorMessage02    .getMessage());
   }
+
+
 
 }
