@@ -5,7 +5,7 @@ import com.github.nalukit.malio.shared.annotation.field.NotNull;
 import com.github.nalukit.malio.shared.annotation.field.UseMalioValidator;
 
 @MalioValidator
-public class Person {
+public class PersonNotNull {
 
   @NotNull
   private String name;
@@ -15,14 +15,14 @@ public class Person {
 
   @NotNull
   @UseMalioValidator
-  private Address address;
+  private AddressForNotNull address;
 
-  public Person() {
+  public PersonNotNull() {
   }
 
-  public Person(String name,
-                String firstName,
-                Address address) {
+  public PersonNotNull(String name,
+                       String firstName,
+                       AddressForNotNull address) {
     this.name      = name;
     this.firstName = firstName;
     this.address   = address;
@@ -44,11 +44,11 @@ public class Person {
     this.firstName = firstName;
   }
 
-  public Address getAddress() {
+  public AddressForNotNull getAddress() {
     return address;
   }
 
-  public void setAddress(Address address) {
+  public void setAddress(AddressForNotNull address) {
     this.address = address;
   }
 }

@@ -4,7 +4,7 @@ import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
 
 @MalioValidator
-public class Address {
+public class AddressForNotNull {
 
   @NotNull
   private String street;
@@ -13,12 +13,12 @@ public class Address {
   @NotNull
   private String city;
 
-  public Address() {
+  public AddressForNotNull() {
   }
 
-  public Address(String street,
-                 String zip,
-                 String city) {
+  public AddressForNotNull(String street,
+                           String zip,
+                           String city) {
     this.street = street;
     this.zip    = zip;
     this.city   = city;
