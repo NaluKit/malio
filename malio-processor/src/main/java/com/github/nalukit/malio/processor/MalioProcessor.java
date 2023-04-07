@@ -1,6 +1,7 @@
 package com.github.nalukit.malio.processor;
 
 import com.github.nalukit.malio.processor.model.ConstraintModel;
+import com.github.nalukit.malio.processor.model.ValidatorModel;
 import com.github.nalukit.malio.processor.model.ValidatorType;
 import com.github.nalukit.malio.processor.util.BuildWithMalioCommentProvider;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
@@ -98,20 +99,31 @@ public class MalioProcessor
                                     .equals(annotation.toString())) {
               for (Element validatorElement : roundEnv.getElementsAnnotatedWith(MalioValidator.class)) {
                 List<ConstraintModel> constraintsList = new ArrayList<>();
-                Set<TypeMirror>       mirrors         = this.processorUtils.getFlattenedSupertypeHierarchy(this.processingEnv.getTypeUtils(),
-                                                                                                           validatorElement.asType());
+                List<ValidatorModel>  validatorList   = new ArrayList<>();
+                Set<TypeMirror> mirrors = this.processorUtils.getFlattenedSupertypeHierarchy(this.processingEnv.getTypeUtils(),
+                                                                                             validatorElement.asType());
                 for (TypeMirror mirror : mirrors) {
                   Element element = this.processingEnv.getTypeUtils()
                                                       .asElement(mirror);
 
                   this.createConstraintNotNull(element,
-                                               constraintsList);
+                                               constraintsList,
+                                               validatorList);
 
+                  // TODO add more constraints
+                  // TODO add more constraints
+                  // TODO add more constraints
+                  // TODO add more constraints
+                  // TODO add more constraints
+                  // TODO add more constraints
+                  // TODO add more constraints
+                  // TODO add more constraints
                   // TODO add more constraints
 
                 }
                 this.generateValidator(validatorElement,
-                                       constraintsList);
+                                       constraintsList,
+                                       validatorList);
               }
             }
           }
@@ -125,7 +137,8 @@ public class MalioProcessor
   }
 
   private void generateValidator(Element validatorElement,
-                                 List<ConstraintModel> constraintsList)
+                                 List<ConstraintModel> constraintsList,
+                                 List<ValidatorModel> validatorList)
       throws ProcessorException {
     TypeSpec.Builder typeSpec = createValidatorTypeSpec(validatorElement);
 
@@ -147,10 +160,6 @@ public class MalioProcessor
                                                                                                         .toString())))
                                .build());
 
-    // TODO add more constrain types ....
-
-    // TODO wrote setJUp MEthod & inject Constraints.
-
     MethodSpec.Builder checkMethodBuilder = MethodSpec.methodBuilder("check")
                                                       .addModifiers(Modifier.PUBLIC)
                                                       .addParameter(ParameterSpec.builder(ClassName.get(validatorElement.asType()),
@@ -158,47 +167,83 @@ public class MalioProcessor
                                                                                  .build())
                                                       .returns(void.class)
                                                       .addException(ClassName.get(MalioValidationException.class));
+
     int checkValidatorCounter = 1;
     for (ConstraintModel model : constraintsList) {
-      String variableName = "val" +  this.getStringFromInt(checkValidatorCounter);
+      String variableName = "val" + this.getStringFromInt(checkValidatorCounter);
       String constraintClassName = this.createConstraintClassName(model.getSimpleClassName(),
                                                                   model.getFieldName(),
                                                                   model.getPostFix());
       checkMethodBuilder.addStatement("$T " + variableName + " =  new $T()",
-                                      ClassName.get(model.getPackageName(), constraintClassName),
-                                      ClassName.get(model.getPackageName(), constraintClassName));
-      checkMethodBuilder.addStatement(variableName + ".check(bean." + this.processorUtils.createGetMethodName(model.getFieldName())+ "())");
+                                      ClassName.get(model.getPackageName(),
+                                                    constraintClassName),
+                                      ClassName.get(model.getPackageName(),
+                                                    constraintClassName));
+      checkMethodBuilder.addStatement(variableName +
+                                      ".check(bean." +
+                                      this.processorUtils.createGetMethodName(model.getFieldName()) +
+                                      "())");
       checkValidatorCounter++;
+    }
+    for (ValidatorModel model : validatorList) {
+      String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
+      checkMethodBuilder.addStatement("$T.INSTANCE.check(bean." +
+                                      this.processorUtils.createGetMethodName(model.getFieldName()) +
+                                      "())",
+                                      ClassName.get(model.getPackageName(),
+                                                    vaidatorClassName));
     }
     typeSpec.addMethod(checkMethodBuilder.build());
 
-    MethodSpec.Builder validMethodBuilder = MethodSpec.methodBuilder("validate")
-                                                      .addModifiers(Modifier.PUBLIC)
-                                                      .addParameter(ParameterSpec.builder(ClassName.get(validatorElement.asType()),
-                                                                                          "bean")
-                                                                                 .build())
-                                                      .returns(ClassName.get(ValidationResult.class))
-                                                      .addStatement("$T validationResult = new $T()",
-                                                                    ClassName.get(ValidationResult.class),
-                                                                    ClassName.get(ValidationResult.class));
+    MethodSpec.Builder validOneParameterMethodBuilder = MethodSpec.methodBuilder("validate")
+                                                                  .addModifiers(Modifier.PUBLIC)
+                                                                  .addParameter(ParameterSpec.builder(ClassName.get(validatorElement.asType()),
+                                                                                                      "bean")
+                                                                                             .build())
+                                                                  .returns(ClassName.get(ValidationResult.class))
+                                                                  .addStatement("$T validationResult = new $T()",
+                                                                                ClassName.get(ValidationResult.class),
+                                                                                ClassName.get(ValidationResult.class))
+                                                                  .addStatement("return this.validate(bean, validationResult)");
+    typeSpec.addMethod(validOneParameterMethodBuilder.build());
+
+    MethodSpec.Builder validMethodTwoParameterBuilder = MethodSpec.methodBuilder("validate")
+                                                                  .addModifiers(Modifier.PUBLIC)
+                                                                  .addParameter(ParameterSpec.builder(ClassName.get(validatorElement.asType()),
+                                                                                                      "bean")
+                                                                                             .build())
+                                                                  .addParameter(ParameterSpec.builder(ClassName.get(ValidationResult.class),
+                                                                                                      "validationResult")
+                                                                                             .build())
+                                                                  .returns(ClassName.get(ValidationResult.class));
     int validateValidatorCounter = 1;
     for (ConstraintModel model : constraintsList) {
-      String variableName = "val" +  this.getStringFromInt(validateValidatorCounter);
+      String variableName = "val" + this.getStringFromInt(validateValidatorCounter);
       String constraintClassName = this.createConstraintClassName(model.getSimpleClassName(),
                                                                   model.getFieldName(),
                                                                   model.getPostFix());
-      validMethodBuilder.addStatement("$T " + variableName + " =  new $T()",
-                                      ClassName.get(model.getPackageName(), constraintClassName),
-                                      ClassName.get(model.getPackageName(), constraintClassName));
-      validMethodBuilder.addStatement(variableName +
-                                      ".isValid(bean." +
-                                      this.processorUtils.createGetMethodName(model.getFieldName()) +
-                                      "(), validationResult)",
-                                      ClassName.get(ValidationResult.class));
+      validMethodTwoParameterBuilder.addStatement("$T " + variableName + " =  new $T()",
+                                                  ClassName.get(model.getPackageName(),
+                                                                constraintClassName),
+                                                  ClassName.get(model.getPackageName(),
+                                                                constraintClassName));
+      validMethodTwoParameterBuilder.addStatement(variableName +
+                                                  ".isValid(bean." +
+                                                  this.processorUtils.createGetMethodName(model.getFieldName()) +
+                                                  "(), validationResult)",
+                                                  ClassName.get(ValidationResult.class));
       validateValidatorCounter++;
     }
-    validMethodBuilder.addStatement("return validationResult");
-    typeSpec.addMethod(validMethodBuilder.build());
+    for (ValidatorModel model : validatorList) {
+      String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
+      validMethodTwoParameterBuilder.addStatement("validationResult = $T.INSTANCE.validate(bean." +
+                                                  this.processorUtils.createGetMethodName(model.getFieldName()) +
+                                                  "(), validationResult)",
+                                                  ClassName.get(model.getPackageName(),
+                                                                vaidatorClassName));
+    }
+    validMethodTwoParameterBuilder.addStatement("return validationResult");
+    typeSpec.addMethod(validMethodTwoParameterBuilder.build());
 
     this.writeFile(validatorElement,
                    MalioProcessor.MALIO_VALIDATOR_IMPL_NAME,
@@ -222,22 +267,50 @@ public class MalioProcessor
   }
 
   private void createConstraintNotNull(Element element,
-                                       List<ConstraintModel> constraintsList)
+                                       List<ConstraintModel> constraintsList,
+                                       List<ValidatorModel> validatorList)
       throws ProcessorException {
-    for (Element notNullElement : this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnv,
-                                                                                               (TypeElement) element,
-                                                                                               NotNull.class)) {
+    for (Element fieldElement : this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnv,
+                                                                                             (TypeElement) element,
+                                                                                             NotNull.class)) {
+      VariableElement variableElement = (VariableElement) fieldElement;
       this.generateNotNullConstraint(element,
                                      constraintsList,
-                                     notNullElement);
+                                     variableElement);
+      TypeElement elementOfVariableType = (TypeElement) this.processingEnv.getTypeUtils()
+                                                                          .asElement(variableElement.asType());
+      if (elementOfVariableType.getAnnotation(MalioValidator.class) != null) {
+        this.addValidatorToValidatorGenerationList(validatorList,
+                                                   variableElement,
+                                                   elementOfVariableType);
+      }
+    }
+  }
+
+  private void addValidatorToValidatorGenerationList(List<ValidatorModel> validatorList,
+                                                     VariableElement variableElement,
+                                                     TypeElement elementOfVariableType) {
+    boolean found = validatorList.stream()
+                                 .anyMatch(model -> model.getPackageName()
+                                                         .equals(this.processorUtils.getPackageAsString(elementOfVariableType)) &&
+                                                    model.getSimpleClassName()
+                                                         .equals(elementOfVariableType.getSimpleName()
+                                                                                      .toString()) &&
+                                                    model.getPostFix()
+                                                         .equals(MalioProcessor.MALIO_VALIDATOR_IMPL_NAME));
+    if (!found) {
+      validatorList.add(new ValidatorModel(this.processorUtils.getPackageAsString(elementOfVariableType),
+                                           elementOfVariableType.getSimpleName()
+                                                                .toString(),
+                                           variableElement.toString(),
+                                           MalioProcessor.MALIO_VALIDATOR_IMPL_NAME));
     }
   }
 
   private void generateNotNullConstraint(Element validatorElement,
                                          List<ConstraintModel> constraintsList,
-                                         Element fieldElement)
+                                         VariableElement variableElement)
       throws ProcessorException {
-    VariableElement variableElement = (VariableElement) fieldElement;
     TypeSpec.Builder typeSpec = createConstraintTypeSpec(validatorElement,
                                                          variableElement);
     typeSpec.addMethod(MethodSpec.constructorBuilder()
