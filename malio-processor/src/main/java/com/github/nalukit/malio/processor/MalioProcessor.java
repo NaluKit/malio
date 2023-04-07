@@ -42,8 +42,8 @@ import static java.util.stream.Collectors.toSet;
 public class MalioProcessor
     extends AbstractProcessor {
 
-  private final static String MALIO_VALIDATOR_IMPL_NAME          = "MalioValidatorImpl";
-  private final static String MALIO_VALIDATOR_NOT_NULL_IMPL_NAME = "MalioConstraintNotNullImpl";
+  private final static String MALIO_VALIDATOR_IMPL_NAME          = "MalioValidator";
+  private final static String MALIO_VALIDATOR_NOT_NULL_IMPL_NAME = "MalioConstraintNotNull";
 
   //
   //  private final static String APPLICATION_PROPERTIES = "nalu.properties";
@@ -168,7 +168,10 @@ public class MalioProcessor
                                                       .addParameter(ParameterSpec.builder(ClassName.get(validatorElement.asType()),
                                                                                           "bean")
                                                                                  .build())
-                                                      .returns(ClassName.get(ValidationResult.class));
+                                                      .returns(ClassName.get(ValidationResult.class))
+                                                      .addStatement("$T validationResult = new $T()",
+                                                                    ClassName.get(ValidationResult.class),
+                                                                    ClassName.get(ValidationResult.class));
     int validateValidatorCounter = 1;
     for (ConstraintModel model : constraintsList) {
       String variableName = "val" +  this.getStringFromInt(validateValidatorCounter);
@@ -178,11 +181,14 @@ public class MalioProcessor
       validMethodBuilder.addStatement("$T " + variableName + " =  new $T()",
                                       ClassName.get(model.getPackageName(), constraintClassName),
                                       ClassName.get(model.getPackageName(), constraintClassName));
-      validMethodBuilder.addStatement(variableName + ".isValid(bean." + this.processorUtils.createGetMethodName(model.getFieldName())+ "(), this.validationResult)",
+      validMethodBuilder.addStatement(variableName +
+                                      ".isValid(bean." +
+                                      this.processorUtils.createGetMethodName(model.getFieldName()) +
+                                      "(), validationResult)",
                                       ClassName.get(ValidationResult.class));
       validateValidatorCounter++;
     }
-    validMethodBuilder.addStatement("return this.validationResult");
+    validMethodBuilder.addStatement("return validationResult");
     typeSpec.addMethod(validMethodBuilder.build());
 
     this.writeFile(validatorElement,
@@ -879,21 +885,15 @@ public class MalioProcessor
   private String createConstraintClassName(String modelName,
                                            String fieldName,
                                            String postFix) {
-    StringBuilder sb = new StringBuilder();
-    sb.append(this.processorUtils.setFirstCharacterToUpperCase(modelName))
-      .append("_")
-      .append(this.processorUtils.setFirstCharacterToUpperCase(fieldName))
-      .append("_")
-      .append(postFix);
-    return sb.toString();
+    return this.processorUtils.setFirstCharacterToUpperCase(modelName) +
+           "_" +
+           this.processorUtils.setFirstCharacterToUpperCase(fieldName) +
+           "_" +
+           postFix;
   }
 
   private String createValidatorClassName(String modelName) {
-    StringBuilder sb = new StringBuilder();
-    sb.append(this.processorUtils.setFirstCharacterToUpperCase(modelName))
-      .append("_")
-      .append(MalioProcessor.MALIO_VALIDATOR_IMPL_NAME);
-    return sb.toString();
+    return this.processorUtils.setFirstCharacterToUpperCase(modelName) + MalioProcessor.MALIO_VALIDATOR_IMPL_NAME;
   }
 
   private void setUp() {

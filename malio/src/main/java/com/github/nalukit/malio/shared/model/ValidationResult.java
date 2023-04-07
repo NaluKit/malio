@@ -15,8 +15,8 @@ public class ValidationResult {
     return messages;
   }
 
-  public void invlidate(String message, String classnmae, String field) {
-    this.messages.add(new ErrorMessage(message, classnmae, field));
+  public void invlidate(String message, String classname, String simpleClassName, String field) {
+    this.messages.add(new ErrorMessage(message, classname, simpleClassName, field));
   }
 
   public boolean isValid() {

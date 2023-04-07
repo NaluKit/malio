@@ -28,7 +28,7 @@ public abstract class AbstractNotNullConstraint<T>
 
   public void  isValid(T value, ValidationResult validationResult) {
     if (Objects.isNull(value)) {
-      validationResult.getMessages().add(new ErrorMessage(this.message, super.getClassName(), super.getFieldName()));
+      validationResult.getMessages().add(new ErrorMessage(this.message, super.getClassName(), super.getSimpleName(), super.getFieldName()));
     }
   }
 }

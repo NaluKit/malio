@@ -3,10 +3,11 @@
   <parent>
     <artifactId>malio-parent</artifactId>
     <groupId>com.github.nalukit</groupId>
-    <version>${revision}</version>
+    <version>dev</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>malio-processor</artifactId>
+  <version>${revision}</version>
   <description>Malio Processor</description>
   <issueManagement>
     <system>GitHub</system>

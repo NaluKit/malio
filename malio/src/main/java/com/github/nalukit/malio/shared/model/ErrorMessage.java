@@ -7,6 +7,7 @@ public class ErrorMessage {
   private String id;
   private String message;
   private String classname;
+  private String simpleClassname;
   private String field;
 
   public ErrorMessage() {
@@ -15,11 +16,12 @@ public class ErrorMessage {
 
   public ErrorMessage(String message,
                       String classname,
+                      String simpleClassname,
                       String field) {
-    this();
-    this.message   = message;
-    this.classname = classname;
-    this.field     = field;
+    this.message         = message;
+    this.classname       = classname;
+    this.simpleClassname = simpleClassname;
+    this.field           = field;
   }
 
   public String getId() {
@@ -44,6 +46,14 @@ public class ErrorMessage {
 
   public void setClassname(String classname) {
     this.classname = classname;
+  }
+
+  public String getSimpleClassname() {
+    return simpleClassname;
+  }
+
+  public void setSimpleClassname(String simpleClassname) {
+    this.simpleClassname = simpleClassname;
   }
 
   public String getField() {

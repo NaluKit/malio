@@ -6,7 +6,7 @@
 
   <groupId>com.github.nalukit</groupId>
   <artifactId>malio-parent</artifactId>
-  <version>${revision}</version>
+  <version>dev</version>
   <packaging>pom</packaging>
 
   <name>malio-parent</name>
@@ -18,6 +18,7 @@
   <modules>
     <module>malio</module>
     <module>malio-processor</module>
+    <module>malio-tests</module>
   </modules>
 
   <inceptionYear>2023</inceptionYear>
@@ -84,11 +85,12 @@
    <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
 
+    <maven.deploy.plugin>3.0.0-M1</maven.deploy.plugin>
     <!--    <plugin.version.github.site>0.12</plugin.version.github.site>-->    <!--    <plugin.version.gpg.maven>1.6</plugin.version.gpg.maven>-->    <!--    <plugin.version.javadoc>3.2.0</plugin.version.javadoc>-->    <!--    <plugin.version.nexus.staging>1.6.8</plugin.version.nexus.staging>-->    <!--    <plugin.version.project.info.report>3.0.0</plugin.version.project.info.report>-->    <!--    <plugin.version.sonatype>1.6.3</plugin.version.sonatype>-->    <!--    <plugin.version.source>3.2.1</plugin.version.source>-->
-    <plugin.version.surfire>2.22.2</plugin.version.surfire>
     <plugin.version.flatten>1.2.2</plugin.version.flatten>
         <plugin.version.clean>3.1.0</plugin.version.clean>
     <plugin.version.replacer>1.5.2</plugin.version.replacer>
+    <plugin.version.surfire>3.0.0-M1</plugin.version.surfire>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
