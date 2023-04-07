@@ -6,12 +6,17 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ProcessorUtils {
@@ -111,30 +116,30 @@ public class ProcessorUtils {
   //    }
   //    return className;
   //  }
-  //
-  //  /**
-  //   * Returns all of the superclasses and superinterfaces for a given generator
-  //   * including the generator itself. The returned set maintains an internal
-  //   * breadth-first ordering of the generator, followed by its interfaces (and their
-  //   * super-interfaces), then the supertype and its interfaces, and so on.
-  //   *
-  //   * @param types      types
-  //   * @param typeMirror of the class to check
-  //   * @return Set of implemented super types
-  //   */
-  //  public Set<TypeMirror> getFlattenedSupertypeHierarchy(Types types,
-  //                                                        TypeMirror typeMirror) {
-  //    List<TypeMirror>          toAdd  = new ArrayList<>();
-  //    LinkedHashSet<TypeMirror> result = new LinkedHashSet<>();
-  //    toAdd.add(typeMirror);
-  //    for (int i = 0; i < toAdd.size(); i++) {
-  //      TypeMirror type = toAdd.get(i);
-  //      if (result.add(type)) {
-  //        toAdd.addAll(types.directSupertypes(type));
-  //      }
-  //    }
-  //    return result;
-  //  }
+
+    /**
+     * Returns all of the superclasses and superinterfaces for a given generator
+     * including the generator itself. The returned set maintains an internal
+     * breadth-first ordering of the generator, followed by its interfaces (and their
+     * super-interfaces), then the supertype and its interfaces, and so on.
+     *
+     * @param types      types
+     * @param typeMirror of the class to check
+     * @return Set of implemented super types
+     */
+    public Set<TypeMirror> getFlattenedSupertypeHierarchy(Types types,
+                                                          TypeMirror typeMirror) {
+      List<TypeMirror>          toAdd  = new ArrayList<>();
+      LinkedHashSet<TypeMirror> result = new LinkedHashSet<>();
+      toAdd.add(typeMirror);
+      for (int i = 0; i < toAdd.size(); i++) {
+        TypeMirror type = toAdd.get(i);
+        if (result.add(type)) {
+          toAdd.addAll(types.directSupertypes(type));
+        }
+      }
+      return result;
+    }
   //
   //  public boolean supertypeHasGeneric(Types types,
   //                                     TypeMirror typeMirror,

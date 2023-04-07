@@ -30,6 +30,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,10 +98,18 @@ public class MalioProcessor
                                     .equals(annotation.toString())) {
               for (Element validatorElement : roundEnv.getElementsAnnotatedWith(MalioValidator.class)) {
                 List<ConstraintModel> constraintsList = new ArrayList<>();
-                this.createConstraintNotNull(validatorElement,
-                                             constraintsList);
-                // TODO add more constraints
+                Set<TypeMirror>       mirrors         = this.processorUtils.getFlattenedSupertypeHierarchy(this.processingEnv.getTypeUtils(),
+                                                                                                           validatorElement.asType());
+                for (TypeMirror mirror : mirrors) {
+                  Element element = this.processingEnv.getTypeUtils()
+                                                      .asElement(mirror);
 
+                  this.createConstraintNotNull(element,
+                                               constraintsList);
+
+                  // TODO add more constraints
+
+                }
                 this.generateValidator(validatorElement,
                                        constraintsList);
               }
@@ -212,13 +221,13 @@ public class MalioProcessor
     }
   }
 
-  private void createConstraintNotNull(Element validatorElement,
+  private void createConstraintNotNull(Element element,
                                        List<ConstraintModel> constraintsList)
       throws ProcessorException {
     for (Element notNullElement : this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnv,
-                                                                                               (TypeElement) validatorElement,
+                                                                                               (TypeElement) element,
                                                                                                NotNull.class)) {
-      this.generateNotNullConstraint(validatorElement,
+      this.generateNotNullConstraint(element,
                                      constraintsList,
                                      notNullElement);
     }

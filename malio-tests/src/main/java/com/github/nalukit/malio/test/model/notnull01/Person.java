@@ -1,11 +1,11 @@
-package com.github.nalukit.malio.test.model;
+package com.github.nalukit.malio.test.model.notnull01;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
 import com.github.nalukit.malio.shared.annotation.field.UseMalioValidator;
 
 @MalioValidator
-public class PersonNotNull {
+public class Person {
 
   @NotNull
   private String name;
@@ -15,14 +15,14 @@ public class PersonNotNull {
 
   @NotNull
   @UseMalioValidator
-  private AddressForNotNull address;
+  private Address address;
 
-  public PersonNotNull() {
+  public Person() {
   }
 
-  public PersonNotNull(String name,
-                       String firstName,
-                       AddressForNotNull address) {
+  public Person(String name,
+                String firstName,
+                Address address) {
     this.name      = name;
     this.firstName = firstName;
     this.address   = address;
@@ -44,11 +44,11 @@ public class PersonNotNull {
     this.firstName = firstName;
   }
 
-  public AddressForNotNull getAddress() {
+  public Address getAddress() {
     return address;
   }
 
-  public void setAddress(AddressForNotNull address) {
+  public void setAddress(Address address) {
     this.address = address;
   }
 }
