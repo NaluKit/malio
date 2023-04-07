@@ -6,13 +6,13 @@
   <parent>
     <groupId>com.github.nalukit</groupId>
     <artifactId>malio-parent</artifactId>
-    <version>${revision}</version>
+    <version>dev</version>
   </parent>
   <artifactId>malio-gwt2-tests</artifactId>
   <version>${revision}</version>
   <packaging>gwt-lib</packaging>
 
-  <name>Malio GWT 2 Tests</name>
+  <name>malio GWT 2 Tests</name>
   <description>Test cases for the GWT 2 tests</description>
 
   <properties>
@@ -23,6 +23,20 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>com.github.nalukit</groupId>
+      <artifactId>malio</artifactId>
+      <version>${revision}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.nalukit</groupId>
+      <artifactId>malio-processor</artifactId>
+      <version>${revision}</version>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>org.gwtproject</groupId>
       <artifactId>gwt-user</artifactId>
@@ -42,18 +56,6 @@
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.github.nalukit</groupId>
-      <artifactId>malio</artifactId>
-      <version>${revision}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.github.nalukit</groupId>
-      <artifactId>malio-processor</artifactId>
-      <version>${revision}</version>
     </dependency>
   </dependencies>
 

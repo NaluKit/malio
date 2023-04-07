@@ -12,7 +12,7 @@
 
   <artifactId>malio</artifactId>
   <version>${revision}</version>
-  <packaging>jar</packaging>
+  <packaging>gwt-lib</packaging>
 
   <!--  <description>Routing based application framework for GWT 2, GWT 3 + J2CL</description>-->
 
@@ -48,6 +48,13 @@
     <system>GitHub</system>
     <url>https://github.com/nalukit/nalu/issues</url>
   </issueManagement>
+
+  <properties>
+    <maven.gwt.plugin>1.0.1</maven.gwt.plugin>
+    <maven.gpg.plugin>1.6</maven.gpg.plugin>
+    <maven.javadoc.plugin>3.2.0</maven.javadoc.plugin>
+    <maven.source.plugin>3.2.1</maven.source.plugin>
+  </properties>
 
   <!--  <dependencies>-->
   <!--    <dependency>-->
@@ -110,7 +117,7 @@
         <directory>src/main/resources</directory>
         <includes>
           <include>**/META-INF/**</include>
-          <include>**/amlio/**</include>
+          <include>**/malio/**</include>
           <include>**/*.gwt.xml</include>
           <include>**/*.html</include>
           <include>**/public/**</include>
@@ -126,6 +133,22 @@
     </resources>
 
     <plugins>
+      <plugin>
+        <groupId>net.ltgt.gwt.maven</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <version>${maven.gwt.plugin}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <moduleName>com.github.nalukit.malio.Malio</moduleName>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>false</skip>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

@@ -1,6 +1,6 @@
 <!--
 
-    Copyright © 2023 Frank Hossfeld, Philipp Kohl
+    Copyright © 2020 ${name}
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -18,7 +18,5 @@
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.10.0//EN"
         "http://gwtproject.org/doctype/2.10.0/gwt-module.dtd">
 <module>
-  <inherits name='org.gwtproject.regexp.RegExp'/>
-
   <source path='shared'/>
 </module>

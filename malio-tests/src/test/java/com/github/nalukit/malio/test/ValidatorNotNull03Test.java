@@ -3,14 +3,13 @@ package com.github.nalukit.malio.test;
 import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
-import com.github.nalukit.malio.test.model.notnull03.helper.Address;
 import com.github.nalukit.malio.test.model.notnull03.Person;
 import com.github.nalukit.malio.test.model.notnull03.PersonMalioValidator;
+import com.github.nalukit.malio.test.model.notnull03.helper.Address;
 import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -36,27 +35,53 @@ public class ValidatorNotNull03Test {
 
   @Test
   public void testCheckFail01() {
-    Person model = new Person(null, "Fred", new Address("Test Avenue 21", "123456", "Test City"));
+    Person model = new Person(null,
+                              "Fred",
+                              new Address("Test Avenue 21",
+                                          "123456",
+                                          "Test City"));
 
-    MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
-//    assertTrue(thrown.getMessage().contentEquals("asd sad "));
+    try {
+      PersonMalioValidator.INSTANCE.check(model);
+      fail();
+    } catch (MalioValidationException e) {
+      //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
+    }
   }
 
   @Test
   public void testCheckFail02() {
-    Person model = new Person(null, null, new Address("Test Avenue 21", "123456", "Test City"));
+    Person model = new Person(null,
+                              null,
+                              new Address("Test Avenue 21",
+                                          "123456",
+                                          "Test City"));
 
-    MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
-//    assertTrue(thrown.getMessage().contentEquals("asd sad "));
+    try {
+      PersonMalioValidator.INSTANCE.check(model);
+      fail();
+    } catch (MalioValidationException e) {
+      //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
+    }
+    //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
   }
 
 
   @Test
   public void testCheckFail03() {
-    Person model = new Person("Fred", "Flintstones", new Address(null, "123456", "Test City"));
+    Person model = new Person("Fred",
+                              "Flintstones",
+                              new Address(null,
+                                          "123456",
+                                          "Test City"));
 
-    MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
-//    assertTrue(thrown.getMessage().contentEquals("asd sad "));
+    try {
+      PersonMalioValidator.INSTANCE.check(model);
+      fail();
+    } catch (MalioValidationException e) {
+      //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
+    }
+    //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
   }
 
   @Test
@@ -137,7 +162,5 @@ public class ValidatorNotNull03Test {
     assertEquals("n/a",
                  errorMessage01    .getMessage());
   }
-
-
 
 }

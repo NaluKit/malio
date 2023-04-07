@@ -105,6 +105,4 @@ public class ValidatorNotNull04Test {
                  errorMessage02    .getMessage());
   }
 
-
-
 }
