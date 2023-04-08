@@ -44,7 +44,7 @@ import static java.util.stream.Collectors.toSet;
 public class MalioProcessor
     extends AbstractProcessor {
 
-  private final static String MALIO_VALIDATOR_IMPL_NAME          = "MalioValidator";
+  public final static  String MALIO_VALIDATOR_IMPL_NAME          = "MalioValidator";
   private final static String MALIO_VALIDATOR_NOT_NULL_IMPL_NAME = "MalioConstraintNotNull";
 
   //
@@ -99,16 +99,14 @@ public class MalioProcessor
                                     .equals(annotation.toString())) {
               for (Element validatorElement : roundEnv.getElementsAnnotatedWith(MalioValidator.class)) {
                 List<ConstraintModel> constraintsList = new ArrayList<>();
-                List<ValidatorModel>  validatorList   = new ArrayList<>();
                 Set<TypeMirror> mirrors = this.processorUtils.getFlattenedSupertypeHierarchy(this.processingEnv.getTypeUtils(),
                                                                                              validatorElement.asType());
+                // handle malio annotations ...
                 for (TypeMirror mirror : mirrors) {
                   Element element = this.processingEnv.getTypeUtils()
                                                       .asElement(mirror);
-
                   this.createConstraintNotNull(element,
-                                               constraintsList,
-                                               validatorList);
+                                               constraintsList);
 
                   // TODO add more constraints
                   // TODO add more constraints
@@ -121,6 +119,10 @@ public class MalioProcessor
                   // TODO add more constraints
 
                 }
+
+                List<ValidatorModel> validatorList = this.processorUtils.getMalioValidatorVariableTypes(this.processingEnv.getElementUtils(),
+                                                                                                        this.processingEnv.getTypeUtils(),
+                                                                                                        validatorElement);
                 this.generateValidator(validatorElement,
                                        constraintsList,
                                        validatorList);
@@ -267,8 +269,7 @@ public class MalioProcessor
   }
 
   private void createConstraintNotNull(Element element,
-                                       List<ConstraintModel> constraintsList,
-                                       List<ValidatorModel> validatorList)
+                                       List<ConstraintModel> constraintsList)
       throws ProcessorException {
     for (Element fieldElement : this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnv,
                                                                                              (TypeElement) element,
@@ -277,33 +278,6 @@ public class MalioProcessor
       this.generateNotNullConstraint(element,
                                      constraintsList,
                                      variableElement);
-      TypeElement elementOfVariableType = (TypeElement) this.processingEnv.getTypeUtils()
-                                                                          .asElement(variableElement.asType());
-      if (elementOfVariableType.getAnnotation(MalioValidator.class) != null) {
-        this.addValidatorToValidatorGenerationList(validatorList,
-                                                   variableElement,
-                                                   elementOfVariableType);
-      }
-    }
-  }
-
-  private void addValidatorToValidatorGenerationList(List<ValidatorModel> validatorList,
-                                                     VariableElement variableElement,
-                                                     TypeElement elementOfVariableType) {
-    boolean found = validatorList.stream()
-                                 .anyMatch(model -> model.getPackageName()
-                                                         .equals(this.processorUtils.getPackageAsString(elementOfVariableType)) &&
-                                                    model.getSimpleClassName()
-                                                         .equals(elementOfVariableType.getSimpleName()
-                                                                                      .toString()) &&
-                                                    model.getPostFix()
-                                                         .equals(MalioProcessor.MALIO_VALIDATOR_IMPL_NAME));
-    if (!found) {
-      validatorList.add(new ValidatorModel(this.processorUtils.getPackageAsString(elementOfVariableType),
-                                           elementOfVariableType.getSimpleName()
-                                                                .toString(),
-                                           variableElement.toString(),
-                                           MalioProcessor.MALIO_VALIDATOR_IMPL_NAME));
     }
   }
 

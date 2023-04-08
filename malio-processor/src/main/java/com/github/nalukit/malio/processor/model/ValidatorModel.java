@@ -6,15 +6,18 @@ public class ValidatorModel {
   private String simpleClassName;
   private String fieldName;
   private String postFix;
+  private Type   type;
 
   public ValidatorModel(String packageName,
                         String simpleClassName,
                         String fieldName,
-                        String postFix) {
+                        String postFix,
+                        Type type) {
     this.packageName     = packageName;
     this.simpleClassName = simpleClassName;
     this.fieldName       = fieldName;
     this.postFix         = postFix;
+    this.type            = type;
   }
 
   public String getPackageName() {
@@ -33,4 +36,13 @@ public class ValidatorModel {
     return postFix;
   }
 
+  public Type getType() {
+    return type;
+  }
+
+  public enum Type {
+    LIST,
+    MAP,
+    NATIVE
+  }
 }
