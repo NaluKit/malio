@@ -1,11 +1,16 @@
 package com.github.nalukit.malio.processor.util;
 
+import com.github.nalukit.malio.processor.MalioProcessor;
+import com.github.nalukit.malio.processor.model.ValidatorModel;
+import com.github.nalukit.malio.shared.annotation.MalioValidator;
+
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -140,6 +145,66 @@ public class ProcessorUtils {
       }
       return result;
     }
+
+  public List<ValidatorModel> getMalioValidatorVariableTypes(Elements elements,
+                                                             Types types,
+                                                             Element element) {
+    List<ValidatorModel> resultList = new ArrayList<>();
+    List<VariableElement> list = this.getAllVariableELements(elements,
+                                                             element);
+    for (VariableElement variableElement : list) {
+      TypeElement elementOfVariableType = (TypeElement) types.asElement(variableElement.asType());
+      // all return types annotatated with ...
+      if (elementOfVariableType.getAnnotation(MalioValidator.class) != null) {
+        this.addValidatorToValidatorGenerationList(resultList,
+                                                   variableElement,
+                                                   elementOfVariableType,
+                                                   ValidatorModel.Type.NATIVE);
+      }
+      // list with generated Type
+      System.out.println(variableElement.asType()
+                                        .toString());
+      //      if ()
+      // TODO
+      // map with generated Type
+      // TODO
+    }
+    return resultList;
+  }
+
+  private List<VariableElement> getAllVariableELements(Elements elements,
+                                                       Element element) {
+    List<VariableElement> list = new ArrayList<>();
+    for (Element childElement : elements.getAllMembers((TypeElement) element)) {
+      if (childElement.getKind() == ElementKind.FIELD) {
+        list.add((VariableElement) childElement);
+      }
+    }
+    return list;
+  }
+
+  private void addValidatorToValidatorGenerationList(List<ValidatorModel> validatorList,
+                                                     VariableElement variableElement,
+                                                     TypeElement elementOfVariableType,
+                                                     ValidatorModel.Type type) {
+    boolean found = validatorList.stream()
+                                 .anyMatch(model -> model.getPackageName()
+                                                         .equals(this.getPackageAsString(elementOfVariableType)) &&
+                                                    model.getSimpleClassName()
+                                                         .equals(elementOfVariableType.getSimpleName()
+                                                                                      .toString()) &&
+                                                    model.getPostFix()
+                                                         .equals(MalioProcessor.MALIO_VALIDATOR_IMPL_NAME));
+    if (!found) {
+      validatorList.add(new ValidatorModel(this.getPackageAsString(elementOfVariableType),
+                                           elementOfVariableType.getSimpleName()
+                                                                .toString(),
+                                           variableElement.toString(),
+                                           MalioProcessor.MALIO_VALIDATOR_IMPL_NAME,
+                                           type));
+    }
+  }
+
   //
   //  public boolean supertypeHasGeneric(Types types,
   //                                     TypeMirror typeMirror,
