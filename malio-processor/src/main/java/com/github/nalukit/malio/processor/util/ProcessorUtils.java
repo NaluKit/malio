@@ -21,6 +21,7 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -159,14 +160,48 @@ public class ProcessorUtils {
         this.addValidatorToValidatorGenerationList(resultList,
                                                    variableElement,
                                                    elementOfVariableType,
-                                                   ValidatorModel.Type.NATIVE);
+                                                   ValidatorModel.Type.NATIVE,
+                                                   null,
+                                                   null);
       }
       // list with generated Type
       System.out.println(variableElement.asType()
                                         .toString());
-      //      if ()
+      String elementOfVariableTypeString = variableElement.asType()
+                                                          .toString();
+      System.out.println(elementOfVariableTypeString);
+      if (elementOfVariableTypeString.startsWith(List.class.getCanonicalName())) {
+        if (elementOfVariableTypeString.contains("<")) {
+          int         open                 = elementOfVariableTypeString.indexOf("<");
+          int         close                = elementOfVariableTypeString.indexOf(">");
+          String      genericClassName     = elementOfVariableTypeString.substring(open + 1,
+                                                                                   close);
+          TypeElement elementOfGenericList = elements.getTypeElement(genericClassName);
+          if (elementOfGenericList.getAnnotation(MalioValidator.class) != null) {
+            this.addValidatorToValidatorGenerationList(resultList,
+                                                       variableElement,
+                                                       elementOfVariableType,
+                                                       ValidatorModel.Type.LIST,
+                                                       elementOfGenericList,
+                                                       null);
+            System.out.println(variableElement.asType()
+                                              .toString());
+            System.out.println(genericClassName);
+            System.out.println(elementOfGenericList);
+            System.out.println("Yeah, It's a list");
+          }
+        }
+      }
       // TODO
       // map with generated Type
+      if (variableElement.asType()
+                         .toString()
+                         .startsWith(Map.class.getCanonicalName())) {
+        System.out.println(variableElement.asType()
+                                          .toString());
+        System.out.println("Yeah, It's a map");
+
+      }
       // TODO
     }
     return resultList;
@@ -186,7 +221,9 @@ public class ProcessorUtils {
   private void addValidatorToValidatorGenerationList(List<ValidatorModel> validatorList,
                                                      VariableElement variableElement,
                                                      TypeElement elementOfVariableType,
-                                                     ValidatorModel.Type type) {
+                                                     ValidatorModel.Type type,
+                                                     TypeElement typeElement01,
+                                                     TypeElement typeElement02) {
     boolean found = validatorList.stream()
                                  .anyMatch(model -> model.getPackageName()
                                                          .equals(this.getPackageAsString(elementOfVariableType)) &&
@@ -201,7 +238,9 @@ public class ProcessorUtils {
                                                                 .toString(),
                                            variableElement.toString(),
                                            MalioProcessor.MALIO_VALIDATOR_IMPL_NAME,
-                                           type));
+                                           type,
+                                           typeElement01,
+                                           typeElement02));
     }
   }
 

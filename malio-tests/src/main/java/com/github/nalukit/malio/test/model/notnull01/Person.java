@@ -12,9 +12,6 @@ public class Person {
 
   @NotNull private Address address;
 
-  //  @NotNull
-  //  private List<Person> children;
-
   public Person() {
   }
 
@@ -49,12 +46,4 @@ public class Person {
   public void setAddress(Address address) {
     this.address = address;
   }
-
-  //  public List<Person> getChildren() {
-  //    return children;
-  //  }
-  //
-  //  public void setChildren(List<Person> children) {
-  //    this.children = children;
-  //  }
 }
