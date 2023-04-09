@@ -1,7 +1,10 @@
-package com.github.nalukit.malio.test.model.notnull01;
+package com.github.nalukit.malio.test.model.subvalidator02;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
+import com.github.nalukit.malio.test.model.notnull01.Address;
+
+import java.util.List;
 
 @MalioValidator
 public class Person {
@@ -10,18 +13,17 @@ public class Person {
 
   @NotNull private String firstName;
 
-  @NotNull private Address address;
+  private List<Person> children;
 
   public Person() {
   }
 
   public Person(String name,
-                String firstName,
-                Address address) {
+                String firstName) {
     this.name      = name;
     this.firstName = firstName;
-    this.address   = address;
   }
+
 
   public String getName() {
     return name;
@@ -39,11 +41,11 @@ public class Person {
     this.firstName = firstName;
   }
 
-  public Address getAddress() {
-    return address;
+  public List<Person> getChildren() {
+    return children;
   }
 
-  public void setAddress(Address address) {
-    this.address = address;
+  public void setChildren(List<Person> children) {
+    this.children = children;
   }
 }

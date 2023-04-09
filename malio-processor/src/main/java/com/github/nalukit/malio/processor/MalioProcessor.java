@@ -35,6 +35,7 @@ import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -169,32 +170,9 @@ public class MalioProcessor
                                                                                  .build())
                                                       .returns(void.class)
                                                       .addException(ClassName.get(MalioValidationException.class));
-
-    int checkValidatorCounter = 1;
-    for (ConstraintModel model : constraintsList) {
-      String variableName = "val" + this.getStringFromInt(checkValidatorCounter);
-      String constraintClassName = this.createConstraintClassName(model.getSimpleClassName(),
-                                                                  model.getFieldName(),
-                                                                  model.getPostFix());
-      checkMethodBuilder.addStatement("$T " + variableName + " =  new $T()",
-                                      ClassName.get(model.getPackageName(),
-                                                    constraintClassName),
-                                      ClassName.get(model.getPackageName(),
-                                                    constraintClassName));
-      checkMethodBuilder.addStatement(variableName +
-                                      ".check(bean." +
-                                      this.processorUtils.createGetMethodName(model.getFieldName()) +
-                                      "())");
-      checkValidatorCounter++;
-    }
-    for (ValidatorModel model : validatorList) {
-      String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
-      checkMethodBuilder.addStatement("$T.INSTANCE.check(bean." +
-                                      this.processorUtils.createGetMethodName(model.getFieldName()) +
-                                      "())",
-                                      ClassName.get(model.getPackageName(),
-                                                    vaidatorClassName));
-    }
+    this.createCheckMethod(constraintsList,
+                           validatorList,
+                           checkMethodBuilder);
     typeSpec.addMethod(checkMethodBuilder.build());
 
     MethodSpec.Builder validOneParameterMethodBuilder = MethodSpec.methodBuilder("validate")
@@ -218,33 +196,9 @@ public class MalioProcessor
                                                                                                       "validationResult")
                                                                                              .build())
                                                                   .returns(ClassName.get(ValidationResult.class));
-    int validateValidatorCounter = 1;
-    for (ConstraintModel model : constraintsList) {
-      String variableName = "val" + this.getStringFromInt(validateValidatorCounter);
-      String constraintClassName = this.createConstraintClassName(model.getSimpleClassName(),
-                                                                  model.getFieldName(),
-                                                                  model.getPostFix());
-      validMethodTwoParameterBuilder.addStatement("$T " + variableName + " =  new $T()",
-                                                  ClassName.get(model.getPackageName(),
-                                                                constraintClassName),
-                                                  ClassName.get(model.getPackageName(),
-                                                                constraintClassName));
-      validMethodTwoParameterBuilder.addStatement(variableName +
-                                                  ".isValid(bean." +
-                                                  this.processorUtils.createGetMethodName(model.getFieldName()) +
-                                                  "(), validationResult)",
-                                                  ClassName.get(ValidationResult.class));
-      validateValidatorCounter++;
-    }
-    for (ValidatorModel model : validatorList) {
-      String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
-      validMethodTwoParameterBuilder.addStatement("validationResult = $T.INSTANCE.validate(bean." +
-                                                  this.processorUtils.createGetMethodName(model.getFieldName()) +
-                                                  "(), validationResult)",
-                                                  ClassName.get(model.getPackageName(),
-                                                                vaidatorClassName));
-    }
-    validMethodTwoParameterBuilder.addStatement("return validationResult");
+    this.createIsValidMethod(constraintsList,
+                             validatorList,
+                             validMethodTwoParameterBuilder);
     typeSpec.addMethod(validMethodTwoParameterBuilder.build());
 
     this.writeFile(validatorElement,
@@ -252,16 +206,112 @@ public class MalioProcessor
                    typeSpec);
   }
 
+  private void createCheckMethod(List<ConstraintModel> constraintsList,
+                                 List<ValidatorModel> validatorList,
+                                 MethodSpec.Builder checkMethodBuilder) {
+    int checkValidatorCounter = 1;
+    for (ConstraintModel model : constraintsList) {
+      String variableName = "val" + this.getStringFromInt(checkValidatorCounter);
+      String constraintClassName = this.createConstraintClassName(model.getSimpleClassName(),
+                                                                  model.getFieldName(),
+                                                                  model.getPostFix());
+      checkMethodBuilder.addStatement("$T $L = new $T()",
+                                      ClassName.get(model.getPackageName(),
+                                                    constraintClassName),
+                                      variableName,
+                                      ClassName.get(model.getPackageName(),
+                                                    constraintClassName));
+      checkMethodBuilder.addStatement("$L.check(bean.$L())",
+                                      variableName,
+                                      this.processorUtils.createGetMethodName(model.getFieldName()));
+      checkValidatorCounter++;
+    }
+    for (ValidatorModel model : validatorList) {
+      checkMethodBuilder.beginControlFlow("if ($T.nonNull(bean.$L()))",
+                                          ClassName.get(Objects.class),
+                                          this.processorUtils.createGetMethodName(model.getFieldName()));
+      switch (model.getType()) {
+        case NATIVE:
+          String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
+          checkMethodBuilder.addStatement("$T.INSTANCE.check(bean.$L())",
+                                          ClassName.get(model.getPackageName(),
+                                                        vaidatorClassName),
+                                          this.processorUtils.createGetMethodName(model.getFieldName()));
+          break;
+        case LIST:
+          String vaidatorClassNameList = model.getGenericTypeElement01()
+                                              .toString() + model.getPostFix();
+          checkMethodBuilder.beginControlFlow("for ($T model : bean.$L())",
+                                              ClassName.get(model.getGenericTypeElement01()),
+                                              this.processorUtils.createGetMethodName(model.getFieldName()))
+                            .addStatement("$L.INSTANCE.check(model)",
+                                          vaidatorClassNameList)
+                            .endControlFlow();
+          break;
+      }
+      checkMethodBuilder.endControlFlow();
+    }
+  }
+
+  private void createIsValidMethod(List<ConstraintModel> constraintsList,
+                                   List<ValidatorModel> validatorList,
+                                   MethodSpec.Builder validMethodTwoParameterBuilder) {
+    int validateValidatorCounter = 1;
+    for (ConstraintModel model : constraintsList) {
+      String variableName = "val" + this.getStringFromInt(validateValidatorCounter);
+      String constraintClassName = this.createConstraintClassName(model.getSimpleClassName(),
+                                                                  model.getFieldName(),
+                                                                  model.getPostFix());
+      validMethodTwoParameterBuilder.addStatement("$T $L = new $T()",
+                                                  ClassName.get(model.getPackageName(),
+                                                                constraintClassName),
+                                                  variableName,
+                                                  ClassName.get(model.getPackageName(),
+                                                                constraintClassName));
+      validMethodTwoParameterBuilder.addStatement("$L.isValid(bean.$L(), validationResult)",
+                                                  variableName,
+                                                  this.processorUtils.createGetMethodName(model.getFieldName()));
+      validateValidatorCounter++;
+    }
+    for (ValidatorModel model : validatorList) {
+      validMethodTwoParameterBuilder.beginControlFlow("if ($T.nonNull(bean.$L()))",
+                                                      ClassName.get(Objects.class),
+                                                      this.processorUtils.createGetMethodName(model.getFieldName()));
+      switch (model.getType()) {
+        case NATIVE:
+          String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
+          validMethodTwoParameterBuilder.addStatement("validationResult = $T.INSTANCE.validate(bean.$L(), validationResult)",
+                                                      ClassName.get(model.getPackageName(),
+                                                                    vaidatorClassName),
+                                                      this.processorUtils.createGetMethodName(model.getFieldName()));
+          break;
+        case LIST:
+          String vaidatorClassNameList = model.getGenericTypeElement01()
+                                              .toString() + model.getPostFix();
+          validMethodTwoParameterBuilder.beginControlFlow("for ($T model : bean.$L())",
+                                                          ClassName.get(model.getGenericTypeElement01()),
+                                                          this.processorUtils.createGetMethodName(model.getFieldName()))
+                                        .addStatement("validationResult = $L.INSTANCE.validate(model, validationResult)",
+                                                      vaidatorClassNameList)
+                                        .endControlFlow();
+          break;
+      }
+
+      validMethodTwoParameterBuilder.endControlFlow();
+    }
+    validMethodTwoParameterBuilder.addStatement("return validationResult");
+  }
+
   private String getStringFromInt(int value) {
     if (value < 1) {
       return "00000";
-    } else  if (value < 10) {
+    } else if (value < 10) {
       return "0000" + value;
-    } else  if (value < 100) {
-      return "000"+ value;
-    } else  if (value < 1000) {
+    } else if (value < 100) {
+      return "000" + value;
+    } else if (value < 1000) {
       return "00" + value;
-    } else  if (value < 10000) {
+    } else if (value < 10000) {
       return "0" + value;
     } else {
       return String.valueOf(value);
@@ -981,4 +1031,10 @@ public class MalioProcessor
   //    return ProcessorConstants.META_INF + "/" + ProcessorConstants.NALU_FOLDER_NAME + "/" + NaluProcessor.APPLICATION_PROPERTIES;
   //  }
 
+
+
+  enum MethodType {
+    CHECK,
+    ISVALID
+  }
 }

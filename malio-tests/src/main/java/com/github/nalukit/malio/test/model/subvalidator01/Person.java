@@ -1,4 +1,4 @@
-package com.github.nalukit.malio.test.model.notnull01;
+package com.github.nalukit.malio.test.model.subvalidator01;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
