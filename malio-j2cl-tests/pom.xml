@@ -88,6 +88,7 @@
                 <test>com.github.nalukit.malio.test.ValidatorNotNull02Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorNotNull03Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorNotNull04Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorNotNull05Test</test>
               </tests>
             </configuration>
           </execution>

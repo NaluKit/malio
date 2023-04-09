@@ -19,6 +19,7 @@ import com.github.nalukit.malio.test.ValidatorNotNull01Test;
 import com.github.nalukit.malio.test.ValidatorNotNull02Test;
 import com.github.nalukit.malio.test.ValidatorNotNull03Test;
 import com.github.nalukit.malio.test.ValidatorNotNull04Test;
+import com.github.nalukit.malio.test.ValidatorNotNull05Test;
 import com.google.gwt.junit.tools.GWTTestSuite;
 import junit.framework.Test;
 
@@ -30,6 +31,7 @@ public class GwtSuite {
     suite.addTestSuite(ValidatorNotNull02Test.class);
     suite.addTestSuite(ValidatorNotNull03Test.class);
     suite.addTestSuite(ValidatorNotNull04Test.class);
+    suite.addTestSuite(ValidatorNotNull05Test.class);
     return suite;
   }
 }

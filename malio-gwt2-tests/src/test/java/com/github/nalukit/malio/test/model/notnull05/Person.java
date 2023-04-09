@@ -1,0 +1,61 @@
+package com.github.nalukit.malio.test.model.notnull05;
+
+import com.github.nalukit.malio.shared.annotation.MalioValidator;
+import com.github.nalukit.malio.shared.annotation.field.NotNull;
+
+import java.util.List;
+
+@MalioValidator
+public class Person {
+
+  @NotNull private String name;
+
+  @NotNull private String firstName;
+
+  @NotNull private Address address;
+
+  @NotNull private List<Person> children;
+
+  public Person() {
+  }
+
+  public Person(String name,
+                String firstName,
+                Address address) {
+    this.name      = name;
+    this.firstName = firstName;
+    this.address   = address;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public Address getAddress() {
+    return address;
+  }
+
+  public void setAddress(Address address) {
+    this.address = address;
+  }
+
+  public List<Person> getChildren() {
+    return children;
+  }
+
+  public void setChildren(List<Person> children) {
+    this.children = children;
+  }
+}
