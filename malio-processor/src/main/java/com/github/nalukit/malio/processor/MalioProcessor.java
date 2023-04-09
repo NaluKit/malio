@@ -8,19 +8,15 @@ import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.Malio;
 import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
+import com.github.nalukit.malio.shared.annotation.field.MaxLength;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
+import com.github.nalukit.malio.shared.internal.constraints.AbstractMaxLengthConstraint;
 import com.github.nalukit.malio.shared.internal.constraints.AbstractNotNullConstraint;
 import com.github.nalukit.malio.shared.internal.validator.AbstractValidator;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.google.auto.service.AutoService;
 import com.google.common.base.Stopwatch;
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.FieldSpec;
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterSpec;
-import com.squareup.javapoet.ParameterizedTypeName;
-import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.*;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -46,6 +42,7 @@ public class MalioProcessor
 
   public final static  String MALIO_VALIDATOR_IMPL_NAME          = "MalioValidator";
   private final static String MALIO_VALIDATOR_NOT_NULL_IMPL_NAME = "MalioConstraintNotNull";
+  private final static String MALIO_VALIDATOR_MAX_LENGTH_IMPL_NAME = "MalioConstraintMaxLength";
 
   //
   //  private final static String APPLICATION_PROPERTIES = "nalu.properties";
@@ -107,7 +104,7 @@ public class MalioProcessor
                                                       .asElement(mirror);
                   this.createConstraintNotNull(element,
                                                constraintsList);
-
+                  this.createConstraintMaxLength(element, constraintsList);
                   // TODO add more constraints
                   // TODO add more constraints
                   // TODO add more constraints
@@ -136,6 +133,54 @@ public class MalioProcessor
       return true;
     }
     return true;
+  }
+
+  private void createConstraintMaxLength(Element element,
+                                       List<ConstraintModel> constraintsList)
+          throws ProcessorException {
+    for (Element fieldElement : this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnv,
+            (TypeElement) element,
+            MaxLength.class)) {
+      VariableElement variableElement = (VariableElement) fieldElement;
+      this.generateMaxLengthConstraint(element,
+              constraintsList,
+              variableElement);
+    }
+  }
+
+  private void generateMaxLengthConstraint(Element validatorElement,
+                                         List<ConstraintModel> constraintsList,
+                                         VariableElement variableElement)
+          throws ProcessorException {
+    TypeSpec.Builder typeSpec = createMaxLengthConstraintTypeSpec(validatorElement,
+            variableElement);
+    typeSpec.addMethod(MethodSpec.constructorBuilder()
+            .addModifiers(Modifier.PUBLIC)
+            .addStatement("super($S, $S, $S, $L)",
+                    this.processorUtils.getPackage(variableElement),
+                    this.processorUtils.setFirstCharacterToUpperCase(variableElement.getEnclosingElement()
+                            .getSimpleName()
+                            .toString()),
+                    variableElement.getSimpleName()
+                            .toString(),
+                    variableElement.getAnnotation(MaxLength.class).value())
+
+            .build());
+    typeSpec.addMethod(MethodSpec.methodBuilder("getErrorMessage")
+            .addModifiers(Modifier.PROTECTED)
+            .addAnnotation(ClassName.get(Override.class))
+            .returns(ClassName.get(String.class))
+            .addStatement("return \"noch mit error messages aus Properties ersetzen (wegen locale und so) ....\"")
+            .build());
+    this.writeFile(variableElement,
+            MalioProcessor.MALIO_VALIDATOR_MAX_LENGTH_IMPL_NAME,
+            typeSpec);
+    constraintsList.add(new ConstraintModel(this.processorUtils.getPackageAsString(validatorElement),
+            validatorElement.getSimpleName()
+                    .toString(),
+            variableElement.toString(),
+            MalioProcessor.MALIO_VALIDATOR_MAX_LENGTH_IMPL_NAME,
+            ValidatorType.MAX_LENGTH_VALIDATOR));
   }
 
   private void generateValidator(Element validatorElement,
@@ -285,7 +330,7 @@ public class MalioProcessor
                                          List<ConstraintModel> constraintsList,
                                          VariableElement variableElement)
       throws ProcessorException {
-    TypeSpec.Builder typeSpec = createConstraintTypeSpec(validatorElement,
+    TypeSpec.Builder typeSpec = createNotNullConstraintTypeSpec(validatorElement,
                                                          variableElement);
     typeSpec.addMethod(MethodSpec.constructorBuilder()
                                  .addModifiers(Modifier.PUBLIC)
@@ -315,8 +360,8 @@ public class MalioProcessor
                                             ValidatorType.NOT_NULL_VALIDATOR));
   }
 
-  private TypeSpec.Builder createConstraintTypeSpec(Element validatorElement,
-                                                    VariableElement variableElement) {
+  private TypeSpec.Builder createNotNullConstraintTypeSpec(Element validatorElement,
+                                                           VariableElement variableElement) {
     return TypeSpec.classBuilder(this.createConstraintClassName(validatorElement.getSimpleName()
                                                                                 .toString(),
                                                                 variableElement.getSimpleName()
@@ -327,6 +372,20 @@ public class MalioProcessor
                                                          ClassName.get(variableElement.asType())))
                    .addModifiers(Modifier.PUBLIC,
                                  Modifier.FINAL);
+  }
+
+  private TypeSpec.Builder createMaxLengthConstraintTypeSpec(Element validatorElement,
+                                                           VariableElement variableElement) {
+    ClassName className = ClassName.get(AbstractMaxLengthConstraint.class);
+    return TypeSpec.classBuilder(this.createConstraintClassName(validatorElement.getSimpleName()
+                            .toString(),
+                    variableElement.getSimpleName()
+                            .toString(),
+                    MalioProcessor.MALIO_VALIDATOR_MAX_LENGTH_IMPL_NAME))
+            .addJavadoc(BuildWithMalioCommentProvider.INSTANCE.getGeneratedComment())
+            .superclass(className)
+            .addModifiers(Modifier.PUBLIC,
+                    Modifier.FINAL);
   }
 
   private TypeSpec.Builder createValidatorTypeSpec(Element validatorElement) {
