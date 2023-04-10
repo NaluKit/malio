@@ -28,6 +28,17 @@ public class Person {
     this.address   = address;
   }
 
+  public Person(String name,
+                String firstName,
+                Address address,
+                List<Person> children) {
+    this();
+    this.name      = name;
+    this.firstName = firstName;
+    this.address   = address;
+    this.children  = children;
+  }
+
   public String getName() {
     return name;
   }

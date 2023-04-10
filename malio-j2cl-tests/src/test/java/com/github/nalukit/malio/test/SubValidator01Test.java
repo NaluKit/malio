@@ -1,30 +1,12 @@
-/*
- * Copyright © 2023 Frank Hossfeld, Philipp Kohl
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.shared.messages.LocalizedMessages;
-import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
+import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
-import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.subvalidator01.Address;
 import com.github.nalukit.malio.test.model.subvalidator01.Person;
 import com.github.nalukit.malio.test.model.subvalidator01.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -34,11 +16,6 @@ import static org.junit.Assert.fail;
 
 @J2clTestInput(SubValidator01Test.class)
 public class SubValidator01Test {
-
-  @Before
-  public void setup() {
-    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
-  }
 
   @Test
   public void testCheckOk() {
@@ -57,11 +34,11 @@ public class SubValidator01Test {
 
   @Test
   public void testValidateOk() {
-    Person model = new Person("Flintstones",
-                              "Fred",
-                              new Address("Test Avenue 21",
-                                          "123456",
-                                          "Test City"));
+    Person           model  = new Person("Flintstones",
+                                         "Fred",
+                                         new Address("Test Avenue 21",
+                                                     "123456",
+                                                     "Test City"));
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }
@@ -89,11 +66,11 @@ public class SubValidator01Test {
                                           "Test City"));
 
     try {
-      PersonMalioValidator.INSTANCE.check(model);
-      fail();
-    } catch (MalioValidationException e) {
-      //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
-    }
+    PersonMalioValidator.INSTANCE.check(model);
+    fail();
+  } catch (MalioValidationException e) {
+    //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
+  }
   }
 
   @Test
@@ -117,7 +94,7 @@ public class SubValidator01Test {
                  errorMessage01.getSimpleClassname());
     assertEquals("address",
                  errorMessage01.getField());
-    assertEquals("Object must not be null!",
+    assertEquals("n/a",
                  errorMessage01.getMessage());
   }
 
@@ -144,7 +121,7 @@ public class SubValidator01Test {
                  errorMessage01.getSimpleClassname());
     assertEquals("street",
                  errorMessage01.getField());
-    assertEquals("Object must not be null!",
+    assertEquals("n/a",
                  errorMessage01.getMessage());
   }
 
