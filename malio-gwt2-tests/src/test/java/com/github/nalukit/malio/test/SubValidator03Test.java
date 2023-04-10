@@ -5,15 +5,22 @@ import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.test.model.subvalidator03.Address;
 import com.github.nalukit.malio.test.model.subvalidator03.Person;
 import com.github.nalukit.malio.test.model.subvalidator03.PersonMalioValidator;
+import com.google.gwt.junit.client.GWTTestCase;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-public class SubValidator03Test {
+public class SubValidator03Test
+    extends GWTTestCase {
+
+  @Override
+  public String getModuleName() {
+    return "com.github.nalukit.malio.MalioGwt2Test";
+  }
 
   @Test
   public void testCheckOk01() {
