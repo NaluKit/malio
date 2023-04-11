@@ -13,7 +13,7 @@
 Due to the lack of a validation library that works with GWT/J2cl hera an approach, that can be used with GWT / J2CL and does basic validation. 
 The idea is to add some annotation to attributes of a POJO which controls the generation of a validation class. The result is a validatato that supports two methods:
 * **check**: check the POJO and in case of an error throw an exception
-* **validate**: validate the POJO, select all error messages and return a validation result
+* **validate**: validate the POJO, collect all error messages and return a validation result
 
 ## Using
 
