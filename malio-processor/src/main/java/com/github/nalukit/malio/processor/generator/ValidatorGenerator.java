@@ -108,7 +108,7 @@ public class ValidatorGenerator
   private void createCheckMethod(MethodSpec.Builder checkMethodBuilder) {
     int checkValidatorCounter = 1;
     for (ConstraintModel model : this.constraintList) {
-      String variableName = "val" + this.getStringFromInt(checkValidatorCounter);
+      String variableName = "constraint" + this.getStringFromInt(checkValidatorCounter);
       String constraintClassName = super.createConstraintClassName(model.getSimpleClassName(),
                                                                    model.getFieldName(),
                                                                    model.getPostFix());
@@ -153,7 +153,7 @@ public class ValidatorGenerator
   private void createIsValidMethod(MethodSpec.Builder validMethodTwoParameterBuilder) {
     int validateValidatorCounter = 1;
     for (ConstraintModel model : this.constraintList) {
-      String variableName = "val" + this.getStringFromInt(validateValidatorCounter);
+      String variableName = "constraint" + this.getStringFromInt(validateValidatorCounter);
       String constraintClassName = this.createConstraintClassName(model.getSimpleClassName(),
                                                                   model.getFieldName(),
                                                                   model.getPostFix());
