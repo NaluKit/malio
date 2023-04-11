@@ -1,23 +1,20 @@
 package com.github.nalukit.malio.processor;
 
-import com.github.nalukit.malio.processor.generator.MalioValidatorGenerator;
+import com.github.nalukit.malio.processor.generator.ConstraintMaxLengthGenerator;
+import com.github.nalukit.malio.processor.generator.ConstraintNotNullGenerator;
+import com.github.nalukit.malio.processor.generator.ValidatorGenerator;
 import com.github.nalukit.malio.processor.model.ConstraintModel;
 import com.github.nalukit.malio.processor.model.ValidatorModel;
-import com.github.nalukit.malio.processor.model.ValidatorType;
-import com.github.nalukit.malio.processor.scanner.MalioValidatorScanner;
-import com.github.nalukit.malio.processor.util.BuildWithMalioCommentProvider;
+import com.github.nalukit.malio.processor.scanner.ConstraintMaxLengthScanner;
+import com.github.nalukit.malio.processor.scanner.ConstraintNotNullScanner;
+import com.github.nalukit.malio.processor.scanner.ValidatorScanner;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.Malio;
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
+import com.github.nalukit.malio.shared.annotation.field.MaxLength;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
-import com.github.nalukit.malio.shared.internal.constraints.AbstractNotNullConstraint;
 import com.google.auto.service.AutoService;
 import com.google.common.base.Stopwatch;
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterizedTypeName;
-import com.squareup.javapoet.TypeSpec;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -25,11 +22,8 @@ import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -41,10 +35,6 @@ import static java.util.stream.Collectors.toSet;
 public class MalioProcessor
     extends AbstractProcessor {
 
-  //  public final static  String MALIO_VALIDATOR_IMPL_NAME          = "MalioValidator";
-  private final static String MALIO_VALIDATOR_NOT_NULL_IMPL_NAME = "MalioConstraintNotNull";
-
-  //
   //  private final static String APPLICATION_PROPERTIES = "nalu.properties";
 
   private ProcessorUtils processorUtils;
@@ -102,8 +92,12 @@ public class MalioProcessor
                 for (TypeMirror mirror : mirrors) {
                   Element element = this.processingEnv.getTypeUtils()
                                                       .asElement(mirror);
+                  // Not NUll Constraint
                   this.createConstraintNotNull(element,
                                                constraintList);
+                  // MaxLength Constraint (String only)
+                  this.createConstraintMaxLength(element,
+                                                 constraintList);
 
                   // TODO add more constraints
                   // TODO add more constraints
@@ -131,90 +125,81 @@ public class MalioProcessor
     return true;
   }
 
-  private void createValidator(Element validatorElement,
-                         List<ConstraintModel> constraintList)
+  private void createConstraintMaxLength(Element element,
+                                         List<ConstraintModel> constraintList)
       throws ProcessorException {
-    List<ValidatorModel> subValidatorList = MalioValidatorScanner.builder()
-                                                                 .elements(this.processingEnv.getElementUtils())
-                                                                 .types(this.processingEnv.getTypeUtils())
-                                                                 .validatorElement(validatorElement)
-                                                                 .processorUtils(this.processorUtils)
-                                                                 .build()
-                                                                 .createSubValidatorList();
-    MalioValidatorGenerator.builder()
-                           .elements(this.processingEnv.getElementUtils())
-                           .filer(this.processingEnv.getFiler())
-                           .types(this.processingEnv.getTypeUtils())
-                           .constraintList(constraintList)
-                           .subValidatorList(subValidatorList)
-                           .validatorElement(validatorElement)
-                           .processorUtils(this.processorUtils)
-                           .build()
-                           .generate();
-  }
-
-  private void createConstraintNotNull(Element element,
-                                       List<ConstraintModel> constraintsList)
-      throws ProcessorException {
-    for (Element fieldElement : this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnv,
-                                                                                             (TypeElement) element,
-                                                                                             NotNull.class)) {
-      VariableElement variableElement = (VariableElement) fieldElement;
-      this.generateNotNullConstraint(element,
-                                     constraintsList,
-                                     variableElement);
+    for (Element variableElement : this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnv,
+                                                                                                (TypeElement) element,
+                                                                                                MaxLength.class)) {
+      ConstraintModel constraintModel = ConstraintMaxLengthScanner.builder()
+                                                                  .elements(this.processingEnv.getElementUtils())
+                                                                  .types(this.processingEnv.getTypeUtils())
+                                                                  .validatorElement(element)
+                                                                  .variableElement(variableElement)
+                                                                  .processorUtils(this.processorUtils)
+                                                                  .build()
+                                                                  .createConstraintModel();
+      ConstraintMaxLengthGenerator.builder()
+                                  .elements(this.processingEnv.getElementUtils())
+                                  .filer(this.processingEnv.getFiler())
+                                  .types(this.processingEnv.getTypeUtils())
+                                  .validatorElement(element)
+                                  .variableElement(variableElement)
+                                  .processorUtils(this.processorUtils)
+                                  .build()
+                                  .generate();
+      constraintList.add(constraintModel);
     }
   }
 
-  private void generateNotNullConstraint(Element validatorElement,
-                                         List<ConstraintModel> constraintsList,
-                                         VariableElement variableElement)
+  private void createConstraintNotNull(Element element,
+                                       List<ConstraintModel> constraintList)
       throws ProcessorException {
-    TypeSpec.Builder typeSpec = createConstraintTypeSpec(validatorElement,
-                                                         variableElement);
-    typeSpec.addMethod(MethodSpec.constructorBuilder()
-                                 .addModifiers(Modifier.PUBLIC)
-                                 .addStatement("super($S, $S, $S)",
-                                               this.processorUtils.getPackage(variableElement),
-                                               this.processorUtils.setFirstCharacterToUpperCase(variableElement.getEnclosingElement()
-                                                                                                               .getSimpleName()
-                                                                                                               .toString()),
-                                               variableElement.getSimpleName()
-                                                              .toString())
-
-                                 .build());
-    typeSpec.addMethod(MethodSpec.methodBuilder("getErrorMessage")
-                                 .addModifiers(Modifier.PROTECTED)
-                                 .addAnnotation(ClassName.get(Override.class))
-                                 .returns(ClassName.get(String.class))
-                                 .addStatement("return \"noch mit error messages aus Properties ersetzen (wegen locale und so) ....\"")
-                                 .build());
-    this.writeFile(variableElement,
-                   MalioProcessor.MALIO_VALIDATOR_NOT_NULL_IMPL_NAME,
-                   typeSpec);
-    constraintsList.add(new ConstraintModel(this.processorUtils.getPackageAsString(validatorElement),
-                                            validatorElement.getSimpleName()
-                                                            .toString(),
-                                            variableElement.toString(),
-                                            MalioProcessor.MALIO_VALIDATOR_NOT_NULL_IMPL_NAME,
-                                            ValidatorType.NOT_NULL_VALIDATOR));
+    for (Element variableElement : this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnv,
+                                                                                                (TypeElement) element,
+                                                                                                NotNull.class)) {
+      ConstraintModel constraintModel = ConstraintNotNullScanner.builder()
+                                                                .elements(this.processingEnv.getElementUtils())
+                                                                .types(this.processingEnv.getTypeUtils())
+                                                                .validatorElement(element)
+                                                                .variableElement(variableElement)
+                                                                .processorUtils(this.processorUtils)
+                                                                .build()
+                                                                .createConstraintModel();
+      ConstraintNotNullGenerator.builder()
+                                .elements(this.processingEnv.getElementUtils())
+                                .filer(this.processingEnv.getFiler())
+                                .types(this.processingEnv.getTypeUtils())
+                                .validatorElement(element)
+                                .variableElement(variableElement)
+                                .processorUtils(this.processorUtils)
+                                .build()
+                                .generate();
+      constraintList.add(constraintModel);
+    }
   }
 
-  private TypeSpec.Builder createConstraintTypeSpec(Element validatorElement,
-                                                    VariableElement variableElement) {
-    return TypeSpec.classBuilder(this.createConstraintClassName(validatorElement.getSimpleName()
-                                                                                .toString(),
-                                                                variableElement.getSimpleName()
-                                                                               .toString(),
-                                                                MalioProcessor.MALIO_VALIDATOR_NOT_NULL_IMPL_NAME))
-                   .addJavadoc(BuildWithMalioCommentProvider.INSTANCE.getGeneratedComment())
-                   .superclass(ParameterizedTypeName.get(ClassName.get(AbstractNotNullConstraint.class),
-                                                         ClassName.get(variableElement.asType())))
-                   .addModifiers(Modifier.PUBLIC,
-                                 Modifier.FINAL);
+  private void createValidator(Element validatorElement,
+                               List<ConstraintModel> constraintList)
+      throws ProcessorException {
+    List<ValidatorModel> subValidatorList = ValidatorScanner.builder()
+                                                            .elements(this.processingEnv.getElementUtils())
+                                                            .types(this.processingEnv.getTypeUtils())
+                                                            .validatorElement(validatorElement)
+                                                            .processorUtils(this.processorUtils)
+                                                            .build()
+                                                            .createSubValidatorList();
+    ValidatorGenerator.builder()
+                      .elements(this.processingEnv.getElementUtils())
+                      .filer(this.processingEnv.getFiler())
+                      .types(this.processingEnv.getTypeUtils())
+                      .constraintList(constraintList)
+                      .subValidatorList(subValidatorList)
+                      .validatorElement(validatorElement)
+                      .processorUtils(this.processorUtils)
+                      .build()
+                      .generate();
   }
-
-
   //  private void validate(RoundEnvironment roundEnv)
   //      throws ProcessorException {
   //    if (!isNull(this.metaModel)) {
@@ -268,36 +253,6 @@ public class MalioProcessor
   //    }
   //  }
 
-  @Deprecated
-  private void writeFile(Element element,
-                         String postFix,
-                         TypeSpec.Builder typeSpec)
-      throws ProcessorException {
-    JavaFile javaFile = JavaFile.builder(this.processorUtils.getPackageAsString(element),
-                                         typeSpec.build())
-                                .build();
-    try {
-      javaFile.writeTo(this.processingEnv.getFiler());
-    } catch (IOException e) {
-      throw new ProcessorException("Unable to write generated file: >>" +
-                                   element.toString() +
-                                   postFix +
-                                   "<< -> exception: " +
-                                   e.getMessage());
-    }
-  }
-
-  private String createConstraintClassName(String modelName,
-                                           String fieldName,
-                                           String postFix) {
-    return this.processorUtils.setFirstCharacterToUpperCase(modelName) +
-           "_" +
-           this.processorUtils.setFirstCharacterToUpperCase(fieldName) +
-           "_" +
-           postFix;
-  }
-
-
   private void setUp() {
     this.processorUtils = ProcessorUtils.builder()
                                         .processingEnvironment(processingEnv)
@@ -328,11 +283,4 @@ public class MalioProcessor
   //  private String createRelativeFileName() {
   //    return ProcessorConstants.META_INF + "/" + ProcessorConstants.NALU_FOLDER_NAME + "/" + NaluProcessor.APPLICATION_PROPERTIES;
   //  }
-
-
-
-  enum MethodType {
-    CHECK,
-    ISVALID
-  }
 }

@@ -5,19 +5,19 @@ public class ConstraintModel {
   private String packageName;
   private String simpleClassName;
   private String fieldName;
-  private String postFix;
-  private ValidatorType validatorType;
+  private String         postFix;
+  private ConstraintType constraintType;
 
   public ConstraintModel(String packageName,
                          String simpleClassName,
                          String fieldName,
                          String postFix,
-                         ValidatorType validatorType) {
+                         ConstraintType constraintType) {
     this.packageName     = packageName;
     this.simpleClassName = simpleClassName;
     this.fieldName       = fieldName;
     this.postFix         = postFix;
-    this.validatorType   = validatorType;
+    this.constraintType  = constraintType;
   }
 
   public String getPackageName() {
@@ -36,7 +36,7 @@ public class ConstraintModel {
     return postFix;
   }
 
-  public ValidatorType getValidatorType() {
-    return validatorType;
+  public ConstraintType getValidatorType() {
+    return constraintType;
   }
 }

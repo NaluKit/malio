@@ -208,16 +208,16 @@ public class ProcessorUtils {
 //    return resultList;
 //  }
 
-  private List<VariableElement> getAllVariableELements(Elements elements,
-                                                       Element element) {
-    List<VariableElement> list = new ArrayList<>();
-    for (Element childElement : elements.getAllMembers((TypeElement) element)) {
-      if (childElement.getKind() == ElementKind.FIELD) {
-        list.add((VariableElement) childElement);
-      }
-    }
-    return list;
-  }
+//  private List<VariableElement> getAllVariableELements(Elements elements,
+//                                                       Element element) {
+//    List<VariableElement> list = new ArrayList<>();
+//    for (Element childElement : elements.getAllMembers((TypeElement) element)) {
+//      if (childElement.getKind() == ElementKind.FIELD) {
+//        list.add((VariableElement) childElement);
+//      }
+//    }
+//    return list;
+//  }
 //
 //  private void addValidatorToValidatorGenerationList(List<ValidatorModel> validatorList,
 //                                                     VariableElement variableElement,

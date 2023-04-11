@@ -1,5 +1,6 @@
 package com.github.nalukit.malio.processor.generator;
 
+import com.github.nalukit.malio.processor.Constants;
 import com.github.nalukit.malio.processor.ProcessorException;
 import com.github.nalukit.malio.processor.model.ConstraintModel;
 import com.github.nalukit.malio.processor.model.ValidatorModel;
@@ -22,16 +23,14 @@ import javax.lang.model.util.Types;
 import java.util.List;
 import java.util.Objects;
 
-public class MalioValidatorGenerator
+public class ValidatorGenerator
     extends AbstractGenerator {
-
-  public final static String MALIO_VALIDATOR_IMPL_NAME = "MalioValidator";
 
   private Element               validatorElement;
   private List<ConstraintModel> constraintList;
   private List<ValidatorModel>  subValidatorList;
 
-  private MalioValidatorGenerator(Builder builder) {
+  private ValidatorGenerator(Builder builder) {
     this.constraintList   = builder.constraintList;
     this.subValidatorList = builder.subValidatorList;
     this.validatorElement = builder.validatorElement;
@@ -102,7 +101,7 @@ public class MalioValidatorGenerator
     typeSpec.addMethod(validMethodTwoParameterBuilder.build());
 
     super.writeFile(validatorElement,
-                    MalioValidatorGenerator.MALIO_VALIDATOR_IMPL_NAME,
+                    Constants.MALIO_VALIDATOR_IMPL_NAME,
                     typeSpec);
   }
 
@@ -208,7 +207,7 @@ public class MalioValidatorGenerator
   }
 
   private String createValidatorClassName(String modelName) {
-    return this.processorUtils.setFirstCharacterToUpperCase(modelName) + MalioValidatorGenerator.MALIO_VALIDATOR_IMPL_NAME;
+    return this.processorUtils.setFirstCharacterToUpperCase(modelName) + Constants.MALIO_VALIDATOR_IMPL_NAME;
   }
 
   private String getStringFromInt(int value) {
@@ -272,8 +271,8 @@ public class MalioValidatorGenerator
       return this;
     }
 
-    public MalioValidatorGenerator build() {
-      return new MalioValidatorGenerator(this);
+    public ValidatorGenerator build() {
+      return new ValidatorGenerator(this);
     }
   }
 }

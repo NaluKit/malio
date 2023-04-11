@@ -1,7 +1,6 @@
 package com.github.nalukit.malio.processor.scanner;
 
-import com.github.nalukit.malio.processor.MalioProcessor;
-import com.github.nalukit.malio.processor.generator.MalioValidatorGenerator;
+import com.github.nalukit.malio.processor.Constants;
 import com.github.nalukit.malio.processor.model.ValidatorModel;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.MalioIgnore;
@@ -19,15 +18,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class MalioValidatorScanner {
+public class ValidatorScanner
+    extends AbstractScanner {
 
-  private Element              validatorElement;
-  private List<ValidatorModel> subValidatorList;
-  private Elements             elements;
-  private Types                types;
-  private ProcessorUtils       processorUtils;
+  private final Element              validatorElement;
+  private       List<ValidatorModel> subValidatorList;
 
-  private MalioValidatorScanner(Builder builder) {
+  private ValidatorScanner(Builder builder) {
     this.validatorElement = builder.validatorElement;
     this.elements         = builder.elements;
     this.types            = builder.types;
@@ -117,7 +114,7 @@ public class MalioValidatorScanner {
                                                                  .equals(elementOfVariableType.getSimpleName()
                                                                                               .toString()) &&
                                                             model.getPostFix()
-                                                                 .equals(MalioValidatorGenerator.MALIO_VALIDATOR_IMPL_NAME) &&
+                                                                 .equals(Constants.MALIO_VALIDATOR_IMPL_NAME) &&
                                                             model.getFieldName()
                                                                  .equals(variableElement.toString()));
     if (!found) {
@@ -125,7 +122,7 @@ public class MalioValidatorScanner {
                                                    elementOfVariableType.getSimpleName()
                                                                         .toString(),
                                                    variableElement.toString(),
-                                                   MalioValidatorGenerator.MALIO_VALIDATOR_IMPL_NAME,
+                                                   Constants.MALIO_VALIDATOR_IMPL_NAME,
                                                    type,
                                                    typeElement01,
                                                    typeElement02));
@@ -169,8 +166,8 @@ public class MalioValidatorScanner {
       return this;
     }
 
-    public MalioValidatorScanner build() {
-      return new MalioValidatorScanner(this);
+    public ValidatorScanner build() {
+      return new ValidatorScanner(this);
     }
   }
 }
