@@ -1,24 +1,21 @@
 package com.github.nalukit.malio.processor;
 
+import com.github.nalukit.malio.processor.generator.MalioValidatorGenerator;
 import com.github.nalukit.malio.processor.model.ConstraintModel;
 import com.github.nalukit.malio.processor.model.ValidatorModel;
 import com.github.nalukit.malio.processor.model.ValidatorType;
+import com.github.nalukit.malio.processor.scanner.MalioValidatorScanner;
 import com.github.nalukit.malio.processor.util.BuildWithMalioCommentProvider;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.Malio;
-import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
 import com.github.nalukit.malio.shared.internal.constraints.AbstractNotNullConstraint;
-import com.github.nalukit.malio.shared.internal.validator.AbstractValidator;
-import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.google.auto.service.AutoService;
 import com.google.common.base.Stopwatch;
 import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
 
@@ -35,7 +32,6 @@ import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -45,7 +41,7 @@ import static java.util.stream.Collectors.toSet;
 public class MalioProcessor
     extends AbstractProcessor {
 
-  public final static  String MALIO_VALIDATOR_IMPL_NAME          = "MalioValidator";
+  //  public final static  String MALIO_VALIDATOR_IMPL_NAME          = "MalioValidator";
   private final static String MALIO_VALIDATOR_NOT_NULL_IMPL_NAME = "MalioConstraintNotNull";
 
   //
@@ -99,7 +95,7 @@ public class MalioProcessor
             if (MalioValidator.class.getCanonicalName()
                                     .equals(annotation.toString())) {
               for (Element validatorElement : roundEnv.getElementsAnnotatedWith(MalioValidator.class)) {
-                List<ConstraintModel> constraintsList = new ArrayList<>();
+                List<ConstraintModel> constraintList = new ArrayList<>();
                 Set<TypeMirror> mirrors = this.processorUtils.getFlattenedSupertypeHierarchy(this.processingEnv.getTypeUtils(),
                                                                                              validatorElement.asType());
                 // handle malio annotations ...
@@ -107,7 +103,7 @@ public class MalioProcessor
                   Element element = this.processingEnv.getTypeUtils()
                                                       .asElement(mirror);
                   this.createConstraintNotNull(element,
-                                               constraintsList);
+                                               constraintList);
 
                   // TODO add more constraints
                   // TODO add more constraints
@@ -121,12 +117,8 @@ public class MalioProcessor
 
                 }
 
-                List<ValidatorModel> validatorList = this.processorUtils.getMalioValidatorVariableTypes(this.processingEnv.getElementUtils(),
-                                                                                                        this.processingEnv.getTypeUtils(),
-                                                                                                        validatorElement);
-                this.generateValidator(validatorElement,
-                                       constraintsList,
-                                       validatorList);
+                this.createValidator(validatorElement,
+                          constraintList);
               }
             }
           }
@@ -139,183 +131,26 @@ public class MalioProcessor
     return true;
   }
 
-  private void generateValidator(Element validatorElement,
-                                 List<ConstraintModel> constraintsList,
-                                 List<ValidatorModel> validatorList)
+  private void createValidator(Element validatorElement,
+                         List<ConstraintModel> constraintList)
       throws ProcessorException {
-    TypeSpec.Builder typeSpec = createValidatorTypeSpec(validatorElement);
-
-    typeSpec.addMethod(MethodSpec.constructorBuilder()
-                                 .addModifiers(Modifier.PUBLIC)
-                                 .addStatement("super()")
-                                 .build());
-
-    typeSpec.addField(FieldSpec.builder(ClassName.get(this.processorUtils.getPackageAsString(validatorElement),
-                                                      this.createValidatorClassName(validatorElement.getSimpleName()
-                                                                                                    .toString())),
-                                        "INSTANCE",
-                                        Modifier.PUBLIC,
-                                        Modifier.STATIC,
-                                        Modifier.FINAL)
-                               .initializer("new $T()",
-                                            ClassName.get(this.processorUtils.getPackageAsString(validatorElement),
-                                                          this.createValidatorClassName(validatorElement.getSimpleName()
-                                                                                                        .toString())))
-                               .build());
-
-    MethodSpec.Builder checkMethodBuilder = MethodSpec.methodBuilder("check")
-                                                      .addModifiers(Modifier.PUBLIC)
-                                                      .addParameter(ParameterSpec.builder(ClassName.get(validatorElement.asType()),
-                                                                                          "bean")
-                                                                                 .build())
-                                                      .returns(void.class)
-                                                      .addException(ClassName.get(MalioValidationException.class));
-    this.createCheckMethod(constraintsList,
-                           validatorList,
-                           checkMethodBuilder);
-    typeSpec.addMethod(checkMethodBuilder.build());
-
-    MethodSpec.Builder validOneParameterMethodBuilder = MethodSpec.methodBuilder("validate")
-                                                                  .addModifiers(Modifier.PUBLIC)
-                                                                  .addParameter(ParameterSpec.builder(ClassName.get(validatorElement.asType()),
-                                                                                                      "bean")
-                                                                                             .build())
-                                                                  .returns(ClassName.get(ValidationResult.class))
-                                                                  .addStatement("$T validationResult = new $T()",
-                                                                                ClassName.get(ValidationResult.class),
-                                                                                ClassName.get(ValidationResult.class))
-                                                                  .addStatement("return this.validate(bean, validationResult)");
-    typeSpec.addMethod(validOneParameterMethodBuilder.build());
-
-    MethodSpec.Builder validMethodTwoParameterBuilder = MethodSpec.methodBuilder("validate")
-                                                                  .addModifiers(Modifier.PUBLIC)
-                                                                  .addParameter(ParameterSpec.builder(ClassName.get(validatorElement.asType()),
-                                                                                                      "bean")
-                                                                                             .build())
-                                                                  .addParameter(ParameterSpec.builder(ClassName.get(ValidationResult.class),
-                                                                                                      "validationResult")
-                                                                                             .build())
-                                                                  .returns(ClassName.get(ValidationResult.class));
-    this.createIsValidMethod(constraintsList,
-                             validatorList,
-                             validMethodTwoParameterBuilder);
-    typeSpec.addMethod(validMethodTwoParameterBuilder.build());
-
-    this.writeFile(validatorElement,
-                   MalioProcessor.MALIO_VALIDATOR_IMPL_NAME,
-                   typeSpec);
-  }
-
-  private void createCheckMethod(List<ConstraintModel> constraintsList,
-                                 List<ValidatorModel> validatorList,
-                                 MethodSpec.Builder checkMethodBuilder) {
-    int checkValidatorCounter = 1;
-    for (ConstraintModel model : constraintsList) {
-      String variableName = "val" + this.getStringFromInt(checkValidatorCounter);
-      String constraintClassName = this.createConstraintClassName(model.getSimpleClassName(),
-                                                                  model.getFieldName(),
-                                                                  model.getPostFix());
-      checkMethodBuilder.addStatement("$T $L = new $T()",
-                                      ClassName.get(model.getPackageName(),
-                                                    constraintClassName),
-                                      variableName,
-                                      ClassName.get(model.getPackageName(),
-                                                    constraintClassName));
-      checkMethodBuilder.addStatement("$L.check(bean.$L())",
-                                      variableName,
-                                      this.processorUtils.createGetMethodName(model.getFieldName()));
-      checkValidatorCounter++;
-    }
-    for (ValidatorModel model : validatorList) {
-      checkMethodBuilder.beginControlFlow("if ($T.nonNull(bean.$L()))",
-                                          ClassName.get(Objects.class),
-                                          this.processorUtils.createGetMethodName(model.getFieldName()));
-      switch (model.getType()) {
-        case NATIVE:
-          String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
-          checkMethodBuilder.addStatement("$T.INSTANCE.check(bean.$L())",
-                                          ClassName.get(model.getPackageName(),
-                                                        vaidatorClassName),
-                                          this.processorUtils.createGetMethodName(model.getFieldName()));
-          break;
-        case LIST:
-          String vaidatorClassNameList = model.getGenericTypeElement01()
-                                              .toString() + model.getPostFix();
-          checkMethodBuilder.beginControlFlow("for ($T model : bean.$L())",
-                                              ClassName.get(model.getGenericTypeElement01()),
-                                              this.processorUtils.createGetMethodName(model.getFieldName()))
-                            .addStatement("$L.INSTANCE.check(model)",
-                                          vaidatorClassNameList)
-                            .endControlFlow();
-          break;
-      }
-      checkMethodBuilder.endControlFlow();
-    }
-  }
-
-  private void createIsValidMethod(List<ConstraintModel> constraintsList,
-                                   List<ValidatorModel> validatorList,
-                                   MethodSpec.Builder validMethodTwoParameterBuilder) {
-    int validateValidatorCounter = 1;
-    for (ConstraintModel model : constraintsList) {
-      String variableName = "val" + this.getStringFromInt(validateValidatorCounter);
-      String constraintClassName = this.createConstraintClassName(model.getSimpleClassName(),
-                                                                  model.getFieldName(),
-                                                                  model.getPostFix());
-      validMethodTwoParameterBuilder.addStatement("$T $L = new $T()",
-                                                  ClassName.get(model.getPackageName(),
-                                                                constraintClassName),
-                                                  variableName,
-                                                  ClassName.get(model.getPackageName(),
-                                                                constraintClassName));
-      validMethodTwoParameterBuilder.addStatement("$L.isValid(bean.$L(), validationResult)",
-                                                  variableName,
-                                                  this.processorUtils.createGetMethodName(model.getFieldName()));
-      validateValidatorCounter++;
-    }
-    for (ValidatorModel model : validatorList) {
-      validMethodTwoParameterBuilder.beginControlFlow("if ($T.nonNull(bean.$L()))",
-                                                      ClassName.get(Objects.class),
-                                                      this.processorUtils.createGetMethodName(model.getFieldName()));
-      switch (model.getType()) {
-        case NATIVE:
-          String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
-          validMethodTwoParameterBuilder.addStatement("validationResult = $T.INSTANCE.validate(bean.$L(), validationResult)",
-                                                      ClassName.get(model.getPackageName(),
-                                                                    vaidatorClassName),
-                                                      this.processorUtils.createGetMethodName(model.getFieldName()));
-          break;
-        case LIST:
-          String vaidatorClassNameList = model.getGenericTypeElement01()
-                                              .toString() + model.getPostFix();
-          validMethodTwoParameterBuilder.beginControlFlow("for ($T model : bean.$L())",
-                                                          ClassName.get(model.getGenericTypeElement01()),
-                                                          this.processorUtils.createGetMethodName(model.getFieldName()))
-                                        .addStatement("validationResult = $L.INSTANCE.validate(model, validationResult)",
-                                                      vaidatorClassNameList)
-                                        .endControlFlow();
-          break;
-      }
-
-      validMethodTwoParameterBuilder.endControlFlow();
-    }
-    validMethodTwoParameterBuilder.addStatement("return validationResult");
-  }
-
-  private String getStringFromInt(int value) {
-    if (value < 1) {
-      return "00000";
-    } else if (value < 10) {
-      return "0000" + value;
-    } else if (value < 100) {
-      return "000" + value;
-    } else if (value < 1000) {
-      return "00" + value;
-    } else if (value < 10000) {
-      return "0" + value;
-    } else {
-      return String.valueOf(value);
-    }
+    List<ValidatorModel> subValidatorList = MalioValidatorScanner.builder()
+                                                                 .elements(this.processingEnv.getElementUtils())
+                                                                 .types(this.processingEnv.getTypeUtils())
+                                                                 .validatorElement(validatorElement)
+                                                                 .processorUtils(this.processorUtils)
+                                                                 .build()
+                                                                 .createSubValidatorList();
+    MalioValidatorGenerator.builder()
+                           .elements(this.processingEnv.getElementUtils())
+                           .filer(this.processingEnv.getFiler())
+                           .types(this.processingEnv.getTypeUtils())
+                           .constraintList(constraintList)
+                           .subValidatorList(subValidatorList)
+                           .validatorElement(validatorElement)
+                           .processorUtils(this.processorUtils)
+                           .build()
+                           .generate();
   }
 
   private void createConstraintNotNull(Element element,
@@ -379,14 +214,6 @@ public class MalioProcessor
                                  Modifier.FINAL);
   }
 
-  private TypeSpec.Builder createValidatorTypeSpec(Element validatorElement) {
-    return TypeSpec.classBuilder(this.createValidatorClassName(validatorElement.getSimpleName()
-                                                                               .toString()))
-                   .addJavadoc(BuildWithMalioCommentProvider.INSTANCE.getGeneratedComment())
-                   .superclass(ClassName.get(AbstractValidator.class))
-                   .addModifiers(Modifier.PUBLIC,
-                                 Modifier.FINAL);
-  }
 
   //  private void validate(RoundEnvironment roundEnv)
   //      throws ProcessorException {
@@ -440,534 +267,8 @@ public class MalioProcessor
   //                                   e.getMessage());
   //    }
   //  }
-  //
-  //  private void handleApplicationAnnotation(RoundEnvironment roundEnv)
-  //      throws ProcessorException {
-  //    for (Element applicationElement : roundEnv.getElementsAnnotatedWith(Application.class)) {
-  //      // validate application element
-  //      ApplicationAnnotationValidator.builder()
-  //                                    .processingEnvironment(processingEnv)
-  //                                    .applicationElement(applicationElement)
-  //                                    .build()
-  //                                    .validate();
-  //      // scan application element
-  //      ApplicationAnnotationScanner.builder()
-  //                                  .processingEnvironment(processingEnv)
-  //                                  .applicationElement(applicationElement)
-  //                                  .metaModel(metaModel)
-  //                                  .build()
-  //                                  .scan();
-  //    }
-  //  }
-  //
-  //  private void handleBlockControllerAnnotation(RoundEnvironment roundEnv)
-  //      throws ProcessorException {
-  //    List<BlockControllerModel> blockControllerModels = new ArrayList<>();
-  //    for (Element blockControllerElement : roundEnv.getElementsAnnotatedWith(BlockController.class)) {
-  //      // validate
-  //      BlockControllerAnnotationValidator.builder()
-  //                                        .processingEnvironment(processingEnv)
-  //                                        .blockControllerElement(blockControllerElement)
-  //                                        .build()
-  //                                        .validate();
-  //      // create PopUpControllerModel
-  //      BlockControllerModel blockControllerModel = BlockControllerAnnotationScanner.builder()
-  //                                                                                  .processingEnvironment(processingEnv)
-  //                                                                                  .metaModel(this.metaModel)
-  //                                                                                  .blockControllerElement(blockControllerElement)
-  //                                                                                  .build()
-  //                                                                                  .scan(roundEnv);
-  //      // generate BlockControllerCreator
-  //      BlockControllerCreatorGenerator.builder()
-  //                                     .processingEnvironment(processingEnv)
-  //                                     .metaModel(this.metaModel)
-  //                                     .blockControllerModel(blockControllerModel)
-  //                                     .build()
-  //                                     .generate();
-  //      blockControllerModels.add(blockControllerModel);
-  //    }
-  //    // check, if the one of the popUpController in the list is already
-  //    // added to the the meta model
-  //    //
-  //    // in case it is, remove it.
-  //    blockControllerModels.forEach(model -> {
-  //      Optional<BlockControllerModel> optional = this.metaModel.getBlockControllers()
-  //                                                              .stream()
-  //                                                              .filter(s -> model.getController()
-  //                                                                                .getClassName()
-  //                                                                                .equals(s.getController()
-  //                                                                                         .getClassName()))
-  //                                                              .findFirst();
-  //      optional.ifPresent(optionalBlockControllerModel -> this.metaModel.getBlockControllers()
-  //                                                                       .remove(optionalBlockControllerModel));
-  //    });
-  //    // save data in metaModel
-  //    this.metaModel.getBlockControllers()
-  //                  .addAll(blockControllerModels);
-  //  }
-  //
-  //  private void handleCompositeControllerAnnotation(RoundEnvironment roundEnv)
-  //      throws ProcessorException {
-  //    for (Element compositeElement : roundEnv.getElementsAnnotatedWith(CompositeController.class)) {
-  //      // validate handler element
-  //      CompositeControllerAnnotationValidator.builder()
-  //                                            .processingEnvironment(processingEnv)
-  //                                            .roundEnvironment(roundEnv)
-  //                                            .compositeElement(compositeElement)
-  //                                            .build()
-  //                                            .validate();
-  //      // scan controller element
-  //      CompositeModel compositeModel = CompositeControllerAnnotationScanner.builder()
-  //                                                                          .processingEnvironment(processingEnv)
-  //                                                                          .metaModel(this.metaModel)
-  //                                                                          .compositeElement(compositeElement)
-  //                                                                          .build()
-  //                                                                          .scan(roundEnv);
-  //
-  //      // create the ControllerCreator
-  //      CompositeCreatorGenerator.builder()
-  //                               .metaModel(this.metaModel)
-  //                               .processingEnvironment(processingEnv)
-  //                               .compositeModel(compositeModel)
-  //                               .build()
-  //                               .generate();
-  //    }
-  //  }
-  //
-  //  private void handleCompositesAnnotation(RoundEnvironment roundEnv)
-  //      throws ProcessorException {
-  //    for (Element element : roundEnv.getElementsAnnotatedWith(Composites.class)) {
-  //      // validate annodation
-  //      CompositesAnnotationValidator.builder()
-  //                                   .processingEnvironment(processingEnv)
-  //                                   .roundEnvironment(roundEnv)
-  //                                   .element(element)
-  //                                   .build()
-  //                                   .validate();
-  //    }
-  //  }
-  //
-  //  private void handleControllerAnnotation(RoundEnvironment roundEnv)
-  //      throws ProcessorException {
-  //    for (Element controllerElement : roundEnv.getElementsAnnotatedWith(Controller.class)) {
-  //      // validate handler element
-  //      ControllerAnnotationValidator.builder()
-  //                                   .processingEnvironment(processingEnv)
-  //                                   .roundEnvironment(roundEnv)
-  //                                   .controllerElement(controllerElement)
-  //                                   .build()
-  //                                   .validate();
-  //      // scan controller element
-  //      ControllerModel controllerModel = ControllerAnnotationScanner.builder()
-  //                                                                   .processingEnvironment(processingEnv)
-  //                                                                   .metaModel(this.metaModel)
-  //                                                                   .controllerElement(controllerElement)
-  //                                                                   .build()
-  //                                                                   .scan(roundEnv);
-  //
-  //      // Composites-Annotation in controller
-  //      controllerModel = ControllerCompositesAnnotationScanner.builder()
-  //                                                             .processingEnvironment(processingEnv)
-  //                                                             .controllerModel(controllerModel)
-  //                                                             .controllerElement(controllerElement)
-  //                                                             .build()
-  //                                                             .scan(roundEnv);
-  //      // create the ControllerCreator
-  //      ControllerCreatorGenerator.builder()
-  //                                .metaModel(this.metaModel)
-  //                                .processingEnvironment(processingEnv)
-  //                                .controllerModel(controllerModel)
-  //                                .build()
-  //                                .generate();
-  //      // check, if the controller is already
-  //      // added to the the meta model
-  //      //
-  //      // in case it is, remove it.
-  //      final String controllerClassname = controllerModel.getController()
-  //                                                        .getClassName();
-  //      Optional<ControllerModel> optional = this.metaModel.getControllers()
-  //                                                         .stream()
-  //                                                         .filter(s -> controllerClassname.equals(s.getController()
-  //                                                                                                  .getClassName()))
-  //                                                         .findFirst();
-  //      optional.ifPresent(optionalControllerModel -> this.metaModel.getControllers()
-  //                                                                  .remove(optionalControllerModel));
-  //      // save controller data in metaModel
-  //      this.metaModel.getControllers()
-  //                    .add(controllerModel);
-  //    }
-  //  }
-  //
-  //  private void handleErrorPopUpControllerAnnotation(RoundEnvironment roundEnv)
-  //      throws ProcessorException {
-  //    Set<? extends Element> listOfAnnotatedElements = roundEnv.getElementsAnnotatedWith(ErrorPopUpController.class);
-  //    if (listOfAnnotatedElements.size() > 1) {
-  //      throw new ProcessorException("Nalu-Processor: more than one class is annotated with @ErrorPopUpController");
-  //    }
-  //    List<ErrorPopUpControllerModel> errorPopUpControllerModels = new ArrayList<>();
-  //    for (Element errorPopUpControllerElement : roundEnv.getElementsAnnotatedWith(ErrorPopUpController.class)) {
-  //      // validate
-  //      ErrorPopUpControllerAnnotationValidator.builder()
-  //                                             .processingEnvironment(processingEnv)
-  //                                             .errorPopUpControllerElement(errorPopUpControllerElement)
-  //                                             .build()
-  //                                             .validate();
-  //      // create PopUpControllerModel
-  //      ErrorPopUpControllerModel errorPopUpControllerModel = ErrorPopUpControllerAnnotationScanner.builder()
-  //                                                                                                 .processingEnvironment(processingEnv)
-  //                                                                                                 .metaModel(this.metaModel)
-  //                                                                                                 .popUpControllerElement(errorPopUpControllerElement)
-  //                                                                                                 .build()
-  //                                                                                                 .scan(roundEnv);
-  //      errorPopUpControllerModels.add(errorPopUpControllerModel);
-  //    }
-  //    // save data in metaModel
-  //    if (errorPopUpControllerModels.size() > 0) {
-  //      this.metaModel.setErrorPopUpController(errorPopUpControllerModels.get(0));
-  //    }
-  //  }
-  //
-  //  private void handleFiltersAnnotation(RoundEnvironment roundEnv)
-  //      throws ProcessorException {
-  //    for (Element filtersElement : roundEnv.getElementsAnnotatedWith(Filters.class)) {
-  //      // validate filter element
-  //      FiltersAnnotationValidator.builder()
-  //                                .roundEnvironment(roundEnv)
-  //                                .processingEnvironment(processingEnv)
-  //                                .build()
-  //                                .validate(filtersElement);
-  //      // scan filter element
-  //      List<FilterModel> filterModels = FiltersAnnotationScanner.builder()
-  //                                                               .processingEnvironment(processingEnv)
-  //                                                               .metaModel(this.metaModel)
-  //                                                               .filtersElement(filtersElement)
-  //                                                               .build()
-  //                                                               .scan(roundEnv);
-  //      // check, if the one of the shell in the list is already
-  //      // added to the the meta model
-  //      // in case it is, remove it.
-  //      filterModels.forEach(model -> {
-  //        Optional<FilterModel> optional = this.metaModel.getFilters()
-  //                                                       .stream()
-  //                                                       .filter(s -> model.getFilter()
-  //                                                                         .getClassName()
-  //                                                                         .equals(s.getFilter()
-  //                                                                                  .getClassName()))
-  //                                                       .findFirst();
-  //        optional.ifPresent(optionalFilter -> this.metaModel.getFilters()
-  //                                                           .remove(optionalFilter));
-  //      });
-  //      // save filter data in metaModel
-  //      this.metaModel.getFilters()
-  //                    .addAll(filterModels);
-  //
-  //    }
-  //  }
-  //
-  //  private void handleHandlerAnnotation(RoundEnvironment roundEnv)
-  //      throws ProcessorException {
-  //    for (Element handlerElement : roundEnv.getElementsAnnotatedWith(Handler.class)) {
-  //      // validate handler element
-  //      HandlerAnnotationValidator.builder()
-  //                                .processingEnvironment(processingEnv)
-  //                                .roundEnvironment(roundEnv)
-  //                                .handlerElement(handlerElement)
-  //                                .build()
-  //                                .validate();
-  //      // scan handler element
-  //      HandlerModel handlerModel = HandlerAnnotationScanner.builder()
-  //                                                          .processingEnvironment(processingEnv)
-  //                                                          .metaModel(this.metaModel)
-  //                                                          .handlerElement(handlerElement)
-  //                                                          .build()
-  //                                                          .scan();
-  //      // check, if the handler is already
-  //      // added to the the meta model
-  //      //
-  //      // in case it is, remove it.
-  //      final String handlerClassname = handlerModel.getHandler()
-  //                                                  .getClassName();
-  //      Optional<HandlerModel> optional = this.metaModel.getHandlers()
-  //                                                      .stream()
-  //                                                      .filter(s -> handlerClassname.equals(s.getHandler()
-  //                                                                                            .getClassName()))
-  //                                                      .findFirst();
-  //      optional.ifPresent(optionalHandler -> this.metaModel.getHandlers()
-  //                                                          .remove(optionalHandler));
-  //      // save handler data in metaModel
-  //      this.metaModel.getHandlers()
-  //                    .add(handlerModel);
-  //    }
-  //  }
-  //
-  //  private void handleLoggerAnnotation(RoundEnvironment roundEnv)
-  //      throws ProcessorException {
-  //    for (Element loggerElement : roundEnv.getElementsAnnotatedWith(Logger.class)) {
-  //      LoggerAnnotationValidator.builder()
-  //                               .roundEnvironment(roundEnv)
-  //                               .processingEnvironment(processingEnv)
-  //                               .loggerElement(loggerElement)
-  //                               .build()
-  //                               .validate();
-  //      // scan filter element and save data in metaModel
-  //      this.metaModel = LoggerAnnotationScanner.builder()
-  //                                              .processingEnvironment(processingEnv)
-  //                                              .metaModel(this.metaModel)
-  //                                              .loggerElement(loggerElement)
-  //                                              .build()
-  //                                              .scan(roundEnv);
-  //
-  //    }
-  //  }
-  //
-  //  private void handleModuleAnnotation(RoundEnvironment roundEnv)
-  //      throws ProcessorException {
-  //    for (Element moduleElement : roundEnv.getElementsAnnotatedWith(Module.class)) {
-  //      // validate application element
-  //      ModuleAnnotationValidator.builder()
-  //                               .processingEnvironment(processingEnv)
-  //                               .moduleElement(moduleElement)
-  //                               .build()
-  //                               .validate();
-  //      // scan application element
-  //      ModuleModel moduleModel = ModuleAnnotationScanner.builder()
-  //                                                       .processingEnvironment(processingEnv)
-  //                                                       .moduleElement(moduleElement)
-  //                                                       .build()
-  //                                                       .scan(roundEnv);
-  //      // store model
-  //      this.metaModel.setModuleModel(moduleModel);
-  //    }
-  //  }
-  //
-  //  private void handleModulesAnnotation(RoundEnvironment roundEnv)
-  //      throws ProcessorException {
-  //    for (Element modulesElement : roundEnv.getElementsAnnotatedWith(Modules.class)) {
-  //      // validate application element
-  //      ModulesAnnotationValidator.builder()
-  //                                .processingEnvironment(processingEnv)
-  //                                .modulesElement(modulesElement)
-  //                                .build()
-  //                                .validate();
-  //      // scan application element
-  //      ModulesAnnotationScanner.builder()
-  //                              .processingEnvironment(processingEnv)
-  //                              .modulesElement(modulesElement)
-  //                              .metaModel(metaModel)
-  //                              .build()
-  //                              .scan(roundEnv);
-  //    }
-  //  }
-  //
-  //  private void handleParameterConstraintRule(RoundEnvironment roundEnv)
-  //      throws ProcessorException {
-  //    List<ParameterConstraintRuleModel> parameterConstraintRuleModelList = new ArrayList<>();
-  //    for (Element parameterConstraintRuleElement : roundEnv.getElementsAnnotatedWith(ParameterConstraintRule.class)) {
-  //      // validate
-  //      ParameterConstraintRuleAnnotationValidator.builder()
-  //                                                .processingEnvironment(processingEnv)
-  //                                                .parameterConstraintRuleElement(parameterConstraintRuleElement)
-  //                                                .build()
-  //                                                .validate();
-  //      // create ParameterConstraintRule-Model
-  //      ParameterConstraintRuleModel model = ParameterConstraintRuleAnnotationScanner.builder()
-  //                                                                                   .parameterConstraintRuleElement(parameterConstraintRuleElement)
-  //                                                                                   .build()
-  //                                                                                   .scan(roundEnv);
-  //      parameterConstraintRuleModelList.add(model);
-  //
-  //      // create the Impl-class
-  //      ParameterConstraintRuleImplGenerator.builder()
-  //                                          .metaModel(this.metaModel)
-  //                                          .processingEnvironment(processingEnv)
-  //                                          .parameterConstraintRuleModel(model)
-  //                                          .build()
-  //                                          .generate();
-  //    }
-  //    this.metaModel.setParameterConstraintRules(parameterConstraintRuleModelList);
-  //  }
-  //
-  //  private void handlePopUpControllerAnnotation(RoundEnvironment roundEnv)
-  //      throws ProcessorException {
-  //    List<PopUpControllerModel> popUpControllerModels = new ArrayList<>();
-  //    for (Element popUpControllerElement : roundEnv.getElementsAnnotatedWith(PopUpController.class)) {
-  //      // validate
-  //      PopUpControllerAnnotationValidator.builder()
-  //                                        .processingEnvironment(processingEnv)
-  //                                        .popUpControllerElement(popUpControllerElement)
-  //                                        .build()
-  //                                        .validate();
-  //      // create PopUpControllerModel
-  //      PopUpControllerModel popUpControllerModel = PopUpControllerAnnotationScanner.builder()
-  //                                                                                  .processingEnvironment(processingEnv)
-  //                                                                                  .metaModel(this.metaModel)
-  //                                                                                  .popUpControllerElement(popUpControllerElement)
-  //                                                                                  .build()
-  //                                                                                  .scan(roundEnv);
-  //      // generate PopUpControllerCreator
-  //      PopUpControllerCreatorGenerator.builder()
-  //                                     .processingEnvironment(processingEnv)
-  //                                     .metaModel(this.metaModel)
-  //                                     .popUpControllerModel(popUpControllerModel)
-  //                                     .build()
-  //                                     .generate();
-  //      popUpControllerModels.add(popUpControllerModel);
-  //    }
-  //    // check, if the one of the popUpController in the list is already
-  //    // added to the the meta model
-  //    //
-  //    // in case it is, remove it.
-  //    popUpControllerModels.forEach(model -> {
-  //      Optional<PopUpControllerModel> optional = this.metaModel.getPopUpControllers()
-  //                                                              .stream()
-  //                                                              .filter(s -> model.getController()
-  //                                                                                .getClassName()
-  //                                                                                .equals(s.getController()
-  //                                                                                         .getClassName()))
-  //                                                              .findFirst();
-  //      optional.ifPresent(optionalPopUpControllerModel -> this.metaModel.getPopUpControllers()
-  //                                                                       .remove(optionalPopUpControllerModel));
-  //    });
-  //    // save data in metaModel
-  //    this.metaModel.getPopUpControllers()
-  //                  .addAll(popUpControllerModels);
-  //  }
-  //
-  //  private void handlePopUpFiltersAnnotation(RoundEnvironment roundEnv)
-  //      throws ProcessorException {
-  //    for (Element popUpFiltersElement : roundEnv.getElementsAnnotatedWith(PopUpFilters.class)) {
-  //      // validate filter element
-  //      PopUpFiltersAnnotationValidator.builder()
-  //                                     .roundEnvironment(roundEnv)
-  //                                     .processingEnvironment(processingEnv)
-  //                                     .popUpFilterElement(popUpFiltersElement)
-  //                                     .build()
-  //                                     .validate(popUpFiltersElement);
-  //      // scan filter element
-  //      List<ClassNameModel> popUpFilterModels = PopUpFiltersAnnotationScanner.builder()
-  //                                                                            .processingEnvironment(processingEnv)
-  //                                                                            .metaModel(this.metaModel)
-  //                                                                            .filtersElement(popUpFiltersElement)
-  //                                                                            .build()
-  //                                                                            .scan(roundEnv);
-  //      // check, if the one of the shell in the list is already
-  //      // added to the the meta model
-  //      //
-  //      // in case it is, remove it.
-  //      popUpFilterModels.forEach(model -> {
-  //        Optional<ClassNameModel> optional = this.metaModel.getPopUpFilters()
-  //                                                          .stream()
-  //                                                          .filter(s -> model.getClassName()
-  //                                                                            .equals(s.getClassName()))
-  //                                                          .findFirst();
-  //        optional.ifPresent(optionalFilter -> this.metaModel.getPopUpFilters()
-  //                                                           .remove(optionalFilter));
-  //      });
-  //      // save filter data in metaModel
-  //      this.metaModel.getPopUpFilters()
-  //                    .addAll(popUpFilterModels);
-  //
-  //    }
-  //  }
-  //
-  //  private void handleShellAnnotation(RoundEnvironment roundEnv)
-  //      throws ProcessorException {
-  //    List<ShellModel> shellsModels = new ArrayList<>();
-  //    for (Element shellElement : roundEnv.getElementsAnnotatedWith(Shell.class)) {
-  //      // validate shellCreator!
-  //      ShellAnnotationValidator.builder()
-  //                              .processingEnvironment(processingEnv)
-  //                              .roundEnvironment(roundEnv)
-  //                              .build()
-  //                              .validate(shellElement);
-  //      // generate ShellCreator
-  //      ShellModel shellModel = ShellAnnotationScanner.builder()
-  //                                                    .processingEnvironment(processingEnv)
-  //                                                    .metaModel(this.metaModel)
-  //                                                    .shellElement(shellElement)
-  //                                                    .build()
-  //                                                    .scan(roundEnv);
-  //
-  //      // Composites-Annotation in controller
-  //      shellModel = ShellCompositesAnnotationScanner.builder()
-  //                                                   .processingEnvironment(processingEnv)
-  //                                                   .shellModel(shellModel)
-  //                                                   .shellElement(shellElement)
-  //                                                   .build()
-  //                                                   .scan(roundEnv);
-  //
-  //      // generate ShellCreator
-  //      ShellCreatorGenerator.builder()
-  //                           .processingEnvironment(processingEnv)
-  //                           .metaModel(this.metaModel)
-  //                           .shellModel(shellModel)
-  //                           .build()
-  //                           .generate();
-  //      shellsModels.add(shellModel);
-  //    }
-  //    // check, if the one of the shell in the list is already
-  //    // added to the the meta model
-  //    //
-  //    // in case it is, remove it.
-  //    shellsModels.forEach(model -> {
-  //      Optional<ShellModel> optional = this.metaModel.getShells()
-  //                                                    .stream()
-  //                                                    .filter(s -> model.getShell()
-  //                                                                      .getClassName()
-  //                                                                      .equals(s.getShell()
-  //                                                                               .getClassName()))
-  //                                                    .findFirst();
-  //      optional.ifPresent(optionalShellModel -> this.metaModel.getShells()
-  //                                                             .remove(optionalShellModel));
-  //    });
-  //    // save shell data in metaModel
-  //    this.metaModel.getShells()
-  //                  .addAll(shellsModels);
-  //  }
-  //
-  //  private void handleTrackerAnnotation(RoundEnvironment roundEnv)
-  //      throws ProcessorException {
-  //    //TODO why to iterate over different Tackers?  It should be only one element?
-  //    for (Element trackerElement : roundEnv.getElementsAnnotatedWith(Tracker.class)) {
-  //      // validate filter element
-  //      TrackerAnnotationValidator.builder()
-  //                                .roundEnvironment(roundEnv)
-  //                                .processingEnvironment(processingEnv)
-  //                                .trackerElement(trackerElement)
-  //                                .build()
-  //                                .validate();
-  //
-  //      // scan tracker element and save data in metaModel
-  //      TrackerModel trackerModel = TrackerAnnotationScanner.builder()
-  //                                                          .processingEnvironment(processingEnv)
-  //                                                          .trackerElement(trackerElement)
-  //                                                          .build()
-  //                                                          .scan(roundEnv);
-  //
-  //      this.metaModel.setTracker(trackerModel);
-  //    }
-  //  }
-  //
-  //  private void handleVersionAnnotation(RoundEnvironment roundEnv)
-  //      throws ProcessorException {
-  //    for (Element trackerElement : roundEnv.getElementsAnnotatedWith(Version.class)) {
-  //      // validate filter element
-  //      VersionAnnotationValidator.builder()
-  //                                .roundEnvironment(roundEnv)
-  //                                .processingEnvironment(processingEnv)
-  //                                .versionElement(trackerElement)
-  //                                .build()
-  //                                .validate();
-  //      // scan version element and save data in metaModel
-  //      this.metaModel = VersionAnnotationScanner.builder()
-  //                                               .metaModel(this.metaModel)
-  //                                               .versionElement(trackerElement)
-  //                                               .build()
-  //                                               .scan();
-  //
-  //    }
-  //  }
 
+  @Deprecated
   private void writeFile(Element element,
                          String postFix,
                          TypeSpec.Builder typeSpec)
@@ -996,9 +297,6 @@ public class MalioProcessor
            postFix;
   }
 
-  private String createValidatorClassName(String modelName) {
-    return this.processorUtils.setFirstCharacterToUpperCase(modelName) + MalioProcessor.MALIO_VALIDATOR_IMPL_NAME;
-  }
 
   private void setUp() {
     this.processorUtils = ProcessorUtils.builder()

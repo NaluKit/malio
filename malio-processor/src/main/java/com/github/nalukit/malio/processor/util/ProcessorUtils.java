@@ -148,65 +148,65 @@ public class ProcessorUtils {
       return result;
     }
 
-  public List<ValidatorModel> getMalioValidatorVariableTypes(Elements elements,
-                                                             Types types,
-                                                             Element element) {
-    List<ValidatorModel> resultList = new ArrayList<>();
-    List<VariableElement> list = this.getAllVariableELements(elements,
-                                                             element);
-    for (VariableElement variableElement : list) {
-      TypeElement elementOfVariableType = (TypeElement) types.asElement(variableElement.asType());
-      // all return types annotatated with ...
-      if (elementOfVariableType.getAnnotation(MalioValidator.class) != null) {
-        this.addValidatorToValidatorGenerationList(resultList,
-                                                   variableElement,
-                                                   elementOfVariableType,
-                                                   ValidatorModel.Type.NATIVE,
-                                                   null,
-                                                   null);
-      }
-      // list with generated Type
-      System.out.println(variableElement.asType()
-                                        .toString());
-      String elementOfVariableTypeString = variableElement.asType()
-                                                          .toString();
-      System.out.println(elementOfVariableTypeString);
-      if (elementOfVariableTypeString.startsWith(List.class.getCanonicalName())) {
-        if (elementOfVariableTypeString.contains("<")) {
-          int         open                 = elementOfVariableTypeString.indexOf("<");
-          int         close                = elementOfVariableTypeString.indexOf(">");
-          String      genericClassName     = elementOfVariableTypeString.substring(open + 1,
-                                                                                   close);
-          TypeElement elementOfGenericList = elements.getTypeElement(genericClassName);
-          if (elementOfGenericList.getAnnotation(MalioValidator.class) != null) {
-            this.addValidatorToValidatorGenerationList(resultList,
-                                                       variableElement,
-                                                       elementOfVariableType,
-                                                       ValidatorModel.Type.LIST,
-                                                       elementOfGenericList,
-                                                       null);
-            System.out.println(variableElement.asType()
-                                              .toString());
-            System.out.println(genericClassName);
-            System.out.println(elementOfGenericList);
-            System.out.println("Yeah, It's a list");
-          }
-        }
-      }
-      // TODO
-      // map with generated Type
-      if (variableElement.asType()
-                         .toString()
-                         .startsWith(Map.class.getCanonicalName())) {
-        System.out.println(variableElement.asType()
-                                          .toString());
-        System.out.println("Yeah, It's a map");
-
-      }
-      // TODO
-    }
-    return resultList;
-  }
+//  public List<ValidatorModel> getMalioValidatorVariableTypes(Elements elements,
+//                                                             Types types,
+//                                                             Element element) {
+//    List<ValidatorModel> resultList = new ArrayList<>();
+//    List<VariableElement> list = this.getAllVariableELements(elements,
+//                                                             element);
+//    for (VariableElement variableElement : list) {
+//      TypeElement elementOfVariableType = (TypeElement) types.asElement(variableElement.asType());
+//      // all return types annotatated with ...
+//      if (elementOfVariableType.getAnnotation(MalioValidator.class) != null) {
+//        this.addValidatorToValidatorGenerationList(resultList,
+//                                                   variableElement,
+//                                                   elementOfVariableType,
+//                                                   ValidatorModel.Type.NATIVE,
+//                                                   null,
+//                                                   null);
+//      }
+//      // list with generated Type
+//      System.out.println(variableElement.asType()
+//                                        .toString());
+//      String elementOfVariableTypeString = variableElement.asType()
+//                                                          .toString();
+//      System.out.println(elementOfVariableTypeString);
+//      if (elementOfVariableTypeString.startsWith(List.class.getCanonicalName())) {
+//        if (elementOfVariableTypeString.contains("<")) {
+//          int         open                 = elementOfVariableTypeString.indexOf("<");
+//          int         close                = elementOfVariableTypeString.indexOf(">");
+//          String      genericClassName     = elementOfVariableTypeString.substring(open + 1,
+//                                                                                   close);
+//          TypeElement elementOfGenericList = elements.getTypeElement(genericClassName);
+//          if (elementOfGenericList.getAnnotation(MalioValidator.class) != null) {
+//            this.addValidatorToValidatorGenerationList(resultList,
+//                                                       variableElement,
+//                                                       elementOfVariableType,
+//                                                       ValidatorModel.Type.LIST,
+//                                                       elementOfGenericList,
+//                                                       null);
+//            System.out.println(variableElement.asType()
+//                                              .toString());
+//            System.out.println(genericClassName);
+//            System.out.println(elementOfGenericList);
+//            System.out.println("Yeah, It's a list");
+//          }
+//        }
+//      }
+//      // TODO
+//      // map with generated Type
+//      if (variableElement.asType()
+//                         .toString()
+//                         .startsWith(Map.class.getCanonicalName())) {
+//        System.out.println(variableElement.asType()
+//                                          .toString());
+//        System.out.println("Yeah, It's a map");
+//
+//      }
+//      // TODO
+//    }
+//    return resultList;
+//  }
 
   private List<VariableElement> getAllVariableELements(Elements elements,
                                                        Element element) {
@@ -218,37 +218,37 @@ public class ProcessorUtils {
     }
     return list;
   }
-
-  private void addValidatorToValidatorGenerationList(List<ValidatorModel> validatorList,
-                                                     VariableElement variableElement,
-                                                     TypeElement elementOfVariableType,
-                                                     ValidatorModel.Type type,
-                                                     TypeElement typeElement01,
-                                                     TypeElement typeElement02) {
-    if (variableElement.getAnnotation(MalioIgnore.class) != null) {
-      return;
-    }
-    boolean found = validatorList.stream()
-                                 .anyMatch(model -> model.getPackageName()
-                                                         .equals(this.getPackageAsString(elementOfVariableType)) &&
-                                                    model.getSimpleClassName()
-                                                         .equals(elementOfVariableType.getSimpleName()
-                                                                                      .toString()) &&
-                                                    model.getPostFix()
-                                                         .equals(MalioProcessor.MALIO_VALIDATOR_IMPL_NAME) &&
-                                                    model.getFieldName()
-                                                         .equals(variableElement.toString()));
-    if (!found) {
-      validatorList.add(new ValidatorModel(this.getPackageAsString(elementOfVariableType),
-                                           elementOfVariableType.getSimpleName()
-                                                                .toString(),
-                                           variableElement.toString(),
-                                           MalioProcessor.MALIO_VALIDATOR_IMPL_NAME,
-                                           type,
-                                           typeElement01,
-                                           typeElement02));
-    }
-  }
+//
+//  private void addValidatorToValidatorGenerationList(List<ValidatorModel> validatorList,
+//                                                     VariableElement variableElement,
+//                                                     TypeElement elementOfVariableType,
+//                                                     ValidatorModel.Type type,
+//                                                     TypeElement typeElement01,
+//                                                     TypeElement typeElement02) {
+//    if (variableElement.getAnnotation(MalioIgnore.class) != null) {
+//      return;
+//    }
+//    boolean found = validatorList.stream()
+//                                 .anyMatch(model -> model.getPackageName()
+//                                                         .equals(this.getPackageAsString(elementOfVariableType)) &&
+//                                                    model.getSimpleClassName()
+//                                                         .equals(elementOfVariableType.getSimpleName()
+//                                                                                      .toString()) &&
+//                                                    model.getPostFix()
+//                                                         .equals(MalioProcessor.MALIO_VALIDATOR_IMPL_NAME) &&
+//                                                    model.getFieldName()
+//                                                         .equals(variableElement.toString()));
+//    if (!found) {
+//      validatorList.add(new ValidatorModel(this.getPackageAsString(elementOfVariableType),
+//                                           elementOfVariableType.getSimpleName()
+//                                                                .toString(),
+//                                           variableElement.toString(),
+//                                           MalioProcessor.MALIO_VALIDATOR_IMPL_NAME,
+//                                           type,
+//                                           typeElement01,
+//                                           typeElement02));
+//    }
+//  }
 
   //
   //  public boolean supertypeHasGeneric(Types types,
