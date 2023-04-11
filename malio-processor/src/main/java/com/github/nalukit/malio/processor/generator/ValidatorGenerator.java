@@ -26,9 +26,9 @@ import java.util.Objects;
 public class ValidatorGenerator
     extends AbstractGenerator {
 
-  private Element               validatorElement;
-  private List<ConstraintModel> constraintList;
-  private List<ValidatorModel>  subValidatorList;
+  private final Element               validatorElement;
+  private final List<ConstraintModel> constraintList;
+  private final List<ValidatorModel>  subValidatorList;
 
   private ValidatorGenerator(Builder builder) {
     this.constraintList   = builder.constraintList;
@@ -108,93 +108,123 @@ public class ValidatorGenerator
   private void createCheckMethod(MethodSpec.Builder checkMethodBuilder) {
     int checkValidatorCounter = 1;
     for (ConstraintModel model : this.constraintList) {
-      String variableName = "constraint" + this.getStringFromInt(checkValidatorCounter);
-      String constraintClassName = super.createConstraintClassName(model.getSimpleClassName(),
-                                                                   model.getFieldName(),
-                                                                   model.getPostFix());
-      checkMethodBuilder.addStatement("$T $L = new $T()",
-                                      ClassName.get(model.getPackageName(),
-                                                    constraintClassName),
-                                      variableName,
-                                      ClassName.get(model.getPackageName(),
-                                                    constraintClassName));
-      checkMethodBuilder.addStatement("$L.check(bean.$L())",
-                                      variableName,
-                                      this.processorUtils.createGetMethodName(model.getFieldName()));
-      checkValidatorCounter++;
+      checkValidatorCounter = createCheckMethodForSubValidator(checkMethodBuilder,
+                                                               checkValidatorCounter,
+                                                               model);
     }
     for (ValidatorModel model : this.subValidatorList) {
-      checkMethodBuilder.beginControlFlow("if ($T.nonNull(bean.$L()))",
-                                          ClassName.get(Objects.class),
-                                          this.processorUtils.createGetMethodName(model.getFieldName()));
-      switch (model.getType()) {
-        case NATIVE:
-          String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
-          checkMethodBuilder.addStatement("$T.INSTANCE.check(bean.$L())",
-                                          ClassName.get(model.getPackageName(),
-                                                        vaidatorClassName),
-                                          this.processorUtils.createGetMethodName(model.getFieldName()));
-          break;
-        case LIST:
-          String vaidatorClassNameList = model.getGenericTypeElement01()
-                                              .toString() + model.getPostFix();
-          checkMethodBuilder.beginControlFlow("for ($T model : bean.$L())",
-                                              ClassName.get(model.getGenericTypeElement01()),
-                                              this.processorUtils.createGetMethodName(model.getFieldName()))
-                            .addStatement("$L.INSTANCE.check(model)",
-                                          vaidatorClassNameList)
-                            .endControlFlow();
-          break;
-      }
-      checkMethodBuilder.endControlFlow();
+      this.createValidateMethodForSubValidator(checkMethodBuilder,
+                                               model);
     }
+  }
+
+  private void createValidateMethodForSubValidator(MethodSpec.Builder checkMethodBuilder,
+                                                   ValidatorModel model) {
+    checkMethodBuilder.beginControlFlow("if ($T.nonNull(bean.$L()))",
+                                        ClassName.get(Objects.class),
+                                        this.processorUtils.createGetMethodName(model.getFieldName()));
+    switch (model.getType()) {
+      case NATIVE:
+        String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
+        checkMethodBuilder.addStatement("$T.INSTANCE.check(bean.$L())",
+                                        ClassName.get(model.getPackageName(),
+                                                      vaidatorClassName),
+                                        this.processorUtils.createGetMethodName(model.getFieldName()));
+        break;
+      case LIST:
+        String vaidatorClassNameList = model.getGenericTypeElement01()
+                                            .toString() + model.getPostFix();
+        checkMethodBuilder.beginControlFlow("for ($T model : bean.$L())",
+                                            ClassName.get(model.getGenericTypeElement01()),
+                                            this.processorUtils.createGetMethodName(model.getFieldName()))
+                          .addStatement("$L.INSTANCE.check(model)",
+                                        vaidatorClassNameList)
+                          .endControlFlow();
+        break;
+    }
+    checkMethodBuilder.endControlFlow();
+  }
+
+  private int createCheckMethodForSubValidator(MethodSpec.Builder checkMethodBuilder,
+                                               int checkValidatorCounter,
+                                               ConstraintModel model) {
+    String variableName = "constraint" + this.getStringFromInt(checkValidatorCounter);
+    String constraintClassName = super.createConstraintClassName(model.getSimpleClassName(),
+                                                                 model.getFieldName(),
+                                                                 model.getPostFix());
+    checkMethodBuilder.addStatement("$T $L = new $T()",
+                                    ClassName.get(model.getPackageName(),
+                                                  constraintClassName),
+                                    variableName,
+                                    ClassName.get(model.getPackageName(),
+                                                  constraintClassName));
+    checkMethodBuilder.addStatement("$L.check(bean.$L())",
+                                    variableName,
+                                    this.processorUtils.createGetMethodName(model.getFieldName()));
+    checkValidatorCounter++;
+    return checkValidatorCounter;
   }
 
   private void createIsValidMethod(MethodSpec.Builder validMethodTwoParameterBuilder) {
     int validateValidatorCounter = 1;
     for (ConstraintModel model : this.constraintList) {
-      String variableName = "constraint" + this.getStringFromInt(validateValidatorCounter);
-      String constraintClassName = this.createConstraintClassName(model.getSimpleClassName(),
-                                                                  model.getFieldName(),
-                                                                  model.getPostFix());
-      validMethodTwoParameterBuilder.addStatement("$T $L = new $T()",
-                                                  ClassName.get(model.getPackageName(),
-                                                                constraintClassName),
-                                                  variableName,
-                                                  ClassName.get(model.getPackageName(),
-                                                                constraintClassName));
-      validMethodTwoParameterBuilder.addStatement("$L.isValid(bean.$L(), validationResult)",
-                                                  variableName,
-                                                  this.processorUtils.createGetMethodName(model.getFieldName()));
-      validateValidatorCounter++;
+      validateValidatorCounter = this.createCheckMethod(validMethodTwoParameterBuilder,
+                                                        validateValidatorCounter,
+                                                        model);
     }
     for (ValidatorModel model : this.subValidatorList) {
-      validMethodTwoParameterBuilder.beginControlFlow("if ($T.nonNull(bean.$L()))",
-                                                      ClassName.get(Objects.class),
-                                                      this.processorUtils.createGetMethodName(model.getFieldName()));
-      switch (model.getType()) {
-        case NATIVE:
-          String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
-          validMethodTwoParameterBuilder.addStatement("validationResult = $T.INSTANCE.validate(bean.$L(), validationResult)",
-                                                      ClassName.get(model.getPackageName(),
-                                                                    vaidatorClassName),
-                                                      this.processorUtils.createGetMethodName(model.getFieldName()));
-          break;
-        case LIST:
-          String vaidatorClassNameList = model.getGenericTypeElement01()
-                                              .toString() + model.getPostFix();
-          validMethodTwoParameterBuilder.beginControlFlow("for ($T model : bean.$L())",
-                                                          ClassName.get(model.getGenericTypeElement01()),
-                                                          this.processorUtils.createGetMethodName(model.getFieldName()))
-                                        .addStatement("validationResult = $L.INSTANCE.validate(model, validationResult)",
-                                                      vaidatorClassNameList)
-                                        .endControlFlow();
-          break;
-      }
-
-      validMethodTwoParameterBuilder.endControlFlow();
+      this.createValidateMethod(validMethodTwoParameterBuilder,
+                                model);
     }
     validMethodTwoParameterBuilder.addStatement("return validationResult");
+  }
+
+  private void createValidateMethod(MethodSpec.Builder validMethodTwoParameterBuilder,
+                                    ValidatorModel model) {
+    validMethodTwoParameterBuilder.beginControlFlow("if ($T.nonNull(bean.$L()))",
+                                                    ClassName.get(Objects.class),
+                                                    this.processorUtils.createGetMethodName(model.getFieldName()));
+    switch (model.getType()) {
+      case NATIVE:
+        String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
+        validMethodTwoParameterBuilder.addStatement("validationResult = $T.INSTANCE.validate(bean.$L(), validationResult)",
+                                                    ClassName.get(model.getPackageName(),
+                                                                  vaidatorClassName),
+                                                    this.processorUtils.createGetMethodName(model.getFieldName()));
+        break;
+      case LIST:
+        String vaidatorClassNameList = model.getGenericTypeElement01()
+                                            .toString() + model.getPostFix();
+        validMethodTwoParameterBuilder.beginControlFlow("for ($T model : bean.$L())",
+                                                        ClassName.get(model.getGenericTypeElement01()),
+                                                        this.processorUtils.createGetMethodName(model.getFieldName()))
+                                      .addStatement("validationResult = $L.INSTANCE.validate(model, validationResult)",
+                                                    vaidatorClassNameList)
+                                      .endControlFlow();
+        break;
+    }
+
+    validMethodTwoParameterBuilder.endControlFlow();
+  }
+
+  private int createCheckMethod(MethodSpec.Builder validMethodTwoParameterBuilder,
+                                int validateValidatorCounter,
+                                ConstraintModel model) {
+    String variableName = "constraint" + this.getStringFromInt(validateValidatorCounter);
+    String constraintClassName = this.createConstraintClassName(model.getSimpleClassName(),
+                                                                model.getFieldName(),
+                                                                model.getPostFix());
+    validMethodTwoParameterBuilder.addStatement("$T $L = new $T()",
+                                                ClassName.get(model.getPackageName(),
+                                                              constraintClassName),
+                                                variableName,
+                                                ClassName.get(model.getPackageName(),
+                                                              constraintClassName));
+    validMethodTwoParameterBuilder.addStatement("$L.isValid(bean.$L(), validationResult)",
+                                                variableName,
+                                                this.processorUtils.createGetMethodName(model.getFieldName()));
+    validateValidatorCounter++;
+    return validateValidatorCounter;
   }
 
   private TypeSpec.Builder createValidatorTypeSpec(Element validatorElement) {

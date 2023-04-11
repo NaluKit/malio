@@ -1,19 +1,12 @@
 package com.github.nalukit.malio.processor.util;
 
-import com.github.nalukit.malio.processor.MalioProcessor;
-import com.github.nalukit.malio.processor.model.ValidatorModel;
-import com.github.nalukit.malio.shared.annotation.MalioIgnore;
-import com.github.nalukit.malio.shared.annotation.MalioValidator;
-
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import java.io.PrintWriter;
@@ -22,63 +15,22 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ProcessorUtils {
 
-  private ProcessingEnvironment processingEnvironment;
+  private final Messager messager;
 
-  private Messager messager;
-
-  private Elements elements;
 
   @SuppressWarnings("unused")
   private ProcessorUtils(Builder builder) {
     super();
 
-    this.processingEnvironment = builder.processingEnvironment;
+    ProcessingEnvironment processingEnvironment = builder.processingEnvironment;
 
-    this.messager = this.processingEnvironment.getMessager();
-    this.elements = this.processingEnvironment.getElementUtils();
+    this.messager = processingEnvironment.getMessager();
   }
-
-  //  public static Builder builder() {
-  //    return new Builder();
-  //  }
-  //
-  //  //  public void store(IsMetaModel metaModel,
-  //  //                    String fileName)
-  //  //    throws ProcessorException {
-  //  //    try {
-  //  //      FileObject fileObject = processingEnvironment.getFiler()
-  //  //                                                   .createResource(StandardLocation.CLASS_OUTPUT,
-  //  //                                                                   "",
-  //  //                                                                   fileName);
-  //  //      PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(fileObject.openOutputStream()));
-  //  //      metaModel.createPropertes()
-  //  //               .store(printWriter,
-  //  //                      "");
-  //  //      printWriter.close();
-  //  //    } catch (IOException ex) {
-  //  //      throw new ProcessorException("NaluProcessor: Unable to write file: >>" + fileName + "<< -> exception: " + ex.getMessage());
-  //  //    }
-  //  //  }
-  //
-  //  //  public boolean implementsInterface(ProcessingEnvironment processingEnvironment,
-  //  //                                     TypeElement typeElement,
-  //  //                                     TypeMirror implementedInterface) {
-  //  //    return processingEnvironment.getTypeUtils()
-  //  //                                .isAssignable(typeElement.asType(),
-  //  //                                              implementedInterface);
-  //  //  }
-  //
-  //  //  public String getCanonicalClassName(Element element) {
-  //  //    return this.getPackageAsString(element) +
-  //  //           "." + element.getSimpleName()
-  //  //                        .toString();
-  //  //  }
 
   public static Builder builder() {
     return new Builder();
@@ -89,40 +41,6 @@ public class ProcessorUtils {
                .getQualifiedName()
                .toString();
   }
-
-  //  public Elements getElements() {
-  //    return this.elements;
-  //  }
-  //
-  //  /**
-  //   * checks if a class or interface is implemented.
-  //   *
-  //   * @param types       types
-  //   * @param typeMirror  of the class to check
-  //   * @param toImplement the type mirror to implement
-  //   * @return true - class is implemented
-  //   */
-  //  public boolean extendsClassOrInterface(Types types,
-  //                                         TypeMirror typeMirror,
-  //                                         TypeMirror toImplement) {
-  //    String clearedToImplement = this.removeGenericsFromClassName(toImplement.toString());
-  //    Set<TypeMirror> setOfSuperType = this.getFlattenedSupertypeHierarchy(types,
-  //                                                                         typeMirror);
-  //    for (TypeMirror mirror : setOfSuperType) {
-  //      if (clearedToImplement.equals(this.removeGenericsFromClassName(mirror.toString()))) {
-  //        return true;
-  //      }
-  //    }
-  //    return false;
-  //  }
-  //
-  //  private String removeGenericsFromClassName(String className) {
-  //    if (className.contains("<")) {
-  //      className = className.substring(0,
-  //                                      className.indexOf("<"));
-  //    }
-  //    return className;
-  //  }
 
     /**
      * Returns all of the superclasses and superinterfaces for a given generator
@@ -148,143 +66,6 @@ public class ProcessorUtils {
       return result;
     }
 
-//  public List<ValidatorModel> getMalioValidatorVariableTypes(Elements elements,
-//                                                             Types types,
-//                                                             Element element) {
-//    List<ValidatorModel> resultList = new ArrayList<>();
-//    List<VariableElement> list = this.getAllVariableELements(elements,
-//                                                             element);
-//    for (VariableElement variableElement : list) {
-//      TypeElement elementOfVariableType = (TypeElement) types.asElement(variableElement.asType());
-//      // all return types annotatated with ...
-//      if (elementOfVariableType.getAnnotation(MalioValidator.class) != null) {
-//        this.addValidatorToValidatorGenerationList(resultList,
-//                                                   variableElement,
-//                                                   elementOfVariableType,
-//                                                   ValidatorModel.Type.NATIVE,
-//                                                   null,
-//                                                   null);
-//      }
-//      // list with generated Type
-//      System.out.println(variableElement.asType()
-//                                        .toString());
-//      String elementOfVariableTypeString = variableElement.asType()
-//                                                          .toString();
-//      System.out.println(elementOfVariableTypeString);
-//      if (elementOfVariableTypeString.startsWith(List.class.getCanonicalName())) {
-//        if (elementOfVariableTypeString.contains("<")) {
-//          int         open                 = elementOfVariableTypeString.indexOf("<");
-//          int         close                = elementOfVariableTypeString.indexOf(">");
-//          String      genericClassName     = elementOfVariableTypeString.substring(open + 1,
-//                                                                                   close);
-//          TypeElement elementOfGenericList = elements.getTypeElement(genericClassName);
-//          if (elementOfGenericList.getAnnotation(MalioValidator.class) != null) {
-//            this.addValidatorToValidatorGenerationList(resultList,
-//                                                       variableElement,
-//                                                       elementOfVariableType,
-//                                                       ValidatorModel.Type.LIST,
-//                                                       elementOfGenericList,
-//                                                       null);
-//            System.out.println(variableElement.asType()
-//                                              .toString());
-//            System.out.println(genericClassName);
-//            System.out.println(elementOfGenericList);
-//            System.out.println("Yeah, It's a list");
-//          }
-//        }
-//      }
-//      // TODO
-//      // map with generated Type
-//      if (variableElement.asType()
-//                         .toString()
-//                         .startsWith(Map.class.getCanonicalName())) {
-//        System.out.println(variableElement.asType()
-//                                          .toString());
-//        System.out.println("Yeah, It's a map");
-//
-//      }
-//      // TODO
-//    }
-//    return resultList;
-//  }
-
-//  private List<VariableElement> getAllVariableELements(Elements elements,
-//                                                       Element element) {
-//    List<VariableElement> list = new ArrayList<>();
-//    for (Element childElement : elements.getAllMembers((TypeElement) element)) {
-//      if (childElement.getKind() == ElementKind.FIELD) {
-//        list.add((VariableElement) childElement);
-//      }
-//    }
-//    return list;
-//  }
-//
-//  private void addValidatorToValidatorGenerationList(List<ValidatorModel> validatorList,
-//                                                     VariableElement variableElement,
-//                                                     TypeElement elementOfVariableType,
-//                                                     ValidatorModel.Type type,
-//                                                     TypeElement typeElement01,
-//                                                     TypeElement typeElement02) {
-//    if (variableElement.getAnnotation(MalioIgnore.class) != null) {
-//      return;
-//    }
-//    boolean found = validatorList.stream()
-//                                 .anyMatch(model -> model.getPackageName()
-//                                                         .equals(this.getPackageAsString(elementOfVariableType)) &&
-//                                                    model.getSimpleClassName()
-//                                                         .equals(elementOfVariableType.getSimpleName()
-//                                                                                      .toString()) &&
-//                                                    model.getPostFix()
-//                                                         .equals(MalioProcessor.MALIO_VALIDATOR_IMPL_NAME) &&
-//                                                    model.getFieldName()
-//                                                         .equals(variableElement.toString()));
-//    if (!found) {
-//      validatorList.add(new ValidatorModel(this.getPackageAsString(elementOfVariableType),
-//                                           elementOfVariableType.getSimpleName()
-//                                                                .toString(),
-//                                           variableElement.toString(),
-//                                           MalioProcessor.MALIO_VALIDATOR_IMPL_NAME,
-//                                           type,
-//                                           typeElement01,
-//                                           typeElement02));
-//    }
-//  }
-
-  //
-  //  public boolean supertypeHasGeneric(Types types,
-  //                                     TypeMirror typeMirror,
-  //                                     TypeMirror implementsMirror) {
-  //    TypeMirror superTypeMirror = this.getFlattenedSupertype(types,
-  //                                                            typeMirror,
-  //                                                            implementsMirror);
-  //    if (superTypeMirror == null) {
-  //      return false;
-  //    }
-  //    return superTypeMirror.toString()
-  //                          .contains("<");
-  //  }
-  //
-  //  public TypeMirror getFlattenedSupertype(Types types,
-  //                                          TypeMirror typeMirror,
-  //                                          TypeMirror implementsMirror) {
-  //    String implementsMirrorWihoutGeneric = this.removeGenericsFromClassName(implementsMirror.toString());
-  //    Set<TypeMirror> implementedSuperTypes = this.getFlattenedSupertypeHierarchy(types,
-  //                                                                                typeMirror);
-  //    for (TypeMirror typeMirrorSuperType : implementedSuperTypes) {
-  //      String tn1WithoutGenric = this.removeGenericsFromClassName(typeMirrorSuperType.toString());
-  //      if (implementsMirrorWihoutGeneric.equals(tn1WithoutGenric)) {
-  //        return typeMirrorSuperType;
-  //      }
-  //    }
-  //    return null;
-  //  }
-  //
-  //  //  public String createNameWithleadingUpperCase(String name) {
-  //  //    return name.substring(0,
-  //  //                          1)
-  //  //               .toUpperCase() + name.substring(1);
-  //  //  }
-
   public void createErrorMessage(String errorMessage) {
     StringWriter sw = new StringWriter();
     PrintWriter  pw = new PrintWriter(sw);
@@ -295,80 +76,12 @@ public class ProcessorUtils {
 
   }
 
-  //  public String createFullClassName(String packageName,
-  //                                    String className) {
-  //    return packageName.replace(".",
-  //                               "_") + "_" + className;
-  //  }
-
   public PackageElement getPackage(Element type) {
     while (type.getKind() != ElementKind.PACKAGE) {
       type = type.getEnclosingElement();
     }
     return (PackageElement) type;
   }
-
-  //  public void createWarningMessage(String warningMessage) {
-  //    StringWriter sw = new StringWriter();
-  //    PrintWriter  pw = new PrintWriter(sw);
-  //    pw.println(warningMessage);
-  //    pw.close();
-  //    messager.printMessage(Diagnostic.Kind.WARNING,
-  //                          sw.toString());
-  //  }
-  //
-  //  //  public <T> boolean isSuperClass(Types typeUtils,
-  //  //                                  TypeElement typeElement,
-  //  //                                  Class<T> superClazz) {
-  //  //    for (TypeMirror tm : typeUtils.directSupertypes(typeElement.asType())) {
-  //  //      String canonicalNameTM = this.getCanonicalClassName((TypeElement) typeUtils.asElement(tm));
-  //  //      if (superClazz.getCanonicalName()
-  //  //                    .equals(canonicalNameTM)) {
-  //  //        return true;
-  //  //      } else {
-  //  //        return this.isSuperClass(typeUtils,
-  //  //                                 (TypeElement) typeUtils.asElement(tm),
-  //  //                                 superClazz);
-  //  //      }
-  //  //    }
-  //  //    return false;
-  //  //  }
-  //  //
-  //  //  public List<TypeElement> getListOfSuperClasses(TypeElement typeElement,
-  //  //                                                 Class<?> implementingSuperClass) {
-  //  //    List<TypeElement> listOfTypeMirror = new ArrayList<>();
-  //  //    TypeMirror implementingSuperClassTypeMirror = this.getTypeMirror(implementingSuperClass.getCanonicalName());
-  //  //    Set<TypeMirror> list = this.getFlattenedSupertypeHierarchy(this.processingEnvironment.getTypeUtils(),
-  //  //                                                               typeElement.asType());
-  //  //    list.stream()
-  //  //        .filter(mirror -> !implementingSuperClassTypeMirror.toString()
-  //  //                                                           .equals(mirror.toString()))
-  //  //        .filter(mirror -> !typeElement.asType()
-  //  //                                      .toString()
-  //  //                                      .equals(mirror.toString()))
-  //  //        .filter(mirror -> this.processingEnvironment.getTypeUtils()
-  //  //                                                    .isAssignable(mirror,
-  //  //                                                                  implementingSuperClassTypeMirror))
-  //  //        .forEachOrdered(mirror -> {
-  //  //          listOfTypeMirror.add(this.getTypeElement(mirror));
-  //  //        });
-  //  //    return listOfTypeMirror;
-  //  //  }
-  //  //
-  //  //  public TypeMirror getTypeMirror(String className) {
-  //  //    return this.getTypeElement(className)
-  //  //               .asType();
-  //  //  }
-  //  //
-  //  //  public TypeElement getTypeElement(TypeMirror mirror) {
-  //  //    return (TypeElement) this.processingEnvironment.getTypeUtils()
-  //  //                                                   .asElement(mirror);
-  //  //  }
-  //  //
-  //  //  public TypeElement getTypeElement(String className) {
-  //  //    return this.processingEnvironment.getElementUtils()
-  //  //                                     .getTypeElement(className);
-  //  //  }
 
   public void createNoteMessage(String noteMessage) {
     StringWriter sw = new StringWriter();
@@ -378,26 +91,6 @@ public class ProcessorUtils {
     messager.printMessage(Diagnostic.Kind.NOTE,
                           sw.toString());
   }
-  //
-  //  public <A extends Annotation> List<Element> getMethodFromTypeElementAnnotatedWith(ProcessingEnvironment processingEnvironment,
-  //                                                                                    TypeElement element,
-  //                                                                                    Class<A> annotation) {
-  //    List<Element> annotatedMethods = processingEnvironment.getElementUtils()
-  //                                                          .getAllMembers(element)
-  //                                                          .stream()
-  //                                                          .filter(methodElement -> methodElement.getAnnotation(annotation) !=
-  //                                                                                   null)
-  //                                                          .collect(Collectors.toList());
-  //    return annotatedMethods;
-  //  }
-  //
-  //  public boolean doesExist(ClassNameModel typeElementClassName) {
-  //    if (Objects.isNull(typeElementClassName)) {
-  //      return false;
-  //    }
-  //    return this.processingEnvironment.getElementUtils()
-  //                                     .getTypeElement(typeElementClassName.getClassName()) != null;
-  //  }
 
   public String setFirstCharacterToUpperCase(String value) {
     return value.substring(0,
@@ -405,34 +98,11 @@ public class ProcessorUtils {
                 .toUpperCase() + value.substring(1);
   }
 
-  //  public String createFullClassName(String className) {
-  //    return className.replace(".",
-  //                             "_");
-  //  }
-  //
-  //  public String setFirstCharacterToLowerCase(String className) {
-  //    return className.substring(0,
-  //                               1)
-  //                    .toLowerCase() + className.substring(1);
-  //  }
-  //
-  //  public String createSetMethodName(String value) {
-  //    return "set" + value.substring(0,
-  //                                   1)
-  //                        .toUpperCase() + value.substring(1);
-  //  }
-
     public String createGetMethodName(String value) {
       return "get" + value.substring(0,
                                      1)
                           .toUpperCase() + value.substring(1);
     }
-
-  //  public String createEventNameFromHandlingMethod(String event) {
-  //    return event.substring(2,
-  //                           3)
-  //                .toLowerCase() + event.substring(3);
-  //  }
 
   public <A extends Annotation> List<Element> getVariablesFromTypeElementAnnotatedWith(ProcessingEnvironment processingEnvironment,
                                                                                        TypeElement element,

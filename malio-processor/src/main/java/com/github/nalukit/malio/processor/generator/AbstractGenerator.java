@@ -11,7 +11,7 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.io.IOException;
 
-public class AbstractGenerator {
+public abstract class AbstractGenerator {
 
   protected Elements       elements;
   protected Types          types;
