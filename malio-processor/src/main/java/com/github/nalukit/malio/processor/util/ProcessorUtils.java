@@ -2,6 +2,7 @@ package com.github.nalukit.malio.processor.util;
 
 import com.github.nalukit.malio.processor.MalioProcessor;
 import com.github.nalukit.malio.processor.model.ValidatorModel;
+import com.github.nalukit.malio.shared.annotation.MalioIgnore;
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 
 import javax.annotation.processing.Messager;
@@ -224,6 +225,9 @@ public class ProcessorUtils {
                                                      ValidatorModel.Type type,
                                                      TypeElement typeElement01,
                                                      TypeElement typeElement02) {
+    if (variableElement.getAnnotation(MalioIgnore.class) != null) {
+      return;
+    }
     boolean found = validatorList.stream()
                                  .anyMatch(model -> model.getPackageName()
                                                          .equals(this.getPackageAsString(elementOfVariableType)) &&
@@ -231,7 +235,9 @@ public class ProcessorUtils {
                                                          .equals(elementOfVariableType.getSimpleName()
                                                                                       .toString()) &&
                                                     model.getPostFix()
-                                                         .equals(MalioProcessor.MALIO_VALIDATOR_IMPL_NAME));
+                                                         .equals(MalioProcessor.MALIO_VALIDATOR_IMPL_NAME) &&
+                                                    model.getFieldName()
+                                                         .equals(variableElement.toString()));
     if (!found) {
       validatorList.add(new ValidatorModel(this.getPackageAsString(elementOfVariableType),
                                            elementOfVariableType.getSimpleName()
