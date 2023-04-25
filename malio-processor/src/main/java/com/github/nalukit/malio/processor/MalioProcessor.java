@@ -1,17 +1,20 @@
 package com.github.nalukit.malio.processor;
 
 import com.github.nalukit.malio.processor.generator.ConstraintMaxLengthGenerator;
+import com.github.nalukit.malio.processor.generator.ConstraintMinLengthGenerator;
 import com.github.nalukit.malio.processor.generator.ConstraintNotNullGenerator;
 import com.github.nalukit.malio.processor.generator.ValidatorGenerator;
 import com.github.nalukit.malio.processor.model.ConstraintModel;
 import com.github.nalukit.malio.processor.model.ValidatorModel;
 import com.github.nalukit.malio.processor.scanner.ConstraintMaxLengthScanner;
+import com.github.nalukit.malio.processor.scanner.ConstraintMinLengthScanner;
 import com.github.nalukit.malio.processor.scanner.ConstraintNotNullScanner;
 import com.github.nalukit.malio.processor.scanner.ValidatorScanner;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.Malio;
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.MaxLength;
+import com.github.nalukit.malio.shared.annotation.field.MinLength;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
 import com.google.auto.service.AutoService;
 import com.google.common.base.Stopwatch;
@@ -98,6 +101,9 @@ public class MalioProcessor
                   // MaxLength Constraint (String only)
                   this.createConstraintMaxLength(element,
                                                  constraintList);
+                  // MinLength Constraint (String only)
+                  this.createConstraintMinLength(element,
+                          constraintList);
 
                   // TODO add more constraints
                   // TODO add more constraints
@@ -148,6 +154,33 @@ public class MalioProcessor
                                   .processorUtils(this.processorUtils)
                                   .build()
                                   .generate();
+      constraintList.add(constraintModel);
+    }
+  }
+
+  private void createConstraintMinLength(Element element,
+                                         List<ConstraintModel> constraintList)
+          throws ProcessorException {
+    for (Element variableElement : this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnv,
+            (TypeElement) element,
+            MinLength.class)) {
+      ConstraintModel constraintModel = ConstraintMinLengthScanner.builder()
+              .elements(this.processingEnv.getElementUtils())
+              .types(this.processingEnv.getTypeUtils())
+              .validatorElement(element)
+              .variableElement(variableElement)
+              .processorUtils(this.processorUtils)
+              .build()
+              .createConstraintModel();
+      ConstraintMinLengthGenerator.builder()
+              .elements(this.processingEnv.getElementUtils())
+              .filer(this.processingEnv.getFiler())
+              .types(this.processingEnv.getTypeUtils())
+              .validatorElement(element)
+              .variableElement(variableElement)
+              .processorUtils(this.processorUtils)
+              .build()
+              .generate();
       constraintList.add(constraintModel);
     }
   }
