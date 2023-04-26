@@ -1,6 +1,8 @@
 package com.github.nalukit.malio.processor.constraints;
 
 import com.github.nalukit.malio.processor.Constants;
+import com.github.nalukit.malio.processor.constraints.generator.AbstractGenerator;
+import com.github.nalukit.malio.processor.model.ConstraintModel;
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.MaxValue;
@@ -13,13 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MaxValueConstraint extends AbstractConstraint<MaxValue> {
-    private final List<TypeKind> supportedPrimitives = Arrays.asList(TypeKind.INT, TypeKind.LONG);
-    @SuppressWarnings("rawtypes")
-    private final List<Class> supportedDeclaredType = Arrays.asList(Integer.class, Long.class);
-    private final String IMPLEMENTATION_NAME = Constants.MALIO_CONSTRAINT_MAXVALUE_IMPL_NAME;
-    private final ConstraintType constraintType = ConstraintType.MAX_VALUE_CONSTRAINT;
-    public MaxValueConstraint(ProcessingEnvironment processingEnv, ProcessorUtils processorUtils) {
-        super(processingEnv, processorUtils);
+
+    public MaxValueConstraint(ProcessingEnvironment processingEnv, ProcessorUtils processorUtils, AbstractGenerator generator) {
+        super(processingEnv, processorUtils, generator);
     }
 
     @Override
@@ -27,9 +25,26 @@ public class MaxValueConstraint extends AbstractConstraint<MaxValue> {
         return MaxValue.class;
     }
 
+
     @Override
-    public List<Element> getDiesDas(TypeElement element) {
-        return this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnvironment,
-                element, this.annotationType());
+    protected String getImplementationName() {
+        return Constants.MALIO_CONSTRAINT_MAXVALUE_IMPL_NAME;
     }
+
+    @Override
+    protected ConstraintType getConstraintType() {
+        return ConstraintType.MAX_VALUE_CONSTRAINT;
+    }
+
+    @Override
+    protected List<TypeKind> getSupportedPrimitives() {
+        return Arrays.asList(TypeKind.INT, TypeKind.LONG);
+    }
+
+    @Override
+    protected List<Class> getSupportedDeclaredType() {
+        return Arrays.asList(Integer.class, Long.class);
+    }
+
+
 }

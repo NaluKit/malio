@@ -35,7 +35,7 @@ public class ConstraintRegexpGenerator
         return new Builder();
     }
 
-    public void generate()
+    public void generate(Element validatorElement, VariableElement variableElement)
             throws ProcessorException {
         TypeSpec.Builder typeSpec = createConstraintTypeSpec(validatorElement,
                 variableElement);

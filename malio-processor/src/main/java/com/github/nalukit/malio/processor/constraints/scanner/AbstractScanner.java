@@ -1,7 +1,9 @@
 package com.github.nalukit.malio.processor.constraints.scanner;
 
+import com.github.nalukit.malio.processor.model.ConstraintModel;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 
+import javax.lang.model.element.Element;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
