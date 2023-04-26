@@ -1,4 +1,4 @@
-package com.github.nalukit.malio.processor.scanner;
+package com.github.nalukit.malio.processor.constraints.scanner;
 
 import com.github.nalukit.malio.processor.Constants;
 import com.github.nalukit.malio.processor.model.ConstraintModel;
@@ -11,13 +11,13 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-public class ConstraintMaxLengthScanner
+public class ConstraintMinLengthScanner
     extends AbstractScanner {
 
   private final TypeElement     validatorElement;
   private final VariableElement variableElement;
 
-  private ConstraintMaxLengthScanner(Builder builder) {
+  private ConstraintMinLengthScanner(Builder builder) {
     this.validatorElement = builder.validatorElement;
     this.variableElement  = builder.variableElement;
     this.elements         = builder.elements;
@@ -34,8 +34,8 @@ public class ConstraintMaxLengthScanner
                                validatorElement.getSimpleName()
                                                .toString(),
                                this.variableElement.toString(),
-                               Constants.MALIO_CONSTRAINT_MAXLENGTH_IMPL_NAME,
-                               ConstraintType.MAX_LENGTH_CONSTRAINT);
+                               Constants.MALIO_CONSTRAINT_MINLENGTH_IMPL_NAME,
+                               ConstraintType.MIN_LENGTH_CONSTRAINT);
   }
 
   public static class Builder {
@@ -71,8 +71,8 @@ public class ConstraintMaxLengthScanner
       return this;
     }
 
-    public ConstraintMaxLengthScanner build() {
-      return new ConstraintMaxLengthScanner(this);
+    public ConstraintMinLengthScanner build() {
+      return new ConstraintMinLengthScanner(this);
     }
   }
 }

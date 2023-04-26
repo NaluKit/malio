@@ -1,4 +1,4 @@
-package com.github.nalukit.malio.processor.generator;
+package com.github.nalukit.malio.processor.constraints.generator;
 
 import com.github.nalukit.malio.processor.Constants;
 import com.github.nalukit.malio.processor.ProcessorException;

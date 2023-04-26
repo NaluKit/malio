@@ -1,11 +1,11 @@
-package com.github.nalukit.malio.processor.generator;
+package com.github.nalukit.malio.processor.constraints.generator;
 
 import com.github.nalukit.malio.processor.Constants;
 import com.github.nalukit.malio.processor.ProcessorException;
 import com.github.nalukit.malio.processor.util.BuildWithMalioCommentProvider;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
-import com.github.nalukit.malio.shared.annotation.field.MaxLength;
-import com.github.nalukit.malio.shared.internal.constraints.AbstractMaxLengthConstraint;
+import com.github.nalukit.malio.shared.annotation.field.MinLength;
+import com.github.nalukit.malio.shared.internal.constraints.AbstractMinLengthConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
@@ -17,12 +17,12 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-public class ConstraintMaxLengthGenerator
+public class ConstraintMinLengthGenerator
     extends AbstractGenerator {
   private Element         validatorElement;
   private VariableElement variableElement;
 
-  private ConstraintMaxLengthGenerator(Builder builder) {
+  private ConstraintMinLengthGenerator(Builder builder) {
     this.validatorElement = builder.validatorElement;
     this.variableElement  = builder.variableElement;
     this.elements         = builder.elements;
@@ -48,7 +48,7 @@ public class ConstraintMaxLengthGenerator
                                                                                                                .toString()),
                                                variableElement.getSimpleName()
                                                               .toString(),
-                                               variableElement.getAnnotation(MaxLength.class)
+                                               variableElement.getAnnotation(MinLength.class)
                                                               .value())
 
                                  .build());
@@ -59,7 +59,7 @@ public class ConstraintMaxLengthGenerator
                                  .addStatement("return \"noch mit error messages aus Properties ersetzen (wegen locale und so) ....\"")
                                  .build());
     super.writeFile(variableElement,
-                    Constants.MALIO_CONSTRAINT_MAXLENGTH_IMPL_NAME,
+                    Constants.MALIO_CONSTRAINT_MINLENGTH_IMPL_NAME,
                     typeSpec);
   }
 
@@ -69,9 +69,9 @@ public class ConstraintMaxLengthGenerator
                                                                                 .toString(),
                                                                 variableElement.getSimpleName()
                                                                                .toString(),
-                                                                Constants.MALIO_CONSTRAINT_MAXLENGTH_IMPL_NAME))
+                                                                Constants.MALIO_CONSTRAINT_MINLENGTH_IMPL_NAME))
                    .addJavadoc(BuildWithMalioCommentProvider.INSTANCE.getGeneratedComment())
-                   .superclass(ClassName.get(AbstractMaxLengthConstraint.class))
+                   .superclass(ClassName.get(AbstractMinLengthConstraint.class))
                    .addModifiers(Modifier.PUBLIC,
                                  Modifier.FINAL);
   }
@@ -115,8 +115,8 @@ public class ConstraintMaxLengthGenerator
       return this;
     }
 
-    public ConstraintMaxLengthGenerator build() {
-      return new ConstraintMaxLengthGenerator(this);
+    public ConstraintMinLengthGenerator build() {
+      return new ConstraintMinLengthGenerator(this);
     }
   }
 }

@@ -1,4 +1,4 @@
-package com.github.nalukit.malio.processor.scanner;
+package com.github.nalukit.malio.processor.constraints.scanner;
 
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 

@@ -1,4 +1,4 @@
-package com.github.nalukit.malio.processor.scanner;
+package com.github.nalukit.malio.processor.constraints.scanner;
 
 import com.github.nalukit.malio.processor.Constants;
 import com.github.nalukit.malio.processor.model.ValidatorModel;
@@ -42,17 +42,24 @@ public class ValidatorScanner
     // examine every variable and look for relevant types ..
     // first step: sub types of Collection.
     for (VariableElement variableElement : list) {
-      // check, if variable is excluded ...
-      if (variableElement.getAnnotation(MalioIgnore.class) == null) {
-        TypeElement elementOfVariableType = (TypeElement) types.asElement(variableElement.asType());
-        this.checkForDirectSubValidators(variableElement,
-                                         elementOfVariableType);
-        this.checkForSubValidatorAsGenricInCollections(variableElement,
-                                                       elementOfVariableType);
-
-      }
+      checkVariable(variableElement);
     }
     return this.subValidatorList;
+  }
+
+  private void checkVariable(VariableElement variableElement) {
+    // check, if variable is excluded ...
+    if (variableElement.getAnnotation(MalioIgnore.class) == null) {
+      if (!variableElement.asType().getKind().isPrimitive()){
+        checkNeedForSubvalidator(variableElement);
+      }
+    }
+  }
+
+  private void checkNeedForSubvalidator(VariableElement variableElement) {
+    TypeElement elementOfVariableType = (TypeElement) types.asElement(variableElement.asType());
+    this.checkForDirectSubValidators(variableElement, elementOfVariableType);
+    this.checkForSubValidatorAsGenricInCollections(variableElement, elementOfVariableType);
   }
 
   private void checkForDirectSubValidators(VariableElement variableElement,
