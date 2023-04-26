@@ -1,25 +1,12 @@
-/*
- * Copyright © 2023 Frank Hossfeld, Philipp Kohl
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.github.nalukit.malio.processor.constraints.generator;
 
+import com.github.nalukit.malio.processor.Constants;
 import com.github.nalukit.malio.processor.ProcessorException;
-import com.github.nalukit.malio.processor.constraints.AbstractConstraint;
 import com.github.nalukit.malio.processor.util.BuildWithMalioCommentProvider;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.MinValue;
+import com.github.nalukit.malio.shared.internal.constraints.AbstractMinValueConstraint;
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
@@ -32,23 +19,23 @@ import javax.lang.model.util.Types;
 
 public class ConstraintMinValueGenerator
     extends AbstractGenerator {
-
-  private AbstractConstraint<MinValue> constraint;
+  private Element         validatorElement;
+  private VariableElement variableElement;
 
   private ConstraintMinValueGenerator(Builder builder) {
-    this.elements       = builder.elements;
-    this.types          = builder.types;
-    this.filer          = builder.filer;
-    this.processorUtils = builder.processorUtils;
-    this.constraint     = builder.constraint;
+    this.validatorElement = builder.validatorElement;
+    this.variableElement  = builder.variableElement;
+    this.elements         = builder.elements;
+    this.types            = builder.types;
+    this.filer            = builder.filer;
+    this.processorUtils   = builder.processorUtils;
   }
 
   public static Builder builder() {
     return new Builder();
   }
 
-  public void generate(Element validatorElement,
-                       VariableElement variableElement)
+  public void generate()
       throws ProcessorException {
     TypeSpec.Builder typeSpec = createConstraintTypeSpec(validatorElement,
                                                          variableElement);
@@ -65,9 +52,14 @@ public class ConstraintMinValueGenerator
                                                               .value())
 
                                  .build());
-
+    typeSpec.addMethod(MethodSpec.methodBuilder("getErrorMessage")
+                                 .addModifiers(Modifier.PROTECTED)
+                                 .addAnnotation(ClassName.get(Override.class))
+                                 .returns(ClassName.get(String.class))
+                                 .addStatement("return \"noch mit error messages aus Properties ersetzen (wegen locale und so) ....\"")
+                                 .build());
     super.writeFile(variableElement,
-                    constraint.getImplementationName(),
+                    Constants.MALIO_CONSTRAINT_MINVALUE_IMPL_NAME,
                     typeSpec);
   }
 
@@ -77,20 +69,31 @@ public class ConstraintMinValueGenerator
                                                                                 .toString(),
                                                                 variableElement.getSimpleName()
                                                                                .toString(),
-                                                                constraint.getImplementationName()))
+                                                                Constants.MALIO_CONSTRAINT_MINVALUE_IMPL_NAME))
                    .addJavadoc(BuildWithMalioCommentProvider.INSTANCE.getGeneratedComment())
-                   .superclass(constraint.getValidationClass(variableElement))
+                   .superclass(ClassName.get(AbstractMinValueConstraint.class))
                    .addModifiers(Modifier.PUBLIC,
                                  Modifier.FINAL);
   }
 
   public static class Builder {
 
-    Elements                     elements;
-    Types                        types;
-    Filer                        filer;
-    ProcessorUtils               processorUtils;
-    AbstractConstraint<MinValue> constraint;
+    Element         validatorElement;
+    VariableElement variableElement;
+    Elements        elements;
+    Types           types;
+    Filer           filer;
+    ProcessorUtils  processorUtils;
+
+    public Builder validatorElement(Element validatorElement) {
+      this.validatorElement = validatorElement;
+      return this;
+    }
+
+    public Builder variableElement(Element variableElement) {
+      this.variableElement = (VariableElement) variableElement;
+      return this;
+    }
 
     public Builder elements(Elements elements) {
       this.elements = elements;
@@ -109,11 +112,6 @@ public class ConstraintMinValueGenerator
 
     public Builder processorUtils(ProcessorUtils processorUtils) {
       this.processorUtils = processorUtils;
-      return this;
-    }
-
-    public Builder constraint(AbstractConstraint<MinValue> constraint) {
-      this.constraint = constraint;
       return this;
     }
 

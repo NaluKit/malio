@@ -1,18 +1,3 @@
-/*
- * Copyright © 2023 Frank Hossfeld, Philipp Kohl
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.github.nalukit.malio.processor.constraints.generator;
 
 import com.github.nalukit.malio.processor.Constants;
@@ -21,9 +6,9 @@ import com.github.nalukit.malio.processor.model.ConstraintModel;
 import com.github.nalukit.malio.processor.model.ValidatorModel;
 import com.github.nalukit.malio.processor.util.BuildWithMalioCommentProvider;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
+import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.internal.validator.AbstractValidator;
 import com.github.nalukit.malio.shared.model.ValidationResult;
-import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
@@ -33,7 +18,6 @@ import com.squareup.javapoet.TypeSpec;
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.util.List;
@@ -42,39 +26,45 @@ import java.util.Objects;
 public class ValidatorGenerator
     extends AbstractGenerator {
 
+  private final Element               validatorElement;
   private final List<ConstraintModel> constraintList;
   private final List<ValidatorModel>  subValidatorList;
-  private       List<ValidatorModel>  superValidatorList;
 
   private ValidatorGenerator(Builder builder) {
-    this.constraintList     = builder.constraintList;
-    this.superValidatorList = builder.superValidatorList;
-    this.subValidatorList   = builder.subValidatorList;
-    this.elements           = builder.elements;
-    this.types              = builder.types;
-    this.filer              = builder.filer;
-    this.processorUtils     = builder.processorUtils;
+    this.constraintList   = builder.constraintList;
+    this.subValidatorList = builder.subValidatorList;
+    this.validatorElement = builder.validatorElement;
+    this.elements         = builder.elements;
+    this.types            = builder.types;
+    this.filer            = builder.filer;
+    this.processorUtils   = builder.processorUtils;
   }
 
   public static Builder builder() {
     return new Builder();
   }
 
-  private static void addConstructor(TypeSpec.Builder typeSpec) {
+  public void generate()
+      throws ProcessorException {
+    TypeSpec.Builder typeSpec = this.createValidatorTypeSpec(validatorElement);
+
     typeSpec.addMethod(MethodSpec.constructorBuilder()
                                  .addModifiers(Modifier.PUBLIC)
                                  .addStatement("super()")
                                  .build());
-  }
 
-  public void generate(Element validatorElement,
-                       VariableElement variableElement)
-      throws ProcessorException {
-    TypeSpec.Builder typeSpec = this.createValidatorTypeSpec(validatorElement);
-
-    addConstructor(typeSpec);
-    addSingletonVariable(validatorElement,
-                         typeSpec);
+    typeSpec.addField(FieldSpec.builder(ClassName.get(this.processorUtils.getPackageAsString(validatorElement),
+                                                      this.createValidatorClassName(validatorElement.getSimpleName()
+                                                                                                    .toString())),
+                                        "INSTANCE",
+                                        Modifier.PUBLIC,
+                                        Modifier.STATIC,
+                                        Modifier.FINAL)
+                               .initializer("new $T()",
+                                            ClassName.get(this.processorUtils.getPackageAsString(validatorElement),
+                                                          this.createValidatorClassName(validatorElement.getSimpleName()
+                                                                                                        .toString())))
+                               .build());
 
     MethodSpec.Builder checkMethodBuilder = MethodSpec.methodBuilder("check")
                                                       .addModifiers(Modifier.PUBLIC)
@@ -115,22 +105,6 @@ public class ValidatorGenerator
                     typeSpec);
   }
 
-  private void addSingletonVariable(Element validatorElement,
-                                    TypeSpec.Builder typeSpec) {
-    typeSpec.addField(FieldSpec.builder(ClassName.get(this.processorUtils.getPackageAsString(validatorElement),
-                                                      this.createValidatorClassName(validatorElement.getSimpleName()
-                                                                                                    .toString())),
-                                        "INSTANCE",
-                                        Modifier.PUBLIC,
-                                        Modifier.STATIC,
-                                        Modifier.FINAL)
-                               .initializer("new $T()",
-                                            ClassName.get(this.processorUtils.getPackageAsString(validatorElement),
-                                                          this.createValidatorClassName(validatorElement.getSimpleName()
-                                                                                                        .toString())))
-                               .build());
-  }
-
   private void createCheckMethod(MethodSpec.Builder checkMethodBuilder) {
     int checkValidatorCounter = 1;
     for (ConstraintModel model : this.constraintList) {
@@ -138,22 +112,10 @@ public class ValidatorGenerator
                                                                checkValidatorCounter,
                                                                model);
     }
-    for (ValidatorModel model : this.superValidatorList) {
-      this.createValidateMethodForSuperValidator(checkMethodBuilder,
-                                                 model);
-    }
     for (ValidatorModel model : this.subValidatorList) {
       this.createValidateMethodForSubValidator(checkMethodBuilder,
                                                model);
     }
-  }
-
-  private void createValidateMethodForSuperValidator(MethodSpec.Builder checkMethodBuilder,
-                                                     ValidatorModel model) {
-    String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
-    checkMethodBuilder.addStatement("$T.INSTANCE.check(bean)",
-                                    ClassName.get(model.getPackageName(),
-                                                  vaidatorClassName));
   }
 
   private void createValidateMethodForSubValidator(MethodSpec.Builder checkMethodBuilder,
@@ -210,27 +172,15 @@ public class ValidatorGenerator
                                                         validateValidatorCounter,
                                                         model);
     }
-    for (ValidatorModel model : this.superValidatorList) {
-      this.createSuperValidateMethod(validMethodTwoParameterBuilder,
-                                     model);
-    }
     for (ValidatorModel model : this.subValidatorList) {
-      this.createSubValidateMethod(validMethodTwoParameterBuilder,
-                                   model);
+      this.createValidateMethod(validMethodTwoParameterBuilder,
+                                model);
     }
     validMethodTwoParameterBuilder.addStatement("return validationResult");
   }
 
-  private void createSuperValidateMethod(MethodSpec.Builder validMethodTwoParameterBuilder,
-                                         ValidatorModel model) {
-    String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
-    validMethodTwoParameterBuilder.addStatement("$T.INSTANCE.validate(bean, validationResult)",
-                                                ClassName.get(model.getPackageName(),
-                                                              vaidatorClassName));
-  }
-
-  private void createSubValidateMethod(MethodSpec.Builder validMethodTwoParameterBuilder,
-                                       ValidatorModel model) {
+  private void createValidateMethod(MethodSpec.Builder validMethodTwoParameterBuilder,
+                                    ValidatorModel model) {
     validMethodTwoParameterBuilder.beginControlFlow("if ($T.nonNull(bean.$L()))",
                                                     ClassName.get(Objects.class),
                                                     this.processorUtils.createGetMethodName(model.getFieldName()));
@@ -309,8 +259,8 @@ public class ValidatorGenerator
   public static class Builder {
 
     List<ConstraintModel> constraintList;
-    List<ValidatorModel>  superValidatorList;
     List<ValidatorModel>  subValidatorList;
+    Element               validatorElement;
     Elements              elements;
     Types                 types;
     Filer                 filer;
@@ -321,13 +271,13 @@ public class ValidatorGenerator
       return this;
     }
 
-    public Builder superValidatorList(List<ValidatorModel> superValidatorList) {
-      this.superValidatorList = superValidatorList;
+    public Builder subValidatorList(List<ValidatorModel> subValidatorList) {
+      this.subValidatorList = subValidatorList;
       return this;
     }
 
-    public Builder subValidatorList(List<ValidatorModel> subValidatorList) {
-      this.subValidatorList = subValidatorList;
+    public Builder validatorElement(Element validatorElement) {
+      this.validatorElement = validatorElement;
       return this;
     }
 

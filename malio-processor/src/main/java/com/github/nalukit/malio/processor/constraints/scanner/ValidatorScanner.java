@@ -1,25 +1,10 @@
-/*
- * Copyright © 2023 Frank Hossfeld, Philipp Kohl
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.github.nalukit.malio.processor.constraints.scanner;
 
 import com.github.nalukit.malio.processor.Constants;
 import com.github.nalukit.malio.processor.model.ValidatorModel;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
+import com.github.nalukit.malio.shared.annotation.MalioIgnore;
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
-import com.github.nalukit.malio.shared.annotation.field.MalioIgnore;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -31,7 +16,6 @@ import javax.lang.model.util.Types;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 public class ValidatorScanner
@@ -39,7 +23,6 @@ public class ValidatorScanner
 
   private final Element              validatorElement;
   private       List<ValidatorModel> subValidatorList;
-  ;
 
   private ValidatorScanner(Builder builder) {
     this.validatorElement = builder.validatorElement;
@@ -64,34 +47,10 @@ public class ValidatorScanner
     return this.subValidatorList;
   }
 
-  public List<ValidatorModel> createSuperValidatorList() {
-    List<ValidatorModel> superValidatorList = new ArrayList<>();
-    // get list of super mirrors ...
-    Set<TypeMirror> mirrors = this.processorUtils.getFlattenedSupertypeHierarchy(super.types,
-                                                                                 validatorElement.asType());
-    for (TypeMirror mirror : mirrors) {
-      if (!types.isSameType(validatorElement.asType(),
-                            mirror)) {
-        TypeElement typeElementToCheck = (TypeElement) super.types.asElement(mirror);
-        if (Objects.nonNull(typeElementToCheck.getAnnotation(MalioValidator.class))) {
-          superValidatorList.add(new ValidatorModel(this.processorUtils.getPackageAsString(typeElementToCheck),
-                                                    typeElementToCheck.getSimpleName()
-                                                                      .toString(),
-                                                    null,
-                                                    Constants.MALIO_VALIDATOR_IMPL_NAME,
-                                                    ValidatorModel.Type.NATIVE));
-        }
-      }
-    }
-    return superValidatorList;
-  }
-
   private void checkVariable(VariableElement variableElement) {
     // check, if variable is excluded ...
     if (variableElement.getAnnotation(MalioIgnore.class) == null) {
-      if (!variableElement.asType()
-                          .getKind()
-                          .isPrimitive()) {
+      if (!variableElement.asType().getKind().isPrimitive()){
         checkNeedForSubvalidator(variableElement);
       }
     }
@@ -99,10 +58,8 @@ public class ValidatorScanner
 
   private void checkNeedForSubvalidator(VariableElement variableElement) {
     TypeElement elementOfVariableType = (TypeElement) types.asElement(variableElement.asType());
-    this.checkForDirectSubValidators(variableElement,
-                                     elementOfVariableType);
-    this.checkForSubValidatorAsGenricInCollections(variableElement,
-                                                   elementOfVariableType);
+    this.checkForDirectSubValidators(variableElement, elementOfVariableType);
+    this.checkForSubValidatorAsGenricInCollections(variableElement, elementOfVariableType);
   }
 
   private void checkForDirectSubValidators(VariableElement variableElement,
@@ -145,6 +102,7 @@ public class ValidatorScanner
                                                      ValidatorModel.Type.LIST,
                                                      elementOfGenericList,
                                                      null);
+          System.out.println("Yeah, It's a list");
         }
 
       }

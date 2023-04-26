@@ -1,25 +1,13 @@
-/*
- * Copyright © 2023 Frank Hossfeld, Philipp Kohl
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.github.nalukit.malio.processor.constraints.generator;
 
+import com.github.nalukit.malio.processor.Constants;
 import com.github.nalukit.malio.processor.ProcessorException;
-import com.github.nalukit.malio.processor.constraints.AbstractConstraint;
+import com.github.nalukit.malio.processor.exceptions.UnsupportedTypeException;
 import com.github.nalukit.malio.processor.util.BuildWithMalioCommentProvider;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.MaxValue;
+import com.github.nalukit.malio.shared.internal.constraints.AbstractMaxValueConstraint;
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
@@ -27,29 +15,38 @@ import javax.annotation.processing.Filer;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import java.util.Arrays;
 
 public class ConstraintMaxValueGenerator
     extends AbstractGenerator {
-
-  private AbstractConstraint<MaxValue> constraint;
+  private Element         validatorElement;
+  private VariableElement variableElement;
 
   private ConstraintMaxValueGenerator(Builder builder) {
-    this.elements       = builder.elements;
-    this.types          = builder.types;
-    this.filer          = builder.filer;
-    this.processorUtils = builder.processorUtils;
-    this.constraint     = builder.constraint;
+    this.validatorElement = builder.validatorElement;
+    this.variableElement  = builder.variableElement;
+    this.elements         = builder.elements;
+    this.types            = builder.types;
+    this.filer            = builder.filer;
+    this.processorUtils   = builder.processorUtils;
   }
 
   public static Builder builder() {
     return new Builder();
   }
 
-  public void generate(Element validatorElement,
-                       VariableElement variableElement)
+  public void generate()
       throws ProcessorException {
+
+    if (!processorUtils.checkDataType(variableElement,
+            Arrays.asList(TypeKind.INT, TypeKind.LONG),
+            Arrays.asList(Integer.class, Long.class))) {
+      throw new UnsupportedTypeException("Type '" + variableElement.asType()  + "' not supported for " + getClass().getSimpleName());
+    }
+
 
     TypeSpec.Builder typeSpec = createConstraintTypeSpec(validatorElement,
                                                          variableElement);
@@ -66,9 +63,14 @@ public class ConstraintMaxValueGenerator
                                                               .value())
 
                                  .build());
-
+    typeSpec.addMethod(MethodSpec.methodBuilder("getErrorMessage")
+                                 .addModifiers(Modifier.PROTECTED)
+                                 .addAnnotation(ClassName.get(Override.class))
+                                 .returns(ClassName.get(String.class))
+                                 .addStatement("return \"noch mit error messages aus Properties ersetzen (wegen locale und so) ....\"")
+                                 .build());
     super.writeFile(variableElement,
-                    constraint.getImplementationName(),
+                    Constants.MALIO_CONSTRAINT_MAXVALUE_IMPL_NAME,
                     typeSpec);
   }
 
@@ -78,21 +80,31 @@ public class ConstraintMaxValueGenerator
                                                                                 .toString(),
                                                                 variableElement.getSimpleName()
                                                                                .toString(),
-                                                                constraint.getImplementationName()))
+                                                                Constants.MALIO_CONSTRAINT_MAXVALUE_IMPL_NAME))
                    .addJavadoc(BuildWithMalioCommentProvider.INSTANCE.getGeneratedComment())
-                   .superclass(constraint.getValidationClass(variableElement))
+                   .superclass(ClassName.get(AbstractMaxValueConstraint.class))
                    .addModifiers(Modifier.PUBLIC,
                                  Modifier.FINAL);
   }
 
   public static class Builder {
 
-    Elements       elements;
-    Types          types;
-    Filer          filer;
-    ProcessorUtils processorUtils;
+    Element         validatorElement;
+    VariableElement variableElement;
+    Elements        elements;
+    Types           types;
+    Filer           filer;
+    ProcessorUtils  processorUtils;
 
-    AbstractConstraint<MaxValue> constraint;
+    public Builder validatorElement(Element validatorElement) {
+      this.validatorElement = validatorElement;
+      return this;
+    }
+
+    public Builder variableElement(Element variableElement) {
+      this.variableElement = (VariableElement) variableElement;
+      return this;
+    }
 
     public Builder elements(Elements elements) {
       this.elements = elements;
@@ -111,11 +123,6 @@ public class ConstraintMaxValueGenerator
 
     public Builder processorUtils(ProcessorUtils processorUtils) {
       this.processorUtils = processorUtils;
-      return this;
-    }
-
-    public Builder constraint(AbstractConstraint<MaxValue> constraint) {
-      this.constraint = constraint;
       return this;
     }
 

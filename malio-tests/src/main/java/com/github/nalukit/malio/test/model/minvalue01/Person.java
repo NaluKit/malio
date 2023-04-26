@@ -1,22 +1,8 @@
-/*
- * Copyright © 2023 Frank Hossfeld, Philipp Kohl
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.github.nalukit.malio.test.model.minvalue01;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.DecimalMinValue;
+import com.github.nalukit.malio.shared.annotation.field.MaxValue;
 import com.github.nalukit.malio.shared.annotation.field.MinValue;
 
 import java.math.BigDecimal;
@@ -29,17 +15,27 @@ public class Person {
     @MinValue(18)
     private int age;
 
+//    @MinValue(0.1)
+    private float taxRate;
+
     @MinValue(5)
     private Integer complexTypeTest;
+
+    @DecimalMinValue("0")
+    private BigDecimal bankAccount;
 
     public Person() {
     }
 
     public Person(String name,
                   int age,
+                  float taxRate,
+                  BigDecimal bankAccount,
                   Integer complexTypeTest) {
         this.name = name;
         this.age = age;
+        this.taxRate = taxRate;
+        this.bankAccount = bankAccount;
         this.complexTypeTest = complexTypeTest;
     }
 
@@ -57,6 +53,22 @@ public class Person {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public float getTaxRate() {
+        return taxRate;
+    }
+
+    public void setTaxRate(float taxRate) {
+        this.taxRate = taxRate;
+    }
+
+    public BigDecimal getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(BigDecimal bankAccount) {
+        this.bankAccount = bankAccount;
     }
 
     public Integer getComplexTypeTest() {

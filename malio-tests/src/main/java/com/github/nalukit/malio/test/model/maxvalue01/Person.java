@@ -1,23 +1,10 @@
-/*
- * Copyright © 2023 Frank Hossfeld, Philipp Kohl
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.github.nalukit.malio.test.model.maxvalue01;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.DecimalMaxValue;
 import com.github.nalukit.malio.shared.annotation.field.MaxValue;
+import com.github.nalukit.malio.shared.annotation.field.NotNull;
+import com.github.nalukit.malio.test.model.notnull01.Address;
 
 import java.math.BigDecimal;
 
@@ -35,16 +22,26 @@ public class Person {
     @MaxValue(123)
     private Integer complexTypeTest;
 
+//    @MaxValue(10)
+    private float taxRate;
+
+    @DecimalMaxValue("100000")
+    private BigDecimal bankAccount;
+
     public Person() {
     }
 
     public Person(String name,
                   int age,
+                  float taxRate,
                   long numberChildren,
+                  BigDecimal bankAccount,
                   Integer complexTypeTest) {
         this.name = name;
         this.age = age;
+        this.taxRate = taxRate;
         this.numberChildren = numberChildren;
+        this.bankAccount = bankAccount;
         this.complexTypeTest = complexTypeTest;
     }
 
@@ -62,6 +59,22 @@ public class Person {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public float getTaxRate() {
+        return taxRate;
+    }
+
+    public void setTaxRate(float taxRate) {
+        this.taxRate = taxRate;
+    }
+
+    public BigDecimal getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(BigDecimal bankAccount) {
+        this.bankAccount = bankAccount;
     }
 
     public long getNumberChildren() {
