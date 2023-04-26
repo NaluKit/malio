@@ -1,15 +1,13 @@
 package com.github.nalukit.malio.processor;
 
-import com.github.nalukit.malio.processor.constraints.AbstractConstraint;
-import com.github.nalukit.malio.processor.constraints.MaxValueConstraint;
+import com.github.nalukit.malio.processor.constraints.*;
 import com.github.nalukit.malio.processor.constraints.generator.*;
-import com.github.nalukit.malio.processor.constraints.scanner.*;
+import com.github.nalukit.malio.processor.constraints.scanner.ValidatorScanner;
 import com.github.nalukit.malio.processor.model.ConstraintModel;
 import com.github.nalukit.malio.processor.model.ValidatorModel;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.Malio;
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
-import com.github.nalukit.malio.shared.annotation.field.*;
 import com.google.auto.service.AutoService;
 import com.google.common.base.Stopwatch;
 
@@ -20,6 +18,7 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -120,262 +119,21 @@ public class MalioProcessor
 
 
       /* experimental */
-//    for (AbstractConstraint constraint: this.constraints) {
-//      for (Object uncElement : constraint.getDiesDas((TypeElement) element)) {
-//        Element variableElement = (Element) uncElement;
-//
-//        //constraint.scanner.;
-//        ConstraintModel constraintModel = ConstraintBlacklistScanner.builder()
-//                .elements(this.processingEnv.getElementUtils())
-//                .types(this.processingEnv.getTypeUtils())
-//                .validatorElement(element)
-//                .variableElement(variableElement)
-//                .processorUtils(this.processorUtils)
-//                .build()
-//                .createConstraintModel();
-//        constraintsPerVariable.add(constraintModel);
-//
-//
-//        ConstraintBlacklistGenerator.builder()
-//                .elements(this.processingEnv.getElementUtils())
-//                .filer(this.processingEnv.getFiler())
-//                .types(this.processingEnv.getTypeUtils())
-//                .validatorElement(element)
-//                .variableElement(variableElement)
-//                .processorUtils(this.processorUtils)
-//                .build()
-//                .generate();
-//      }
-//    }
-      /* experimental */
+    for (AbstractConstraint constraint: this.constraints) {
+      for (Object varWithAnnotation : constraint.getVarsWithAnnotation((TypeElement) element)) {
+        Element elementWithAnnotation = (Element) varWithAnnotation;
+        VariableElement variableElement = (VariableElement) elementWithAnnotation;
 
-    this.createConstraintNotNull(element, constraintsPerVariable);
-    this.createConstraintMaxLength(element, constraintsPerVariable);
-    this.createConstraintMinLength(element, constraintsPerVariable);
-    this.createConstraintMaxValue(element, constraintsPerVariable);
-    this.createConstraintMinValue(element, constraintsPerVariable);
-    this.createConstraintRegexp(element, constraintsPerVariable);
-    this.createConstraintWhitelist(element, constraintsPerVariable);
-    this.createConstraintBlacklist(element, constraintsPerVariable);
+        constraintsPerVariable.add(constraint.createConstraintModel(element, elementWithAnnotation));
+        constraint.check(variableElement);
+        constraint.getGenerator().generate(element, variableElement);
+      }
+    }
+      /* experimental */
     // TODO add more constraints
     return constraintsPerVariable;
   }
 
-  private void createConstraintBlacklist(Element element,
-                                         List<ConstraintModel> constraintList)
-          throws ProcessorException {
-    for (Element variableElement : this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnv,
-            (TypeElement) element,
-            Blacklist.class)) {
-      ConstraintModel constraintModel = ConstraintBlacklistScanner.builder()
-              .elements(this.processingEnv.getElementUtils())
-              .types(this.processingEnv.getTypeUtils())
-              .validatorElement(element)
-              .variableElement(variableElement)
-              .processorUtils(this.processorUtils)
-              .build()
-              .createConstraintModel();
-      ConstraintBlacklistGenerator.builder()
-              .elements(this.processingEnv.getElementUtils())
-              .filer(this.processingEnv.getFiler())
-              .types(this.processingEnv.getTypeUtils())
-              .validatorElement(element)
-              .variableElement(variableElement)
-              .processorUtils(this.processorUtils)
-              .build()
-              .generate();
-      constraintList.add(constraintModel);
-    }
-  }
-
-  private void createConstraintWhitelist(Element element,
-                                        List<ConstraintModel> constraintList)
-          throws ProcessorException {
-    for (Element variableElement : this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnv,
-            (TypeElement) element,
-            Whitelist.class)) {
-      ConstraintModel constraintModel = ConstraintWhitelistScanner.builder()
-              .elements(this.processingEnv.getElementUtils())
-              .types(this.processingEnv.getTypeUtils())
-              .validatorElement(element)
-              .variableElement(variableElement)
-              .processorUtils(this.processorUtils)
-              .build()
-              .createConstraintModel();
-      ConstraintWhitelistGenerator.builder()
-              .elements(this.processingEnv.getElementUtils())
-              .filer(this.processingEnv.getFiler())
-              .types(this.processingEnv.getTypeUtils())
-              .validatorElement(element)
-              .variableElement(variableElement)
-              .processorUtils(this.processorUtils)
-              .build()
-              .generate();
-      constraintList.add(constraintModel);
-    }
-  }
-  private void createConstraintMaxValue(Element element,
-                                         List<ConstraintModel> constraintList)
-          throws ProcessorException {
-    List<Element> varsWithAnnotation = this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnv,
-            (TypeElement) element,
-            MaxValue.class);
-    for (Element variableElement : varsWithAnnotation) {
-      ConstraintModel constraintModel = ConstraintMaxValueScanner.builder()
-              .elements(this.processingEnv.getElementUtils())
-              .types(this.processingEnv.getTypeUtils())
-              .validatorElement(element)
-              .variableElement(variableElement)
-              .processorUtils(this.processorUtils)
-              .build()
-              .createConstraintModel();
-      ConstraintMaxValueGenerator.builder()
-              .elements(this.processingEnv.getElementUtils())
-              .filer(this.processingEnv.getFiler())
-              .types(this.processingEnv.getTypeUtils())
-              .validatorElement(element)
-              .variableElement(variableElement)
-              .processorUtils(this.processorUtils)
-              .build()
-              .generate();
-      constraintList.add(constraintModel);
-    }
-  }
-
-  private void createConstraintRegexp(Element element,
-                                        List<ConstraintModel> constraintList)
-          throws ProcessorException {
-    for (Element variableElement : this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnv,
-            (TypeElement) element,
-            Regexp.class)) {
-      ConstraintModel constraintModel = ConstraintRegexpScanner.builder()
-              .elements(this.processingEnv.getElementUtils())
-              .types(this.processingEnv.getTypeUtils())
-              .validatorElement(element)
-              .variableElement(variableElement)
-              .processorUtils(this.processorUtils)
-              .build()
-              .createConstraintModel();
-      ConstraintRegexpGenerator.builder()
-              .elements(this.processingEnv.getElementUtils())
-              .filer(this.processingEnv.getFiler())
-              .types(this.processingEnv.getTypeUtils())
-              .validatorElement(element)
-              .variableElement(variableElement)
-              .processorUtils(this.processorUtils)
-              .build()
-              .generate();
-      constraintList.add(constraintModel);
-    }
-  }
-
-  private void createConstraintMinValue(Element element,
-                                        List<ConstraintModel> constraintList)
-          throws ProcessorException {
-    for (Element variableElement : this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnv,
-            (TypeElement) element,
-            MinValue.class)) {
-      ConstraintModel constraintModel = ConstraintMinValueScanner.builder()
-              .elements(this.processingEnv.getElementUtils())
-              .types(this.processingEnv.getTypeUtils())
-              .validatorElement(element)
-              .variableElement(variableElement)
-              .processorUtils(this.processorUtils)
-              .build()
-              .createConstraintModel();
-      ConstraintMinValueGenerator.builder()
-              .elements(this.processingEnv.getElementUtils())
-              .filer(this.processingEnv.getFiler())
-              .types(this.processingEnv.getTypeUtils())
-              .validatorElement(element)
-              .variableElement(variableElement)
-              .processorUtils(this.processorUtils)
-              .build()
-              .generate();
-      constraintList.add(constraintModel);
-    }
-  }
-
-  private void createConstraintMaxLength(Element element,
-                                         List<ConstraintModel> constraintList)
-      throws ProcessorException {
-    for (Element variableElement : this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnv,
-                                                                                                (TypeElement) element,
-                                                                                                MaxLength.class)) {
-      ConstraintModel constraintModel = ConstraintMaxLengthScanner.builder()
-                                                                  .elements(this.processingEnv.getElementUtils())
-                                                                  .types(this.processingEnv.getTypeUtils())
-                                                                  .validatorElement(element)
-                                                                  .variableElement(variableElement)
-                                                                  .processorUtils(this.processorUtils)
-                                                                  .build()
-                                                                  .createConstraintModel();
-      ConstraintMaxLengthGenerator.builder()
-                                  .elements(this.processingEnv.getElementUtils())
-                                  .filer(this.processingEnv.getFiler())
-                                  .types(this.processingEnv.getTypeUtils())
-                                  .validatorElement(element)
-                                  .variableElement(variableElement)
-                                  .processorUtils(this.processorUtils)
-                                  .build()
-                                  .generate();
-      constraintList.add(constraintModel);
-    }
-  }
-
-  private void createConstraintMinLength(Element element,
-                                         List<ConstraintModel> constraintList)
-          throws ProcessorException {
-    for (Element variableElement : this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnv,
-            (TypeElement) element,
-            MinLength.class)) {
-      ConstraintModel constraintModel = ConstraintMinLengthScanner.builder()
-              .elements(this.processingEnv.getElementUtils())
-              .types(this.processingEnv.getTypeUtils())
-              .validatorElement(element)
-              .variableElement(variableElement)
-              .processorUtils(this.processorUtils)
-              .build()
-              .createConstraintModel();
-      ConstraintMinLengthGenerator.builder()
-              .elements(this.processingEnv.getElementUtils())
-              .filer(this.processingEnv.getFiler())
-              .types(this.processingEnv.getTypeUtils())
-              .validatorElement(element)
-              .variableElement(variableElement)
-              .processorUtils(this.processorUtils)
-              .build()
-              .generate();
-      constraintList.add(constraintModel);
-    }
-  }
-
-  private void createConstraintNotNull(Element element,
-                                       List<ConstraintModel> constraintList)
-      throws ProcessorException {
-    for (Element variableElement : this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnv,
-                                                                                                (TypeElement) element,
-                                                                                                NotNull.class)) {
-      ConstraintModel constraintModel = ConstraintNotNullScanner.builder()
-                                                                .elements(this.processingEnv.getElementUtils())
-                                                                .types(this.processingEnv.getTypeUtils())
-                                                                .validatorElement(element)
-                                                                .variableElement(variableElement)
-                                                                .processorUtils(this.processorUtils)
-                                                                .build()
-                                                                .createConstraintModel();
-      ConstraintNotNullGenerator.builder()
-                                .elements(this.processingEnv.getElementUtils())
-                                .filer(this.processingEnv.getFiler())
-                                .types(this.processingEnv.getTypeUtils())
-                                .validatorElement(element)
-                                .variableElement(variableElement)
-                                .processorUtils(this.processorUtils)
-                                .build()
-                                .generate();
-      constraintList.add(constraintModel);
-    }
-  }
 
   private void createValidator(Element validatorElement,
                                List<ConstraintModel> constraintList)
@@ -393,17 +151,84 @@ public class MalioProcessor
                       .types(this.processingEnv.getTypeUtils())
                       .constraintList(constraintList)
                       .subValidatorList(subValidatorList)
-                      .validatorElement(validatorElement)
                       .processorUtils(this.processorUtils)
                       .build()
-                      .generate();
+                      .generate(validatorElement, null);
   }
 
   private void setUp() {
     this.processorUtils = ProcessorUtils.builder()
                                         .processingEnvironment(processingEnv)
                                         .build();
-    this.constraints = Arrays.asList(new MaxValueConstraint(this.processingEnv, this.processorUtils));
+
+    MaxValueConstraint maxValueConstraint = new MaxValueConstraint(this.processingEnv, this.processorUtils,
+            ConstraintMaxValueGenerator.builder()
+                    .elements(this.processingEnv.getElementUtils())
+                    .filer(this.processingEnv.getFiler())
+                    .types(this.processingEnv.getTypeUtils())
+                    .processorUtils(this.processorUtils)
+                    .build());
+
+    MinValueConstraint minValueConstraint = new MinValueConstraint(this.processingEnv, this.processorUtils,
+            ConstraintMinValueGenerator.builder()
+                    .elements(this.processingEnv.getElementUtils())
+                    .filer(this.processingEnv.getFiler())
+                    .types(this.processingEnv.getTypeUtils())
+                    .processorUtils(this.processorUtils)
+                    .build());
+
+    MaxLengthConstraint maxLengthConstraint = new MaxLengthConstraint(this.processingEnv, this.processorUtils,
+            ConstraintMaxLengthGenerator.builder()
+                    .elements(this.processingEnv.getElementUtils())
+                    .filer(this.processingEnv.getFiler())
+                    .types(this.processingEnv.getTypeUtils())
+                    .processorUtils(this.processorUtils)
+                    .build());
+
+    MinLengthConstraint minLengthConstraint = new MinLengthConstraint(this.processingEnv, this.processorUtils,
+            ConstraintMinLengthGenerator.builder()
+                    .elements(this.processingEnv.getElementUtils())
+                    .filer(this.processingEnv.getFiler())
+                    .types(this.processingEnv.getTypeUtils())
+                    .processorUtils(this.processorUtils)
+                    .build());
+
+    BlacklistConstraint blacklistConstraint = new BlacklistConstraint(this.processingEnv, this.processorUtils,
+            ConstraintBlacklistGenerator.builder()
+                    .elements(this.processingEnv.getElementUtils())
+                    .filer(this.processingEnv.getFiler())
+                    .types(this.processingEnv.getTypeUtils())
+                    .processorUtils(this.processorUtils)
+                    .build());
+
+    WhitelistConstraint whitelistConstraint = new WhitelistConstraint(this.processingEnv, this.processorUtils,
+            ConstraintWhitelistGenerator.builder()
+                    .elements(this.processingEnv.getElementUtils())
+                    .filer(this.processingEnv.getFiler())
+                    .types(this.processingEnv.getTypeUtils())
+                    .processorUtils(this.processorUtils)
+                    .build());
+
+    NotNullConstraint notNullConstraint = new NotNullConstraint(this.processingEnv, this.processorUtils,
+            ConstraintNotNullGenerator.builder()
+                    .elements(this.processingEnv.getElementUtils())
+                    .filer(this.processingEnv.getFiler())
+                    .types(this.processingEnv.getTypeUtils())
+                    .processorUtils(this.processorUtils)
+                    .build());
+
+    RegexpConstraint regexpConstraint = new RegexpConstraint(this.processingEnv, this.processorUtils,
+            ConstraintRegexpGenerator.builder()
+                    .elements(this.processingEnv.getElementUtils())
+                    .filer(this.processingEnv.getFiler())
+                    .types(this.processingEnv.getTypeUtils())
+                    .processorUtils(this.processorUtils)
+                    .build());
+
+    this.constraints = Arrays.asList(notNullConstraint, regexpConstraint,
+            maxValueConstraint, minValueConstraint,
+            maxLengthConstraint, minLengthConstraint,
+            blacklistConstraint, whitelistConstraint);
   }
 
 }

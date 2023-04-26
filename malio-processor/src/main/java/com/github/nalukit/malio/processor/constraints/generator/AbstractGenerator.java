@@ -7,6 +7,7 @@ import com.squareup.javapoet.TypeSpec;
 
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.io.IOException;
@@ -24,7 +25,7 @@ public abstract class AbstractGenerator {
   protected String createConstraintClassName(String modelName,
                                            String fieldName,
                                            String postFix) {
-    return this.processorUtils.setFirstCharacterToUpperCase(modelName) +
+    return modelName +
            "_" +
            this.processorUtils.setFirstCharacterToUpperCase(fieldName) +
            "_" +
@@ -49,4 +50,5 @@ public abstract class AbstractGenerator {
     }
   }
 
+  abstract public void generate(Element validatorElement, VariableElement variableElement) throws ProcessorException;
 }

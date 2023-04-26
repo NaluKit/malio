@@ -22,12 +22,8 @@ import java.util.Arrays;
 
 public class ConstraintMaxValueGenerator
     extends AbstractGenerator {
-  private Element         validatorElement;
-  private VariableElement variableElement;
 
   private ConstraintMaxValueGenerator(Builder builder) {
-    this.validatorElement = builder.validatorElement;
-    this.variableElement  = builder.variableElement;
     this.elements         = builder.elements;
     this.types            = builder.types;
     this.filer            = builder.filer;
@@ -38,15 +34,8 @@ public class ConstraintMaxValueGenerator
     return new Builder();
   }
 
-  public void generate()
+  public void generate(Element validatorElement, VariableElement variableElement)
       throws ProcessorException {
-
-    if (!processorUtils.checkDataType(variableElement,
-            Arrays.asList(TypeKind.INT, TypeKind.LONG),
-            Arrays.asList(Integer.class, Long.class))) {
-      throw new UnsupportedTypeException("Type '" + variableElement.asType()  + "' not supported for " + getClass().getSimpleName());
-    }
-
 
     TypeSpec.Builder typeSpec = createConstraintTypeSpec(validatorElement,
                                                          variableElement);
@@ -89,22 +78,10 @@ public class ConstraintMaxValueGenerator
 
   public static class Builder {
 
-    Element         validatorElement;
-    VariableElement variableElement;
     Elements        elements;
     Types           types;
     Filer           filer;
     ProcessorUtils  processorUtils;
-
-    public Builder validatorElement(Element validatorElement) {
-      this.validatorElement = validatorElement;
-      return this;
-    }
-
-    public Builder variableElement(Element variableElement) {
-      this.variableElement = (VariableElement) variableElement;
-      return this;
-    }
 
     public Builder elements(Elements elements) {
       this.elements = elements;
