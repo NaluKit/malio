@@ -2,6 +2,7 @@ package com.github.nalukit.malio.processor.constraints.generator;
 
 import com.github.nalukit.malio.processor.Constants;
 import com.github.nalukit.malio.processor.ProcessorException;
+import com.github.nalukit.malio.processor.constraints.AbstractConstraint;
 import com.github.nalukit.malio.processor.util.BuildWithMalioCommentProvider;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.Blacklist;
@@ -19,16 +20,15 @@ import javax.lang.model.util.Types;
 
 public class ConstraintBlacklistGenerator
         extends AbstractGenerator {
-    private Element validatorElement;
-    private VariableElement variableElement;
+
+    private AbstractConstraint<Blacklist> constraint;
 
     private ConstraintBlacklistGenerator(Builder builder) {
-        this.validatorElement = builder.validatorElement;
-        this.variableElement = builder.variableElement;
         this.elements = builder.elements;
         this.types = builder.types;
         this.filer = builder.filer;
         this.processorUtils = builder.processorUtils;
+        this.constraint = builder.constraint;
     }
 
     public static Builder builder() {
@@ -60,7 +60,7 @@ public class ConstraintBlacklistGenerator
                 .addStatement("return \"noch mit error messages aus Properties ersetzen (wegen locale und so) ....\"")
                 .build());
         super.writeFile(variableElement,
-                Constants.MALIO_CONSTRAINT_BLACKLIST_IMPL_NAME,
+                constraint.getImplementationName(),
                 typeSpec);
     }
 
@@ -70,7 +70,7 @@ public class ConstraintBlacklistGenerator
                                 .toString(),
                         variableElement.getSimpleName()
                                 .toString(),
-                        Constants.MALIO_CONSTRAINT_BLACKLIST_IMPL_NAME))
+                        constraint.getImplementationName()))
                 .addJavadoc(BuildWithMalioCommentProvider.INSTANCE.getGeneratedComment())
                 .superclass(ClassName.get(AbstractBlacklistConstraint.class))
                 .addModifiers(Modifier.PUBLIC,
@@ -78,23 +78,12 @@ public class ConstraintBlacklistGenerator
     }
 
     public static class Builder {
-
-        Element validatorElement;
-        VariableElement variableElement;
         Elements elements;
         Types types;
         Filer filer;
         ProcessorUtils processorUtils;
+        AbstractConstraint<Blacklist> constraint;
 
-        public Builder validatorElement(Element validatorElement) {
-            this.validatorElement = validatorElement;
-            return this;
-        }
-
-        public Builder variableElement(Element variableElement) {
-            this.variableElement = (VariableElement) variableElement;
-            return this;
-        }
 
         public Builder elements(Elements elements) {
             this.elements = elements;
@@ -113,6 +102,11 @@ public class ConstraintBlacklistGenerator
 
         public Builder processorUtils(ProcessorUtils processorUtils) {
             this.processorUtils = processorUtils;
+            return this;
+        }
+
+        public Builder constraint(AbstractConstraint<Blacklist> constraint) {
+            this.constraint = constraint;
             return this;
         }
 

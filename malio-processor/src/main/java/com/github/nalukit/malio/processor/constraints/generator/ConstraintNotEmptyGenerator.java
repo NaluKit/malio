@@ -1,25 +1,13 @@
-/*
- * Copyright © 2023 Frank Hossfeld, Philipp Kohl
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.github.nalukit.malio.processor.constraints.generator;
 
+import com.github.nalukit.malio.processor.Constants;
 import com.github.nalukit.malio.processor.ProcessorException;
 import com.github.nalukit.malio.processor.constraints.AbstractConstraint;
 import com.github.nalukit.malio.processor.util.BuildWithMalioCommentProvider;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.NotEmpty;
+import com.github.nalukit.malio.shared.internal.constraints.AbstractNotEmptyConstraint;
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
@@ -34,21 +22,19 @@ public class ConstraintNotEmptyGenerator
     extends AbstractGenerator {
 
   private AbstractConstraint<NotEmpty> constraint;
-
   private ConstraintNotEmptyGenerator(Builder builder) {
-    this.elements       = builder.elements;
-    this.types          = builder.types;
-    this.filer          = builder.filer;
-    this.processorUtils = builder.processorUtils;
-    this.constraint     = builder.constraint;
+    this.elements         = builder.elements;
+    this.types            = builder.types;
+    this.filer            = builder.filer;
+    this.processorUtils   = builder.processorUtils;
+    this.constraint = builder.constraint;
   }
 
   public static Builder builder() {
     return new Builder();
   }
 
-  public void generate(Element validatorElement,
-                       VariableElement variableElement)
+  public void generate(Element validatorElement, VariableElement variableElement)
       throws ProcessorException {
     TypeSpec.Builder typeSpec = createConstraintTypeSpec(validatorElement,
                                                          variableElement);
@@ -63,9 +49,14 @@ public class ConstraintNotEmptyGenerator
                                                               .toString())
 
                                  .build());
-
+    typeSpec.addMethod(MethodSpec.methodBuilder("getErrorMessage")
+                                 .addModifiers(Modifier.PROTECTED)
+                                 .addAnnotation(ClassName.get(Override.class))
+                                 .returns(ClassName.get(String.class))
+                                 .addStatement("return \"noch mit error messages aus Properties ersetzen (wegen locale und so) ....\"")
+                                 .build());
     super.writeFile(variableElement,
-                    constraint.getImplementationName(),
+            constraint.getImplementationName(),
                     typeSpec);
   }
 
@@ -75,7 +66,7 @@ public class ConstraintNotEmptyGenerator
                                                                                 .toString(),
                                                                 variableElement.getSimpleName()
                                                                                .toString(),
-                                                                constraint.getImplementationName()))
+                    constraint.getImplementationName()))
                    .addJavadoc(BuildWithMalioCommentProvider.INSTANCE.getGeneratedComment())
                    .superclass(constraint.getValidationClass(variableElement))
                    .addModifiers(Modifier.PUBLIC,
@@ -84,10 +75,10 @@ public class ConstraintNotEmptyGenerator
 
   public static class Builder {
 
-    Elements                     elements;
-    Types                        types;
-    Filer                        filer;
-    ProcessorUtils               processorUtils;
+    Elements        elements;
+    Types           types;
+    Filer           filer;
+    ProcessorUtils  processorUtils;
     AbstractConstraint<NotEmpty> constraint;
 
     public Builder elements(Elements elements) {

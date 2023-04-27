@@ -2,6 +2,7 @@ package com.github.nalukit.malio.processor.constraints.generator;
 
 import com.github.nalukit.malio.processor.Constants;
 import com.github.nalukit.malio.processor.ProcessorException;
+import com.github.nalukit.malio.processor.constraints.AbstractConstraint;
 import com.github.nalukit.malio.processor.util.BuildWithMalioCommentProvider;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.MinValue;
@@ -19,16 +20,15 @@ import javax.lang.model.util.Types;
 
 public class ConstraintMinValueGenerator
     extends AbstractGenerator {
-  private Element         validatorElement;
-  private VariableElement variableElement;
+
+  private AbstractConstraint<MinValue> constraint;
 
   private ConstraintMinValueGenerator(Builder builder) {
-    this.validatorElement = builder.validatorElement;
-    this.variableElement  = builder.variableElement;
     this.elements         = builder.elements;
     this.types            = builder.types;
     this.filer            = builder.filer;
     this.processorUtils   = builder.processorUtils;
+    this.constraint = builder.constraint;
   }
 
   public static Builder builder() {
@@ -59,7 +59,7 @@ public class ConstraintMinValueGenerator
                                  .addStatement("return \"noch mit error messages aus Properties ersetzen (wegen locale und so) ....\"")
                                  .build());
     super.writeFile(variableElement,
-                    Constants.MALIO_CONSTRAINT_MINVALUE_IMPL_NAME,
+            constraint.getImplementationName(),
                     typeSpec);
   }
 
@@ -69,31 +69,20 @@ public class ConstraintMinValueGenerator
                                                                                 .toString(),
                                                                 variableElement.getSimpleName()
                                                                                .toString(),
-                                                                Constants.MALIO_CONSTRAINT_MINVALUE_IMPL_NAME))
+                    constraint.getImplementationName()))
                    .addJavadoc(BuildWithMalioCommentProvider.INSTANCE.getGeneratedComment())
-                   .superclass(ClassName.get(AbstractMinValueConstraint.class))
+                   .superclass(constraint.getValidationClass(variableElement))
                    .addModifiers(Modifier.PUBLIC,
                                  Modifier.FINAL);
   }
 
   public static class Builder {
 
-    Element         validatorElement;
-    VariableElement variableElement;
     Elements        elements;
     Types           types;
     Filer           filer;
     ProcessorUtils  processorUtils;
-
-    public Builder validatorElement(Element validatorElement) {
-      this.validatorElement = validatorElement;
-      return this;
-    }
-
-    public Builder variableElement(Element variableElement) {
-      this.variableElement = (VariableElement) variableElement;
-      return this;
-    }
+    AbstractConstraint<MinValue> constraint;
 
     public Builder elements(Elements elements) {
       this.elements = elements;
@@ -112,6 +101,11 @@ public class ConstraintMinValueGenerator
 
     public Builder processorUtils(ProcessorUtils processorUtils) {
       this.processorUtils = processorUtils;
+      return this;
+    }
+
+    public Builder constraint(AbstractConstraint<MinValue> constraint) {
+      this.constraint = constraint;
       return this;
     }
 

@@ -102,7 +102,6 @@ public class ValidatorScanner
                                                      ValidatorModel.Type.LIST,
                                                      elementOfGenericList,
                                                      null);
-          System.out.println("Yeah, It's a list");
         }
 
       }

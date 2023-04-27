@@ -1,18 +1,18 @@
 package com.github.nalukit.malio.processor.constraints.generator;
 
 import com.github.nalukit.malio.processor.ProcessorException;
+import com.github.nalukit.malio.processor.constraints.AbstractConstraint;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
 
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.io.IOException;
 
-public abstract class AbstractGenerator {
+public abstract class AbstractGenerator implements IsGenerator {
 
   protected Elements       elements;
   protected Types          types;
@@ -49,6 +49,4 @@ public abstract class AbstractGenerator {
                                    e.getMessage());
     }
   }
-
-  abstract public void generate(Element validatorElement, VariableElement variableElement) throws ProcessorException;
 }
