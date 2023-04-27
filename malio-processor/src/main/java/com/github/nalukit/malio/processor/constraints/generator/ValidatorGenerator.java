@@ -9,11 +9,7 @@ import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.internal.validator.AbstractValidator;
 import com.github.nalukit.malio.shared.model.ValidationResult;
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.FieldSpec;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterSpec;
-import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.*;
 
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Element;

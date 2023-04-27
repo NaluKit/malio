@@ -1,7 +1,6 @@
 package com.github.nalukit.malio.test.model.minlength01;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
-import com.github.nalukit.malio.shared.annotation.field.MaxLength;
 import com.github.nalukit.malio.shared.annotation.field.MinLength;
 
 @MalioValidator

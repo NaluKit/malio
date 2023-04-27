@@ -2,8 +2,10 @@ package com.github.nalukit.malio.processor.constraints.generator;
 
 import com.github.nalukit.malio.processor.Constants;
 import com.github.nalukit.malio.processor.ProcessorException;
+import com.github.nalukit.malio.processor.constraints.AbstractConstraint;
 import com.github.nalukit.malio.processor.util.BuildWithMalioCommentProvider;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
+import com.github.nalukit.malio.shared.annotation.field.NotNull;
 import com.github.nalukit.malio.shared.internal.constraints.AbstractNotNullConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
@@ -19,16 +21,13 @@ import javax.lang.model.util.Types;
 
 public class ConstraintNotNullGenerator
     extends AbstractGenerator {
-  private Element         validatorElement;
-  private VariableElement variableElement;
-
+  private AbstractConstraint<NotNull> constraint;
   private ConstraintNotNullGenerator(Builder builder) {
-    this.validatorElement = builder.validatorElement;
-    this.variableElement  = builder.variableElement;
     this.elements         = builder.elements;
     this.types            = builder.types;
     this.filer            = builder.filer;
     this.processorUtils   = builder.processorUtils;
+    this.constraint = builder.constraint;
   }
 
   public static Builder builder() {
@@ -57,7 +56,7 @@ public class ConstraintNotNullGenerator
                                  .addStatement("return \"noch mit error messages aus Properties ersetzen (wegen locale und so) ....\"")
                                  .build());
     super.writeFile(variableElement,
-                    Constants.MALIO_CONSTRAINT_NOT_NULL_IMPL_NAME,
+            constraint.getImplementationName(),
                     typeSpec);
   }
 
@@ -67,32 +66,20 @@ public class ConstraintNotNullGenerator
                                                                                 .toString(),
                                                                 variableElement.getSimpleName()
                                                                                .toString(),
-                                                                Constants.MALIO_CONSTRAINT_NOT_NULL_IMPL_NAME))
+                    constraint.getImplementationName()))
                    .addJavadoc(BuildWithMalioCommentProvider.INSTANCE.getGeneratedComment())
-                   .superclass(ParameterizedTypeName.get(ClassName.get(AbstractNotNullConstraint.class),
-                                                         ClassName.get(variableElement.asType())))
+                   .superclass(constraint.getValidationClass(variableElement))
                    .addModifiers(Modifier.PUBLIC,
                                  Modifier.FINAL);
   }
 
   public static class Builder {
 
-    Element         validatorElement;
-    VariableElement variableElement;
     Elements        elements;
     Types           types;
     Filer           filer;
     ProcessorUtils  processorUtils;
-
-    public Builder validatorElement(Element validatorElement) {
-      this.validatorElement = validatorElement;
-      return this;
-    }
-
-    public Builder variableElement(Element variableElement) {
-      this.variableElement = (VariableElement) variableElement;
-      return this;
-    }
+    AbstractConstraint<NotNull> constraint;
 
     public Builder elements(Elements elements) {
       this.elements = elements;
@@ -111,6 +98,11 @@ public class ConstraintNotNullGenerator
 
     public Builder processorUtils(ProcessorUtils processorUtils) {
       this.processorUtils = processorUtils;
+      return this;
+    }
+
+    public Builder constraint(AbstractConstraint<NotNull> constraint) {
+      this.constraint = constraint;
       return this;
     }
 

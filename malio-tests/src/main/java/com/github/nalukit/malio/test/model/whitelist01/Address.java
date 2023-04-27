@@ -1,7 +1,6 @@
 package com.github.nalukit.malio.test.model.whitelist01;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
-import com.github.nalukit.malio.shared.annotation.field.Blacklist;
 import com.github.nalukit.malio.shared.annotation.field.Whitelist;
 
 @MalioValidator

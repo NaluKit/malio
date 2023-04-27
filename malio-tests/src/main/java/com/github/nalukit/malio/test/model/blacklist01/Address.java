@@ -2,7 +2,6 @@ package com.github.nalukit.malio.test.model.blacklist01;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.Blacklist;
-import com.github.nalukit.malio.shared.annotation.field.MaxLength;
 
 @MalioValidator
 public class Address {

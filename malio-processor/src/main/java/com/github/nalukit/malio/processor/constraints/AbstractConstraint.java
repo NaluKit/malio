@@ -1,10 +1,13 @@
 package com.github.nalukit.malio.processor.constraints;
 
+import com.github.nalukit.malio.processor.ProcessorException;
 import com.github.nalukit.malio.processor.constraints.generator.AbstractGenerator;
+import com.github.nalukit.malio.processor.constraints.generator.IsGenerator;
 import com.github.nalukit.malio.processor.exceptions.UnsupportedTypeException;
 import com.github.nalukit.malio.processor.model.ConstraintModel;
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
+import com.squareup.javapoet.TypeName;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
@@ -14,16 +17,14 @@ import javax.lang.model.type.TypeKind;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-public abstract class AbstractConstraint<T extends Annotation> {
-    private AbstractGenerator generator;
+public abstract class AbstractConstraint<T extends Annotation> implements IsGenerator {
 
-    protected ProcessingEnvironment processingEnvironment;
-    protected ProcessorUtils processorUtils;
+    protected final ProcessingEnvironment processingEnvironment;
+    protected final ProcessorUtils processorUtils;
 
-    public AbstractConstraint(ProcessingEnvironment processingEnv, ProcessorUtils processorUtils, AbstractGenerator generator) {
+    public AbstractConstraint(ProcessingEnvironment processingEnv, ProcessorUtils processorUtils) {
         this.processingEnvironment = processingEnv;
         this.processorUtils = processorUtils;
-        this.generator = generator;
     }
 
     public ConstraintModel createConstraintModel(Element varType, Element varName) {
@@ -54,13 +55,17 @@ public abstract class AbstractConstraint<T extends Annotation> {
                 element, this.annotationType());
     }
 
-    protected abstract String getImplementationName();
-    protected abstract ConstraintType getConstraintType();
+    public abstract String getImplementationName();
+    public abstract ConstraintType getConstraintType();
+
+    public abstract TypeName getValidationClass(VariableElement variableElement);
 
     protected abstract List<TypeKind> getSupportedPrimitives();
     protected abstract List<Class> getSupportedDeclaredType();
 
-    public AbstractGenerator getGenerator() {
-        return generator;
+    protected abstract AbstractGenerator createGenerator();
+
+    public void generate(Element validatorElement, VariableElement variableElement) throws ProcessorException {
+        this.createGenerator().generate(validatorElement, variableElement);
     }
 }

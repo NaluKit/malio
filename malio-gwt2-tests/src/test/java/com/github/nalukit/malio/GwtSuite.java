@@ -15,11 +15,7 @@
  */
 package com.github.nalukit.malio;
 
-import com.github.nalukit.malio.test.ValidatorNotNull01Test;
-import com.github.nalukit.malio.test.ValidatorNotNull02Test;
-import com.github.nalukit.malio.test.ValidatorNotNull03Test;
-import com.github.nalukit.malio.test.ValidatorNotNull04Test;
-import com.github.nalukit.malio.test.ValidatorNotNull05Test;
+import com.github.nalukit.malio.test.*;
 import com.google.gwt.junit.tools.GWTTestSuite;
 import junit.framework.Test;
 

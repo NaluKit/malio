@@ -142,6 +142,7 @@ public class ProcessorUtils {
     public boolean checkDeclaredDataType(VariableElement variableElement, Class... classes) {
         DeclaredType typeToCheck = (DeclaredType) variableElement.asType();
         Elements elements = this.processingEnvironment.getElementUtils();
+        Types types = this.processingEnvironment.getTypeUtils();
 
         for (Class c : classes) {
             DeclaredType type = (DeclaredType) elements.getTypeElement(c.getName()).asType();
@@ -150,14 +151,36 @@ public class ProcessorUtils {
                 return true;
             }
         }
+
+        // Check if the parent classes of typeToCheck are in classes
+        List<? extends TypeMirror> typeMirrors = types.directSupertypes(typeToCheck);
+        for (TypeMirror superType : typeMirrors) {
+            DeclaredType declaredSuperType = (DeclaredType) superType;
+
+            for (Class c : classes) {
+                DeclaredType type = (DeclaredType) elements.getTypeElement(c.getName()).asType();
+
+                if (type.asElement().equals(declaredSuperType.asElement())){
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 
     public boolean checkDataType(VariableElement variableElement, List<TypeKind>  typeKind, List<Class> classes) {
         if (variableElement.asType().getKind().isPrimitive()) {
+            if (typeKind == null) {
+                return false;
+            }
             return checkPrimitiveDataType(variableElement, typeKind.toArray(new TypeKind[]{}));
+
         }
 
+        if (classes == null) {
+            return false;
+        }
         return checkDeclaredDataType(variableElement, classes.toArray(new Class[]{}));
     }
 
