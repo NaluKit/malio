@@ -4,8 +4,6 @@ import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 
-import java.util.Objects;
-
 public abstract class AbstractMaxLengthConstraint
     extends AbstractConstraint<String> {
 

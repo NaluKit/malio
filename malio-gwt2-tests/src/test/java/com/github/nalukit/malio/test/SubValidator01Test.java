@@ -9,11 +9,6 @@ import com.github.nalukit.malio.test.model.subvalidator01.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 public class SubValidator01Test
     extends GWTTestCase {
 

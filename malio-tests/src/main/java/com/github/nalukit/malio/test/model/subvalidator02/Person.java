@@ -2,7 +2,6 @@ package com.github.nalukit.malio.test.model.subvalidator02;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
-import com.github.nalukit.malio.test.model.notnull01.Address;
 
 import java.util.List;
 
