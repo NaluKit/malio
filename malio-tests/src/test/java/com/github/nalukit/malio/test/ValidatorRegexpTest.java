@@ -25,6 +25,20 @@ public class ValidatorRegexpTest {
     }
 
     @Test
+    public void testCheckNullOk() throws MalioValidationException {
+        Address model = new Address(null, null, null);
+        AddressMalioValidator.INSTANCE.check(model);
+    }
+
+    @Test
+    public void testValidateNullOk() {
+        Address model = new Address(null, null, null);
+
+        ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
+        assertTrue(result.isValid());
+    }
+
+    @Test
     public void testCheckFail01() {
         Address model = new Address("Street", "123", "City");
 

@@ -25,6 +25,20 @@ public class ValidatorNotBlank01Test {
     }
 
     @Test
+    public void testCheckNullOk() throws MalioValidationException {
+        Person model = new Person(null, null);
+        PersonMalioValidator.INSTANCE.check(model);
+    }
+
+    @Test
+    public void testValidateNullOk() {
+        Person model = new Person(null, null);
+
+        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+        assertTrue(result.isValid());
+    }
+
+    @Test
     public void testCheckFail01() {
         Person model = new Person("", "Bart");
 

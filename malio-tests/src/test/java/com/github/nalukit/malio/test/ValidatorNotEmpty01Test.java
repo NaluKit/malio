@@ -28,6 +28,20 @@ public class ValidatorNotEmpty01Test {
     }
 
     @Test
+    public void testCheckNullOk() throws MalioValidationException {
+        Person model = new Person(null);
+        PersonMalioValidator.INSTANCE.check(model);
+    }
+
+    @Test
+    public void testValidateNullOk() {
+        Person model = new Person(null);
+
+        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+        assertTrue(result.isValid());
+    }
+
+    @Test
     public void testCheckFail01() {
         Person model = new Person(new ArrayList<>());
 

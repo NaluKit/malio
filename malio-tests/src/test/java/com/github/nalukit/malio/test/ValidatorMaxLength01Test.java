@@ -11,14 +11,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ValidatorMaxLength01Test {
 
     @Test
-    public void testCheckOk() {
+    public void testCheckOk() throws MalioValidationException {
         Address model = new Address("Street", "12345", "City");
-
-        try {
-            AddressMalioValidator.INSTANCE.check(model);
-        } catch (MalioValidationException e) {
-            fail();
-        }
+        AddressMalioValidator.INSTANCE.check(model);
     }
 
     @Test
@@ -30,11 +25,24 @@ public class ValidatorMaxLength01Test {
     }
 
     @Test
+    public void testCheckNullOk() throws MalioValidationException {
+        Address model = new Address(null, "12345", "City");
+        AddressMalioValidator.INSTANCE.check(model);
+    }
+
+    @Test
+    public void testValidateNullOk() {
+        Address model = new Address(null, "12345", "City");
+
+        ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
+        assertTrue(result.isValid());
+    }
+
+    @Test
     public void testCheckFail01() {
         Address model = new Address("Street", "123456", "City");
 
         MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> AddressMalioValidator.INSTANCE.check(model));
-//    assertTrue(thrown.getMessage().contentEquals("asd sad "));
     }
 
     @Test

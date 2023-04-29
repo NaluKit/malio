@@ -27,6 +27,33 @@ public class ValidatorDecimalMinValue01Test {
     }
 
     @Test
+    public void testCheckNullOk() throws MalioValidationException {
+        Person model = new Person(null);
+        PersonMalioValidator.INSTANCE.check(model);
+    }
+
+    @Test
+    public void testValidateNullOk() {
+        Person model = new Person(null);
+
+        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+        assertTrue(result.isValid());
+    }
+
+    @Test
+    public void testCheckEdgeOk() throws MalioValidationException {
+        Person model = new Person(BigDecimal.valueOf(0.1));
+        PersonMalioValidator.INSTANCE.check(model);
+    }
+
+    @Test
+    public void testValidateEdgeOk() {
+        Person model = new Person(BigDecimal.valueOf(0.1));
+
+        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+        assertTrue(result.isValid());
+    }
+    @Test
     public void testCheckFail01() {
         Person model = new Person(BigDecimal.valueOf(0.05));
 

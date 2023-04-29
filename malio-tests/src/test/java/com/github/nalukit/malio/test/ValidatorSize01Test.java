@@ -27,14 +27,28 @@ public class ValidatorSize01Test {
     }
 
     @Test
-    public void testCheckFail01() {
+    public void testCheckNullOk() throws MalioValidationException {
+        Person model = new Person(null);
+        PersonMalioValidator.INSTANCE.check(model);
+    }
+
+    @Test
+    public void testValidateNullOk() {
+        Person model = new Person(null);
+
+        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+        assertTrue(result.isValid());
+    }
+
+    @Test
+    public void testCheckFailTooFew() {
         Person model = new Person(Arrays.asList("Card"));
 
         MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
     }
 
     @Test
-    public void testValidateFail01() {
+    public void testValidateFailTooMany() {
         Person model = new Person(Arrays.asList("Card", "Mobile Phone", "Keys", "Sun Creme", "Screws"));
 
         ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
