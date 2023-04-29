@@ -27,6 +27,34 @@ public class ValidatorMinValue01Test {
     }
 
     @Test
+    public void testCheckEdgeOk() throws MalioValidationException {
+        Person model = new Person("Name", 18, 5);
+        PersonMalioValidator.INSTANCE.check(model);
+    }
+
+    @Test
+    public void testValidateEdgeOk() {
+        Person model = new Person("Name", 18, 5);
+
+        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+        assertTrue(result.isValid());
+    }
+
+    @Test
+    public void testCheckNullOk() throws MalioValidationException {
+        Person model = new Person("Name", 20, null);
+        PersonMalioValidator.INSTANCE.check(model);
+    }
+
+    @Test
+    public void testValidateNullOk() {
+        Person model = new Person("Name", 20, null);
+
+        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+        assertTrue(result.isValid());
+    }
+
+    @Test
     public void testCheckFail01() {
         Person model = new Person("Name", 10, 4);
 

@@ -32,6 +32,19 @@ public class ValidatorBlacklist01Test {
     }
 
     @Test
+    public void testCheckNull() throws MalioValidationException {
+        Address model = new Address(null, "123", "City");
+        AddressMalioValidator.INSTANCE.check(model);
+    }
+
+    @Test
+    public void testValidateNull() throws MalioValidationException {
+        Address model = new Address(null, "123", "City");
+        ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
+        assertTrue(result.isValid());
+    }
+
+    @Test
     public void testValidateFail01() {
         Address model = new Address("Secret", "12345", "City");
 
