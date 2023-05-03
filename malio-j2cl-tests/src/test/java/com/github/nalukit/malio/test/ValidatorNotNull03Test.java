@@ -15,16 +15,19 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
+import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.notnull03.Person;
 import com.github.nalukit.malio.test.model.notnull03.PersonMalioValidator;
 import com.github.nalukit.malio.test.model.notnull03.helper.Address;
 import com.google.j2cl.junit.apt.J2clTestInput;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @J2clTestInput(ValidatorNotNull03Test.class)
 public class ValidatorNotNull03Test {

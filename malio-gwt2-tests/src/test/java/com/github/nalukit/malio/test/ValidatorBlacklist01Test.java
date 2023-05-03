@@ -15,8 +15,8 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.model.ValidationResult;
+import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.blacklist01.Address;
 import com.github.nalukit.malio.test.model.blacklist01.AddressMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;

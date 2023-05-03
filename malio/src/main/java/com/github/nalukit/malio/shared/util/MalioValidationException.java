@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.shared;
+package com.github.nalukit.malio.shared.util;
 
-// TODO move class to util package
 @SuppressWarnings("serial")
 public class MalioValidationException
     extends Exception {
