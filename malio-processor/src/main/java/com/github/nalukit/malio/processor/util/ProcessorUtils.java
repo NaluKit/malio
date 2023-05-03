@@ -189,8 +189,9 @@ public class ProcessorUtils {
                 // TODO remove me ... once fixed
                 Element typeEl              = type.asElement();
                 Element declaredSuperTypeEl = declaredSuperType.asElement();
-                System.out.println(typeEl);
-                System.out.println(declaredSuperTypeEl);
+                System.out.println("--- new check");
+                System.out.println("type ->  >>" + typeEl + "<<");
+                System.out.println("´type ->  >>" + "´type ->  >>" + declaredSuperTypeEl + "<<");
 
                 if (type.asElement()
                         .equals(declaredSuperType.asElement())) {
