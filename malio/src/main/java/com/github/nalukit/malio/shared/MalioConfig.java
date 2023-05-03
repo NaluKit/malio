@@ -13,21 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio;
+package com.github.nalukit.malio.shared;
 
-import com.github.nalukit.malio.test.*;
-import com.google.gwt.junit.tools.GWTTestSuite;
-import junit.framework.Test;
+// TODO check if needed ...
+public class MalioConfig {
+  public final static MalioConfig INSTANCE = new MalioConfig();
 
-public class GwtSuite {
-
-  public static Test suite() {
-    GWTTestSuite suite = new GWTTestSuite("Test suite for lib");
-    suite.addTestSuite(ValidatorNotNull01Test.class);
-    suite.addTestSuite(ValidatorNotNull02Test.class);
-    suite.addTestSuite(ValidatorNotNull03Test.class);
-    suite.addTestSuite(ValidatorNotNull04Test.class);
-    suite.addTestSuite(ValidatorNotNull05Test.class);
-    return suite;
+  private MalioConfig() {
   }
 }
