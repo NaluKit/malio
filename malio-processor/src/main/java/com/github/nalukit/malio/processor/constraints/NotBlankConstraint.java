@@ -48,7 +48,7 @@ public class NotBlankConstraint extends AbstractConstraint<NotBlank> {
     }
 
     @Override
-    protected List<Class> getSupportedDeclaredType() {
+    protected List<Class<?>> getSupportedDeclaredType() {
         return Collections.singletonList(String.class);
     }
 

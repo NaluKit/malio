@@ -48,8 +48,9 @@ public class MaxValueConstraint extends AbstractConstraint<MaxValue> {
     }
 
     @Override
-    protected List<Class> getSupportedDeclaredType() {
-        return Arrays.asList(Integer.class, Long.class);
+    protected List<Class<?>> getSupportedDeclaredType() {
+        return Arrays.asList(Integer.class,
+                             Long.class);
     }
 
     @Override

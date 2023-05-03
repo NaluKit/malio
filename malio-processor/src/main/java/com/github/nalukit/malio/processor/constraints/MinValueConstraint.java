@@ -49,8 +49,9 @@ public class MinValueConstraint extends AbstractConstraint<MinValue> {
     }
 
     @Override
-    protected List<Class> getSupportedDeclaredType() {
-        return Arrays.asList(Integer.class, Long.class);
+    protected List<Class<?>> getSupportedDeclaredType() {
+        return Arrays.asList(Integer.class,
+                             Long.class);
     }
 
     @Override

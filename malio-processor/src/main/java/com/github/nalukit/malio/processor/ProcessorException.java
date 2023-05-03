@@ -1,5 +1,6 @@
 package com.github.nalukit.malio.processor;
 
+@SuppressWarnings("serial")
 public class ProcessorException
     extends Exception {
 
