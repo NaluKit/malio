@@ -55,7 +55,13 @@ public abstract class AbstractConstraint<T extends Annotation> implements IsGene
             return;
         }
 
+        // TODO remove me ... once fixed
         if (!processorUtils.checkDataType(variableElement,
+                getSupportedPrimitives(),
+                getSupportedDeclaredType())) {
+            System.out.println("Stopp added for test ...");
+        }
+       if (!processorUtils.checkDataType(variableElement,
                 getSupportedPrimitives(),
                 getSupportedDeclaredType())) {
             throw new UnsupportedTypeException("Type '" + variableElement.asType()  + "' not supported for " + getClass().getSimpleName());
