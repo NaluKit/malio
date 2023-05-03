@@ -14,7 +14,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,7 +49,7 @@ public class MinDecimalValueConstraint extends AbstractConstraint<DecimalMinValu
     }
 
     @Override
-    protected List<Class> getSupportedDeclaredType() {
+    protected List<Class<?>> getSupportedDeclaredType() {
         return Collections.singletonList(BigDecimal.class);
     }
 

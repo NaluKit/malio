@@ -49,7 +49,7 @@ public class NotEmptyConstraint extends AbstractConstraint<NotEmpty> {
     }
 
     @Override
-    protected List<Class> getSupportedDeclaredType() {
+    protected List<Class<?>> getSupportedDeclaredType() {
         return Collections.singletonList(Collection.class);
     }
 

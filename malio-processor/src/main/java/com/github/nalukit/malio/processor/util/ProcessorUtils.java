@@ -2,7 +2,11 @@ package com.github.nalukit.malio.processor.util;
 
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.*;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.PackageElement;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -12,21 +16,24 @@ import javax.tools.Diagnostic;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ProcessorUtils {
 
-    private final Messager messager;
-    private ProcessingEnvironment processingEnvironment;
-
+    private final Messager              messager;
+    private final ProcessingEnvironment processingEnvironment;
 
     @SuppressWarnings("unused")
     private ProcessorUtils(Builder builder) {
         super();
 
         this.processingEnvironment = builder.processingEnvironment;
-        this.messager = builder.processingEnvironment.getMessager();
+        this.messager              = builder.processingEnvironment.getMessager();
     }
 
     public static Builder builder() {
@@ -139,15 +146,18 @@ public class ProcessorUtils {
         return Arrays.asList(typeKind).contains(type.getKind());
     }
 
-    public boolean checkDeclaredDataType(VariableElement variableElement, Class... classes) {
+    public boolean checkDeclaredDataType(VariableElement variableElement,
+                                         Class<?>... classes) {
         DeclaredType typeToCheck = (DeclaredType) variableElement.asType();
-        Elements elements = this.processingEnvironment.getElementUtils();
-        Types types = this.processingEnvironment.getTypeUtils();
+        Elements     elements    = this.processingEnvironment.getElementUtils();
+        Types        types       = this.processingEnvironment.getTypeUtils();
 
-        for (Class c : classes) {
-            DeclaredType type = (DeclaredType) elements.getTypeElement(c.getName()).asType();
+        for (Class<?> c : classes) {
+            DeclaredType type = (DeclaredType) elements.getTypeElement(c.getName())
+                                                       .asType();
 
-            if (type.asElement().equals(typeToCheck.asElement())){
+            if (type.asElement()
+                    .equals(typeToCheck.asElement())) {
                 return true;
             }
         }
@@ -157,10 +167,12 @@ public class ProcessorUtils {
         for (TypeMirror superType : typeMirrors) {
             DeclaredType declaredSuperType = (DeclaredType) superType;
 
-            for (Class c : classes) {
-                DeclaredType type = (DeclaredType) elements.getTypeElement(c.getName()).asType();
+            for (Class<?> c : classes) {
+                DeclaredType type = (DeclaredType) elements.getTypeElement(c.getName())
+                                                           .asType();
 
-                if (type.asElement().equals(declaredSuperType.asElement())){
+                if (type.asElement()
+                        .equals(declaredSuperType.asElement())) {
                     return true;
                 }
             }
@@ -169,19 +181,25 @@ public class ProcessorUtils {
         return false;
     }
 
-    public boolean checkDataType(VariableElement variableElement, List<TypeKind>  typeKind, List<Class> classes) {
-        if (variableElement.asType().getKind().isPrimitive()) {
+    public boolean checkDataType(VariableElement variableElement,
+                                 List<TypeKind> typeKind,
+                                 List<Class<?>> classes) {
+        if (variableElement.asType()
+                           .getKind()
+                           .isPrimitive()) {
             if (typeKind == null) {
                 return false;
             }
-            return checkPrimitiveDataType(variableElement, typeKind.toArray(new TypeKind[]{}));
+            return checkPrimitiveDataType(variableElement,
+                                          typeKind.toArray(new TypeKind[] {}));
 
         }
 
         if (classes == null) {
             return false;
         }
-        return checkDeclaredDataType(variableElement, classes.toArray(new Class[]{}));
+        return checkDeclaredDataType(variableElement,
+                                     classes.toArray(new Class<?>[] {}));
     }
 
     public static class Builder {
