@@ -14,6 +14,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class BlacklistConstraint extends AbstractConstraint<Blacklist> {
@@ -49,7 +50,7 @@ public class BlacklistConstraint extends AbstractConstraint<Blacklist> {
 
     @Override
     protected List<Class> getSupportedDeclaredType() {
-        return Arrays.asList(String.class);
+        return Collections.singletonList(String.class);
     }
 
     @Override

@@ -14,6 +14,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class NotEmptyConstraint extends AbstractConstraint<NotEmpty> {
@@ -49,7 +50,7 @@ public class NotEmptyConstraint extends AbstractConstraint<NotEmpty> {
 
     @Override
     protected List<Class> getSupportedDeclaredType() {
-        return List.of(Collection.class);
+        return Collections.singletonList(Collection.class);
     }
 
     @Override
