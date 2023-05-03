@@ -13,24 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.test;
+package com.github.nalukit.malio.test.model;
 
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.notnull06.Address;
 import com.github.nalukit.malio.test.model.notnull06.Person;
 import com.github.nalukit.malio.test.model.notnull06.PersonMalioValidator;
-import com.google.gwt.junit.client.GWTTestCase;
+import com.google.j2cl.junit.apt.J2clTestInput;
 import org.junit.Test;
 
-public class ValidatorNotNull06Test
-    extends GWTTestCase {
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-  @Override
-  public String getModuleName() {
-    return "com.github.nalukit.malio.MalioGwt2Test";
-  }
+@J2clTestInput(ValidatorNotNull06Test.class)
+public class ValidatorNotNull06Test {
 
+  @Test
   public void testCheckOk() {
     Person model = new Person(Person.Type.TYPE_01,
                               "Flintstones",
@@ -45,6 +44,7 @@ public class ValidatorNotNull06Test
     }
   }
 
+  @Test
   public void testValidateOk() {
     Person model = new Person(Person.Type.TYPE_01,
                               "Flintstones",
@@ -56,31 +56,5 @@ public class ValidatorNotNull06Test
     assertTrue(result.isValid());
   }
 
-  @Test
-  public void testCheckFail01() {
-    Person model = new Person(Person.Type.TYPE_01,
-                              "Flintstones",
-                              "Fred",
-                              new Address("Test Avenue 21",
-                                          "123456",
-                                          "Test City"));
-    try {
-      PersonMalioValidator.INSTANCE.check(model);
-    } catch (MalioValidationException e) {
-      fail();
-    }
-  }
-
-  @Test
-  public void testCheckFail02() {
-    Person model = new Person(Person.Type.TYPE_01,
-                              "Flintstones",
-                              "Fred",
-                              new Address("Test Avenue 21",
-                                          "123456",
-                                          "Test City"));
-    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-    assertTrue(result.isValid());
-  }
 
 }
