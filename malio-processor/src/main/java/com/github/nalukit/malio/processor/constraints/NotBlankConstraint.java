@@ -13,6 +13,7 @@ import com.squareup.javapoet.TypeName;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
+import java.util.Collections;
 import java.util.List;
 
 public class NotBlankConstraint extends AbstractConstraint<NotBlank> {
@@ -48,7 +49,7 @@ public class NotBlankConstraint extends AbstractConstraint<NotBlank> {
 
     @Override
     protected List<Class> getSupportedDeclaredType() {
-        return List.of(String.class);
+        return Collections.singletonList(String.class);
     }
 
     @Override

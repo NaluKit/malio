@@ -14,6 +14,7 @@ import com.squareup.javapoet.TypeName;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
+import java.util.Collections;
 import java.util.List;
 
 public class NotNullConstraint extends AbstractConstraint<NotNull> {
@@ -51,7 +52,7 @@ public class NotNullConstraint extends AbstractConstraint<NotNull> {
 
     @Override
     protected List<Class> getSupportedDeclaredType() {
-        return List.of(Object.class);
+        return Collections.singletonList(Object.class);
     }
 
     @Override
