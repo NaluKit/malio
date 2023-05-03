@@ -49,7 +49,7 @@ public class SizeConstraint extends AbstractConstraint<Size> {
     }
 
     @Override
-    protected List<Class> getSupportedDeclaredType() {
+    protected List<Class<?>> getSupportedDeclaredType() {
         return Collections.singletonList(Collection.class);
     }
 

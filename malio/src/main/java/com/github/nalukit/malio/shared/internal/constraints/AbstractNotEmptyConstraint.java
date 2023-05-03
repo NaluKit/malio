@@ -7,10 +7,10 @@ import com.github.nalukit.malio.shared.model.ValidationResult;
 import java.util.Collection;
 import java.util.Objects;
 
-public abstract class AbstractNotEmptyConstraint<T extends Collection>
+public abstract class AbstractNotEmptyConstraint<T extends Collection<?>>
     extends AbstractConstraint<T> {
 
-  private String message;
+  private final String message;
 
   public AbstractNotEmptyConstraint(String packageName,
                                     String simpleName,

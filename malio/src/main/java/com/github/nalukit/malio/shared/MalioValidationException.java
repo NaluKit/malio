@@ -1,7 +1,7 @@
 package com.github.nalukit.malio.shared;
 
 // TODO move class to util package
-@SuppressWarnings("unchecked")
+@SuppressWarnings("serial")
 public class MalioValidationException
     extends Exception {
 

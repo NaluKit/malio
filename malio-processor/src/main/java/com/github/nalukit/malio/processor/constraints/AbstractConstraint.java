@@ -61,7 +61,8 @@ public abstract class AbstractConstraint<T extends Annotation> implements IsGene
     public abstract TypeName getValidationClass(VariableElement variableElement);
 
     protected abstract List<TypeKind> getSupportedPrimitives();
-    protected abstract List<Class> getSupportedDeclaredType();
+
+    protected abstract List<Class<?>> getSupportedDeclaredType();
 
     protected abstract AbstractGenerator createGenerator();
 

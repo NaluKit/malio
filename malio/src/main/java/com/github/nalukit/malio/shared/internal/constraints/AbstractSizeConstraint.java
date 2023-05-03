@@ -7,12 +7,12 @@ import com.github.nalukit.malio.shared.model.ValidationResult;
 import java.util.Collection;
 import java.util.Objects;
 
-public abstract class AbstractSizeConstraint<T extends Collection>
+public abstract class AbstractSizeConstraint<T extends Collection<?>>
     extends AbstractConstraint<T> {
 
-  private String message;
-  private int min;
-  private int max;
+  private final String message;
+  private final int    min;
+  private final int    max;
 
   public AbstractSizeConstraint(String packageName,
                                 String simpleName,

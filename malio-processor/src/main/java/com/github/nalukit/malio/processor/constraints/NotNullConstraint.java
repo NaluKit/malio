@@ -51,7 +51,7 @@ public class NotNullConstraint extends AbstractConstraint<NotNull> {
     }
 
     @Override
-    protected List<Class> getSupportedDeclaredType() {
+    protected List<Class<?>> getSupportedDeclaredType() {
         return Collections.singletonList(Object.class);
     }
 
