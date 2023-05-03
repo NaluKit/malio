@@ -186,6 +186,12 @@ public class ProcessorUtils {
                 DeclaredType type = (DeclaredType) elements.getTypeElement(c.getName())
                                                            .asType();
 
+                // TODO remove me ... once fixed
+                Element typeEl              = type.asElement();
+                Element declaredSuperTypeEl = declaredSuperType.asElement();
+                System.out.println(typeEl);
+                System.out.println(declaredSuperTypeEl);
+
                 if (type.asElement()
                         .equals(declaredSuperType.asElement())) {
                     return true;
@@ -207,9 +213,7 @@ public class ProcessorUtils {
             }
             return checkPrimitiveDataType(variableElement,
                                           typeKind.toArray(new TypeKind[] {}));
-
         }
-
         if (classes == null) {
             return false;
         }
