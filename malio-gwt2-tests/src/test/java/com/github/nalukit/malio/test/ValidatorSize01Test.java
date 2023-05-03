@@ -15,14 +15,15 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.model.ValidationResult;
+import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.size.Person;
 import com.github.nalukit.malio.test.model.size.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
 import org.junit.Test;
 
 import java.util.Arrays;
+
 import static org.junit.Assert.assertThrows;
 
 

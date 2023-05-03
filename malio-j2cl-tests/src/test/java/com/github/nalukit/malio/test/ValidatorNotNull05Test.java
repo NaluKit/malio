@@ -15,9 +15,9 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
+import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.notnull05.Address;
 import com.github.nalukit.malio.test.model.notnull05.Person;
 import com.github.nalukit.malio.test.model.notnull05.PersonMalioValidator;
@@ -26,7 +26,10 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @J2clTestInput(ValidatorNotNull05Test.class)
 public class ValidatorNotNull05Test {
