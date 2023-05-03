@@ -7,11 +7,7 @@ import com.github.nalukit.malio.test.model.notnull02.Person;
 import com.github.nalukit.malio.test.model.notnull02.PersonMalioValidator;
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ValidatorNotNull02Test {
 
