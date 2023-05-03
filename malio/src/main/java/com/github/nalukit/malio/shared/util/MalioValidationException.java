@@ -17,7 +17,7 @@ package com.github.nalukit.malio.shared.util;
 
 @SuppressWarnings("serial")
 public class MalioValidationException
-    extends Exception {
+    extends RuntimeException {
 
   public MalioValidationException() {
   }
