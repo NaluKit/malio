@@ -15,8 +15,8 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.model.ValidationResult;
+import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.subvalidator03.Address;
 import com.github.nalukit.malio.test.model.subvalidator03.Person;
 import com.github.nalukit.malio.test.model.subvalidator03.PersonMalioValidator;
@@ -24,7 +24,9 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class SubValidator03Test {
 

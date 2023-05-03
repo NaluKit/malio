@@ -15,8 +15,8 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.model.ValidationResult;
+import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.size.Person;
 import com.github.nalukit.malio.test.model.size.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
@@ -24,7 +24,10 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 @J2clTestInput(ValidatorSize01Test.class)
 public class ValidatorSize01Test {

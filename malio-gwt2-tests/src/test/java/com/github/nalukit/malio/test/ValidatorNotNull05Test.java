@@ -15,9 +15,9 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
+import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.notnull05.Address;
 import com.github.nalukit.malio.test.model.notnull05.Person;
 import com.github.nalukit.malio.test.model.notnull05.PersonMalioValidator;

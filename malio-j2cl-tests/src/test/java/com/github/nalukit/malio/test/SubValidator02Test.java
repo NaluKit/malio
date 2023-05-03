@@ -15,8 +15,8 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.model.ValidationResult;
+import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.subvalidator02.Person;
 import com.github.nalukit.malio.test.model.subvalidator02.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;

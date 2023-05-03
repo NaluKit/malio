@@ -15,9 +15,9 @@
  */
 package com.github.nalukit.malio.shared.internal.constraints;
 
-import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.internal.annotation.MalioInternalUse;
 import com.github.nalukit.malio.shared.model.ValidationResult;
+import com.github.nalukit.malio.shared.util.MalioValidationException;
 
 @MalioInternalUse
 public interface IsMalioConstraint<T> {

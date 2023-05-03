@@ -15,15 +15,18 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
+import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.notnull03.Person;
 import com.github.nalukit.malio.test.model.notnull03.PersonMalioValidator;
 import com.github.nalukit.malio.test.model.notnull03.helper.Address;
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ValidatorNotNull03Test {
 

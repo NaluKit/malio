@@ -15,14 +15,16 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.shared.MalioValidationException;
 import com.github.nalukit.malio.shared.model.ValidationResult;
+import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.minlength01.Address;
 import com.github.nalukit.malio.test.model.minlength01.AddressMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 @J2clTestInput(ValidatorMinLength01Test.class)
 public class ValidatorMinLength01Test {
