@@ -161,6 +161,19 @@ public class ProcessorUtils {
         return Arrays.asList(typeKind).contains(type.getKind());
     }
 
+    private List<TypeMirror> getAllSuperTypes(TypeMirror type, Types types) {
+        List<TypeMirror> allSuperTypes = new ArrayList<>();
+        List<? extends TypeMirror> directSuperTypes = types.directSupertypes(type);
+        for (TypeMirror directSuperType : directSuperTypes) {
+            if (!allSuperTypes.contains(directSuperType)) {
+                allSuperTypes.add(directSuperType);
+                allSuperTypes.addAll(getAllSuperTypes(directSuperType, types));
+            }
+        }
+
+        return allSuperTypes;
+    }
+
     public boolean checkDeclaredDataType(VariableElement variableElement,
                                          Class<?>... classes) {
         DeclaredType typeToCheck = (DeclaredType) variableElement.asType();
@@ -177,21 +190,13 @@ public class ProcessorUtils {
             }
         }
 
-        // Check if the parent classes of typeToCheck are in classes
-        List<? extends TypeMirror> typeMirrors = types.directSupertypes(typeToCheck);
+        List<TypeMirror> typeMirrors = getAllSuperTypes(typeToCheck, types);
         for (TypeMirror superType : typeMirrors) {
             DeclaredType declaredSuperType = (DeclaredType) superType;
 
             for (Class<?> c : classes) {
                 DeclaredType type = (DeclaredType) elements.getTypeElement(c.getName())
                                                            .asType();
-
-                // TODO remove me ... once fixed
-                Element typeEl              = type.asElement();
-                Element declaredSuperTypeEl = declaredSuperType.asElement();
-                System.out.println("--- new check");
-                System.out.println("type ->  >>" + typeEl + "<<");
-                System.out.println("´type ->  >>" + "´type ->  >>" + declaredSuperTypeEl + "<<");
 
                 if (type.asElement()
                         .equals(declaredSuperType.asElement())) {
