@@ -50,7 +50,7 @@ To add Malio to your project add the following dependecies to your pom:
 
 ## Usage
 
-To force the creation of a validator, you need to add the `MelioVakidator`-annotation to a POJO. Malio will create a validator that will check the POJO.
+To force the creation of a validator, you need to add the `MalioValidator`-annotation to a POJO. Malio will create a validator that will check the POJO.
 
 ### Constraints
 
