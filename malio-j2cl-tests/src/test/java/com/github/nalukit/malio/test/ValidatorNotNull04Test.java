@@ -98,7 +98,7 @@ public class ValidatorNotNull04Test {
                  errorMessage.getSimpleClassname());
     assertEquals("name",
                  errorMessage.getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage.getMessage());
   }
 
@@ -122,7 +122,7 @@ public class ValidatorNotNull04Test {
                  errorMessage01.getSimpleClassname());
     assertEquals("firstName",
                  errorMessage01.getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage01.getMessage());
 
     ErrorMessage errorMessage02 = result.getMessages()
@@ -133,7 +133,7 @@ public class ValidatorNotNull04Test {
                  errorMessage02.getSimpleClassname());
     assertEquals("name",
                  errorMessage02.getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage02.getMessage());
   }
 

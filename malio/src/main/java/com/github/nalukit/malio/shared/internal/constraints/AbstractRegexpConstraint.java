@@ -17,6 +17,7 @@ package com.github.nalukit.malio.shared.internal.constraints;
 
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
 import java.util.regex.Matcher;
@@ -25,7 +26,6 @@ import java.util.regex.Pattern;
 public abstract class AbstractRegexpConstraint
         extends AbstractConstraint<String> {
 
-    private String message;
 
     private Pattern pattern;
 
@@ -36,24 +36,25 @@ public abstract class AbstractRegexpConstraint
         super(packageName,
                 simpleName,
                 fieldName);
-        this.message = "n/a"; // TODO aus Factory unter Verwendung des Locale holen
         this.pattern = Pattern.compile(regexp);
     }
 
     public void check(String value) throws MalioValidationException {
+        String message = LocalizedMessages.INSTANCE.getRegexpMessage(value);
         if (value != null) {
             Matcher matcher = this.pattern.matcher(value);
             if (!matcher.matches()) {
-                throw new MalioValidationException(this.message);
+                throw new MalioValidationException(message);
             }
         }
     }
 
     public void isValid(String value, ValidationResult validationResult) {
+        String message = LocalizedMessages.INSTANCE.getRegexpMessage(value);
         if (value != null) {
                 Matcher matcher = this.pattern.matcher(value);
         if (!matcher.matches()) {
-            validationResult.getMessages().add(new ErrorMessage(this.message, super.getClassName(), super.getSimpleName(), super.getFieldName()));
+            validationResult.getMessages().add(new ErrorMessage(message, super.getClassName(), super.getSimpleName(), super.getFieldName()));
         }}
     }
 }

@@ -109,7 +109,7 @@ public class SubValidator01Test
                  errorMessage01.getSimpleClassname());
     assertEquals("address",
                  errorMessage01.getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage01.getMessage());
   }
 
@@ -136,7 +136,7 @@ public class SubValidator01Test
                  errorMessage01.getSimpleClassname());
     assertEquals("street",
                  errorMessage01.getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage01.getMessage());
   }
 
