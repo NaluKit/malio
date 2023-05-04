@@ -14,6 +14,9 @@ public class LocalizedMessages implements IMessages {
       // Nothing to do here :)
     }
 
+    public IMessages getMessages() {
+        return this.messages;
+    }
     public void setMessages(IMessages messages) {
         this.messages = messages;
     }

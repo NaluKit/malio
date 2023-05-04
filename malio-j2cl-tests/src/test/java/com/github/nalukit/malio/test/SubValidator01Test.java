@@ -15,6 +15,8 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
@@ -31,6 +33,11 @@ import static org.junit.Assert.fail;
 
 @J2clTestInput(SubValidator01Test.class)
 public class SubValidator01Test {
+
+//  @Before
+//  public void setup() {
+//    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+//  }
 
   @Test
   public void testCheckOk() {

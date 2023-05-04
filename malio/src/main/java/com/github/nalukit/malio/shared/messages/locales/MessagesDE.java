@@ -8,7 +8,7 @@ public class MessagesDE implements IMessages {
 
     @Override
     public String getBlacklistMessage(String value) {
-        return "String {0} ist nicht erlaubt!";
+        return "String '{0}' ist nicht erlaubt!";
     }
 
     @Override

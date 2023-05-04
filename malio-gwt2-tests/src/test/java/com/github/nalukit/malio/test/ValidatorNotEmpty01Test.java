@@ -15,6 +15,9 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.notempty01.Person;
@@ -29,6 +32,11 @@ import static org.junit.Assert.assertThrows;
 
 
 public class ValidatorNotEmpty01Test extends GWTTestCase {
+
+    @Override
+    public void gwtSetUp() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+    }
 
     @Override
     public String getModuleName() {
@@ -77,6 +85,18 @@ public class ValidatorNotEmpty01Test extends GWTTestCase {
         ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
         assertFalse(validationResult.isValid());
         assertEquals(1, validationResult.getMessages().size());
+        assertEquals("Collection must not be empty!", validationResult.getMessages().get(0).getMessage());
+    }
+
+    @Test
+    public void testValidateFail01German() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+        Person model = new Person(new ArrayList<>());
+
+        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+        assertFalse(validationResult.isValid());
+        assertEquals(1, validationResult.getMessages().size());
+        assertEquals("Collection darf nicht leer sein!", validationResult.getMessages().get(0).getMessage());
     }
 }
 
