@@ -15,12 +15,15 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.mixedup02.Address;
 import com.github.nalukit.malio.test.model.mixedup02.Employee;
 import com.github.nalukit.malio.test.model.mixedup02.EmployeeMalioValidator;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,6 +33,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class ValidatorMixedUp02Test {
+
+  @Before
+  public void setup() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
 
   @Test
   public void testCheckOk02() {
@@ -138,7 +146,7 @@ public class ValidatorMixedUp02Test {
                  errorMessage.getSimpleClassname());
     assertEquals("name",
                  errorMessage.getField());
-    assertEquals("Objekt darf nicht null sein!",
+    assertEquals("Object must not be null!",
                  errorMessage.getMessage());
   }
 
@@ -166,7 +174,7 @@ public class ValidatorMixedUp02Test {
                  errorMessage01.getSimpleClassname());
     assertEquals("name",
                  errorMessage01.getField());
-    assertEquals("Objekt darf nicht null sein!",
+    assertEquals("Object must not be null!",
                  errorMessage01.getMessage());
 
     ErrorMessage errorMessage02 = result.getMessages()
@@ -177,7 +185,7 @@ public class ValidatorMixedUp02Test {
                  errorMessage02.getSimpleClassname());
     assertEquals("firstName",
                  errorMessage02.getField());
-    assertEquals("Objekt darf nicht null sein!",
+    assertEquals("Object must not be null!",
                  errorMessage02.getMessage());
   }
 
@@ -205,7 +213,7 @@ public class ValidatorMixedUp02Test {
                  errorMessage01.getSimpleClassname());
     assertEquals("street",
                  errorMessage01.getField());
-    assertEquals("Objekt darf nicht null sein!",
+    assertEquals("Object must not be null!",
                  errorMessage01.getMessage());
   }
 
@@ -233,7 +241,7 @@ public class ValidatorMixedUp02Test {
                  errorMessage01.getSimpleClassname());
     assertEquals("profession",
                  errorMessage01.getField());
-    assertEquals("Objekt darf nicht null sein!",
+    assertEquals("Object must not be null!",
                  errorMessage01.getMessage());
   }
 }
