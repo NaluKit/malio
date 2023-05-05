@@ -20,15 +20,13 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.notblank01.Person;
 import com.github.nalukit.malio.test.model.notblank01.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
+import junit.framework.TestCase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
 
 @J2clTestInput(ValidatorNotBlank01Test.class)
-public class ValidatorNotBlank01Test {
+public class ValidatorNotBlank01Test extends TestCase {
 
     @Test
     public void testCheckOk() throws MalioValidationException {

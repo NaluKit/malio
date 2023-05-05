@@ -22,17 +22,13 @@ import com.github.nalukit.malio.test.model.notnull05.Address;
 import com.github.nalukit.malio.test.model.notnull05.Person;
 import com.github.nalukit.malio.test.model.notnull05.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
+import junit.framework.TestCase;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 @J2clTestInput(ValidatorNotNull05Test.class)
-public class ValidatorNotNull05Test {
+public class ValidatorNotNull05Test extends TestCase {
 
   @Test
   public void testCheckOk() {

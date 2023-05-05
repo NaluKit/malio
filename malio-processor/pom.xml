@@ -269,7 +269,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>${plugin.version.surfire}</version>
+        <version>${plugin.version.surefire}</version>
         <executions>
           <execution>
             <id>unit-tests</id>

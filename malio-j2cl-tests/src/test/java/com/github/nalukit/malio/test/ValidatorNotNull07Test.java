@@ -21,13 +21,12 @@ import com.github.nalukit.malio.test.model.notnull07.Address;
 import com.github.nalukit.malio.test.model.notnull07.Person;
 import com.github.nalukit.malio.test.model.notnull07.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
+import junit.framework.TestCase;
 import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
 
 
 @J2clTestInput(ValidatorNotNull05Test.class)
-public class ValidatorNotNull07Test {
+public class ValidatorNotNull07Test extends TestCase {
 
   @Test
   public void testCheckOkOnDeeperClassHierarchy() throws MalioValidationException {

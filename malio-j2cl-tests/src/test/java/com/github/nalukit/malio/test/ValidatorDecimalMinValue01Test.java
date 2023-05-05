@@ -20,16 +20,15 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.decimalminvalue01.Person;
 import com.github.nalukit.malio.test.model.decimalminvalue01.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
+import junit.framework.TestCase;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
 
 @J2clTestInput(ValidatorDecimalMinValue01Test.class)
-public class ValidatorDecimalMinValue01Test {
+public class ValidatorDecimalMinValue01Test extends TestCase {
 
     @Test
     public void testCheckOk() throws MalioValidationException {

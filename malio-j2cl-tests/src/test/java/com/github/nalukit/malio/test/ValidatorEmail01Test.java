@@ -20,14 +20,13 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.email01.Person;
 import com.github.nalukit.malio.test.model.email01.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
+import junit.framework.TestCase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
 
 @J2clTestInput(ValidatorEmail01Test.class)
-public class ValidatorEmail01Test {
+public class ValidatorEmail01Test extends TestCase {
 
     @Test
     public void testCheckOk() throws MalioValidationException {

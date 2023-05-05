@@ -20,14 +20,13 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.minlength01.Address;
 import com.github.nalukit.malio.test.model.minlength01.AddressMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
+import junit.framework.TestCase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
 
 @J2clTestInput(ValidatorMinLength01Test.class)
-public class ValidatorMinLength01Test {
+public class ValidatorMinLength01Test extends TestCase {
 
     @Test
     public void testCheckOk() throws MalioValidationException {

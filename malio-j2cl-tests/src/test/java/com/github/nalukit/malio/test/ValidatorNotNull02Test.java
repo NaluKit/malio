@@ -21,15 +21,11 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.notnull02.Person;
 import com.github.nalukit.malio.test.model.notnull02.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
+import junit.framework.TestCase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 @J2clTestInput(ValidatorNotNull02Test.class)
-public class ValidatorNotNull02Test {
+public class ValidatorNotNull02Test extends TestCase {
 
   @Test
   public void testCheckOk() {

@@ -22,16 +22,13 @@ import com.github.nalukit.malio.test.model.mixedup02.Address;
 import com.github.nalukit.malio.test.model.mixedup02.Employee;
 import com.github.nalukit.malio.test.model.mixedup02.EmployeeMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
+import junit.framework.TestCase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 @J2clTestInput(ValidatorMixedUp01Test.class)
-public class ValidatorMixedUp02Test {
+public class ValidatorMixedUp02Test extends TestCase {
 
   @Test
   public void testCheckOk02() {

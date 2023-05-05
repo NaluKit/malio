@@ -21,13 +21,11 @@ import com.github.nalukit.malio.test.model.notnull06.Address;
 import com.github.nalukit.malio.test.model.notnull06.Person;
 import com.github.nalukit.malio.test.model.notnull06.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
+import junit.framework.TestCase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 @J2clTestInput(ValidatorNotNull06Test.class)
-public class ValidatorNotNull06Test {
+public class ValidatorNotNull06Test extends TestCase {
 
   @Test
   public void testCheckOk() {
