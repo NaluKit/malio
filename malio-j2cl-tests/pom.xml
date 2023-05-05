@@ -57,14 +57,12 @@
       <groupId>com.github.nalukit</groupId>
       <artifactId>malio</artifactId>
       <version>${revision}</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.github.nalukit</groupId>
       <artifactId>malio-processor</artifactId>
       <version>${revision}</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -79,10 +77,6 @@
         </configuration>
         <executions>
           <execution>
-            <id>j2cl-test</id>
-            <goals>
-              <goal>test</goal>
-            </goals>
             <configuration>
               <defines>
                 <gwt.enableDebugId>true</gwt.enableDebugId>
