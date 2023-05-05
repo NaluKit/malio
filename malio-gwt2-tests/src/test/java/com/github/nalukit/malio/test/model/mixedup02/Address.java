@@ -13,39 +13,57 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.test.model.mixedup01;
+package com.github.nalukit.malio.test.model.mixedup02;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.MaxLength;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
 
 @MalioValidator
-public class Employee
-  extends Person {
+public class Address {
 
   @NotNull
-  @MaxLength(64)
-  private String profession;
+  @MaxLength(128)
+  private String street;
+  @NotNull
+  @MaxLength(8)
+  private String zip;
+  @NotNull
+  @MaxLength(128)
+  private String city;
 
-  public Employee() {
+  public Address() {
   }
 
-  public Employee(String name,
-                  String firstName,
-                  Address address,
-                  String profession) {
-    super.setName(name);
-    super.setFirstName(firstName);
-    super.setAddress(address);
-    this.profession = profession;
+  public Address(String street,
+                 String zip,
+                 String city) {
+    this.street = street;
+    this.zip    = zip;
+    this.city   = city;
   }
 
-  public String getProfession() {
-    return profession;
+  public String getStreet() {
+    return street;
   }
 
-  public void setProfession(String profession) {
-    this.profession = profession;
+  public void setStreet(String street) {
+    this.street = street;
+  }
+
+  public String getZip() {
+    return zip;
+  }
+
+  public void setZip(String zip) {
+    this.zip = zip;
+  }
+
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
   }
 }
-

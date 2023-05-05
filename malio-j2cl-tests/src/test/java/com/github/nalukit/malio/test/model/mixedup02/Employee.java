@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.test.model.mixedup01;
+package com.github.nalukit.malio.test.model.mixedup02;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.MaxLength;
@@ -21,7 +21,7 @@ import com.github.nalukit.malio.shared.annotation.field.NotNull;
 
 @MalioValidator
 public class Employee
-  extends Person {
+    extends Person {
 
   @NotNull
   @MaxLength(64)

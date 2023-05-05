@@ -31,6 +31,7 @@ import javax.lang.model.util.Types;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class ValidatorScanner
@@ -38,6 +39,7 @@ public class ValidatorScanner
 
   private final Element              validatorElement;
   private       List<ValidatorModel> subValidatorList;
+  ;
 
   private ValidatorScanner(Builder builder) {
     this.validatorElement = builder.validatorElement;
@@ -62,10 +64,34 @@ public class ValidatorScanner
     return this.subValidatorList;
   }
 
+  public List<ValidatorModel> createSuperValidatorList() {
+    List<ValidatorModel> superValidatorList = new ArrayList<>();
+    // get list of super mirrors ...
+    Set<TypeMirror> mirrors = this.processorUtils.getFlattenedSupertypeHierarchy(super.types,
+                                                                                 validatorElement.asType());
+    for (TypeMirror mirror : mirrors) {
+      if (!types.isSameType(validatorElement.asType(),
+                            mirror)) {
+        TypeElement typeElementToCheck = (TypeElement) super.types.asElement(mirror);
+        if (Objects.nonNull(typeElementToCheck.getAnnotation(MalioValidator.class))) {
+          superValidatorList.add(new ValidatorModel(this.processorUtils.getPackageAsString(typeElementToCheck),
+                                                    typeElementToCheck.getSimpleName()
+                                                                      .toString(),
+                                                    null,
+                                                    Constants.MALIO_VALIDATOR_IMPL_NAME,
+                                                    ValidatorModel.Type.NATIVE));
+        }
+      }
+    }
+    return superValidatorList;
+  }
+
   private void checkVariable(VariableElement variableElement) {
     // check, if variable is excluded ...
     if (variableElement.getAnnotation(MalioIgnore.class) == null) {
-      if (!variableElement.asType().getKind().isPrimitive()){
+      if (!variableElement.asType()
+                          .getKind()
+                          .isPrimitive()) {
         checkNeedForSubvalidator(variableElement);
       }
     }

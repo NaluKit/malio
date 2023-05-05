@@ -21,19 +21,27 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.mixedup01.Address;
 import com.github.nalukit.malio.test.model.mixedup01.Employee;
 import com.github.nalukit.malio.test.model.mixedup01.EmployeeMalioValidator;
+import com.google.gwt.junit.client.GWTTestCase;
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.Assert.assertThrows;
 
-public class ValidatorMixedUp01Test {
+public class ValidatorMixedUp01Test
+    extends GWTTestCase {
+
+  @Override
+  public String getModuleName() {
+    return "com.github.nalukit.malio.MalioGwt2Test";
+  }
 
   @Test
   public void testCheckOk02() {
-    Employee model = new Employee("Flintstones", "Fred", new Address("Test Avenue 21", "123456", "Test City"), "coder");
+    Employee model = new Employee("Flintstones",
+                                  "Fred",
+                                  new Address("Test Avenue 21",
+                                              "123456",
+                                              "Test City"),
+                                  "coder");
 
     try {
       EmployeeMalioValidator.INSTANCE.check(model);

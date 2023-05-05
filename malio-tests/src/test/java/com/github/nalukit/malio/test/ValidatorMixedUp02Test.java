@@ -18,9 +18,9 @@ package com.github.nalukit.malio.test;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.mixedup01.Address;
-import com.github.nalukit.malio.test.model.mixedup01.Employee;
-import com.github.nalukit.malio.test.model.mixedup01.EmployeeMalioValidator;
+import com.github.nalukit.malio.test.model.mixedup02.Address;
+import com.github.nalukit.malio.test.model.mixedup02.Employee;
+import com.github.nalukit.malio.test.model.mixedup02.EmployeeMalioValidator;
 import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,11 +29,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class ValidatorMixedUp01Test {
+public class ValidatorMixedUp02Test {
 
   @Test
   public void testCheckOk02() {
-    Employee model = new Employee("Flintstones", "Fred", new Address("Test Avenue 21", "123456", "Test City"), "coder");
+    Employee model = new Employee("Flintstones",
+                                  "Fred",
+                                  new Address("Test Avenue 21",
+                                              "123456",
+                                              "Test City"),
+                                  "coder");
 
     try {
       EmployeeMalioValidator.INSTANCE.check(model);
@@ -127,7 +132,7 @@ public class ValidatorMixedUp01Test {
                        .size());
     ErrorMessage errorMessage = result.getMessages()
                                       .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.mixedup01.Person",
+    assertEquals("com.github.nalukit.malio.test.model.mixedup02.Person",
                  errorMessage.getClassname());
     assertEquals("Person",
                  errorMessage.getSimpleClassname());
@@ -155,7 +160,7 @@ public class ValidatorMixedUp01Test {
 
     ErrorMessage errorMessage01 = result.getMessages()
                                         .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.mixedup01.Person",
+    assertEquals("com.github.nalukit.malio.test.model.mixedup02.Person",
                  errorMessage01.getClassname());
     assertEquals("Person",
                  errorMessage01.getSimpleClassname());
@@ -166,7 +171,7 @@ public class ValidatorMixedUp01Test {
 
     ErrorMessage errorMessage02 = result.getMessages()
                                         .get(1);
-    assertEquals("com.github.nalukit.malio.test.model.mixedup01.Person",
+    assertEquals("com.github.nalukit.malio.test.model.mixedup02.Person",
                  errorMessage02.getClassname());
     assertEquals("Person",
                  errorMessage02.getSimpleClassname());
@@ -194,7 +199,7 @@ public class ValidatorMixedUp01Test {
 
     ErrorMessage errorMessage01 = result.getMessages()
                                         .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.mixedup01.Address",
+    assertEquals("com.github.nalukit.malio.test.model.mixedup02.Address",
                  errorMessage01.getClassname());
     assertEquals("Address",
                  errorMessage01.getSimpleClassname());
@@ -222,7 +227,7 @@ public class ValidatorMixedUp01Test {
 
     ErrorMessage errorMessage01 = result.getMessages()
                                         .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.mixedup01.Employee",
+    assertEquals("com.github.nalukit.malio.test.model.mixedup02.Employee",
                  errorMessage01.getClassname());
     assertEquals("Employee",
                  errorMessage01.getSimpleClassname());

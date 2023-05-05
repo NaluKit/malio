@@ -20,32 +20,50 @@ import com.github.nalukit.malio.shared.annotation.field.MaxLength;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
 
 @MalioValidator
-public class Employee
-  extends Person {
+public class Person {
 
   @NotNull
-  @MaxLength(64)
-  private String profession;
+  @MaxLength(128)
+  private String name;
 
-  public Employee() {
+  @NotNull
+  @MaxLength(128)
+  private String firstName;
+
+  @NotNull private Address address;
+
+  public Person() {
   }
 
-  public Employee(String name,
-                  String firstName,
-                  Address address,
-                  String profession) {
-    super.setName(name);
-    super.setFirstName(firstName);
-    super.setAddress(address);
-    this.profession = profession;
+  public Person(String name,
+                String firstName,
+                Address address) {
+    this.name      = name;
+    this.firstName = firstName;
+    this.address   = address;
   }
 
-  public String getProfession() {
-    return profession;
+  public String getName() {
+    return name;
   }
 
-  public void setProfession(String profession) {
-    this.profession = profession;
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public Address getAddress() {
+    return address;
+  }
+
+  public void setAddress(Address address) {
+    this.address = address;
   }
 }
-

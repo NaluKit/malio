@@ -21,7 +21,7 @@ import com.github.nalukit.malio.shared.annotation.field.NotNull;
 
 @MalioValidator
 public class Employee
-  extends Person {
+    extends Person {
 
   @NotNull
   @MaxLength(64)

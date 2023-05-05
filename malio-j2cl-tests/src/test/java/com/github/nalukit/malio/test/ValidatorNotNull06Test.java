@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.test.model;
+package com.github.nalukit.malio.test;
 
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
