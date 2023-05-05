@@ -15,35 +15,31 @@
  */
 package com.github.nalukit.malio.shared.internal.constraints;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
-import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.gwtproject.regexp.shared.RegExp;
 
 public abstract class AbstractRegexpConstraint
         extends AbstractConstraint<String> {
 
-
-    private Pattern pattern;
+    private RegExp regExp;
 
     public AbstractRegexpConstraint(String packageName,
                                     String simpleName,
                                     String fieldName,
-                                    String regexp) {
+                                    String regExp) {
         super(packageName,
-                simpleName,
-                fieldName);
-        this.pattern = Pattern.compile(regexp);
+              simpleName,
+              fieldName);
+        this.regExp = RegExp.compile(regExp);
     }
 
     public void check(String value) throws MalioValidationException {
         String message = LocalizedMessages.INSTANCE.getRegexpMessage(value);
         if (value != null) {
-            Matcher matcher = this.pattern.matcher(value);
-            if (!matcher.matches()) {
+            if (!this.regExp.test(value)) {
                 throw new MalioValidationException(message);
             }
         }
@@ -52,9 +48,13 @@ public abstract class AbstractRegexpConstraint
     public void isValid(String value, ValidationResult validationResult) {
         String message = LocalizedMessages.INSTANCE.getRegexpMessage(value);
         if (value != null) {
-                Matcher matcher = this.pattern.matcher(value);
-        if (!matcher.matches()) {
-            validationResult.getMessages().add(new ErrorMessage(message, super.getClassName(), super.getSimpleName(), super.getFieldName()));
-        }}
+            if (!this.regExp.test(value)) {
+                validationResult.getMessages()
+                                .add(new ErrorMessage(message,
+                                                      super.getClassName(),
+                                                      super.getSimpleName(),
+                                                      super.getFieldName()));
+            }
+        }
     }
 }

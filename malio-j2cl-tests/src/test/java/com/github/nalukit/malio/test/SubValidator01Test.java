@@ -24,16 +24,21 @@ import com.github.nalukit.malio.test.model.subvalidator01.Address;
 import com.github.nalukit.malio.test.model.subvalidator01.Person;
 import com.github.nalukit.malio.test.model.subvalidator01.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
-import junit.framework.TestCase;
+import org.junit.Before;
 import org.junit.Test;
 
-@J2clTestInput(SubValidator01Test.class)
-public class SubValidator01Test extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-//  @Before
-//  public void setup() {
-//    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
-//  }
+@J2clTestInput(SubValidator01Test.class)
+public class SubValidator01Test {
+
+  @Before
+  public void setup() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
 
   @Test
   public void testCheckOk() {

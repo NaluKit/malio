@@ -21,11 +21,19 @@
     <!-- CI -->
     <vertispan.j2cl.repo.url>https://repo.vertispan.com/j2cl/</vertispan.j2cl.repo.url>
 
+    <junit.version>4.13.2</junit.version>
     <j2cl.version>0.10.0-3c97afeac</j2cl.version>
   </properties>
 
   <dependencies>
     <!-- test dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>com.vertispan.j2cl</groupId>
       <artifactId>junit-annotations</artifactId>
@@ -57,13 +65,6 @@
       <artifactId>malio-processor</artifactId>
       <version>${revision}</version>
       <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
 

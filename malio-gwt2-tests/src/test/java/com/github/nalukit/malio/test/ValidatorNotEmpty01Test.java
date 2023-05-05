@@ -28,9 +28,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.junit.Assert.assertThrows;
-
-
 public class ValidatorNotEmpty01Test extends GWTTestCase {
 
     @Override
@@ -73,9 +70,13 @@ public class ValidatorNotEmpty01Test extends GWTTestCase {
 
     @Test
     public void testCheckFail01() {
-        Person model = new Person(new ArrayList<>());
+      Person model = new Person(new ArrayList<>());
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
+      try {
+        PersonMalioValidator.INSTANCE.check(model);
+        fail();
+      } catch (MalioValidationException e) {
+      }
     }
 
     @Test

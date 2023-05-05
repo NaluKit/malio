@@ -23,37 +23,40 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.decimalminvalue01.Person;
 import com.github.nalukit.malio.test.model.decimalminvalue01.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 @J2clTestInput(ValidatorDecimalMinValue01Test.class)
-public class ValidatorDecimalMinValue01Test extends TestCase {
+public class ValidatorDecimalMinValue01Test {
 
-    @Before
-    public void setup() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
-    }
+  @Before
+  public void setup() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
 
-    @Test
-    public void testCheckOk() throws MalioValidationException {
-        Person model = new Person(BigDecimal.valueOf(0.42));
-        PersonMalioValidator.INSTANCE.check(model);
-    }
+  @Test
+  public void testCheckOk()
+      throws MalioValidationException {
+    Person model = new Person(BigDecimal.valueOf(0.42));
+    PersonMalioValidator.INSTANCE.check(model);
+  }
 
-    @Test
-    public void testValidateOk() {
-        Person model = new Person(BigDecimal.valueOf(0.42));
+  @Test
+  public void testValidateOk() {
+    Person model = new Person(BigDecimal.valueOf(0.42));
 
-        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-    @Test
+  @Test
     public void testCheckNullOk() throws MalioValidationException {
         Person model = new Person(null);
         PersonMalioValidator.INSTANCE.check(model);
@@ -89,6 +92,7 @@ public class ValidatorDecimalMinValue01Test extends TestCase {
 
     @Test
     public void testValidateFail01() {
+      LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
         Person model = new Person(BigDecimal.valueOf(0.099999));
 
         ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);

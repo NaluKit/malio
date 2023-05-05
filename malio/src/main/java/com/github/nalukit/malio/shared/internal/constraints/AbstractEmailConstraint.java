@@ -15,20 +15,18 @@
  */
 package com.github.nalukit.malio.shared.internal.constraints;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
-import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
+import org.gwtproject.regexp.shared.RegExp;
 
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 public abstract class AbstractEmailConstraint
     extends AbstractConstraint<String> {
 
-
-  //https://owasp.org/www-community/OWASP_Validation_Regex_Repository
-  private final static Pattern pattern = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
+  private final static RegExp regExp = RegExp.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
   public AbstractEmailConstraint(String packageName,
                                  String simpleName,
                                  String fieldName) {
@@ -39,15 +37,19 @@ public abstract class AbstractEmailConstraint
 
   public void check(String value) throws MalioValidationException {
     String message = LocalizedMessages.INSTANCE.getEmailMessage();
-    if (Objects.nonNull(value) && !pattern.matcher(value).matches()) {
+    if (Objects.nonNull(value) && !AbstractEmailConstraint.regExp.test(value)) {
       throw new MalioValidationException(message);
     }
   }
 
   public void  isValid(String value, ValidationResult validationResult) {
     String message = LocalizedMessages.INSTANCE.getEmailMessage();
-    if (Objects.nonNull(value)  && !pattern.matcher(value).matches()) {
-      validationResult.getMessages().add(new ErrorMessage(message, super.getClassName(), super.getSimpleName(), super.getFieldName()));
+    if (Objects.nonNull(value) && !AbstractEmailConstraint.regExp.test(value)) {
+      validationResult.getMessages()
+                      .add(new ErrorMessage(message,
+                                            super.getClassName(),
+                                            super.getSimpleName(),
+                                            super.getFieldName()));
     }
   }
 }

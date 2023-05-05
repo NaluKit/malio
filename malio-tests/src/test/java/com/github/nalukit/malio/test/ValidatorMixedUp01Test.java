@@ -133,7 +133,7 @@ public class ValidatorMixedUp01Test {
                  errorMessage.getSimpleClassname());
     assertEquals("name",
                  errorMessage.getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage.getMessage());
   }
 
@@ -161,7 +161,7 @@ public class ValidatorMixedUp01Test {
                  errorMessage01.getSimpleClassname());
     assertEquals("name",
                  errorMessage01.getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage01.getMessage());
 
     ErrorMessage errorMessage02 = result.getMessages()
@@ -172,7 +172,7 @@ public class ValidatorMixedUp01Test {
                  errorMessage02.getSimpleClassname());
     assertEquals("firstName",
                  errorMessage02.getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage02.getMessage());
   }
 
@@ -200,7 +200,7 @@ public class ValidatorMixedUp01Test {
                  errorMessage01.getSimpleClassname());
     assertEquals("street",
                  errorMessage01.getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage01.getMessage());
   }
 
@@ -228,7 +228,7 @@ public class ValidatorMixedUp01Test {
                  errorMessage01.getSimpleClassname());
     assertEquals("profession",
                  errorMessage01.getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage01.getMessage());
   }
 }

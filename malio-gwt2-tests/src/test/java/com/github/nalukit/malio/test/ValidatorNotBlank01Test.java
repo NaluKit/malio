@@ -25,9 +25,6 @@ import com.github.nalukit.malio.test.model.notblank01.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertThrows;
-
-
 public class ValidatorNotBlank01Test extends GWTTestCase {
 
     @Override
@@ -70,9 +67,14 @@ public class ValidatorNotBlank01Test extends GWTTestCase {
 
     @Test
     public void testCheckFail01() {
-        Person model = new Person("", "Bart");
+      Person model = new Person("",
+                                "Bart");
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
+      try {
+        PersonMalioValidator.INSTANCE.check(model);
+        fail();
+      } catch (MalioValidationException e) {
+      }
     }
 
     @Test

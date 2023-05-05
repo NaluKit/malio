@@ -16,6 +16,7 @@
 package com.github.nalukit.malio.test;
 
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
@@ -23,12 +24,16 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.notnull02.Person;
 import com.github.nalukit.malio.test.model.notnull02.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 @J2clTestInput(ValidatorNotNull02Test.class)
-public class ValidatorNotNull02Test extends TestCase {
+public class ValidatorNotNull02Test {
 
   @Before
   public void setup() {
@@ -83,6 +88,7 @@ public class ValidatorNotNull02Test extends TestCase {
 
   @Test
   public void testValidateFail01() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
     Person model = new Person(null,
                               "Fred");
 
@@ -106,6 +112,7 @@ public class ValidatorNotNull02Test extends TestCase {
 
   @Test
   public void testValidateFail02() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Person model = new Person(null,
                               null);
 
@@ -124,7 +131,7 @@ public class ValidatorNotNull02Test extends TestCase {
                  errorMessage01.getSimpleClassname());
     assertEquals("firstName",
                  errorMessage01.getField());
-    assertEquals("Object must not be null!",
+    assertEquals("Objekt darf nicht null sein!",
                  errorMessage01.getMessage());
 
     ErrorMessage errorMessage02 = result.getMessages()
@@ -135,7 +142,7 @@ public class ValidatorNotNull02Test extends TestCase {
                  errorMessage02.getSimpleClassname());
     assertEquals("name",
                  errorMessage02.getField());
-    assertEquals("Object must not be null!",
+    assertEquals("Objekt darf nicht null sein!",
                  errorMessage02.getMessage());
   }
 

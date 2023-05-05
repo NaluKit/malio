@@ -23,11 +23,13 @@ import com.github.nalukit.malio.test.model.subvalidator02.Person;
 import com.github.nalukit.malio.test.model.subvalidator02.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
 import org.junit.Before;
-import junit.framework.TestCase;
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 @J2clTestInput(SubValidator02Test.class)
-public class SubValidator02Test extends TestCase {
+public class SubValidator02Test {
 
   @Before
   public void setup() {

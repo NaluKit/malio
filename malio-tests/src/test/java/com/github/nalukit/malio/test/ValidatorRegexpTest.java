@@ -28,7 +28,10 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ValidatorRegexpTest {
 
@@ -36,7 +39,8 @@ public class ValidatorRegexpTest {
     public void setup() {
         LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
     }
-    @Test
+
+  @Test
     public void testCheckOk() throws MalioValidationException {
         Address model = new Address("Malio Street", "12345", "Malio City");
         AddressMalioValidator.INSTANCE.check(model);

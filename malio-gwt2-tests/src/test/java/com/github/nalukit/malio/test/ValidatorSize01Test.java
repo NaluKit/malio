@@ -29,9 +29,6 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertThrows;
-
-
 public class ValidatorSize01Test extends GWTTestCase {
 
     @Override
@@ -74,9 +71,13 @@ public class ValidatorSize01Test extends GWTTestCase {
 
     @Test
     public void testCheckFailTooFew() {
-        Person model = new Person(Arrays.asList("Card"));
+      Person model = new Person(Arrays.asList("Card"));
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
+      try {
+        PersonMalioValidator.INSTANCE.check(model);
+        fail();
+      } catch (MalioValidationException e) {
+      }
     }
 
     @Test

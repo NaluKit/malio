@@ -25,9 +25,6 @@ import com.github.nalukit.malio.test.model.minlength01.AddressMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertThrows;
-
-
 public class ValidatorMinLength01Test extends GWTTestCase {
 
     @Override
@@ -84,9 +81,15 @@ public class ValidatorMinLength01Test extends GWTTestCase {
 
     @Test
     public void testCheckFail01() {
-        Address model = new Address("Street", "1234", "Ci");
+      Address model = new Address("Street",
+                                  "1234",
+                                  "Ci");
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> AddressMalioValidator.INSTANCE.check(model));
+      try {
+        AddressMalioValidator.INSTANCE.check(model);
+        fail();
+      } catch (MalioValidationException e) {
+      }
     }
 
     @Test

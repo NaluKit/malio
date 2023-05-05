@@ -24,12 +24,16 @@ import com.github.nalukit.malio.test.model.notnull01.Address;
 import com.github.nalukit.malio.test.model.notnull01.Person;
 import com.github.nalukit.malio.test.model.notnull01.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 @J2clTestInput(ValidatorNotNull01Test.class)
-public class ValidatorNotNull01Test extends TestCase {
+public class ValidatorNotNull01Test {
 
   @Before
   public void setup() {

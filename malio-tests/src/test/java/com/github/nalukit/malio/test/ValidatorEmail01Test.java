@@ -25,7 +25,10 @@ import com.github.nalukit.malio.test.model.email01.PersonMalioValidator;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ValidatorEmail01Test {
 
@@ -33,7 +36,8 @@ public class ValidatorEmail01Test {
     public void setup() {
         LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
     }
-    @Test
+
+  @Test
     public void testCheckOk() throws MalioValidationException {
         Person model = new Person("me@domain.com");
         PersonMalioValidator.INSTANCE.check(model);

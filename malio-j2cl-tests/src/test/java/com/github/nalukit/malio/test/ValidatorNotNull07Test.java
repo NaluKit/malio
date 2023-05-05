@@ -23,13 +23,13 @@ import com.github.nalukit.malio.test.model.notnull07.Address;
 import com.github.nalukit.malio.test.model.notnull07.Person;
 import com.github.nalukit.malio.test.model.notnull07.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
 
 @J2clTestInput(ValidatorNotNull05Test.class)
-public class ValidatorNotNull07Test extends TestCase {
+public class ValidatorNotNull07Test {
 
   @Before
   public void setup() {
@@ -37,7 +37,8 @@ public class ValidatorNotNull07Test extends TestCase {
   }
 
   @Test
-  public void testCheckOkOnDeeperClassHierarchy() throws MalioValidationException {
+  public void testCheckOkOnDeeperClassHierarchy()
+      throws MalioValidationException {
     Person model = new Person(new Address("Test Avenue 21",
                                           "123456",
                                           "Test City"));

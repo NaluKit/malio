@@ -23,35 +23,42 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.maxlength01.Address;
 import com.github.nalukit.malio.test.model.maxlength01.AddressMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 @J2clTestInput(ValidatorMaxLength01Test.class)
-public class ValidatorMaxLength01Test extends TestCase {
+public class ValidatorMaxLength01Test {
 
-    @Before
-    public void setup() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
-    }
+  @Before
+  public void setup() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
 
-    @Test
-    public void testCheckOk() throws MalioValidationException {
-        Address model = new Address("Street", "12345", "City");
-        AddressMalioValidator.INSTANCE.check(model);
-    }
+  @Test
+  public void testCheckOk()
+      throws MalioValidationException {
+    Address model = new Address("Street",
+                                "12345",
+                                "City");
+    AddressMalioValidator.INSTANCE.check(model);
+  }
 
-    @Test
-    public void testValidateOk() {
-        Address model = new Address("Street", "12345", "City");
+  @Test
+  public void testValidateOk() {
+    Address model = new Address("Street",
+                                "12345",
+                                "City");
 
-        ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+    ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-    @Test
+  @Test
     public void testCheckNullOk() throws MalioValidationException {
         Address model = new Address(null, "12345", "City");
         AddressMalioValidator.INSTANCE.check(model);
@@ -74,6 +81,7 @@ public class ValidatorMaxLength01Test extends TestCase {
 
     @Test
     public void testValidateFail01() {
+      LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
         Address model = new Address("Street", "123456", "City");
 
         ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);

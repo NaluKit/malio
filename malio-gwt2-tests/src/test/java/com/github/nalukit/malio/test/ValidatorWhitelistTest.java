@@ -28,8 +28,6 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertThrows;
-
 
 public class ValidatorWhitelistTest extends GWTTestCase {
 
@@ -73,9 +71,15 @@ public class ValidatorWhitelistTest extends GWTTestCase {
 
     @Test
     public void testCheckFail01() {
-        Address model = new Address("Street", "123", "City");
+        Address model = new Address("Street",
+                                    "123",
+                                    "City");
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> AddressMalioValidator.INSTANCE.check(model));
+        try {
+            AddressMalioValidator.INSTANCE.check(model);
+            fail();
+        } catch (MalioValidationException e) {
+        }
     }
 
     @Test

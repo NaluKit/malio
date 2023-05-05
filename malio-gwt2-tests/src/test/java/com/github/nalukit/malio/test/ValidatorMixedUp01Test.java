@@ -24,8 +24,6 @@ import com.github.nalukit.malio.test.model.mixedup01.EmployeeMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertThrows;
-
 public class ValidatorMixedUp01Test
     extends GWTTestCase {
 
@@ -71,9 +69,11 @@ public class ValidatorMixedUp01Test
                                               "Test City"),
                                   "coder");
 
-    MalioValidationException thrown = assertThrows(MalioValidationException.class,
-                                                   () -> EmployeeMalioValidator.INSTANCE.check(model));
-    //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
+    try {
+      EmployeeMalioValidator.INSTANCE.check(model);
+      fail();
+    } catch (MalioValidationException e) {
+    }
   }
 
   @Test
@@ -85,9 +85,11 @@ public class ValidatorMixedUp01Test
                                               "Test City"),
                                   "coder");
 
-    MalioValidationException thrown = assertThrows(MalioValidationException.class,
-                                                   () -> EmployeeMalioValidator.INSTANCE.check(model));
-    //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
+    try {
+      EmployeeMalioValidator.INSTANCE.check(model);
+      fail();
+    } catch (MalioValidationException e) {
+    }
   }
 
   @Test
@@ -99,9 +101,11 @@ public class ValidatorMixedUp01Test
                                               "Test City"),
                                   "coder");
 
-    MalioValidationException thrown = assertThrows(MalioValidationException.class,
-                                                   () -> EmployeeMalioValidator.INSTANCE.check(model));
-    //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
+    try {
+      EmployeeMalioValidator.INSTANCE.check(model);
+      fail();
+    } catch (MalioValidationException e) {
+    }
   }
 
   @Test
@@ -113,9 +117,11 @@ public class ValidatorMixedUp01Test
                                               "Test City"),
                                   null);
 
-    MalioValidationException thrown = assertThrows(MalioValidationException.class,
-                                                   () -> EmployeeMalioValidator.INSTANCE.check(model));
-    //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
+    try {
+      EmployeeMalioValidator.INSTANCE.check(model);
+      fail();
+    } catch (MalioValidationException e) {
+    }
   }
 
   @Test
@@ -141,7 +147,7 @@ public class ValidatorMixedUp01Test
                  errorMessage.getSimpleClassname());
     assertEquals("name",
                  errorMessage.getField());
-    assertEquals("n/a",
+    assertEquals("Objekt darf nicht null sein!",
                  errorMessage.getMessage());
   }
 
@@ -169,7 +175,7 @@ public class ValidatorMixedUp01Test
                  errorMessage01.getSimpleClassname());
     assertEquals("name",
                  errorMessage01.getField());
-    assertEquals("n/a",
+    assertEquals("Objekt darf nicht null sein!",
                  errorMessage01.getMessage());
 
     ErrorMessage errorMessage02 = result.getMessages()
@@ -180,7 +186,7 @@ public class ValidatorMixedUp01Test
                  errorMessage02.getSimpleClassname());
     assertEquals("firstName",
                  errorMessage02.getField());
-    assertEquals("n/a",
+    assertEquals("Objekt darf nicht null sein!",
                  errorMessage02.getMessage());
   }
 
@@ -208,7 +214,7 @@ public class ValidatorMixedUp01Test
                  errorMessage01.getSimpleClassname());
     assertEquals("street",
                  errorMessage01.getField());
-    assertEquals("n/a",
+    assertEquals("Objekt darf nicht null sein!",
                  errorMessage01.getMessage());
   }
 
@@ -236,7 +242,7 @@ public class ValidatorMixedUp01Test
                  errorMessage01.getSimpleClassname());
     assertEquals("profession",
                  errorMessage01.getField());
-    assertEquals("n/a",
+    assertEquals("Objekt darf nicht null sein!",
                  errorMessage01.getMessage());
   }
 }

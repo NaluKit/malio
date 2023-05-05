@@ -27,9 +27,6 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 
-import static org.junit.Assert.assertThrows;
-
-
 public class ValidatorDecimalMaxValue01Test  extends GWTTestCase {
 
     @Override
@@ -88,7 +85,12 @@ public class ValidatorDecimalMaxValue01Test  extends GWTTestCase {
     public void testCheckFail01() {
         Person model = new Person(BigDecimal.valueOf(0.5000001));
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
+        try {
+            PersonMalioValidator.INSTANCE.check(model);
+            fail();
+        } catch (MalioValidationException e) {
+
+        }
     }
 
     @Test

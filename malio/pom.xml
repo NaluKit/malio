@@ -50,60 +50,21 @@
   </issueManagement>
 
   <properties>
+    <gwt.regexp.version>1.0.0-RC1</gwt.regexp.version>
+
     <maven.gwt.plugin>1.0.1</maven.gwt.plugin>
     <maven.gpg.plugin>1.6</maven.gpg.plugin>
     <maven.javadoc.plugin>3.2.0</maven.javadoc.plugin>
     <maven.source.plugin>3.2.1</maven.source.plugin>
   </properties>
 
-  <!--  <dependencies>-->
-  <!--    <dependency>-->
-  <!--      <groupId>org.gwtproject.event</groupId>-->
-  <!--      <artifactId>gwt-event</artifactId>-->
-  <!--      <version>${gwt-event.version}</version>-->
-  <!--    </dependency>-->
-  <!--    <dependency>-->
-  <!--      <groupId>org.gwtproject.regexp</groupId>-->
-  <!--      <artifactId>gwt-regexp</artifactId>-->
-  <!--      <version>${gwt-regexp.version}</version>-->
-  <!--    </dependency>    &lt;!&ndash; only for testing &ndash;&gt;-->
-  <!--    <dependency>-->
-  <!--      <groupId>org.junit.jupiter</groupId>-->
-  <!--      <artifactId>junit-jupiter-api</artifactId>-->
-  <!--      <version>${junit-jupiter.version}</version>-->
-  <!--      <scope>test</scope>-->
-  <!--    </dependency>-->
-  <!--    <dependency>-->
-  <!--      <groupId>org.junit.jupiter</groupId>-->
-  <!--      <artifactId>junit-jupiter-params</artifactId>-->
-  <!--      <version>${junit-jupiter.version}</version>-->
-  <!--      <scope>test</scope>-->
-  <!--    </dependency>    &lt;!&ndash; https://mvnrepository.com/artifact/org.junit.platform/junit-platform-runner &ndash;&gt;-->
-  <!--    <dependency>-->
-  <!--      <groupId>org.junit.platform</groupId>-->
-  <!--      <artifactId>junit-platform-runner</artifactId>-->
-  <!--      <version>${junit-jupiter-platform.version}</version>-->
-  <!--      <scope>test</scope>-->
-  <!--    </dependency>-->
-  <!--    <dependency>-->
-  <!--      <groupId>org.junit.jupiter</groupId>-->
-  <!--      <artifactId>junit-jupiter-engine</artifactId>-->
-  <!--      <version>${junit-jupiter.version}</version>-->
-  <!--      <scope>test</scope>-->
-  <!--    </dependency>-->
-  <!--    <dependency>-->
-  <!--      <groupId>org.junit.vintage</groupId>-->
-  <!--      <artifactId>junit-vintage-engine</artifactId>-->
-  <!--      <version>${junit-jupiter.version}</version>-->
-  <!--      <scope>test</scope>-->
-  <!--      <exclusions>-->
-  <!--        <exclusion>-->
-  <!--          <groupId>org.hamcrest</groupId>-->
-  <!--          <artifactId>hamcrest-core</artifactId>-->
-  <!--        </exclusion>-->
-  <!--      </exclusions>-->
-  <!--    </dependency>-->
-  <!--  </dependencies>-->
+  <dependencies>
+    <dependency>
+      <groupId>org.gwtproject.regexp</groupId>
+      <artifactId>gwt-regexp</artifactId>
+      <version>${gwt.regexp.version}</version>
+    </dependency>
+  </dependencies>
 
   <build>
     <resources>

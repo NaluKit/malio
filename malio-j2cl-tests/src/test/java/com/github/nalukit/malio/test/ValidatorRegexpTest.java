@@ -24,31 +24,38 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.regexp01.Address;
 import com.github.nalukit.malio.test.model.regexp01.AddressMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertThrows;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 @J2clTestInput(ValidatorRegexpTest.class)
-public class ValidatorRegexpTest extends TestCase {
+public class ValidatorRegexpTest {
 
     @Before
     public void setup() {
         LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
     }
+
     @Test
-    public void testCheckOk() throws MalioValidationException {
-        Address model = new Address("Street", "12345", "City");
+    public void testCheckOk()
+        throws MalioValidationException {
+        Address model = new Address("My Street",
+                                    "12345",
+                                    "My City");
         AddressMalioValidator.INSTANCE.check(model);
     }
 
     @Test
     public void testValidateOk() {
-        Address model = new Address("Street", "12345", "City");
+        Address model = new Address("My Street",
+                                    "12345",
+                                    "MY City");
 
         ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
         assertTrue(result.isValid());
@@ -77,29 +84,38 @@ public class ValidatorRegexpTest extends TestCase {
 
     @Test
     public void testValidateFail01() {
-        com.github.nalukit.malio.test.model.regexp01.Address model = new com.github.nalukit.malio.test.model.regexp01.Address("Street", "123", "City");
+        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+        Address model = new Address("Street",
+                                    "123",
+                                    "City");
 
-        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
-        List<ErrorMessage> messages = validationResult.getMessages();
-        ErrorMessage errorMessage = messages.get(0);
+        ValidationResult   validationResult = AddressMalioValidator.INSTANCE.validate(model);
+        List<ErrorMessage> messages         = validationResult.getMessages();
+        ErrorMessage       errorMessage     = messages.get(0);
 
         assertFalse(validationResult.isValid());
-        assertEquals(3, messages.size());
-        assertEquals("String 'Street' is not allowed!", errorMessage.getMessage());
+        assertEquals(3,
+                     messages.size());
+        assertEquals("String 'Street' is not allowed!",
+                     errorMessage.getMessage());
     }
 
     @Test
     public void testValidateFail01German() {
         LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-        com.github.nalukit.malio.test.model.regexp01.Address model = new com.github.nalukit.malio.test.model.regexp01.Address("Street", "123", "City");
+        Address model = new Address("Street",
+                                    "123",
+                                    "City");
 
-        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
-        List<ErrorMessage> messages = validationResult.getMessages();
-        ErrorMessage errorMessage = messages.get(0);
+        ValidationResult   validationResult = AddressMalioValidator.INSTANCE.validate(model);
+        List<ErrorMessage> messages         = validationResult.getMessages();
+        ErrorMessage       errorMessage     = messages.get(0);
 
         assertFalse(validationResult.isValid());
-        assertEquals(3, messages.size());
-        assertEquals("String 'Street' ist nicht erlaubt!", errorMessage.getMessage());
+        assertEquals(3,
+                     messages.size());
+        assertEquals("String 'Street' ist nicht erlaubt!",
+                     errorMessage.getMessage());
     }
 }
 
