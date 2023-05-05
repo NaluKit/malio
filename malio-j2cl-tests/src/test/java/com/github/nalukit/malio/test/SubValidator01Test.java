@@ -15,6 +15,8 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
@@ -27,6 +29,11 @@ import org.junit.Test;
 
 @J2clTestInput(SubValidator01Test.class)
 public class SubValidator01Test extends TestCase {
+
+//  @Before
+//  public void setup() {
+//    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+//  }
 
   @Test
   public void testCheckOk() {
@@ -105,7 +112,7 @@ public class SubValidator01Test extends TestCase {
                  errorMessage01.getSimpleClassname());
     assertEquals("address",
                  errorMessage01.getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage01.getMessage());
   }
 
@@ -132,7 +139,7 @@ public class SubValidator01Test extends TestCase {
                  errorMessage01.getSimpleClassname());
     assertEquals("street",
                  errorMessage01.getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage01.getMessage());
   }
 

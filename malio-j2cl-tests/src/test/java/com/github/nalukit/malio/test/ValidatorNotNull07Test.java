@@ -15,6 +15,8 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.notnull07.Address;
@@ -22,11 +24,17 @@ import com.github.nalukit.malio.test.model.notnull07.Person;
 import com.github.nalukit.malio.test.model.notnull07.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
 import junit.framework.TestCase;
+import org.junit.Before;
 import org.junit.Test;
 
 
 @J2clTestInput(ValidatorNotNull05Test.class)
 public class ValidatorNotNull07Test extends TestCase {
+
+  @Before
+  public void setup() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
 
   @Test
   public void testCheckOkOnDeeperClassHierarchy() throws MalioValidationException {

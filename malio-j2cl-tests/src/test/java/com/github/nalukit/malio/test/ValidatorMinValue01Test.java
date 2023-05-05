@@ -15,6 +15,9 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.minvalue01.Person;
@@ -27,6 +30,11 @@ import static org.junit.Assert.assertThrows;
 
 @J2clTestInput(ValidatorMinValue01Test.class)
 public class ValidatorMinValue01Test extends TestCase {
+
+    @Before
+    public void setup() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+    }
 
     @Test
     public void testCheckOk() throws MalioValidationException {
@@ -83,6 +91,21 @@ public class ValidatorMinValue01Test extends TestCase {
 
         ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
         assertFalse(validationResult.isValid());
+        assertEquals(2, validationResult.getMessages().size());
+        assertEquals("Value must not be smaller than 18.", validationResult.getMessages()
+                .get(0).getMessage());
+    }
+
+    @Test
+    public void testValidateFail01German() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+        Person model = new Person("Name", 10, 3);
+
+        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+        assertFalse(validationResult.isValid());
+        assertEquals(2, validationResult.getMessages().size());
+        assertEquals("Wert darf nicht kleiner als 18 sein.", validationResult.getMessages()
+                .get(0).getMessage());
     }
 }
 

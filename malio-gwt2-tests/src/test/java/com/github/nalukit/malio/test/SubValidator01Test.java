@@ -15,6 +15,8 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
@@ -22,10 +24,16 @@ import com.github.nalukit.malio.test.model.subvalidator01.Address;
 import com.github.nalukit.malio.test.model.subvalidator01.Person;
 import com.github.nalukit.malio.test.model.subvalidator01.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
+import org.junit.Before;
 import org.junit.Test;
 
 public class SubValidator01Test
     extends GWTTestCase {
+
+  @Override
+  public void gwtSetUp() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
 
   @Override
   public String getModuleName() {
@@ -109,7 +117,7 @@ public class SubValidator01Test
                  errorMessage01.getSimpleClassname());
     assertEquals("address",
                  errorMessage01.getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage01.getMessage());
   }
 
@@ -136,7 +144,7 @@ public class SubValidator01Test
                  errorMessage01.getSimpleClassname());
     assertEquals("street",
                  errorMessage01.getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage01.getMessage());
   }
 

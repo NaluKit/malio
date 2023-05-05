@@ -15,19 +15,31 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
+import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.minlength01.Address;
-import com.github.nalukit.malio.test.model.minlength01.AddressMalioValidator;
+import com.github.nalukit.malio.test.model.regexp01.Address;
+import com.github.nalukit.malio.test.model.regexp01.AddressMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
 import junit.framework.TestCase;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertThrows;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 @J2clTestInput(ValidatorRegexpTest.class)
 public class ValidatorRegexpTest extends TestCase {
 
+    @Before
+    public void setup() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+    }
     @Test
     public void testCheckOk() throws MalioValidationException {
         Address model = new Address("Street", "12345", "City");
@@ -65,10 +77,29 @@ public class ValidatorRegexpTest extends TestCase {
 
     @Test
     public void testValidateFail01() {
-        Address model = new Address("Street", "123", "City");
+        com.github.nalukit.malio.test.model.regexp01.Address model = new com.github.nalukit.malio.test.model.regexp01.Address("Street", "123", "City");
 
         ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+        List<ErrorMessage> messages = validationResult.getMessages();
+        ErrorMessage errorMessage = messages.get(0);
+
         assertFalse(validationResult.isValid());
+        assertEquals(3, messages.size());
+        assertEquals("String 'Street' is not allowed!", errorMessage.getMessage());
+    }
+
+    @Test
+    public void testValidateFail01German() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+        com.github.nalukit.malio.test.model.regexp01.Address model = new com.github.nalukit.malio.test.model.regexp01.Address("Street", "123", "City");
+
+        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+        List<ErrorMessage> messages = validationResult.getMessages();
+        ErrorMessage errorMessage = messages.get(0);
+
+        assertFalse(validationResult.isValid());
+        assertEquals(3, messages.size());
+        assertEquals("String 'Street' ist nicht erlaubt!", errorMessage.getMessage());
     }
 }
 

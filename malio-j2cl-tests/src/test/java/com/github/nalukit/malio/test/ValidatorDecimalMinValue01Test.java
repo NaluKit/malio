@@ -15,12 +15,16 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.decimalminvalue01.Person;
 import com.github.nalukit.malio.test.model.decimalminvalue01.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
 import junit.framework.TestCase;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -29,6 +33,11 @@ import static org.junit.Assert.assertThrows;
 
 @J2clTestInput(ValidatorDecimalMinValue01Test.class)
 public class ValidatorDecimalMinValue01Test extends TestCase {
+
+    @Before
+    public void setup() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+    }
 
     @Test
     public void testCheckOk() throws MalioValidationException {
@@ -84,6 +93,21 @@ public class ValidatorDecimalMinValue01Test extends TestCase {
 
         ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
         assertFalse(validationResult.isValid());
+        assertEquals(1, validationResult.getMessages().size());
+        assertEquals("Value must not be smaller than 0.1.",
+                validationResult.getMessages().get(0).getMessage());
+    }
+
+    @Test
+    public void testValidateFail01German() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+        Person model = new Person(BigDecimal.valueOf(0.099999));
+
+        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+        assertFalse(validationResult.isValid());
+        assertEquals(1, validationResult.getMessages().size());
+        assertEquals("Wert darf nicht kleiner als 0.1 sein.",
+                validationResult.getMessages().get(0).getMessage());
     }
 }
 

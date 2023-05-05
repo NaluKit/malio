@@ -15,12 +15,15 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.subvalidator03.Address;
 import com.github.nalukit.malio.test.model.subvalidator03.Person;
 import com.github.nalukit.malio.test.model.subvalidator03.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
+import org.junit.Before;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -28,6 +31,11 @@ import java.util.ArrayList;
 
 @J2clTestInput(SubValidator03Test.class)
 public class SubValidator03Test extends TestCase {
+
+  @Before
+  public void setup() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
 
   @Test
   public void testCheckOk01() {

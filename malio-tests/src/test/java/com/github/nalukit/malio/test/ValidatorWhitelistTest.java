@@ -15,11 +15,18 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
+import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.whitelist01.Address;
 import com.github.nalukit.malio.test.model.whitelist01.AddressMalioValidator;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -27,6 +34,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ValidatorWhitelistTest {
+
+    @Before
+    public void setup() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+    }
 
     @Test
     public void testCheckOk() throws MalioValidationException {
@@ -68,8 +80,26 @@ public class ValidatorWhitelistTest {
         Address model = new Address("Street", "123", "City");
 
         ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+        List<ErrorMessage> messages = validationResult.getMessages();
+        ErrorMessage errorMessage = messages.get(0);
+
         assertFalse(validationResult.isValid());
-        assertEquals(3, validationResult.getMessages().size());
+        assertEquals(3, messages.size());
+        assertEquals("String 'Street' is not allowed!", errorMessage.getMessage());
+    }
+
+    @Test
+    public void testValidateFail01German() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+        Address model = new Address("Street", "123", "City");
+
+        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+        List<ErrorMessage> messages = validationResult.getMessages();
+        ErrorMessage errorMessage = messages.get(0);
+
+        assertFalse(validationResult.isValid());
+        assertEquals(3, messages.size());
+        assertEquals("String 'Street' ist nicht erlaubt!", errorMessage.getMessage());
     }
 }
 

@@ -17,6 +17,7 @@ package com.github.nalukit.malio.shared.internal.constraints;
 
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
 import java.math.BigDecimal;
@@ -35,8 +36,8 @@ public abstract class AbstractMinDecimalValueConstraint
     super(packageName,
           simpleName,
           fieldName);
-    this.message = "n/a"; // TODO aus Factory unter Verwendung des Locale holen
     this.minValue = new BigDecimal(minValue);
+    this.message = LocalizedMessages.INSTANCE.getMinDecimalValueMessage(this.minValue);
   }
 
   public void check(BigDecimal value) throws MalioValidationException {

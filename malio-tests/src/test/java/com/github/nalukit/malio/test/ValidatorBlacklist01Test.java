@@ -15,11 +15,18 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
+import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.blacklist01.Address;
 import com.github.nalukit.malio.test.model.blacklist01.AddressMalioValidator;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -27,6 +34,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ValidatorBlacklist01Test {
+    @Before
+    public void setup() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+    }
 
     @Test
     public void testCheckOk() throws MalioValidationException {
@@ -69,6 +80,23 @@ public class ValidatorBlacklist01Test {
         ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
         assertFalse(validationResult.isValid());
         assertEquals(2, validationResult.getMessages().size());
+        assertEquals("String 'Secret' is not allowed!",
+                validationResult.getMessages().get(0).getMessage());
+
+    }
+
+    @Test
+    public void testValidateFail01German() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+        Address model = new Address("Secret", "12345", "City");
+
+        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+        List<ErrorMessage> messages = validationResult.getMessages();
+        ErrorMessage errorMessage = messages.get(0);
+
+        assertFalse(validationResult.isValid());
+        assertEquals(2, messages.size());
+        assertEquals("String 'Secret' ist nicht erlaubt!", errorMessage.getMessage());
     }
 }
 
