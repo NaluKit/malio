@@ -48,6 +48,4 @@ public abstract class AbstractConstraint<T> implements IsMalioConstraint<T> {
     return this.packageName + "." + this.simpleName;
   }
 
-  protected abstract String getErrorMessage();
-
 }
