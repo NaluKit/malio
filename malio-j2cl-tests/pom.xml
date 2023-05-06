@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.github.nalukit</groupId>
+    <artifactId>malio-parent</artifactId>
+    <version>${revision}</version>
+  </parent>
+  <artifactId>malio-j2cl-tests</artifactId>
+  <version>${revision}</version>
+
+  <name>Malio J2CL Tests</name>
+  <description>Test cases for the J2Cl tests</description>
+
+
+  <properties>
+    <maven.j2cl.plugin>0.20</maven.j2cl.plugin>
+
+    <!-- CI -->
+    <vertispan.j2cl.repo.url>https://repo.vertispan.com/j2cl/</vertispan.j2cl.repo.url>
+
+    <junit.version>4.13.2</junit.version>
+    <j2cl.version>0.10.0-3c97afeac</j2cl.version>
+  </properties>
+
+  <dependencies>
+    <!-- test dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.vertispan.j2cl</groupId>
+      <artifactId>junit-annotations</artifactId>
+      <version>${j2cl.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.vertispan.j2cl</groupId>
+      <artifactId>gwttestcase-emul</artifactId>
+      <version>${j2cl.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.vertispan.j2cl</groupId>
+      <artifactId>junit-emul</artifactId>
+      <version>${j2cl.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.nalukit</groupId>
+      <artifactId>malio</artifactId>
+      <version>${revision}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.nalukit</groupId>
+      <artifactId>malio-processor</artifactId>
+      <version>${revision}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.vertispan.j2cl</groupId>
+        <artifactId>j2cl-maven-plugin</artifactId>
+        <version>${maven.j2cl.plugin}</version>
+        <configuration>
+          <compilationLevel>ADVANCED</compilationLevel>
+        </configuration>
+        <executions>
+          <execution>
+            <configuration>
+              <defines>
+                <gwt.enableDebugId>true</gwt.enableDebugId>
+                <gwt.cspCompatModeEnabled>true</gwt.cspCompatModeEnabled>
+                <gwt.strictCspTestingEnabled>true</gwt.strictCspTestingEnabled>
+              </defines>
+              <tests>
+                <test>com.github.nalukit.malio.test.ValidatorNotNull01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorNotNull02Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorNotNull03Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorNotNull04Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorNotNull05Test</test>
+                <test>com.github.nalukit.malio.test.SubValidator01Test</test>
+                <test>com.github.nalukit.malio.test.SubValidator02Test</test>
+                <test>com.github.nalukit.malio.test.SubValidator03Test</test>
+                <test>com.github.nalukit.malio.test.SubValidator04Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorBlacklist01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorDecimalMaxValue01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorDecimalMinValue01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorEmail01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorMaxLength01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorMinLength01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorMinValue01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorMixedUp01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorMixedUp02Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorNotBlank01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorNotEmpty01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorRegexpTest</test>
+                <test>com.github.nalukit.malio.test.ValidatorSize01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorWhitelistTest</test>
+              </tests>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${plugin.version.surefire}</version>
+        <!--        <configuration>-->
+        <!--          <skipTests>true</skipTests>-->
+        <!--        </configuration>-->
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>${maven.deploy.plugin}</version>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+    <repository>
+      <id>${vertispan.j2cl.repo.id}</id>
+      <name>${vertispan.j2cl.repo.name}</name>
+      <url>${vertispan.j2cl.repo.url}</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>vertispan-releases</id>
+      <name>Vertispan hosted artifacts-releases</name>
+      <url>${vertispan.j2cl.repo.url}</url>
+    </pluginRepository>
+  </pluginRepositories>
+</project>

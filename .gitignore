@@ -12,9 +12,12 @@ gwt-unitCache/
 # more caches and things from deploy #
 war/WEB-INF/deploy/
 war/WEB-INF/classes/
+malio-gwt2-tests/war/
 
 #compilation logs
 .gwt/
+/**/.flattened-pom.xml
+/**/dependency-reduced-pom.xml
 
 .run/
 #gwt junit compilation files

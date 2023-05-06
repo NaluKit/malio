@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.github.nalukit</groupId>
+    <artifactId>malio-parent</artifactId>
+    <version>${revision}</version>
+  </parent>
+
+  <artifactId>malio-tests</artifactId>
+
+  <version>${revision}</version>
+
+  <packaging>jar</packaging>
+
+
+  <name>malio JUnit tests</name>
+  <description>Test cases for the JUnit tests</description>
+
+  <properties>
+    <junit.version>4.13.2</junit.version>
+    <junit-benchmark.version>0.7.2</junit-benchmark.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.github.nalukit</groupId>
+      <artifactId>malio</artifactId>
+      <version>${revision}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.nalukit</groupId>
+      <artifactId>malio-processor</artifactId>
+      <version>${revision}</version>
+    </dependency>
+
+    <!-- only for testing -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit-jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>${junit-jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.junit.platform/junit-platform-runner -->
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-runner</artifactId>
+      <version>${junit-jupiter-platform.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${junit-jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <version>${junit-jupiter.version}</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.hamcrest</groupId>
+          <artifactId>hamcrest-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${plugin.version.surefire}</version>
+        <configuration>
+          <!-- Excludes integration tests when unit tests are run. -->
+          <excludes>
+            <exclude>**/IT*.java</exclude>
+          </excludes>
+          <includes>
+            <include>**/Test*.java</include>
+            <include>**/*Test.java</include>
+            <include>**/*TestCase.java</include>
+            <include>**/*Benchmark.java</include>
+          </includes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>${maven.deploy.plugin}</version>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

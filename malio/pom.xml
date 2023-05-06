@@ -11,8 +11,8 @@
   </parent>
 
   <artifactId>malio</artifactId>
-
-  <packaging>jar</packaging>
+  <version>${revision}</version>
+  <packaging>gwt-lib</packaging>
 
   <!--  <description>Routing based application framework for GWT 2, GWT 3 + J2CL</description>-->
 
@@ -49,54 +49,22 @@
     <url>https://github.com/nalukit/nalu/issues</url>
   </issueManagement>
 
-  <!--  <dependencies>-->
-  <!--    <dependency>-->
-  <!--      <groupId>org.gwtproject.event</groupId>-->
-  <!--      <artifactId>gwt-event</artifactId>-->
-  <!--      <version>${gwt-event.version}</version>-->
-  <!--    </dependency>-->
-  <!--    <dependency>-->
-  <!--      <groupId>org.gwtproject.regexp</groupId>-->
-  <!--      <artifactId>gwt-regexp</artifactId>-->
-  <!--      <version>${gwt-regexp.version}</version>-->
-  <!--    </dependency>    &lt;!&ndash; only for testing &ndash;&gt;-->
-  <!--    <dependency>-->
-  <!--      <groupId>org.junit.jupiter</groupId>-->
-  <!--      <artifactId>junit-jupiter-api</artifactId>-->
-  <!--      <version>${junit-jupiter.version}</version>-->
-  <!--      <scope>test</scope>-->
-  <!--    </dependency>-->
-  <!--    <dependency>-->
-  <!--      <groupId>org.junit.jupiter</groupId>-->
-  <!--      <artifactId>junit-jupiter-params</artifactId>-->
-  <!--      <version>${junit-jupiter.version}</version>-->
-  <!--      <scope>test</scope>-->
-  <!--    </dependency>    &lt;!&ndash; https://mvnrepository.com/artifact/org.junit.platform/junit-platform-runner &ndash;&gt;-->
-  <!--    <dependency>-->
-  <!--      <groupId>org.junit.platform</groupId>-->
-  <!--      <artifactId>junit-platform-runner</artifactId>-->
-  <!--      <version>${junit-jupiter-platform.version}</version>-->
-  <!--      <scope>test</scope>-->
-  <!--    </dependency>-->
-  <!--    <dependency>-->
-  <!--      <groupId>org.junit.jupiter</groupId>-->
-  <!--      <artifactId>junit-jupiter-engine</artifactId>-->
-  <!--      <version>${junit-jupiter.version}</version>-->
-  <!--      <scope>test</scope>-->
-  <!--    </dependency>-->
-  <!--    <dependency>-->
-  <!--      <groupId>org.junit.vintage</groupId>-->
-  <!--      <artifactId>junit-vintage-engine</artifactId>-->
-  <!--      <version>${junit-jupiter.version}</version>-->
-  <!--      <scope>test</scope>-->
-  <!--      <exclusions>-->
-  <!--        <exclusion>-->
-  <!--          <groupId>org.hamcrest</groupId>-->
-  <!--          <artifactId>hamcrest-core</artifactId>-->
-  <!--        </exclusion>-->
-  <!--      </exclusions>-->
-  <!--    </dependency>-->
-  <!--  </dependencies>-->
+  <properties>
+    <gwt.regexp.version>1.0.0-RC1</gwt.regexp.version>
+
+    <maven.gwt.plugin>1.0.1</maven.gwt.plugin>
+    <maven.gpg.plugin>1.6</maven.gpg.plugin>
+    <maven.javadoc.plugin>3.2.0</maven.javadoc.plugin>
+    <maven.source.plugin>3.2.1</maven.source.plugin>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.gwtproject.regexp</groupId>
+      <artifactId>gwt-regexp</artifactId>
+      <version>${gwt.regexp.version}</version>
+    </dependency>
+  </dependencies>
 
   <build>
     <resources>
@@ -110,7 +78,7 @@
         <directory>src/main/resources</directory>
         <includes>
           <include>**/META-INF/**</include>
-          <include>**/amlio/**</include>
+          <include>**/malio/**</include>
           <include>**/*.gwt.xml</include>
           <include>**/*.html</include>
           <include>**/public/**</include>
@@ -127,6 +95,23 @@
 
     <plugins>
       <plugin>
+        <groupId>net.ltgt.gwt.maven</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <version>${maven.gwt.plugin}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <moduleName>com.github.nalukit.malio.Malio</moduleName>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>${maven.deploy.plugin}</version>
+        <configuration>
+          <skip>false</skip>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.6.1</version>
@@ -142,7 +127,7 @@
             <compilerArgument>-Xlint:all</compilerArgument>
           </compilerArgs>
         </configuration>
-      </plugin><!--      <plugin>--><!--        <groupId>org.apache.maven.plugins</groupId>--><!--        <artifactId>maven-surefire-plugin</artifactId>--><!--        <version>${plugin.version.surfire}</version>--><!--        <executions>--><!--          <execution>--><!--            <id>unit-tests</id>--><!--            <goals>--><!--              <goal>test</goal>--><!--            </goals>--><!--            <phase>test</phase>--><!--          </execution>--><!--        </executions>--><!--        <configuration>--><!--          <includes>--><!--            <include>**/Test*.java</include>--><!--            <include>**/*Test.java</include>--><!--            <include>**/*Tests.java</include>--><!--            <include>**/*TestCase.java</include>--><!--          </includes>--><!--        </configuration>--><!--      </plugin>-->
+      </plugin><!--      <plugin>--><!--        <groupId>org.apache.maven.plugins</groupId>--><!--        <artifactId>maven-surefire-plugin</artifactId>--><!--        <version>${plugin.version.surefire}</version>--><!--        <executions>--><!--          <execution>--><!--            <id>unit-tests</id>--><!--            <goals>--><!--              <goal>test</goal>--><!--            </goals>--><!--            <phase>test</phase>--><!--          </execution>--><!--        </executions>--><!--        <configuration>--><!--          <includes>--><!--            <include>**/Test*.java</include>--><!--            <include>**/*Test.java</include>--><!--            <include>**/*Tests.java</include>--><!--            <include>**/*TestCase.java</include>--><!--          </includes>--><!--        </configuration>--><!--      </plugin>-->
     </plugins>
   </build>
 </project>
