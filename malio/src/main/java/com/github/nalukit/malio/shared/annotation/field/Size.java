@@ -21,7 +21,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>field needs to be not null</p>
+ * <p>The annotation indicates that the size of a collection.
+ * It takes minimal and maximal number of entries - if the
+ * value of the variable should is not null.</p>
+ *
+ * <p>This annotation can only be used on fields of type <b>Collection</b>.</p>
  *
  * @author Frank Hossfeld, Philipp Kohl
  */
