@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.github.nalukit</groupId>
     <artifactId>malio-parent</artifactId>
-    <version>HEAD-SNAPSHOT</version>
+    <version>${revision}</version>
   </parent>
 
   <artifactId>malio-tests</artifactId>
