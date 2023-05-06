@@ -15,8 +15,8 @@
  */
 package com.github.nalukit.malio.test.model.subvalidator04;
 
-import com.github.nalukit.malio.shared.annotation.MalioIgnore;
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
+import com.github.nalukit.malio.shared.annotation.field.MalioIgnore;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
 
 @MalioValidator

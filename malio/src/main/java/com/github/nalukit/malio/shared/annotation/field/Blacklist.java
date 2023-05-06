@@ -21,7 +21,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>field needs to be not null</p>
+ * <p>This annotation accepts a list of String values that are not allowed for the field.
+ * The constrain will look for the String inside the variable and in case it is found,
+ * create an error.</p>
+ *
+ * <p>The validation will only occur in case the value is not null.</p>
+ *
+ * <p>This annotation can only be used on fields of type <b>String</b>.</p>
  *
  * @author Frank Hossfeld, Philipp Kohl
  */

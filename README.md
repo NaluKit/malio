@@ -8,16 +8,16 @@
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.nalukit/malio.svg?colorB=44cc11)](https://search.maven.org/artifact/com.github.nalukit/malio)
 [![Build & Deploy](https://github.com/NaluKit/malio/actions/workflows/build.yaml/badge.svg?branch=dev)](https://github.com/NaluKit/malio/actions/workflows/build.yaml)
 
-Malio is a tiny framework to validate POJOs using annotations. It is easy to use by just annotating the members of a 
-POJO. No writing of validations or validators. Based on the annotations inside the POJO, the processor
+Malio is a tiny framework to validate POJOs using annotations. It is easy to use by just adding annotations to members
+of a POJO. No writing of validations or validators. Based on the annotations inside the POJO, the processor
 generates a validator.
 
 Each validator offers two methods for validation:
 
-* **check**: check the POJO and in case of an error throw an exception
+* **check**: check the POJO and as soon as an error is detected throw an exception
 * **validate**: validate the POJO, collect all error messages and return a validation result
 
-Here is an example using malio:
+Here is an example using Malio:
 
 ```java
 @MalioValidator
@@ -102,7 +102,7 @@ public class Person {
 }
 ```
 
-This are the steps to trigger the creation of a validator.
+These are the steps to trigger the creation of a validator.
 
 ### Dependencies
 
@@ -158,44 +158,112 @@ public class Person {
 }
 ```
 
-Now, Malio will create a validator
+Now, Malio will create a validator. Next we have to add constraints:
 
+```java
+@MalioValidator
+public class Person {
 
+    @NotNull
+    @NotBlank
+    @MaxLength(20)
+    private String name;
 
----
+    @NotNull
+    @NotBlank
+    @MaxLength(20)
+    private String firstName;
 
----
+    @NotNull
+    private Address address;
 
----
+    public Person() {
+    }
 
----
+    // getters and setters ... 
+}
+```
 
----
+Malio will create a validator for the Person class. The validator will be called [name if the class] + 'MalioValidator'.
+To validate an instance of the class, call:
 
+`PersonMalioValidator.INSTANCE.check(myInstenceOfPerson);`
 
-## Motivation
+## How does Malio work?
 
-Looking for a validation library that can be used Java 8, 11, 17, GWT, J2CL and no deprecated dependencies, the result 
-is frustrating - so we ended up by coding a new tiny library.
+Malio will generate for each variable and annotation a constraint class. Inside the validator all constraints are
+collected and processed. In case the type of a variable has a Malio validator, the validator of the type will be called.
+In case that classes are extending user classes, Malio will also look for exiting validators for the super classes.
 
+## Supported Annotations
 
+These are the annotations provided by Malio:
 
-The Due to the lack of a validation library that works with GWT/J2cl hera an approach, that can be used with GWT / J2CL and does basic validation. 
-The idea is to add some annotation to attributes of a POJO which controls the generation of a validation class. The result is a validatato that supports two methods:
-* **check**: check the POJO and in case of an error throw an exception
-* **validate**: validate the POJO, collect all error messages and return a validation result
+### MalioValidator
 
-## Using
+The `MalioValidator`-annotation can be added to a **class**. The annotation is necessary to trigger the creation of a
+validator. Without this annotation not validator or constraint will be created!
 
-## Usage
+This annotation can also be used with abstract classes.
 
-To force the creation of a validator, you need to add the `MalioValidator`-annotation to a POJO. Malio will create a validator that will check the POJO.
+### Annotations for variables
 
-### Constraints
+The following annotation can only be used on variable types.
 
-There are several annotations to trigger the creation of a constraint for a field in a POJO.
+#### Blacklist
 
-#### Not Null check
+The annotation accepts a list of String values that are not allowed for the field. The constrain will look for the
+String values inside the variable and in case one of the values are found, create an error - if the value is not null.
 
+This annotation can only be used on fields of type **String**.
 
-## Example
+#### DecimalMaxValue
+
+The annotation accepts a String value of the maximal value that is allowed for the field - if the value is not null.
+
+This annotation can only be used on fields of type **BigDecimal**.
+
+#### DecimalMinValue
+
+The annotation accepts a String value of the minimal value that is allowed for the field - if the value is not null.
+
+This annotation can only be used on fields of type **BigDecimal**.
+
+#### Email
+
+The annotation accepts a String value of the minimal value that is allowed for the field - if the value is not null.
+
+This annotation can only be used on fields of type **String**.
+
+#### MalioIgnore
+
+The annotation can be added to variable. It will tell Malio - in case there is a validator for the type of the
+variable - to ignore the validator and not calling it.
+
+#### MaxLength
+
+The annotation accepts a int value of the maximal numbers of characters. This is the maximal length allowed for the
+variable - if the value is not null.
+
+This annotation can only be used on fields of type **String**.
+
+#### Whitelist
+
+The annotation accepts a list of String values that are allowed for the field. The constrain will look for the String
+values inside the variable and in case a value not contained inside the list, an error is created - if the value is not
+null.
+
+This annotation can only be used on fields of type **String**.
+
+## To get in touch with the developer
+
+Please use the [Nalu Gitter room](https://gitter.im/Nalukit42/Lobby).
+
+## Examples
+
+Examples can be found inside the test cases.
+
+## Notes
+
+In case you find a bug, please open an issue or post it inside
+the [Nalu Gitter room](https://gitter.im/Nalukit42/Lobby).

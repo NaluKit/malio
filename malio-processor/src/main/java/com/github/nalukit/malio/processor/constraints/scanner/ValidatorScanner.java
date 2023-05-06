@@ -18,8 +18,8 @@ package com.github.nalukit.malio.processor.constraints.scanner;
 import com.github.nalukit.malio.processor.Constants;
 import com.github.nalukit.malio.processor.model.ValidatorModel;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
-import com.github.nalukit.malio.shared.annotation.MalioIgnore;
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
+import com.github.nalukit.malio.shared.annotation.field.MalioIgnore;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
