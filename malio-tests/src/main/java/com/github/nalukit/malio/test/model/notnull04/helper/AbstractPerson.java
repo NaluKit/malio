@@ -15,18 +15,19 @@
  */
 package com.github.nalukit.malio.test.model.notnull04.helper;
 
+import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
 
+@MalioValidator
 public class AbstractPerson {
 
-  @NotNull
-  private String name;
+  @NotNull private String name;
 
   public AbstractPerson() {
   }
 
   public AbstractPerson(String name) {
-    this.name      = name;
+    this.name = name;
   }
 
   public String getName() {

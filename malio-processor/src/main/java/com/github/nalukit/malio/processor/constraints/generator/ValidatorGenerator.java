@@ -43,15 +43,17 @@ public class ValidatorGenerator
     extends AbstractGenerator {
 
   private final List<ConstraintModel> constraintList;
+  private       List<ValidatorModel>  superValidatorList;
   private final List<ValidatorModel>  subValidatorList;
 
   private ValidatorGenerator(Builder builder) {
-    this.constraintList   = builder.constraintList;
-    this.subValidatorList = builder.subValidatorList;
-    this.elements         = builder.elements;
-    this.types            = builder.types;
-    this.filer            = builder.filer;
-    this.processorUtils   = builder.processorUtils;
+    this.constraintList     = builder.constraintList;
+    this.superValidatorList = builder.superValidatorList;
+    this.subValidatorList   = builder.subValidatorList;
+    this.elements           = builder.elements;
+    this.types              = builder.types;
+    this.filer              = builder.filer;
+    this.processorUtils     = builder.processorUtils;
   }
 
   public static Builder builder() {
@@ -133,10 +135,22 @@ public class ValidatorGenerator
                                                                checkValidatorCounter,
                                                                model);
     }
+    for (ValidatorModel model : this.superValidatorList) {
+      this.createValidateMethodForSuperValidator(checkMethodBuilder,
+                                                 model);
+    }
     for (ValidatorModel model : this.subValidatorList) {
       this.createValidateMethodForSubValidator(checkMethodBuilder,
                                                model);
     }
+  }
+
+  private void createValidateMethodForSuperValidator(MethodSpec.Builder checkMethodBuilder,
+                                                     ValidatorModel model) {
+    String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
+    checkMethodBuilder.addStatement("$T.INSTANCE.check(bean)",
+                                    ClassName.get(model.getPackageName(),
+                                                  vaidatorClassName));
   }
 
   private void createValidateMethodForSubValidator(MethodSpec.Builder checkMethodBuilder,
@@ -193,15 +207,27 @@ public class ValidatorGenerator
                                                         validateValidatorCounter,
                                                         model);
     }
+    for (ValidatorModel model : this.superValidatorList) {
+      this.createSuperValidateMethod(validMethodTwoParameterBuilder,
+                                     model);
+    }
     for (ValidatorModel model : this.subValidatorList) {
-      this.createValidateMethod(validMethodTwoParameterBuilder,
-                                model);
+      this.createSubValidateMethod(validMethodTwoParameterBuilder,
+                                   model);
     }
     validMethodTwoParameterBuilder.addStatement("return validationResult");
   }
 
-  private void createValidateMethod(MethodSpec.Builder validMethodTwoParameterBuilder,
-                                    ValidatorModel model) {
+  private void createSuperValidateMethod(MethodSpec.Builder validMethodTwoParameterBuilder,
+                                         ValidatorModel model) {
+    String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
+    validMethodTwoParameterBuilder.addStatement("$T.INSTANCE.validate(bean, validationResult)",
+                                                ClassName.get(model.getPackageName(),
+                                                              vaidatorClassName));
+  }
+
+  private void createSubValidateMethod(MethodSpec.Builder validMethodTwoParameterBuilder,
+                                       ValidatorModel model) {
     validMethodTwoParameterBuilder.beginControlFlow("if ($T.nonNull(bean.$L()))",
                                                     ClassName.get(Objects.class),
                                                     this.processorUtils.createGetMethodName(model.getFieldName()));
@@ -280,6 +306,7 @@ public class ValidatorGenerator
   public static class Builder {
 
     List<ConstraintModel> constraintList;
+    List<ValidatorModel>  superValidatorList;
     List<ValidatorModel>  subValidatorList;
     Elements              elements;
     Types                 types;
@@ -288,6 +315,11 @@ public class ValidatorGenerator
 
     public Builder constraintList(List<ConstraintModel> constraintList) {
       this.constraintList = constraintList;
+      return this;
+    }
+
+    public Builder superValidatorList(List<ValidatorModel> superValidatorList) {
+      this.superValidatorList = superValidatorList;
       return this;
     }
 

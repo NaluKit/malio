@@ -15,12 +15,15 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.notnull03.Person;
 import com.github.nalukit.malio.test.model.notnull03.PersonMalioValidator;
 import com.github.nalukit.malio.test.model.notnull03.helper.Address;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,6 +32,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class ValidatorNotNull03Test {
+
+  @Before
+  public void setup() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
 
   @Test
   public void testCheckOk() {
@@ -117,7 +125,7 @@ public class ValidatorNotNull03Test {
                  errorMessage  .getSimpleClassname());
     assertEquals("name",
                  errorMessage   .getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage    .getMessage());
   }
 
@@ -140,7 +148,7 @@ public class ValidatorNotNull03Test {
                  errorMessage01  .getSimpleClassname());
     assertEquals("name",
                  errorMessage01   .getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage01    .getMessage());
 
     ErrorMessage errorMessage02 = result.getMessages()
@@ -151,7 +159,7 @@ public class ValidatorNotNull03Test {
                  errorMessage02  .getSimpleClassname());
     assertEquals("firstName",
                  errorMessage02   .getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage02    .getMessage());
   }
 
@@ -174,7 +182,7 @@ public class ValidatorNotNull03Test {
                  errorMessage01  .getSimpleClassname());
     assertEquals("street",
                  errorMessage01   .getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage01    .getMessage());
   }
 

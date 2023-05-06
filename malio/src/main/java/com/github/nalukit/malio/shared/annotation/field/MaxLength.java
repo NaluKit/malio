@@ -21,7 +21,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>field needs to be not null</p>
+ * <p>The annotation accepts a int value of the maximal numbers of characters. This is the
+ * maximal length allowed for the variable - if the value is not null. </p>
+ *
+ * <p>The validation will only occur in case the value is not null.</p>
+ *
+ * <p>This annotation can only be used on fields of type <b>String</b>.</p>
  *
  * @author Frank Hossfeld, Philipp Kohl
  */

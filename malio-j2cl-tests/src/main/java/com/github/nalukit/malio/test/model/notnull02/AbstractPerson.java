@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.test.model.notnull04.helper;
+package com.github.nalukit.malio.test.model.notnull02;
 
+import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
 
+@MalioValidator
 public class AbstractPerson {
 
   @NotNull private String name;

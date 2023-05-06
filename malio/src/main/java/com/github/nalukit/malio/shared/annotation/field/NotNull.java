@@ -21,7 +21,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>field needs to be not null</p>
+ * <p>The annotation indicates that the variable should not be null.</p>
+ *
+ * <p>This annotation can be used on any type of a field.</p>
  *
  * @author Frank Hossfeld, Philipp Kohl
  */

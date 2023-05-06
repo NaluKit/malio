@@ -17,6 +17,7 @@ package com.github.nalukit.malio.shared.internal.constraints;
 
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
 public abstract class AbstractMinValueConstraint
@@ -34,7 +35,7 @@ public abstract class AbstractMinValueConstraint
     super(packageName,
           simpleName,
           fieldName);
-    this.message = "n/a"; // TODO aus Factory unter Verwendung des Locale holen
+    this.message = LocalizedMessages.INSTANCE.getMinValueMessage(minValue.longValue());
     this.minValue = minValue.longValue();
   }
 

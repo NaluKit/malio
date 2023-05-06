@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.github.nalukit</groupId>
     <artifactId>malio-parent</artifactId>
-    <version>HEAD-SNAPSHOT</version>
+    <version>${revision}</version>
   </parent>
 
   <artifactId>malio-tests</artifactId>
@@ -82,7 +82,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>${plugin.version.surfire}</version>
+        <version>${plugin.version.surefire}</version>
         <configuration>
           <!-- Excludes integration tests when unit tests are run. -->
           <excludes>

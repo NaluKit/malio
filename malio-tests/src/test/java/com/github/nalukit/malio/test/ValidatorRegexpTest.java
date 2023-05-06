@@ -15,27 +15,40 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
+import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.minlength01.Address;
-import com.github.nalukit.malio.test.model.minlength01.AddressMalioValidator;
+import com.github.nalukit.malio.test.model.regexp01.Address;
+import com.github.nalukit.malio.test.model.regexp01.AddressMalioValidator;
+import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ValidatorRegexpTest {
 
-    @Test
+    @Before
+    public void setup() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+    }
+
+  @Test
     public void testCheckOk() throws MalioValidationException {
-        Address model = new Address("Street", "12345", "City");
+        Address model = new Address("Malio Street", "12345", "Malio City");
         AddressMalioValidator.INSTANCE.check(model);
     }
 
     @Test
     public void testValidateOk() {
-        Address model = new Address("Street", "12345", "City");
+        Address model = new Address("Malio Street", "12345", "Malio City");
 
         ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
         assertTrue(result.isValid());
@@ -67,7 +80,26 @@ public class ValidatorRegexpTest {
         Address model = new Address("Street", "123", "City");
 
         ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+        List<ErrorMessage> messages = validationResult.getMessages();
+        ErrorMessage errorMessage = messages.get(0);
+
         assertFalse(validationResult.isValid());
+        assertEquals(3, messages.size());
+        assertEquals("String 'Street' is not allowed!", errorMessage.getMessage());
+    }
+
+    @Test
+    public void testValidateFail01German() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+        Address model = new Address("Street", "123", "City");
+
+        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+        List<ErrorMessage> messages = validationResult.getMessages();
+        ErrorMessage errorMessage = messages.get(0);
+
+        assertFalse(validationResult.isValid());
+        assertEquals(3, messages.size());
+        assertEquals("String 'Street' ist nicht erlaubt!", errorMessage.getMessage());
     }
 }
 

@@ -15,12 +15,19 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
+import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.whitelist01.Address;
 import com.github.nalukit.malio.test.model.whitelist01.AddressMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -30,21 +37,31 @@ import static org.junit.Assert.assertTrue;
 @J2clTestInput(ValidatorWhitelistTest.class)
 public class ValidatorWhitelistTest {
 
-    @Test
-    public void testCheckOk() throws MalioValidationException {
-        Address model = new Address("My Street", "54321", "My Town");
-        AddressMalioValidator.INSTANCE.check(model);
-    }
+  @Before
+  public void setup() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
 
-    @Test
-    public void testValidateOk() {
-        Address model = new Address("My Street", "54321", "My Town");
+  @Test
+  public void testCheckOk()
+      throws MalioValidationException {
+    Address model = new Address("My Street",
+                                "54321",
+                                "My Town");
+    AddressMalioValidator.INSTANCE.check(model);
+  }
 
-        ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+  @Test
+  public void testValidateOk() {
+    Address model = new Address("My Street",
+                                "54321",
+                                "My Town");
 
-    @Test
+    ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
+
+  @Test
     public void testCheckNullOk() throws MalioValidationException {
         Address model = new Address(null, null, null);
         AddressMalioValidator.INSTANCE.check(model);
@@ -67,11 +84,30 @@ public class ValidatorWhitelistTest {
 
     @Test
     public void testValidateFail01() {
+      LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
         Address model = new Address("Street", "123", "City");
 
         ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+        List<ErrorMessage> messages = validationResult.getMessages();
+        ErrorMessage errorMessage = messages.get(0);
+
         assertFalse(validationResult.isValid());
-        assertEquals(3, validationResult.getMessages().size());
+        assertEquals(3, messages.size());
+        assertEquals("String 'Street' is not allowed!", errorMessage.getMessage());
+    }
+
+    @Test
+    public void testValidateFail01German() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+        Address model = new Address("Street", "123", "City");
+
+        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+        List<ErrorMessage> messages = validationResult.getMessages();
+        ErrorMessage errorMessage = messages.get(0);
+
+        assertFalse(validationResult.isValid());
+        assertEquals(3, messages.size());
+        assertEquals("String 'Street' ist nicht erlaubt!", errorMessage.getMessage());
     }
 }
 

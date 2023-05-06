@@ -15,13 +15,19 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
+import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.size.Person;
 import com.github.nalukit.malio.test.model.size.PersonMalioValidator;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -30,6 +36,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ValidatorSize01Test {
 
+    @Before
+    public void setup() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+    }
     @Test
     public void testCheckOk() throws MalioValidationException {
         Person model = new Person(Arrays.asList("Card", "Mobile Phone"));
@@ -70,8 +80,22 @@ public class ValidatorSize01Test {
         Person model = new Person(Arrays.asList("Card", "Mobile Phone", "Keys", "Sun Creme", "Screws"));
 
         ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+        List<ErrorMessage> messages = validationResult.getMessages();
         assertFalse(validationResult.isValid());
-        assertEquals(1, validationResult.getMessages().size());
+        assertEquals(1, messages.size());
+        assertEquals("Collection size must be between 2 and 4!", messages.get(0).getMessage());
+    }
+
+    @Test
+    public void testValidateFailTooManyGerman() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+        Person model = new Person(Arrays.asList("Card", "Mobile Phone", "Keys", "Sun Creme", "Screws"));
+
+        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+        List<ErrorMessage> messages = validationResult.getMessages();
+        assertFalse(validationResult.isValid());
+        assertEquals(1, messages.size());
+        assertEquals("Collection Länge muss zwischen 2 und 4 sein!", messages.get(0).getMessage());
     }
 }
 

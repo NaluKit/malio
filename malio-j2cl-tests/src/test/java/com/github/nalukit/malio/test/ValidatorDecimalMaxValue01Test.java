@@ -15,15 +15,20 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.decimalmaxvalue01.Person;
 import com.github.nalukit.malio.test.model.decimalmaxvalue01.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
@@ -31,21 +36,27 @@ import static org.junit.Assert.assertTrue;
 @J2clTestInput(ValidatorDecimalMaxValue01Test.class)
 public class ValidatorDecimalMaxValue01Test {
 
-    @Test
-    public void testCheckOk() throws MalioValidationException {
-        Person model = new Person(BigDecimal.valueOf(0.42));
-        PersonMalioValidator.INSTANCE.check(model);
-    }
+  @Before
+  public void setup() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
 
-    @Test
-    public void testValidateOk() {
-        Person model = new Person(BigDecimal.valueOf(0.42));
+  @Test
+  public void testCheckOk()
+      throws MalioValidationException {
+    Person model = new Person(BigDecimal.valueOf(0.42));
+    PersonMalioValidator.INSTANCE.check(model);
+  }
 
-        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+  @Test
+  public void testValidateOk() {
+    Person model = new Person(BigDecimal.valueOf(0.42));
 
-    @Test
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
+
+  @Test
     public void testCheckEdgeOk() throws MalioValidationException {
         Person model = new Person(BigDecimal.valueOf(0.5));
         PersonMalioValidator.INSTANCE.check(model);
@@ -86,6 +97,21 @@ public class ValidatorDecimalMaxValue01Test {
 
         ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
         assertFalse(validationResult.isValid());
+        assertEquals(1, validationResult.getMessages().size());
+        assertEquals("Value must not be greater than 0.5.",
+                validationResult.getMessages().get(0).getMessage());
+    }
+
+    @Test
+    public void testValidateFail01German() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+        Person model = new Person(BigDecimal.valueOf(0.6));
+
+        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+        assertFalse(validationResult.isValid());
+        assertEquals(1, validationResult.getMessages().size());
+        assertEquals("Wert darf nicht größer als 0.5 sein.",
+                validationResult.getMessages().get(0).getMessage());
     }
 }
 

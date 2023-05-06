@@ -15,17 +15,25 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
+import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.minlength01.Address;
-import com.github.nalukit.malio.test.model.minlength01.AddressMalioValidator;
+import com.github.nalukit.malio.test.model.regexp01.Address;
+import com.github.nalukit.malio.test.model.regexp01.AddressMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertThrows;
-
+import java.util.List;
 
 public class ValidatorRegexpTest extends GWTTestCase {
+
+    @Override
+    public void gwtSetUp() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+    }
 
     @Override
     public String getModuleName() {
@@ -34,13 +42,22 @@ public class ValidatorRegexpTest extends GWTTestCase {
 
     @Test
     public void testCheckOk() throws MalioValidationException {
-        Address model = new Address("Street", "12345", "City");
-        AddressMalioValidator.INSTANCE.check(model);
+        Address model = new Address("My Street",
+                                    "12345",
+                                    "City");
+        try {
+            AddressMalioValidator.INSTANCE.check(model);
+            fail();
+        } catch (MalioValidationException e) {
+
+        }
     }
 
     @Test
     public void testValidateOk() {
-        Address model = new Address("Street", "12345", "City");
+        Address model = new Address("My Street",
+                                    "12345",
+                                    "A City");
 
         ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
         assertTrue(result.isValid());
@@ -62,17 +79,42 @@ public class ValidatorRegexpTest extends GWTTestCase {
 
     @Test
     public void testCheckFail01() {
-        Address model = new Address("Street", "123", "City");
+        Address model = new Address("Street",
+                                    "123",
+                                    "City");
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> AddressMalioValidator.INSTANCE.check(model));
+        try {
+            AddressMalioValidator.INSTANCE.check(model);
+            fail();
+        } catch (MalioValidationException e) {
+        }
     }
 
     @Test
     public void testValidateFail01() {
-        Address model = new Address("Street", "123", "City");
+        com.github.nalukit.malio.test.model.regexp01.Address model = new com.github.nalukit.malio.test.model.regexp01.Address("Street", "123", "City");
 
         ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+        List<ErrorMessage> messages = validationResult.getMessages();
+        ErrorMessage errorMessage = messages.get(0);
+
         assertFalse(validationResult.isValid());
+        assertEquals(3, messages.size());
+        assertEquals("String 'Street' is not allowed!", errorMessage.getMessage());
+    }
+
+    @Test
+    public void testValidateFail01German() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+        com.github.nalukit.malio.test.model.regexp01.Address model = new com.github.nalukit.malio.test.model.regexp01.Address("Street", "123", "City");
+
+        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+        List<ErrorMessage> messages = validationResult.getMessages();
+        ErrorMessage errorMessage = messages.get(0);
+
+        assertFalse(validationResult.isValid());
+        assertEquals(3, messages.size());
+        assertEquals("String 'Street' ist nicht erlaubt!", errorMessage.getMessage());
     }
 }
 
