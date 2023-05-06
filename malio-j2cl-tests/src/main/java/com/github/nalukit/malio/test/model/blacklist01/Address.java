@@ -21,9 +21,10 @@ import com.github.nalukit.malio.shared.annotation.field.Blacklist;
 @MalioValidator
 public class Address {
 
-  @Blacklist({ "Str",
-               "Secret" }) private String street;
-  @Blacklist("12345") private      String zip;
+  @Blacklist({"Str", "Secret"})
+  private String street;
+  @Blacklist("12345")
+  private String zip;
 
   private String city;
 

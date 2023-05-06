@@ -21,11 +21,13 @@ import com.github.nalukit.malio.shared.annotation.field.Whitelist;
 @MalioValidator
 public class Address {
 
-  @Whitelist({ "My Street" }) private String street;
-  @Whitelist("54321") private         String zip;
+  @Whitelist({"My Street"})
+  private String street;
+  @Whitelist("54321")
+  private String zip;
 
-  @Whitelist({ "Home Town",
-               "My Town" }) private String city;
+  @Whitelist({"Home Town", "My Town"})
+  private String city;
 
   public Address() {
   }

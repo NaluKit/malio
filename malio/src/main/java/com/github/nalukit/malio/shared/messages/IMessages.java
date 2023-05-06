@@ -46,7 +46,5 @@ public interface IMessages {
   String getSizeMessage(int min,
                         int max);
 
-  String getUuidMessage();
-
   String getWhitelistMessage(String value);
 }

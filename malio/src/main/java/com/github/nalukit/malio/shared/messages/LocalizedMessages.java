@@ -116,11 +116,6 @@ public class LocalizedMessages
   }
 
   @Override
-  public String getUuidMessage() {
-    return messages.getUuidMessage();
-  }
-
-  @Override
   public String getWhitelistMessage(String value) {
     return format(messages.getWhitelistMessage(value),
                   value);

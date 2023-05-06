@@ -21,14 +21,17 @@ import com.github.nalukit.malio.shared.annotation.field.NotNull;
 @MalioValidator
 public class Person {
 
-  @NotNull private Address address;
+
+  @NotNull
+  private Address address;
 
   public Person() {
   }
 
   public Person(Address address) {
-    this.address = address;
+    this.address   = address;
   }
+
 
   public Address getAddress() {
     return address;

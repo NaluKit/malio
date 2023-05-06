@@ -15,6 +15,9 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.maxlength01.Address;
@@ -22,10 +25,12 @@ import com.github.nalukit.malio.test.model.maxlength01.AddressMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertThrows;
-
-
 public class ValidatorMaxLength01Test extends GWTTestCase {
+
+    @Override
+    public void gwtSetUp() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+    }
 
     @Override
     public String getModuleName() {
@@ -62,9 +67,15 @@ public class ValidatorMaxLength01Test extends GWTTestCase {
 
     @Test
     public void testCheckFail01() {
-        Address model = new Address("Street", "123456", "City");
+      Address model = new Address("Street",
+                                  "123456",
+                                  "City");
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> AddressMalioValidator.INSTANCE.check(model));
+      try {
+        AddressMalioValidator.INSTANCE.check(model);
+        fail();
+      } catch (MalioValidationException e) {
+      }
     }
 
     @Test
@@ -73,6 +84,21 @@ public class ValidatorMaxLength01Test extends GWTTestCase {
 
         ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
         assertFalse(validationResult.isValid());
+        assertEquals(1, validationResult.getMessages().size());
+        assertEquals("Value must not be longer than 5.", validationResult.getMessages()
+                .get(0).getMessage());
+    }
+
+    @Test
+    public void testValidateFail01German() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+        Address model = new Address("Street", "123456", "City");
+
+        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+        assertFalse(validationResult.isValid());
+        assertEquals(1, validationResult.getMessages().size());
+        assertEquals("Wert darf nicht länger als 5 sein.", validationResult.getMessages()
+                .get(0).getMessage());
     }
 }
 

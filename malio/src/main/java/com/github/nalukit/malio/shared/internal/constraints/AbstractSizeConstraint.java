@@ -17,6 +17,7 @@ package com.github.nalukit.malio.shared.internal.constraints;
 
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
 import java.util.Collection;
@@ -37,7 +38,7 @@ public abstract class AbstractSizeConstraint<T extends Collection<?>>
     super(packageName,
           simpleName,
           fieldName);
-    this.message = "n/a"; // TODO aus Factory unter Verwendung des Locale holen
+    this.message = LocalizedMessages.INSTANCE.getSizeMessage(min, max);
     this.min = min;
     this.max = max;
   }

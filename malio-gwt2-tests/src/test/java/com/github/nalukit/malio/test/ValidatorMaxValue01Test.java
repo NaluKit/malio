@@ -15,6 +15,9 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.maxvalue01.Person;
@@ -22,10 +25,12 @@ import com.github.nalukit.malio.test.model.maxvalue01.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertThrows;
-
-
 public class ValidatorMaxValue01Test extends GWTTestCase {
+
+    @Override
+    public void gwtSetUp() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+    }
 
     @Override
     public String getModuleName() {
@@ -76,9 +81,16 @@ public class ValidatorMaxValue01Test extends GWTTestCase {
 
     @Test
     public void testCheckFail01() {
-        Person model = new Person("Name", 112, 500, 200);
+      Person model = new Person("Name",
+                                112,
+                                500,
+                                200);
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
+      try {
+        PersonMalioValidator.INSTANCE.check(model);
+        fail();
+      } catch (MalioValidationException e) {
+      }
     }
 
     @Test
@@ -87,6 +99,21 @@ public class ValidatorMaxValue01Test extends GWTTestCase {
 
         ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
         assertFalse(validationResult.isValid());
+        assertEquals(3, validationResult.getMessages().size());
+        assertEquals("Value must not be greater than 99.", validationResult.getMessages()
+                .get(0).getMessage());
+    }
+
+    @Test
+    public void testValidateFail01German() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+        Person model = new Person("Name", 112, 500, 200);
+
+        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+        assertFalse(validationResult.isValid());
+        assertEquals(3, validationResult.getMessages().size());
+        assertEquals("Wert darf nicht größer als 99 sein.", validationResult.getMessages()
+                .get(0).getMessage());
     }
 }
 

@@ -15,6 +15,8 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
@@ -26,6 +28,11 @@ import org.junit.Test;
 
 public class ValidatorNotNull01Test
     extends GWTTestCase {
+
+  @Override
+  public void gwtSetUp() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
 
   @Override
   public String getModuleName() {
@@ -126,7 +133,7 @@ public class ValidatorNotNull01Test
                  errorMessage.getSimpleClassname());
     assertEquals("name",
                  errorMessage.getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage.getMessage());
   }
 
@@ -153,7 +160,7 @@ public class ValidatorNotNull01Test
                  errorMessage01.getSimpleClassname());
     assertEquals("name",
                  errorMessage01.getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage01.getMessage());
 
     ErrorMessage errorMessage02 = result.getMessages()
@@ -164,7 +171,7 @@ public class ValidatorNotNull01Test
                  errorMessage02.getSimpleClassname());
     assertEquals("firstName",
                  errorMessage02.getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage02.getMessage());
   }
 
@@ -191,7 +198,7 @@ public class ValidatorNotNull01Test
                  errorMessage01.getSimpleClassname());
     assertEquals("street",
                  errorMessage01.getField());
-    assertEquals("n/a",
+    assertEquals("Object must not be null!",
                  errorMessage01.getMessage());
   }
 

@@ -15,8 +15,7 @@
  */
 package com.github.nalukit.malio.test.model.notnull07;
 
-public class Address
-    extends AbstractAddress {
+public class Address extends AbstractAddress {
 
   private String street;
   private String zip;

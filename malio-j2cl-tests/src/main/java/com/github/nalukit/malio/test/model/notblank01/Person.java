@@ -21,9 +21,12 @@ import com.github.nalukit.malio.shared.annotation.field.NotBlank;
 @MalioValidator
 public class Person {
 
-  @NotBlank private String name;
+  @NotBlank
+  private String name;
 
-  @NotBlank private String firstName;
+  @NotBlank
+  private String firstName;
+
 
   public Person() {
   }

@@ -89,11 +89,6 @@ public class MessagesEN
   }
 
   @Override
-  public String getUuidMessage() {
-    return "String does not represent an UUID!";
-  }
-
-  @Override
   public String getWhitelistMessage(String value) {
     return "String '{0}' is not allowed!";
   }

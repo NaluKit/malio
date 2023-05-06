@@ -15,13 +15,18 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.minlength01.Address;
 import com.github.nalukit.malio.test.model.minlength01.AddressMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
+import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
@@ -29,21 +34,31 @@ import static org.junit.Assert.assertTrue;
 @J2clTestInput(ValidatorMinLength01Test.class)
 public class ValidatorMinLength01Test {
 
-    @Test
-    public void testCheckOk() throws MalioValidationException {
-        Address model = new Address("Street", "12345", "City");
-        AddressMalioValidator.INSTANCE.check(model);
-    }
+  @Before
+  public void setup() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
 
-    @Test
-    public void testValidateOk() {
-        Address model = new Address("Street", "12345", "City");
+  @Test
+  public void testCheckOk()
+      throws MalioValidationException {
+    Address model = new Address("Street",
+                                "12345",
+                                "City");
+    AddressMalioValidator.INSTANCE.check(model);
+  }
 
-        ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+  @Test
+  public void testValidateOk() {
+    Address model = new Address("Street",
+                                "12345",
+                                "City");
 
-    @Test
+    ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
+
+  @Test
     public void testCheckEdgeOk() throws MalioValidationException {
         Address model = new Address("Str", "12345", "Cit");
         AddressMalioValidator.INSTANCE.check(model);
@@ -84,6 +99,21 @@ public class ValidatorMinLength01Test {
 
         ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
         assertFalse(validationResult.isValid());
+        assertEquals(2, validationResult.getMessages().size());
+        assertEquals("Value must not be shorter than 5.", validationResult.getMessages()
+                .get(0).getMessage());
+    }
+
+    @Test
+    public void testValidateFail01German() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+        Address model = new Address("Street", "1234", "Ci");
+
+        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+        assertFalse(validationResult.isValid());
+        assertEquals(2, validationResult.getMessages().size());
+        assertEquals("Wert darf nicht kürzer als 5 sein.", validationResult.getMessages()
+                .get(0).getMessage());
     }
 }
 

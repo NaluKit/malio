@@ -41,12 +41,7 @@ public class ValidatorMixedUp01Test {
 
   @Test
   public void testCheckOk02() {
-    Employee model = new Employee("Flintstones",
-                                  "Fred",
-                                  new Address("Test Avenue 21",
-                                              "123456",
-                                              "Test City"),
-                                  "coder");
+    Employee model = new Employee("Flintstones", "Fred", new Address("Test Avenue 21", "123456", "Test City"), "coder");
 
     try {
       EmployeeMalioValidator.INSTANCE.check(model);
@@ -57,12 +52,12 @@ public class ValidatorMixedUp01Test {
 
   @Test
   public void testValidateOk02() {
-    Employee model = new Employee("Flintstones",
-                                  "Fred",
-                                  new Address("Test Avenue 21",
-                                              "123456",
-                                              "Test City"),
-                                  "coder");
+    Employee         model  = new Employee("Flintstones",
+                                           "Fred",
+                                           new Address("Test Avenue 21",
+                                                       "123456",
+                                                       "Test City"),
+                                           "coder");
     ValidationResult result = EmployeeMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }

@@ -15,6 +15,10 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
+import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.size.Person;
@@ -23,11 +27,14 @@ import com.google.gwt.junit.client.GWTTestCase;
 import org.junit.Test;
 
 import java.util.Arrays;
-
-import static org.junit.Assert.assertThrows;
-
+import java.util.List;
 
 public class ValidatorSize01Test extends GWTTestCase {
+
+    @Override
+    public void gwtSetUp() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+    }
 
     @Override
     public String getModuleName() {
@@ -64,9 +71,13 @@ public class ValidatorSize01Test extends GWTTestCase {
 
     @Test
     public void testCheckFailTooFew() {
-        Person model = new Person(Arrays.asList("Card"));
+      Person model = new Person(Arrays.asList("Card"));
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
+      try {
+        PersonMalioValidator.INSTANCE.check(model);
+        fail();
+      } catch (MalioValidationException e) {
+      }
     }
 
     @Test
@@ -74,8 +85,22 @@ public class ValidatorSize01Test extends GWTTestCase {
         Person model = new Person(Arrays.asList("Card", "Mobile Phone", "Keys", "Sun Creme", "Screws"));
 
         ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+        List<ErrorMessage> messages = validationResult.getMessages();
         assertFalse(validationResult.isValid());
-        assertEquals(1, validationResult.getMessages().size());
+        assertEquals(1, messages.size());
+        assertEquals("Collection size must be between 2 and 4!", messages.get(0).getMessage());
+    }
+
+    @Test
+    public void testValidateFailTooManyGerman() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+        Person model = new Person(Arrays.asList("Card", "Mobile Phone", "Keys", "Sun Creme", "Screws"));
+
+        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+        List<ErrorMessage> messages = validationResult.getMessages();
+        assertFalse(validationResult.isValid());
+        assertEquals(1, messages.size());
+        assertEquals("Collection Länge muss zwischen 2 und 4 sein!", messages.get(0).getMessage());
     }
 }
 

@@ -23,7 +23,9 @@ import java.util.List;
 @MalioValidator
 public class Person {
 
-  @NotEmpty private List<String> pocket;
+  @NotEmpty
+  private List<String> pocket;
+
 
   public Person() {
   }

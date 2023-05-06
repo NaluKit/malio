@@ -51,21 +51,21 @@ public abstract class AbstractConstraint<T extends Annotation> implements IsGene
     }
 
     public void check(VariableElement variableElement) {
-        if (getSupportedDeclaredType() == null && getSupportedPrimitives() == null) {
-            return;
-        }
+      if (getSupportedDeclaredType() == null && getSupportedPrimitives() == null) {
+        return;
+      }
 
-        // TODO remove me ... once fixed
-        if (!processorUtils.checkDataType(variableElement,
-                getSupportedPrimitives(),
-                getSupportedDeclaredType())) {
-            System.out.println("Stopp added for test ...");
-        }
-       if (!processorUtils.checkDataType(variableElement,
-                getSupportedPrimitives(),
-                getSupportedDeclaredType())) {
-            throw new UnsupportedTypeException("Type '" + variableElement.asType()  + "' not supported for " + getClass().getSimpleName());
-        }
+      if (!processorUtils.checkDataType(variableElement,
+                                        getSupportedPrimitives(),
+                                        getSupportedDeclaredType())) {
+        throw new UnsupportedTypeException("Class >>" +
+                                           variableElement.getEnclosingElement() +
+                                           "<< - Type >>" +
+                                           variableElement.asType() +
+                                           "<< not supported for >>" +
+                                           getClass().getSimpleName() +
+                                           "<<");
+      }
     }
 
 

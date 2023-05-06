@@ -15,18 +15,24 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.maxvalue01.Person;
 import com.github.nalukit.malio.test.model.maxvalue01.PersonMalioValidator;
+import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ValidatorMaxValue01Test {
 
+    @Before
+    public void setup() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+    }
     @Test
     public void testCheckOk() throws MalioValidationException {
         Person model = new Person("Name", 18, 10, 10);
@@ -82,6 +88,21 @@ public class ValidatorMaxValue01Test {
 
         ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
         assertFalse(validationResult.isValid());
+        assertEquals(3, validationResult.getMessages().size());
+        assertEquals("Value must not be greater than 99.", validationResult.getMessages()
+                .get(0).getMessage());
+    }
+
+    @Test
+    public void testValidateFail01German() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+        Person model = new Person("Name", 112, 500, 200);
+
+        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+        assertFalse(validationResult.isValid());
+        assertEquals(3, validationResult.getMessages().size());
+        assertEquals("Wert darf nicht größer als 99 sein.", validationResult.getMessages()
+                .get(0).getMessage());
     }
 }
 

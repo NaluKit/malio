@@ -15,6 +15,10 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
+import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.blacklist01.Address;
@@ -22,10 +26,14 @@ import com.github.nalukit.malio.test.model.blacklist01.AddressMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertThrows;
-
+import java.util.List;
 
 public class ValidatorBlacklist01Test extends GWTTestCase {
+
+    @Override
+    public void gwtSetUp() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+    }
 
     @Override
     public String getModuleName() {
@@ -48,9 +56,15 @@ public class ValidatorBlacklist01Test extends GWTTestCase {
 
     @Test
     public void testCheckFail01() {
-        Address model = new Address("Secret", "123", "City");
+      Address model = new Address("Secret",
+                                  "123",
+                                  "City");
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> AddressMalioValidator.INSTANCE.check(model));
+      try {
+        AddressMalioValidator.INSTANCE.check(model);
+        fail();
+      } catch (MalioValidationException e) {
+      }
     }
 
     @Test
@@ -73,6 +87,23 @@ public class ValidatorBlacklist01Test extends GWTTestCase {
         ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
         assertFalse(validationResult.isValid());
         assertEquals(2, validationResult.getMessages().size());
+        assertEquals("String 'Secret' is not allowed!",
+                validationResult.getMessages().get(0).getMessage());
+
+    }
+
+    @Test
+    public void testValidateFail01German() {
+        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+        Address model = new Address("Secret", "12345", "City");
+
+        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+        List<ErrorMessage> messages = validationResult.getMessages();
+        ErrorMessage errorMessage = messages.get(0);
+
+        assertFalse(validationResult.isValid());
+        assertEquals(2, messages.size());
+        assertEquals("String 'Secret' ist nicht erlaubt!", errorMessage.getMessage());
     }
 }
 

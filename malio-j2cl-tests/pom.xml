@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.github.nalukit</groupId>
     <artifactId>malio-parent</artifactId>
-    <version>HEAD-SNAPSHOT</version>
+    <version>${revision}</version>
   </parent>
   <artifactId>malio-j2cl-tests</artifactId>
   <version>${revision}</version>
@@ -16,16 +16,24 @@
 
 
   <properties>
-    <maven.j2cl.plugin>0.16-SNAPSHOT</maven.j2cl.plugin>
+    <maven.j2cl.plugin>0.20</maven.j2cl.plugin>
 
     <!-- CI -->
     <vertispan.j2cl.repo.url>https://repo.vertispan.com/j2cl/</vertispan.j2cl.repo.url>
 
-    <j2cl.version>0.8-SNAPSHOT</j2cl.version>
+    <junit.version>4.13.2</junit.version>
+    <j2cl.version>0.10.0-3c97afeac</j2cl.version>
   </properties>
 
   <dependencies>
     <!-- test dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>com.vertispan.j2cl</groupId>
       <artifactId>junit-annotations</artifactId>
@@ -49,14 +57,12 @@
       <groupId>com.github.nalukit</groupId>
       <artifactId>malio</artifactId>
       <version>${revision}</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.github.nalukit</groupId>
       <artifactId>malio-processor</artifactId>
       <version>${revision}</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -71,12 +77,6 @@
         </configuration>
         <executions>
           <execution>
-            <id>j2cl-test</id>
-            <goals>
-              <goal>test</goal>
-            </goals>
-            <!-- TODO does not work. See https://github.com/Vertispan/j2clmavenplugin/issues/14 for more informations -->
-            <!--            <phase>test</phase>-->
             <configuration>
               <defines>
                 <gwt.enableDebugId>true</gwt.enableDebugId>
@@ -89,6 +89,24 @@
                 <test>com.github.nalukit.malio.test.ValidatorNotNull03Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorNotNull04Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorNotNull05Test</test>
+                <test>com.github.nalukit.malio.test.SubValidator01Test</test>
+                <test>com.github.nalukit.malio.test.SubValidator02Test</test>
+                <test>com.github.nalukit.malio.test.SubValidator03Test</test>
+                <test>com.github.nalukit.malio.test.SubValidator04Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorBlacklist01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorDecimalMaxValue01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorDecimalMinValue01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorEmail01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorMaxLength01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorMinLength01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorMinValue01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorMixedUp01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorMixedUp02Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorNotBlank01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorNotEmpty01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorRegexpTest</test>
+                <test>com.github.nalukit.malio.test.ValidatorSize01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorWhitelistTest</test>
               </tests>
             </configuration>
           </execution>
@@ -97,7 +115,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>${plugin.version.surfire}</version>
+        <version>${plugin.version.surefire}</version>
         <!--        <configuration>-->
         <!--          <skipTests>true</skipTests>-->
         <!--        </configuration>-->

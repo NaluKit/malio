@@ -21,20 +21,22 @@ import com.github.nalukit.malio.shared.annotation.field.Email;
 @MalioValidator
 public class Person {
 
-  @Email private String email;
+    @Email
+    private String email;
 
-  public Person() {
-  }
 
-  public Person(String email) {
-    this.email = email;
-  }
+    public Person() {
+    }
 
-  public String getEmail() {
-    return email;
-  }
+    public Person(String email) {
+        this.email = email;
+    }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

@@ -15,6 +15,8 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.subvalidator03.Address;
@@ -27,6 +29,11 @@ import java.util.ArrayList;
 
 public class SubValidator03Test
     extends GWTTestCase {
+
+  @Override
+  public void gwtSetUp() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
 
   @Override
   public String getModuleName() {
