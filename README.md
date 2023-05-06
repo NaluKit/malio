@@ -247,6 +247,46 @@ variable - if the value is not null.
 
 This annotation can only be used on fields of type **String**.
 
+#### MaxValue
+
+The annotation accepts a long value of the maximal value of Number. This is the maximal length allowed for the
+variable - if the value is not null.
+
+This annotation can only be used on fields of type **Number**.
+
+#### MinLength
+
+The annotation accepts a int value of the minimal numbers of characters. This is the minimal length allowed for the
+variable - if the value is not null.
+
+This annotation can only be used on fields of type **String**.
+
+#### MinValue
+
+The annotation accepts a long value of the maximal value of Number. This is the maximal length allowed for the
+variable - if the value is not null.
+
+This annotation can only be used on fields of type **Number**.
+
+#### NotBlank
+
+The annotation indicates that the String should be empty - if the value is not null.
+
+This annotation can only be used on fields of type **String**.
+
+#### NotEmpty
+
+The annotation indicates that the String should be empty - if the value is not null. (Currently the annotation does the
+same as **NotBlank**)
+
+This annotation can only be used on fields of type **String**.
+
+#### NotNull
+
+The annotation indicates that the variable should not be null.
+
+This annotation can be used on any type of a field.
+
 #### Whitelist
 
 The annotation accepts a list of String values that are allowed for the field. The constrain will look for the String
