@@ -68,12 +68,7 @@ public class ConstraintWhitelistGenerator
                     simpleName,
                     arraySyntax)
             .build());
-    typeSpec.addMethod(MethodSpec.methodBuilder("getErrorMessage")
-                                 .addModifiers(Modifier.PROTECTED)
-                                 .addAnnotation(ClassName.get(Override.class))
-                                 .returns(ClassName.get(String.class))
-                                 .addStatement("return \"noch mit error messages aus Properties ersetzen (wegen locale und so) ....\"")
-                                 .build());
+
     super.writeFile(variableElement,
             constraint.getImplementationName(),
                     typeSpec);
