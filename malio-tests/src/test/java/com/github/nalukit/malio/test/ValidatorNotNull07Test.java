@@ -35,7 +35,8 @@ public class ValidatorNotNull07Test {
   }
 
   @Test
-  public void testCheckOkOnDeeperClassHierarchy() throws MalioValidationException {
+  public void testCheckOkOnDeeperClassHierarchy()
+      throws MalioValidationException {
     Person model = new Person(new Address("Test Avenue 21",
                                           "123456",
                                           "Test City"));

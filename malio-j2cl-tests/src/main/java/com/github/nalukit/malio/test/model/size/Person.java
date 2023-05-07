@@ -23,8 +23,8 @@ import java.util.List;
 @MalioValidator
 public class Person {
 
-  @Size(min = 2, max = 4)
-  private List<String> pocket;
+  @Size(min = 2, max = 4) private List<String> pocket;
+
   public Person() {
   }
 

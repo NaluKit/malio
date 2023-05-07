@@ -89,6 +89,11 @@ public class MessagesDE
   }
 
   @Override
+  public String getUuidMessage() {
+    return "String repräsentiert keine UUID!";
+  }
+
+  @Override
   public String getWhitelistMessage(String value) {
     return "String '{0}' ist nicht erlaubt!";
   }

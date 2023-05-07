@@ -59,62 +59,87 @@ public class ValidatorMinLength01Test {
   }
 
   @Test
-    public void testCheckEdgeOk() throws MalioValidationException {
-        Address model = new Address("Str", "12345", "Cit");
-        AddressMalioValidator.INSTANCE.check(model);
-    }
+  public void testCheckEdgeOk()
+      throws MalioValidationException {
+    Address model = new Address("Str",
+                                "12345",
+                                "Cit");
+    AddressMalioValidator.INSTANCE.check(model);
+  }
 
-    @Test
-    public void testValidateEdgeOk() {
-        Address model = new Address("Str", "12345", "Cit");
+  @Test
+  public void testValidateEdgeOk() {
+    Address model = new Address("Str",
+                                "12345",
+                                "Cit");
 
-        ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
-    @Test
-    public void testCheckNullOk() throws MalioValidationException {
-        Address model = new Address(null, null, null);
-        AddressMalioValidator.INSTANCE.check(model);
-    }
+    ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-    @Test
-    public void testValidateNullOk() {
-        Address model = new Address(null, null, null);
+  @Test
+  public void testCheckNullOk()
+      throws MalioValidationException {
+    Address model = new Address(null,
+                                null,
+                                null);
+    AddressMalioValidator.INSTANCE.check(model);
+  }
 
-        ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+  @Test
+  public void testValidateNullOk() {
+    Address model = new Address(null,
+                                null,
+                                null);
 
+    ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-    @Test
-    public void testCheckFail01() {
-        Address model = new Address("Street", "1234", "Ci");
+  @Test
+  public void testCheckFail01() {
+    Address model = new Address("Street",
+                                "1234",
+                                "Ci");
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> AddressMalioValidator.INSTANCE.check(model));
-    }
+    MalioValidationException thrown = assertThrows(MalioValidationException.class,
+                                                   () -> AddressMalioValidator.INSTANCE.check(model));
+  }
 
-    @Test
-    public void testValidateFail01() {
-        Address model = new Address("Street", "1234", "Ci");
+  @Test
+  public void testValidateFail01() {
+    Address model = new Address("Street",
+                                "1234",
+                                "Ci");
 
-        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
-        assertFalse(validationResult.isValid());
-        assertEquals(2, validationResult.getMessages().size());
-        assertEquals("Value must not be shorter than 5.", validationResult.getMessages()
-                .get(0).getMessage());
-    }
+    ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(2,
+                 validationResult.getMessages()
+                                 .size());
+    assertEquals("Value must not be shorter than 5.",
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
+  }
 
-    @Test
-    public void testValidateFail01German() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-        Address model = new Address("Street", "1234", "Ci");
+  @Test
+  public void testValidateFail01German() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Address model = new Address("Street",
+                                "1234",
+                                "Ci");
 
-        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
-        assertFalse(validationResult.isValid());
-        assertEquals(2, validationResult.getMessages().size());
-        assertEquals("Wert darf nicht kürzer als 5 sein.", validationResult.getMessages()
-                .get(0).getMessage());
-    }
+    ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(2,
+                 validationResult.getMessages()
+                                 .size());
+    assertEquals("Wert darf nicht kürzer als 5 sein.",
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
+  }
 }
 
 

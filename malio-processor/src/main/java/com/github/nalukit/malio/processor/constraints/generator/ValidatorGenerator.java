@@ -43,8 +43,8 @@ public class ValidatorGenerator
     extends AbstractGenerator {
 
   private final List<ConstraintModel> constraintList;
-  private       List<ValidatorModel>  superValidatorList;
   private final List<ValidatorModel>  subValidatorList;
+  private       List<ValidatorModel>  superValidatorList;
 
   private ValidatorGenerator(Builder builder) {
     this.constraintList     = builder.constraintList;
@@ -60,12 +60,21 @@ public class ValidatorGenerator
     return new Builder();
   }
 
-  public void generate(Element validatorElement, VariableElement variableElement)
+  private static void addConstructor(TypeSpec.Builder typeSpec) {
+    typeSpec.addMethod(MethodSpec.constructorBuilder()
+                                 .addModifiers(Modifier.PUBLIC)
+                                 .addStatement("super()")
+                                 .build());
+  }
+
+  public void generate(Element validatorElement,
+                       VariableElement variableElement)
       throws ProcessorException {
     TypeSpec.Builder typeSpec = this.createValidatorTypeSpec(validatorElement);
 
     addConstructor(typeSpec);
-    addSingletonVariable(validatorElement, typeSpec);
+    addSingletonVariable(validatorElement,
+                         typeSpec);
 
     MethodSpec.Builder checkMethodBuilder = MethodSpec.methodBuilder("check")
                                                       .addModifiers(Modifier.PUBLIC)
@@ -106,14 +115,8 @@ public class ValidatorGenerator
                     typeSpec);
   }
 
-  private static void addConstructor(TypeSpec.Builder typeSpec) {
-    typeSpec.addMethod(MethodSpec.constructorBuilder()
-                                 .addModifiers(Modifier.PUBLIC)
-                                 .addStatement("super()")
-                                 .build());
-  }
-
-  private void addSingletonVariable(Element validatorElement, TypeSpec.Builder typeSpec) {
+  private void addSingletonVariable(Element validatorElement,
+                                    TypeSpec.Builder typeSpec) {
     typeSpec.addField(FieldSpec.builder(ClassName.get(this.processorUtils.getPackageAsString(validatorElement),
                                                       this.createValidatorClassName(validatorElement.getSimpleName()
                                                                                                     .toString())),

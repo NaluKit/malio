@@ -15,18 +15,17 @@
  */
 package com.github.nalukit.malio.shared.internal.constraints;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
-import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
 import java.math.BigDecimal;
 
-
 public abstract class AbstractMaxDecimalValueConstraint
     extends AbstractConstraint<BigDecimal> {
 
-  private String message;
+  private String     message;
   private BigDecimal maxValue;
 
   public AbstractMaxDecimalValueConstraint(String packageName,
@@ -37,18 +36,24 @@ public abstract class AbstractMaxDecimalValueConstraint
           simpleName,
           fieldName);
     this.maxValue = new BigDecimal(maxValue);
-    this.message = LocalizedMessages.INSTANCE.getMaxDecimalValueMessage(this.maxValue);
+    this.message  = LocalizedMessages.INSTANCE.getMaxDecimalValueMessage(this.maxValue);
   }
 
-  public void check(BigDecimal value) throws MalioValidationException {
-    if (value != null &&  value.compareTo(this.maxValue) > 0) {
+  public void check(BigDecimal value)
+      throws MalioValidationException {
+    if (value != null && value.compareTo(this.maxValue) > 0) {
       throw new MalioValidationException(this.message);
     }
   }
 
-  public void isValid(BigDecimal value, ValidationResult validationResult) {
+  public void isValid(BigDecimal value,
+                      ValidationResult validationResult) {
     if (value != null && value.compareTo(this.maxValue) > 0) {
-      validationResult.getMessages().add(new ErrorMessage(this.message, super.getClassName(), super.getSimpleName(), super.getFieldName()));
+      validationResult.getMessages()
+                      .add(new ErrorMessage(this.message,
+                                            super.getClassName(),
+                                            super.getSimpleName(),
+                                            super.getFieldName()));
     }
   }
 }

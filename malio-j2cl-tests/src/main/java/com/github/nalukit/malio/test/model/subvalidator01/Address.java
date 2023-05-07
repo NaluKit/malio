@@ -21,12 +21,9 @@ import com.github.nalukit.malio.shared.annotation.field.NotNull;
 @MalioValidator
 public class Address {
 
-  @NotNull
-  private String street;
-  @NotNull
-  private String zip;
-  @NotNull
-  private String city;
+  @NotNull private String street;
+  @NotNull private String zip;
+  @NotNull private String city;
 
   public Address() {
   }

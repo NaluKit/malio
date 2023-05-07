@@ -106,6 +106,7 @@
                 <test>com.github.nalukit.malio.test.ValidatorNotEmpty01Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorRegexpTest</test>
                 <test>com.github.nalukit.malio.test.ValidatorSize01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorUuis01Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorWhitelistTest</test>
               </tests>
             </configuration>

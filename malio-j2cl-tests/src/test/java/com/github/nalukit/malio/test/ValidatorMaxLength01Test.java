@@ -59,49 +59,69 @@ public class ValidatorMaxLength01Test {
   }
 
   @Test
-    public void testCheckNullOk() throws MalioValidationException {
-        Address model = new Address(null, "12345", "City");
-        AddressMalioValidator.INSTANCE.check(model);
-    }
+  public void testCheckNullOk()
+      throws MalioValidationException {
+    Address model = new Address(null,
+                                "12345",
+                                "City");
+    AddressMalioValidator.INSTANCE.check(model);
+  }
 
-    @Test
-    public void testValidateNullOk() {
-        Address model = new Address(null, "12345", "City");
+  @Test
+  public void testValidateNullOk() {
+    Address model = new Address(null,
+                                "12345",
+                                "City");
 
-        ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+    ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-    @Test
-    public void testCheckFail01() {
-        Address model = new Address("Street", "123456", "City");
+  @Test
+  public void testCheckFail01() {
+    Address model = new Address("Street",
+                                "123456",
+                                "City");
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> AddressMalioValidator.INSTANCE.check(model));
-    }
+    MalioValidationException thrown = assertThrows(MalioValidationException.class,
+                                                   () -> AddressMalioValidator.INSTANCE.check(model));
+  }
 
-    @Test
-    public void testValidateFail01() {
-      LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
-        Address model = new Address("Street", "123456", "City");
+  @Test
+  public void testValidateFail01() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+    Address model = new Address("Street",
+                                "123456",
+                                "City");
 
-        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
-        assertFalse(validationResult.isValid());
-        assertEquals(1, validationResult.getMessages().size());
-        assertEquals("Value must not be longer than 5.", validationResult.getMessages()
-                .get(0).getMessage());
-    }
+    ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+                 validationResult.getMessages()
+                                 .size());
+    assertEquals("Value must not be longer than 5.",
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
+  }
 
-    @Test
-    public void testValidateFail01German() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-        Address model = new Address("Street", "123456", "City");
+  @Test
+  public void testValidateFail01German() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Address model = new Address("Street",
+                                "123456",
+                                "City");
 
-        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
-        assertFalse(validationResult.isValid());
-        assertEquals(1, validationResult.getMessages().size());
-        assertEquals("Wert darf nicht länger als 5 sein.", validationResult.getMessages()
-                .get(0).getMessage());
-    }
+    ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+                 validationResult.getMessages()
+                                 .size());
+    assertEquals("Wert darf nicht länger als 5 sein.",
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
+  }
 }
 
 

@@ -22,39 +22,41 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 import org.gwtproject.regexp.shared.RegExp;
 
 public abstract class AbstractRegexpConstraint
-        extends AbstractConstraint<String> {
+    extends AbstractConstraint<String> {
 
-    private RegExp regExp;
+  private RegExp regExp;
 
-    public AbstractRegexpConstraint(String packageName,
-                                    String simpleName,
-                                    String fieldName,
-                                    String regExp) {
-        super(packageName,
-              simpleName,
-              fieldName);
-        this.regExp = RegExp.compile(regExp);
+  public AbstractRegexpConstraint(String packageName,
+                                  String simpleName,
+                                  String fieldName,
+                                  String regExp) {
+    super(packageName,
+          simpleName,
+          fieldName);
+    this.regExp = RegExp.compile(regExp);
+  }
+
+  public void check(String value)
+      throws MalioValidationException {
+    String message = LocalizedMessages.INSTANCE.getRegexpMessage(value);
+    if (value != null) {
+      if (!this.regExp.test(value)) {
+        throw new MalioValidationException(message);
+      }
     }
+  }
 
-    public void check(String value) throws MalioValidationException {
-        String message = LocalizedMessages.INSTANCE.getRegexpMessage(value);
-        if (value != null) {
-            if (!this.regExp.test(value)) {
-                throw new MalioValidationException(message);
-            }
-        }
+  public void isValid(String value,
+                      ValidationResult validationResult) {
+    String message = LocalizedMessages.INSTANCE.getRegexpMessage(value);
+    if (value != null) {
+      if (!this.regExp.test(value)) {
+        validationResult.getMessages()
+                        .add(new ErrorMessage(message,
+                                              super.getClassName(),
+                                              super.getSimpleName(),
+                                              super.getFieldName()));
+      }
     }
-
-    public void isValid(String value, ValidationResult validationResult) {
-        String message = LocalizedMessages.INSTANCE.getRegexpMessage(value);
-        if (value != null) {
-            if (!this.regExp.test(value)) {
-                validationResult.getMessages()
-                                .add(new ErrorMessage(message,
-                                                      super.getClassName(),
-                                                      super.getSimpleName(),
-                                                      super.getFieldName()));
-            }
-        }
-    }
+  }
 }

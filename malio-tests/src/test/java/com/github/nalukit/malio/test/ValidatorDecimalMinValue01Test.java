@@ -27,85 +27,101 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ValidatorDecimalMinValue01Test {
 
-    @Before
-    public void setup() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
-    }
+  @Before
+  public void setup() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
 
-    @Test
-    public void testCheckOk() throws MalioValidationException {
-        Person model = new Person(BigDecimal.valueOf(0.42));
-        PersonMalioValidator.INSTANCE.check(model);
-    }
+  @Test
+  public void testCheckOk()
+      throws MalioValidationException {
+    Person model = new Person(BigDecimal.valueOf(0.42));
+    PersonMalioValidator.INSTANCE.check(model);
+  }
 
-    @Test
-    public void testValidateOk() {
-        Person model = new Person(BigDecimal.valueOf(0.42));
+  @Test
+  public void testValidateOk() {
+    Person model = new Person(BigDecimal.valueOf(0.42));
 
-        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-    @Test
-    public void testCheckNullOk() throws MalioValidationException {
-        Person model = new Person(null);
-        PersonMalioValidator.INSTANCE.check(model);
-    }
+  @Test
+  public void testCheckNullOk()
+      throws MalioValidationException {
+    Person model = new Person(null);
+    PersonMalioValidator.INSTANCE.check(model);
+  }
 
-    @Test
-    public void testValidateNullOk() {
-        Person model = new Person(null);
+  @Test
+  public void testValidateNullOk() {
+    Person model = new Person(null);
 
-        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-    @Test
-    public void testCheckEdgeOk() throws MalioValidationException {
-        Person model = new Person(BigDecimal.valueOf(0.1));
-        PersonMalioValidator.INSTANCE.check(model);
-    }
+  @Test
+  public void testCheckEdgeOk()
+      throws MalioValidationException {
+    Person model = new Person(BigDecimal.valueOf(0.1));
+    PersonMalioValidator.INSTANCE.check(model);
+  }
 
-    @Test
-    public void testValidateEdgeOk() {
-        Person model = new Person(BigDecimal.valueOf(0.1));
+  @Test
+  public void testValidateEdgeOk() {
+    Person model = new Person(BigDecimal.valueOf(0.1));
 
-        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
-    @Test
-    public void testCheckFail01() {
-        Person model = new Person(BigDecimal.valueOf(0.05));
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
-    }
+  @Test
+  public void testCheckFail01() {
+    Person model = new Person(BigDecimal.valueOf(0.05));
 
-    @Test
-    public void testValidateFail01() {
-        Person model = new Person(BigDecimal.valueOf(0.099999));
+    MalioValidationException thrown = assertThrows(MalioValidationException.class,
+                                                   () -> PersonMalioValidator.INSTANCE.check(model));
+  }
 
-        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
-        assertFalse(validationResult.isValid());
-        assertEquals(1, validationResult.getMessages().size());
-        assertEquals("Value must not be smaller than 0.1.",
-                validationResult.getMessages().get(0).getMessage());
-    }
+  @Test
+  public void testValidateFail01() {
+    Person model = new Person(BigDecimal.valueOf(0.099999));
 
-    @Test
-    public void testValidateFail01German() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-        Person model = new Person(BigDecimal.valueOf(0.099999));
+    ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+                 validationResult.getMessages()
+                                 .size());
+    assertEquals("Value must not be smaller than 0.1.",
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
+  }
 
-        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
-        assertFalse(validationResult.isValid());
-        assertEquals(1, validationResult.getMessages().size());
-        assertEquals("Wert darf nicht kleiner als 0.1 sein.",
-                validationResult.getMessages().get(0).getMessage());
-    }
+  @Test
+  public void testValidateFail01German() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Person model = new Person(BigDecimal.valueOf(0.099999));
+
+    ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+                 validationResult.getMessages()
+                                 .size());
+    assertEquals("Wert darf nicht kleiner als 0.1 sein.",
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
+  }
 }
 
 

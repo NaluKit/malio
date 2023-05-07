@@ -31,6 +31,7 @@ public class SubValidator02Test
   public void gwtSetUp() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
   }
+
   @Override
   public String getModuleName() {
     return "com.github.nalukit.malio.MalioGwt2Test";

@@ -32,68 +32,79 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ValidatorEmail01Test {
 
-    @Before
-    public void setup() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
-    }
+  @Before
+  public void setup() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
 
   @Test
-    public void testCheckOk() throws MalioValidationException {
-        Person model = new Person("me@domain.com");
-        PersonMalioValidator.INSTANCE.check(model);
-    }
+  public void testCheckOk()
+      throws MalioValidationException {
+    Person model = new Person("me@domain.com");
+    PersonMalioValidator.INSTANCE.check(model);
+  }
 
-    @Test
-    public void testValidateOk() {
-        Person model = new Person("me@domain.com");
+  @Test
+  public void testValidateOk() {
+    Person model = new Person("me@domain.com");
 
-        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-    @Test
-    public void testCheckNullOk() throws MalioValidationException {
-        Person model = new Person(null);
-        PersonMalioValidator.INSTANCE.check(model);
-    }
+  @Test
+  public void testCheckNullOk()
+      throws MalioValidationException {
+    Person model = new Person(null);
+    PersonMalioValidator.INSTANCE.check(model);
+  }
 
-    @Test
-    public void testValidateNullOk() {
-        Person model = new Person(null);
+  @Test
+  public void testValidateNullOk() {
+    Person model = new Person(null);
 
-        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-    @Test
-    public void testCheckFail01() {
-        Person model = new Person("medomain.com");
+  @Test
+  public void testCheckFail01() {
+    Person model = new Person("medomain.com");
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
-    }
+    MalioValidationException thrown = assertThrows(MalioValidationException.class,
+                                                   () -> PersonMalioValidator.INSTANCE.check(model));
+  }
 
-    @Test
-    public void testValidateFail01() {
-        Person model = new Person("medomain.com");
+  @Test
+  public void testValidateFail01() {
+    Person model = new Person("medomain.com");
 
-        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
-        assertFalse(validationResult.isValid());
-        assertEquals(1, validationResult.getMessages().size());
-        assertEquals("String does not represent an email address!",
-                validationResult.getMessages().get(0).getMessage());
-    }
+    ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+                 validationResult.getMessages()
+                                 .size());
+    assertEquals("String does not represent an email address!",
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
+  }
 
-    @Test
-    public void testValidateFail01German() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-        Person model = new Person("medomain.com");
+  @Test
+  public void testValidateFail01German() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Person model = new Person("medomain.com");
 
-        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
-        assertFalse(validationResult.isValid());
-        assertEquals(1, validationResult.getMessages().size());
-        assertEquals("String repräsentiert keine E-Mail Adresse!",
-                validationResult.getMessages().get(0).getMessage());
-    }
+    ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+                 validationResult.getMessages()
+                                 .size());
+    assertEquals("String repräsentiert keine E-Mail Adresse!",
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
+  }
 }
 
 

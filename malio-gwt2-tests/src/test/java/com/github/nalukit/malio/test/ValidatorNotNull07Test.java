@@ -25,10 +25,8 @@ import com.github.nalukit.malio.test.model.notnull07.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
 import org.junit.Test;
 
-
-
-
-public class ValidatorNotNull07Test extends GWTTestCase {
+public class ValidatorNotNull07Test
+    extends GWTTestCase {
 
   @Override
   public void gwtSetUp() {
@@ -41,7 +39,8 @@ public class ValidatorNotNull07Test extends GWTTestCase {
   }
 
   @Test
-  public void testCheckOkOnDeeperClassHierarchy() throws MalioValidationException {
+  public void testCheckOkOnDeeperClassHierarchy()
+      throws MalioValidationException {
     Person model = new Person(new Address("Test Avenue 21",
                                           "123456",
                                           "Test City"));

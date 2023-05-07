@@ -24,7 +24,6 @@ import com.github.nalukit.malio.test.model.subvalidator01.Address;
 import com.github.nalukit.malio.test.model.subvalidator01.Person;
 import com.github.nalukit.malio.test.model.subvalidator01.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
-import org.junit.Before;
 import org.junit.Test;
 
 public class SubValidator01Test
@@ -57,11 +56,11 @@ public class SubValidator01Test
 
   @Test
   public void testValidateOk() {
-    Person           model  = new Person("Flintstones",
-                                         "Fred",
-                                         new Address("Test Avenue 21",
-                                                     "123456",
-                                                     "Test City"));
+    Person model = new Person("Flintstones",
+                              "Fred",
+                              new Address("Test Avenue 21",
+                                          "123456",
+                                          "Test City"));
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }
@@ -89,11 +88,11 @@ public class SubValidator01Test
                                           "Test City"));
 
     try {
-    PersonMalioValidator.INSTANCE.check(model);
-    fail();
-  } catch (MalioValidationException e) {
-    //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
-  }
+      PersonMalioValidator.INSTANCE.check(model);
+      fail();
+    } catch (MalioValidationException e) {
+      //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
+    }
   }
 
   @Test

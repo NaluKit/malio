@@ -31,52 +31,54 @@ import javax.lang.model.type.TypeKind;
 import java.util.Collections;
 import java.util.List;
 
-public class RegexpConstraint extends AbstractConstraint<Regexp> {
+public class RegexpConstraint
+    extends AbstractConstraint<Regexp> {
 
-    public RegexpConstraint(ProcessingEnvironment processingEnv, ProcessorUtils processorUtils) {
-        super(processingEnv, processorUtils);
-    }
+  public RegexpConstraint(ProcessingEnvironment processingEnv,
+                          ProcessorUtils processorUtils) {
+    super(processingEnv,
+          processorUtils);
+  }
 
-    @Override
-    public Class<Regexp> annotationType() {
-        return Regexp.class;
-    }
+  @Override
+  public Class<Regexp> annotationType() {
+    return Regexp.class;
+  }
 
-    @Override
-    public String getImplementationName() {
-        return Constants.MALIO_CONSTRAINT_REGEXP_IMPL_NAME;
-    }
+  @Override
+  public String getImplementationName() {
+    return Constants.MALIO_CONSTRAINT_REGEXP_IMPL_NAME;
+  }
 
-    @Override
-    public ConstraintType getConstraintType() {
-        return ConstraintType.REGEXP_CONSTRAINT;
-    }
+  @Override
+  public ConstraintType getConstraintType() {
+    return ConstraintType.REGEXP_CONSTRAINT;
+  }
 
-    @Override
-    public TypeName getValidationClass(VariableElement variableElement) {
-        return ClassName.get(AbstractRegexpConstraint.class);
-    }
+  @Override
+  public TypeName getValidationClass(VariableElement variableElement) {
+    return ClassName.get(AbstractRegexpConstraint.class);
+  }
 
-    @Override
-    protected List<TypeKind> getSupportedPrimitives() {
-        return null;
-    }
+  @Override
+  protected List<TypeKind> getSupportedPrimitives() {
+    return null;
+  }
 
-    @Override
-    protected List<Class<?>> getSupportedDeclaredType() {
-        return Collections.singletonList(String.class);
-    }
+  @Override
+  protected List<Class<?>> getSupportedDeclaredType() {
+    return Collections.singletonList(String.class);
+  }
 
-    @Override
-    protected AbstractGenerator createGenerator() {
-        return ConstraintRegexpGenerator.builder()
-                .elements(this.processingEnvironment.getElementUtils())
-                .filer(this.processingEnvironment.getFiler())
-                .types(this.processingEnvironment.getTypeUtils())
-                .processorUtils(this.processorUtils)
-                .constraint(this)
-                .build();
-    }
-
+  @Override
+  protected AbstractGenerator createGenerator() {
+    return ConstraintRegexpGenerator.builder()
+                                    .elements(this.processingEnvironment.getElementUtils())
+                                    .filer(this.processingEnvironment.getFiler())
+                                    .types(this.processingEnvironment.getTypeUtils())
+                                    .processorUtils(this.processorUtils)
+                                    .constraint(this)
+                                    .build();
+  }
 
 }

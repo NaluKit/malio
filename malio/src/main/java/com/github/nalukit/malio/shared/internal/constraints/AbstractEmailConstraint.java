@@ -27,6 +27,7 @@ public abstract class AbstractEmailConstraint
     extends AbstractConstraint<String> {
 
   private final static RegExp regExp = RegExp.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
+
   public AbstractEmailConstraint(String packageName,
                                  String simpleName,
                                  String fieldName) {
@@ -35,14 +36,16 @@ public abstract class AbstractEmailConstraint
           fieldName);
   }
 
-  public void check(String value) throws MalioValidationException {
+  public void check(String value)
+      throws MalioValidationException {
     String message = LocalizedMessages.INSTANCE.getEmailMessage();
     if (Objects.nonNull(value) && !AbstractEmailConstraint.regExp.test(value)) {
       throw new MalioValidationException(message);
     }
   }
 
-  public void  isValid(String value, ValidationResult validationResult) {
+  public void isValid(String value,
+                      ValidationResult validationResult) {
     String message = LocalizedMessages.INSTANCE.getEmailMessage();
     if (Objects.nonNull(value) && !AbstractEmailConstraint.regExp.test(value)) {
       validationResult.getMessages()

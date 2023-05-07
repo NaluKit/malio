@@ -15,9 +15,9 @@
  */
 package com.github.nalukit.malio.shared.internal.constraints;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
-import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
 import java.util.Collection;
@@ -37,15 +37,21 @@ public abstract class AbstractNotEmptyConstraint<T extends Collection<?>>
     this.message = LocalizedMessages.INSTANCE.getNotEmptyMessage();
   }
 
-  public void check(T value) throws MalioValidationException {
+  public void check(T value)
+      throws MalioValidationException {
     if (Objects.nonNull(value) && value.isEmpty()) {
       throw new MalioValidationException(this.message);
     }
   }
 
-  public void  isValid(T value, ValidationResult validationResult) {
-    if (Objects.nonNull(value)  && value.isEmpty()) {
-      validationResult.getMessages().add(new ErrorMessage(this.message, super.getClassName(), super.getSimpleName(), super.getFieldName()));
+  public void isValid(T value,
+                      ValidationResult validationResult) {
+    if (Objects.nonNull(value) && value.isEmpty()) {
+      validationResult.getMessages()
+                      .add(new ErrorMessage(this.message,
+                                            super.getClassName(),
+                                            super.getSimpleName(),
+                                            super.getFieldName()));
     }
   }
 }
