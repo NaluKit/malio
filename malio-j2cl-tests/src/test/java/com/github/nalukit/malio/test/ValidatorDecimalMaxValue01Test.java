@@ -57,62 +57,73 @@ public class ValidatorDecimalMaxValue01Test {
   }
 
   @Test
-    public void testCheckEdgeOk() throws MalioValidationException {
-        Person model = new Person(BigDecimal.valueOf(0.5));
-        PersonMalioValidator.INSTANCE.check(model);
-    }
+  public void testCheckEdgeOk()
+      throws MalioValidationException {
+    Person model = new Person(BigDecimal.valueOf(0.5));
+    PersonMalioValidator.INSTANCE.check(model);
+  }
 
-    @Test
-    public void testValidateEdgeOk() {
-        Person model = new Person(BigDecimal.valueOf(0.5));
+  @Test
+  public void testValidateEdgeOk() {
+    Person model = new Person(BigDecimal.valueOf(0.5));
 
-        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-    @Test
-    public void testCheckNullOk() throws MalioValidationException {
-        Person model = new Person(null);
-        PersonMalioValidator.INSTANCE.check(model);
-    }
+  @Test
+  public void testCheckNullOk()
+      throws MalioValidationException {
+    Person model = new Person(null);
+    PersonMalioValidator.INSTANCE.check(model);
+  }
 
-    @Test
-    public void testValidateNullOk() {
-        Person model = new Person(null);
+  @Test
+  public void testValidateNullOk() {
+    Person model = new Person(null);
 
-        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-    @Test
-    public void testCheckFail01() {
-        Person model = new Person(BigDecimal.valueOf(0.5000001));
+  @Test
+  public void testCheckFail01() {
+    Person model = new Person(BigDecimal.valueOf(0.5000001));
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
-    }
+    MalioValidationException thrown = assertThrows(MalioValidationException.class,
+                                                   () -> PersonMalioValidator.INSTANCE.check(model));
+  }
 
-    @Test
-    public void testValidateFail01() {
-        Person model = new Person(BigDecimal.valueOf(0.6));
+  @Test
+  public void testValidateFail01() {
+    Person model = new Person(BigDecimal.valueOf(0.6));
 
-        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
-        assertFalse(validationResult.isValid());
-        assertEquals(1, validationResult.getMessages().size());
-        assertEquals("Value must not be greater than 0.5.",
-                validationResult.getMessages().get(0).getMessage());
-    }
+    ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+                 validationResult.getMessages()
+                                 .size());
+    assertEquals("Value must not be greater than 0.5.",
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
+  }
 
-    @Test
-    public void testValidateFail01German() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-        Person model = new Person(BigDecimal.valueOf(0.6));
+  @Test
+  public void testValidateFail01German() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Person model = new Person(BigDecimal.valueOf(0.6));
 
-        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
-        assertFalse(validationResult.isValid());
-        assertEquals(1, validationResult.getMessages().size());
-        assertEquals("Wert darf nicht größer als 0.5 sein.",
-                validationResult.getMessages().get(0).getMessage());
-    }
+    ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+                 validationResult.getMessages()
+                                 .size());
+    assertEquals("Wert darf nicht größer als 0.5 sein.",
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
+  }
 }
 
 

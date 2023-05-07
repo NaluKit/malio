@@ -15,9 +15,9 @@
  */
 package com.github.nalukit.malio.shared.internal.constraints;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
-import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
 public abstract class AbstractMinValueConstraint
@@ -27,7 +27,6 @@ public abstract class AbstractMinValueConstraint
 
   private Long minValue;
 
-
   public AbstractMinValueConstraint(String packageName,
                                     String simpleName,
                                     String fieldName,
@@ -35,19 +34,25 @@ public abstract class AbstractMinValueConstraint
     super(packageName,
           simpleName,
           fieldName);
-    this.message = LocalizedMessages.INSTANCE.getMinValueMessage(minValue.longValue());
+    this.message  = LocalizedMessages.INSTANCE.getMinValueMessage(minValue.longValue());
     this.minValue = minValue.longValue();
   }
 
-  public void check(Number value) throws MalioValidationException {
+  public void check(Number value)
+      throws MalioValidationException {
     if (value != null && value.longValue() < this.minValue) {
       throw new MalioValidationException(this.message);
     }
   }
 
-  public void isValid(Number value, ValidationResult validationResult) {
+  public void isValid(Number value,
+                      ValidationResult validationResult) {
     if (value != null && value.longValue() < this.minValue) {
-      validationResult.getMessages().add(new ErrorMessage(this.message, super.getClassName(), super.getSimpleName(), super.getFieldName()));
+      validationResult.getMessages()
+                      .add(new ErrorMessage(this.message,
+                                            super.getClassName(),
+                                            super.getSimpleName(),
+                                            super.getFieldName()));
     }
   }
 }

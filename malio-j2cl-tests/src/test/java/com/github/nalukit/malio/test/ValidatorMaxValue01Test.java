@@ -61,63 +61,95 @@ public class ValidatorMaxValue01Test {
   }
 
   @Test
-    public void testCheckEdgeOk() throws MalioValidationException {
-        Person model = new Person("Name", 99, 99, 123);
-        PersonMalioValidator.INSTANCE.check(model);
-    }
+  public void testCheckEdgeOk()
+      throws MalioValidationException {
+    Person model = new Person("Name",
+                              99,
+                              99,
+                              123);
+    PersonMalioValidator.INSTANCE.check(model);
+  }
 
-    @Test
-    public void testValidateEdgeOk() {
-        Person model = new Person("Name", 99, 99, 123);
+  @Test
+  public void testValidateEdgeOk() {
+    Person model = new Person("Name",
+                              99,
+                              99,
+                              123);
 
-        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-    @Test
-    public void testCheckNullOk() throws MalioValidationException {
-        Person model = new Person("Name", 18, 10, null);
-        PersonMalioValidator.INSTANCE.check(model);
-    }
+  @Test
+  public void testCheckNullOk()
+      throws MalioValidationException {
+    Person model = new Person("Name",
+                              18,
+                              10,
+                              null);
+    PersonMalioValidator.INSTANCE.check(model);
+  }
 
-    @Test
-    public void testValidateNullOk() {
-        Person model = new Person("Name", 18, 10, null);
+  @Test
+  public void testValidateNullOk() {
+    Person model = new Person("Name",
+                              18,
+                              10,
+                              null);
 
-        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-    @Test
-    public void testCheckFail01() {
-        Person model = new Person("Name", 112, 500, 200);
+  @Test
+  public void testCheckFail01() {
+    Person model = new Person("Name",
+                              112,
+                              500,
+                              200);
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
-    }
+    MalioValidationException thrown = assertThrows(MalioValidationException.class,
+                                                   () -> PersonMalioValidator.INSTANCE.check(model));
+  }
 
-    @Test
-    public void testValidateFail01() {
-      LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
-        Person model = new Person("Name", 112, 500, 200);
+  @Test
+  public void testValidateFail01() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+    Person model = new Person("Name",
+                              112,
+                              500,
+                              200);
 
-        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
-        assertFalse(validationResult.isValid());
-        assertEquals(3, validationResult.getMessages().size());
-        assertEquals("Value must not be greater than 99.", validationResult.getMessages()
-                .get(0).getMessage());
-    }
+    ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(3,
+                 validationResult.getMessages()
+                                 .size());
+    assertEquals("Value must not be greater than 99.",
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
+  }
 
-    @Test
-    public void testValidateFail01German() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-        Person model = new Person("Name", 112, 500, 200);
+  @Test
+  public void testValidateFail01German() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Person model = new Person("Name",
+                              112,
+                              500,
+                              200);
 
-        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
-        assertFalse(validationResult.isValid());
-        assertEquals(3, validationResult.getMessages().size());
-        assertEquals("Wert darf nicht größer als 99 sein.", validationResult.getMessages()
-                .get(0).getMessage());
-    }
+    ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(3,
+                 validationResult.getMessages()
+                                 .size());
+    assertEquals("Wert darf nicht größer als 99 sein.",
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
+  }
 }
 
 

@@ -39,6 +39,7 @@ import com.github.nalukit.malio.test.ValidatorNotNull06Test;
 import com.github.nalukit.malio.test.ValidatorNotNull07Test;
 import com.github.nalukit.malio.test.ValidatorRegexpTest;
 import com.github.nalukit.malio.test.ValidatorSize01Test;
+import com.github.nalukit.malio.test.ValidatorUuid01Test;
 import com.github.nalukit.malio.test.ValidatorWhitelistTest;
 import com.google.gwt.junit.tools.GWTTestSuite;
 import junit.framework.Test;
@@ -71,6 +72,7 @@ public class GwtSuite {
     suite.addTestSuite(ValidatorNotNull07Test.class);
     suite.addTestSuite(ValidatorRegexpTest.class);
     suite.addTestSuite(ValidatorSize01Test.class);
+    suite.addTestSuite(ValidatorUuid01Test.class);
     suite.addTestSuite(ValidatorWhitelistTest.class);
     return suite;
   }

@@ -99,8 +99,10 @@ public class ValidatorScanner
 
   private void checkNeedForSubvalidator(VariableElement variableElement) {
     TypeElement elementOfVariableType = (TypeElement) types.asElement(variableElement.asType());
-    this.checkForDirectSubValidators(variableElement, elementOfVariableType);
-    this.checkForSubValidatorAsGenricInCollections(variableElement, elementOfVariableType);
+    this.checkForDirectSubValidators(variableElement,
+                                     elementOfVariableType);
+    this.checkForSubValidatorAsGenricInCollections(variableElement,
+                                                   elementOfVariableType);
   }
 
   private void checkForDirectSubValidators(VariableElement variableElement,

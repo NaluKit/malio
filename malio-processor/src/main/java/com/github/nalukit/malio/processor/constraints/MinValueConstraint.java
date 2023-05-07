@@ -31,54 +31,56 @@ import javax.lang.model.type.TypeKind;
 import java.util.Arrays;
 import java.util.List;
 
-public class MinValueConstraint extends AbstractConstraint<MinValue> {
+public class MinValueConstraint
+    extends AbstractConstraint<MinValue> {
 
-    public MinValueConstraint(ProcessingEnvironment processingEnv, ProcessorUtils processorUtils) {
-        super(processingEnv, processorUtils);
-    }
+  public MinValueConstraint(ProcessingEnvironment processingEnv,
+                            ProcessorUtils processorUtils) {
+    super(processingEnv,
+          processorUtils);
+  }
 
-    @Override
-    public Class<MinValue> annotationType() {
-        return MinValue.class;
-    }
+  @Override
+  public Class<MinValue> annotationType() {
+    return MinValue.class;
+  }
 
+  @Override
+  public String getImplementationName() {
+    return Constants.MALIO_CONSTRAINT_MINVALUE_IMPL_NAME;
+  }
 
-    @Override
-    public String getImplementationName() {
-        return Constants.MALIO_CONSTRAINT_MINVALUE_IMPL_NAME;
-    }
+  @Override
+  public ConstraintType getConstraintType() {
+    return ConstraintType.MIN_VALUE_CONSTRAINT;
+  }
 
-    @Override
-    public ConstraintType getConstraintType() {
-        return ConstraintType.MIN_VALUE_CONSTRAINT;
-    }
+  @Override
+  public TypeName getValidationClass(VariableElement variableElement) {
+    return ClassName.get(AbstractMinValueConstraint.class);
+  }
 
-    @Override
-    public TypeName getValidationClass(VariableElement variableElement) {
-        return ClassName.get(AbstractMinValueConstraint.class);
-    }
+  @Override
+  protected List<TypeKind> getSupportedPrimitives() {
+    return Arrays.asList(TypeKind.INT,
+                         TypeKind.LONG);
+  }
 
-    @Override
-    protected List<TypeKind> getSupportedPrimitives() {
-        return Arrays.asList(TypeKind.INT, TypeKind.LONG);
-    }
+  @Override
+  protected List<Class<?>> getSupportedDeclaredType() {
+    return Arrays.asList(Integer.class,
+                         Long.class);
+  }
 
-    @Override
-    protected List<Class<?>> getSupportedDeclaredType() {
-        return Arrays.asList(Integer.class,
-                             Long.class);
-    }
-
-    @Override
-    protected AbstractGenerator createGenerator() {
-        return ConstraintMinValueGenerator.builder()
-                .elements(this.processingEnvironment.getElementUtils())
-                .filer(this.processingEnvironment.getFiler())
-                .types(this.processingEnvironment.getTypeUtils())
-                .processorUtils(this.processorUtils)
-                .constraint(this)
-                .build();
-    }
-
+  @Override
+  protected AbstractGenerator createGenerator() {
+    return ConstraintMinValueGenerator.builder()
+                                      .elements(this.processingEnvironment.getElementUtils())
+                                      .filer(this.processingEnvironment.getFiler())
+                                      .types(this.processingEnvironment.getTypeUtils())
+                                      .processorUtils(this.processorUtils)
+                                      .constraint(this)
+                                      .build();
+  }
 
 }

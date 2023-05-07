@@ -28,86 +28,104 @@ import org.junit.Test;
 
 import java.util.List;
 
+public class ValidatorWhitelistTest
+    extends GWTTestCase {
 
-public class ValidatorWhitelistTest extends GWTTestCase {
+  @Override
+  public void gwtSetUp() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
 
-    @Override
-    public void gwtSetUp() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  @Override
+  public String getModuleName() {
+    return "com.github.nalukit.malio.MalioGwt2Test";
+  }
+
+  @Test
+  public void testCheckOk()
+      throws MalioValidationException {
+    Address model = new Address("My Street",
+                                "54321",
+                                "My Town");
+    AddressMalioValidator.INSTANCE.check(model);
+  }
+
+  @Test
+  public void testValidateOk() {
+    Address model = new Address("My Street",
+                                "54321",
+                                "My Town");
+
+    ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
+
+  @Test
+  public void testCheckNullOk()
+      throws MalioValidationException {
+    Address model = new Address(null,
+                                null,
+                                null);
+    AddressMalioValidator.INSTANCE.check(model);
+  }
+
+  @Test
+  public void testValidateNullOk() {
+    Address model = new Address(null,
+                                null,
+                                null);
+
+    ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
+
+  @Test
+  public void testCheckFail01() {
+    Address model = new Address("Street",
+                                "123",
+                                "City");
+
+    try {
+      AddressMalioValidator.INSTANCE.check(model);
+      fail();
+    } catch (MalioValidationException e) {
     }
+  }
 
-    @Override
-    public String getModuleName() {
-        return "com.github.nalukit.malio.MalioGwt2Test";
-    }
+  @Test
+  public void testValidateFail01() {
+    Address model = new Address("Street",
+                                "123",
+                                "City");
 
-    @Test
-    public void testCheckOk() throws MalioValidationException {
-        Address model = new Address("My Street", "54321", "My Town");
-        AddressMalioValidator.INSTANCE.check(model);
-    }
+    ValidationResult   validationResult = AddressMalioValidator.INSTANCE.validate(model);
+    List<ErrorMessage> messages         = validationResult.getMessages();
+    ErrorMessage       errorMessage     = messages.get(0);
 
-    @Test
-    public void testValidateOk() {
-        Address model = new Address("My Street", "54321", "My Town");
+    assertFalse(validationResult.isValid());
+    assertEquals(3,
+                 messages.size());
+    assertEquals("String 'Street' is not allowed!",
+                 errorMessage.getMessage());
+  }
 
-        ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+  @Test
+  public void testValidateFail01German() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Address model = new Address("Street",
+                                "123",
+                                "City");
 
-    @Test
-    public void testCheckNullOk() throws MalioValidationException {
-        Address model = new Address(null, null, null);
-        AddressMalioValidator.INSTANCE.check(model);
-    }
+    ValidationResult   validationResult = AddressMalioValidator.INSTANCE.validate(model);
+    List<ErrorMessage> messages         = validationResult.getMessages();
+    ErrorMessage       errorMessage     = messages.get(0);
 
-    @Test
-    public void testValidateNullOk() {
-        Address model = new Address(null, null, null);
-
-        ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
-
-    @Test
-    public void testCheckFail01() {
-        Address model = new Address("Street",
-                                    "123",
-                                    "City");
-
-        try {
-            AddressMalioValidator.INSTANCE.check(model);
-            fail();
-        } catch (MalioValidationException e) {
-        }
-    }
-
-    @Test
-    public void testValidateFail01() {
-        Address model = new Address("Street", "123", "City");
-
-        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
-        List<ErrorMessage> messages = validationResult.getMessages();
-        ErrorMessage errorMessage = messages.get(0);
-
-        assertFalse(validationResult.isValid());
-        assertEquals(3, messages.size());
-        assertEquals("String 'Street' is not allowed!", errorMessage.getMessage());
-    }
-
-    @Test
-    public void testValidateFail01German() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-        Address model = new Address("Street", "123", "City");
-
-        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
-        List<ErrorMessage> messages = validationResult.getMessages();
-        ErrorMessage errorMessage = messages.get(0);
-
-        assertFalse(validationResult.isValid());
-        assertEquals(3, messages.size());
-        assertEquals("String 'Street' ist nicht erlaubt!", errorMessage.getMessage());
-    }
+    assertFalse(validationResult.isValid());
+    assertEquals(3,
+                 messages.size());
+    assertEquals("String 'Street' ist nicht erlaubt!",
+                 errorMessage.getMessage());
+  }
 }
 
 

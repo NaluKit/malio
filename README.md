@@ -42,7 +42,7 @@ public class Person {
 }
 ```
 
-and 
+and
 
 ```java
 @MalioValidator
@@ -108,6 +108,7 @@ These are the steps to trigger the creation of a validator.
 To use Malio, add the following dependencies to your pom (in case they are missing):
 
 * **SNAPSHOT**
+
 ```XML
 <dependency>
     <groupId>com.github.nalukit</groupId>
@@ -121,7 +122,9 @@ To use Malio, add the following dependencies to your pom (in case they are missi
     <scope>provided</scope>
 </dependency>
 ```
+
 * **GWT 2.9.0 (and newer)  - Release**
+
 ```XML
 <dependency>
     <groupId>com.github.nalukit</groupId>
@@ -250,7 +253,7 @@ This annotation can only be used on fields of type **BigDecimal**.
 @Email
 ```
 
-The annotation accepts a String value of the minimal value that is allowed for the field - if the value is not null.
+The annotation check the value of the field for a formal valid email address - if the value is not null.
 
 This annotation can only be used on fields of type **String**.
 
@@ -357,6 +360,16 @@ This annotation can only be used on fields of type **String**.
 The annotation defines the minimum and maximum size of a collection. The constraint will not be checked if the collection is null.
 
 This annotation can only be used on fields of types extending **Collection** (List, Set, ...).
+
+#### UUID
+
+```java
+@Uuid
+```
+
+The annotation check the value of the field for a formal valid UUID - if the value is not null.
+
+This annotation can only be used on fields of type **String**.
 
 #### Whitelist
 
