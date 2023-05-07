@@ -183,16 +183,16 @@ public class Person {
 }
 ```
 
-Malio will create a validator for the Person class. The validator will be called [name if the class] + 'MalioValidator'.
+Malio will create a validator for the `Person` class. The validator will be called [name of the class] + 'MalioValidator'.
 To validate an instance of the class, call:
 
 `PersonMalioValidator.INSTANCE.check(myInstenceOfPerson);`
 
 ## How does Malio work?
 
-Malio will generate for each variable and annotation a constraint class. Inside the validator all constraints are
+Malio will generate for each variable and annotation a constraint class. Inside the validator, all constraints are
 collected and processed. In case the type of a variable has a Malio validator, the validator of the type will be called.
-In case that classes are extending user classes, Malio will also look for exiting validators for the super classes.
+In case classes are extending user classes, Malio will also look for existing validators for the super classes.
 
 ## Supported Annotations
 
@@ -200,8 +200,12 @@ These are the annotations provided by Malio:
 
 ### MalioValidator
 
+```java
+@MalioValidator
+```
+
 The `MalioValidator`-annotation can be added to a **class**. The annotation is necessary to trigger the creation of a
-validator. Without this annotation not validator or constraint will be created!
+validator. Without this annotation no validator or constraint will be created!
 
 This annotation can also be used with abstract classes.
 
@@ -211,6 +215,10 @@ The following annotation can only be used on variable types.
 
 #### Blacklist
 
+```java
+@Blacklist({"x", "y"})
+```
+
 The annotation accepts a list of String values that are not allowed for the field. The constrain will look for the
 String values inside the variable and in case one of the values are found, create an error - if the value is not null.
 
@@ -218,11 +226,19 @@ This annotation can only be used on fields of type **String**.
 
 #### DecimalMaxValue
 
+```java
+@DecimalMaxValue("0.5")
+```
+
 The annotation accepts a String value of the maximal value that is allowed for the field - if the value is not null.
 
 This annotation can only be used on fields of type **BigDecimal**.
 
 #### DecimalMinValue
+
+```java
+@DecimalMinValue("0.5")
+```
 
 The annotation accepts a String value of the minimal value that is allowed for the field - if the value is not null.
 
@@ -230,16 +246,28 @@ This annotation can only be used on fields of type **BigDecimal**.
 
 #### Email
 
+```java
+@Email
+```
+
 The annotation accepts a String value of the minimal value that is allowed for the field - if the value is not null.
 
 This annotation can only be used on fields of type **String**.
 
 #### MalioIgnore
 
+```java
+@MalioIgnore
+```
+
 The annotation can be added to variable. It will tell Malio - in case there is a validator for the type of the
-variable - to ignore the validator and not calling it.
+variable - to ignore the validator and not calling it. This annotation can be used to avoid circular validations.
 
 #### MaxLength
+
+```java
+@MaxLength(20)
+```
 
 The annotation accepts a int value of the maximal numbers of characters. This is the maximal length allowed for the
 variable - if the value is not null.
@@ -248,12 +276,20 @@ This annotation can only be used on fields of type **String**.
 
 #### MaxValue
 
+```java
+@MaxValue(99)
+```
+
 The annotation accepts a long value of the maximal value of Number. This is the maximal length allowed for the
 variable - if the value is not null.
 
-This annotation can only be used on fields of type **Number**.
+This annotation can only be used on fields of type **Number** and their unboxed variants.
 
 #### MinLength
+
+```java
+@MinLength(10)
+```
 
 The annotation accepts a int value of the minimal numbers of characters. This is the minimal length allowed for the
 variable - if the value is not null.
@@ -262,12 +298,20 @@ This annotation can only be used on fields of type **String**.
 
 #### MinValue
 
-The annotation accepts a long value of the maximal value of Number. This is the maximal length allowed for the
+```java
+@MinValue(10)
+```
+
+The annotation accepts a long value of the maximal value of Number. This is the maximum allowed for the
 variable - if the value is not null.
 
-This annotation can only be used on fields of type **Number**.
+This annotation can only be used on fields of type **Number** and their unboxed variants.
 
 #### NotBlank
+
+```java
+@NotBlank
+```
 
 The annotation indicates that the String should be empty - if the value is not null.
 
@@ -275,35 +319,53 @@ This annotation can only be used on fields of type **String**.
 
 #### NotEmpty
 
-The annotation indicates that the String should be empty - if the value is not null. (Currently the annotation does the
-same as **NotBlank**)
+```java
+@NotEmpty
+```
 
-This annotation can only be used on fields of type **String**.
+The annotation ensures that a `Collection` is not empty.
+
+This annotation can only be used on fields of types extending **Collection** (List, Set, ...).
 
 #### NotNull
 
+```java
+@MaxLength(20)
+```
+
 The annotation indicates that the variable should not be null.
 
-This annotation can be used on any type of a field.
+This annotation can be used on any complex type of a field.
 
 #### RegExp
 
+```java
+@Regexp(regexp = "\\d{5}")
+```
+
 The annotation indicates that the value of the variable will be tested against the regular expression - if the value of
-the variable should is not null.
+the variable is not null.
 
 This annotation can only be used on fields of type **String**.
 
 #### Size
 
-The annotation indicates that the size of a collection. It takes minimal and maximal number of entries - if the value of
-the variable should is not null.
+```java
+@Size(min=1, max=99)
+```
 
-This annotation can only be used on fields of type **Collection**.
+The annotation defines the minimum and maximum size of a collection. The constraint will not be checked if the collection is null.
+
+This annotation can only be used on fields of types extending **Collection** (List, Set, ...).
 
 #### Whitelist
 
+```java
+@Whitelist({"x","y"})
+```
+
 The annotation accepts a list of String values that are allowed for the field. The constrain will look for the String
-values inside the variable and in case a value not contained inside the list, an error is created - if the value is not
+values inside the variable and in case a value is not contained inside the list, an error is created - if the value is not
 null.
 
 This annotation can only be used on fields of type **String**.
