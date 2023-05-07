@@ -18,6 +18,7 @@ package com.github.nalukit.malio.processor;
 public class Constants {
   public final static String MALIO_CONSTRAINT_REGEXP_IMPL_NAME = "MalioConstraintRegexp";
   public final static String MALIO_CONSTRAINT_EMAIL_IMPL_NAME = "MalioConstraintEmail";
+  public final static String MALIO_CONSTRAINT_UUID_IMPL_NAME = "MalioConstraintUuid";
   public final static String MALIO_CONSTRAINT_WHITELIST_IMPL_NAME = "MalioConstraintWhitelist";
   public final static String MALIO_CONSTRAINT_BLACKLIST_IMPL_NAME = "MalioConstraintBlacklist";
   public final static String MALIO_CONSTRAINT_MINVALUE_IMPL_NAME = "MalioConstraintMinValue";

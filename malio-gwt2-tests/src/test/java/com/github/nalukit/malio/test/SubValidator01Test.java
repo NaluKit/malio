@@ -24,7 +24,6 @@ import com.github.nalukit.malio.test.model.subvalidator01.Address;
 import com.github.nalukit.malio.test.model.subvalidator01.Person;
 import com.github.nalukit.malio.test.model.subvalidator01.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
-import org.junit.Before;
 import org.junit.Test;
 
 public class SubValidator01Test

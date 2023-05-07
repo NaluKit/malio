@@ -92,7 +92,7 @@ public class ValidatorRegexpTest extends GWTTestCase {
 
     @Test
     public void testValidateFail01() {
-        com.github.nalukit.malio.test.model.regexp01.Address model = new com.github.nalukit.malio.test.model.regexp01.Address("Street", "123", "City");
+        Address model = new Address("Street", "123", "City");
 
         ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
         List<ErrorMessage> messages = validationResult.getMessages();
@@ -106,7 +106,7 @@ public class ValidatorRegexpTest extends GWTTestCase {
     @Test
     public void testValidateFail01German() {
         LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-        com.github.nalukit.malio.test.model.regexp01.Address model = new com.github.nalukit.malio.test.model.regexp01.Address("Street", "123", "City");
+        Address model = new Address("Street", "123", "City");
 
         ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
         List<ErrorMessage> messages = validationResult.getMessages();

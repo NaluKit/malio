@@ -29,6 +29,7 @@ import com.github.nalukit.malio.processor.constraints.NotEmptyConstraint;
 import com.github.nalukit.malio.processor.constraints.NotNullConstraint;
 import com.github.nalukit.malio.processor.constraints.RegexpConstraint;
 import com.github.nalukit.malio.processor.constraints.SizeConstraint;
+import com.github.nalukit.malio.processor.constraints.UuidConstraint;
 import com.github.nalukit.malio.processor.constraints.WhitelistConstraint;
 import com.github.nalukit.malio.processor.constraints.generator.ValidatorGenerator;
 import com.github.nalukit.malio.processor.constraints.scanner.ValidatorScanner;
@@ -95,32 +96,55 @@ public class MalioProcessor
 
   private void setUp() {
     this.processorUtils = ProcessorUtils.builder()
-            .processingEnvironment(processingEnv)
-            .build();
+                                        .processingEnvironment(processingEnv)
+                                        .build();
 
-    MaxValueConstraint maxValueConstraint = new MaxValueConstraint(this.processingEnv, this.processorUtils);
-    MinValueConstraint minValueConstraint = new MinValueConstraint(this.processingEnv, this.processorUtils);
-    MaxLengthConstraint maxLengthConstraint = new MaxLengthConstraint(this.processingEnv, this.processorUtils);
-    MinLengthConstraint minLengthConstraint = new MinLengthConstraint(this.processingEnv, this.processorUtils);
-    BlacklistConstraint blacklistConstraint = new BlacklistConstraint(this.processingEnv, this.processorUtils);
-    WhitelistConstraint whitelistConstraint = new WhitelistConstraint(this.processingEnv, this.processorUtils);
-    NotNullConstraint notNullConstraint = new NotNullConstraint(this.processingEnv, this.processorUtils);
-    RegexpConstraint regexpConstraint = new RegexpConstraint(this.processingEnv, this.processorUtils);
-    EmailConstraint emailConstraint = new EmailConstraint(this.processingEnv, this.processorUtils);
-    MaxDecimalValueConstraint maxDecimalValueConstraint = new MaxDecimalValueConstraint(this.processingEnv, this.processorUtils);
-    MinDecimalValueConstraint minDecimalValueConstraint = new MinDecimalValueConstraint(this.processingEnv, this.processorUtils);
-    NotBlankConstraint notBlankConstraint = new NotBlankConstraint(this.processingEnv, this.processorUtils);
-    NotEmptyConstraint notEmptyConstraint = new NotEmptyConstraint(this.processingEnv, this.processorUtils);
-    SizeConstraint sizeConstraint = new SizeConstraint(this.processingEnv, this.processorUtils);
+    BlacklistConstraint       blacklistConstraint       = new BlacklistConstraint(this.processingEnv,
+                                                                                  this.processorUtils);
+    EmailConstraint           emailConstraint           = new EmailConstraint(this.processingEnv,
+                                                                              this.processorUtils);
+    MaxDecimalValueConstraint maxDecimalValueConstraint = new MaxDecimalValueConstraint(this.processingEnv,
+                                                                                        this.processorUtils);
+    MaxLengthConstraint       maxLengthConstraint       = new MaxLengthConstraint(this.processingEnv,
+                                                                                  this.processorUtils);
+    MaxValueConstraint        maxValueConstraint        = new MaxValueConstraint(this.processingEnv,
+                                                                                 this.processorUtils);
+    MinDecimalValueConstraint minDecimalValueConstraint = new MinDecimalValueConstraint(this.processingEnv,
+                                                                                        this.processorUtils);
+    MinLengthConstraint       minLengthConstraint       = new MinLengthConstraint(this.processingEnv,
+                                                                                  this.processorUtils);
+    MinValueConstraint        minValueConstraint        = new MinValueConstraint(this.processingEnv,
+                                                                                 this.processorUtils);
+    NotBlankConstraint        notBlankConstraint        = new NotBlankConstraint(this.processingEnv,
+                                                                                 this.processorUtils);
+    NotEmptyConstraint        notEmptyConstraint        = new NotEmptyConstraint(this.processingEnv,
+                                                                                 this.processorUtils);
+    NotNullConstraint         notNullConstraint         = new NotNullConstraint(this.processingEnv,
+                                                                                this.processorUtils);
+    RegexpConstraint          regexpConstraint          = new RegexpConstraint(this.processingEnv,
+                                                                               this.processorUtils);
+    SizeConstraint            sizeConstraint            = new SizeConstraint(this.processingEnv,
+                                                                             this.processorUtils);
+    UuidConstraint            uuidConstraint            = new UuidConstraint(this.processingEnv,
+                                                                             this.processorUtils);
+    WhitelistConstraint       whitelistConstraint       = new WhitelistConstraint(this.processingEnv,
+                                                                                  this.processorUtils);
 
-    this.constraints = Arrays.asList(
-            notNullConstraint,
-            notBlankConstraint, regexpConstraint, emailConstraint,
-            maxValueConstraint, minValueConstraint,
-            maxLengthConstraint, minLengthConstraint,
-            blacklistConstraint, whitelistConstraint,
-            maxDecimalValueConstraint, minDecimalValueConstraint,
-            notEmptyConstraint, sizeConstraint
+    this.constraints = Arrays.asList(notNullConstraint,
+                                     notBlankConstraint,
+                                     regexpConstraint,
+                                     emailConstraint,
+                                     uuidConstraint,
+                                     maxValueConstraint,
+                                     minValueConstraint,
+                                     maxLengthConstraint,
+                                     minLengthConstraint,
+                                     blacklistConstraint,
+                                     whitelistConstraint,
+                                     maxDecimalValueConstraint,
+                                     minDecimalValueConstraint,
+                                     notEmptyConstraint,
+                                     sizeConstraint
             );
   }
 

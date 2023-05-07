@@ -13,22 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.processor.model;
+package com.github.nalukit.malio.shared.annotation.field;
 
-public enum ConstraintType {
-  MAX_VALUE_CONSTRAINT,
-  MIN_VALUE_CONSTRAINT,
-  BLACKLIST_CONSTRAINT,
-  WHITELIST_CONSTRAINT,
-  REGEXP_CONSTRAINT,
-  MAX_LENGTH_CONSTRAINT,
-  MIN_LENGTH_CONSTRAINT,
-  EMAIL_CONSTRAINT,
-  UUID_CONSTRAINT,
-  MAX_DECIMAL_VALUE_CONSTRAINT,
-  MIN_DECIMAL_VALUE_CONSTRAINT,
-  NOT_BLANK_CONSTRAINT,
-  NOT_EMPTY_CONSTRAINT,
-  SIZE_CONSTRAINT,
-  NOT_NULL_CONSTRAINT
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * <p>The annotation will check if the value of the field is a UUIDs.</p>
+ *
+ * <p>The validation will only occur in case the value is not null.</p>
+ *
+ * <p>This annotation can only be used on fields of type <b>String</b>.</p>
+ *
+ * @author Frank Hossfeld, Philipp Kohl
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface Uuid {
 }

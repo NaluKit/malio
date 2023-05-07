@@ -13,22 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.processor.model;
+package com.github.nalukit.malio.test.model.uuid01;
 
-public enum ConstraintType {
-  MAX_VALUE_CONSTRAINT,
-  MIN_VALUE_CONSTRAINT,
-  BLACKLIST_CONSTRAINT,
-  WHITELIST_CONSTRAINT,
-  REGEXP_CONSTRAINT,
-  MAX_LENGTH_CONSTRAINT,
-  MIN_LENGTH_CONSTRAINT,
-  EMAIL_CONSTRAINT,
-  UUID_CONSTRAINT,
-  MAX_DECIMAL_VALUE_CONSTRAINT,
-  MIN_DECIMAL_VALUE_CONSTRAINT,
-  NOT_BLANK_CONSTRAINT,
-  NOT_EMPTY_CONSTRAINT,
-  SIZE_CONSTRAINT,
-  NOT_NULL_CONSTRAINT
+import com.github.nalukit.malio.shared.annotation.MalioValidator;
+import com.github.nalukit.malio.shared.annotation.field.Uuid;
+
+@MalioValidator
+public class Person {
+
+    @Uuid
+    private String uuid;
+
+
+    public Person() {
+    }
+
+    public Person(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 }

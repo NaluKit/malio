@@ -74,7 +74,6 @@ public class ValidatorEmail01Test extends GWTTestCase {
         fail();
       } catch (MalioValidationException e) {
       }
-
     }
 
     @Test

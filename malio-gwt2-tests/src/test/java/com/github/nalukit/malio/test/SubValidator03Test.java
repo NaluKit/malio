@@ -21,7 +21,6 @@ import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.test.model.subvalidator03.Address;
 import com.github.nalukit.malio.test.model.subvalidator03.Person;
-import com.github.nalukit.malio.test.model.subvalidator03.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
 import org.junit.Test;
 
