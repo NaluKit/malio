@@ -19,10 +19,9 @@
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
   <suppress>
     <notes><![CDATA[file name: gson-2.6.2.jar]]></notes>
-    <sha1>f1bc476cc167b18e66c297df599b2377131a8947</sha1>
-    <cpe>cpe:/a:google:gson</cpe>
-  </suppress>
-  <suppress>
+    <packageUrl regex="true">^pkg:maven/com\.google\.code\.gson/gson@.*$</packageUrl>
+    <vulnerabilityName>CVE-2022-25647</vulnerabilityName>
+  </suppress> <suppress>
     <notes><![CDATA[file name: guava-31.1-jre.jar]]></notes>
     <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@.*$</packageUrl>
     <vulnerabilityName>CVE-2020-8908</vulnerabilityName>
