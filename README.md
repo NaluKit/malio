@@ -321,3 +321,4 @@ Examples can be found inside the test cases.
 
 In case you find a bug, please open an issue or post it inside
 the [Nalu Gitter room](https://gitter.im/Nalukit42/Lobby).
+
