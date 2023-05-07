@@ -77,7 +77,7 @@
   </distributionManagement>
 
   <properties>
-    <revision>0.0.4-alpha</revision>
+    <revision>0.0.5-alpha</revision>
     <auto-service.version>1.0.1</auto-service.version>
     <compile-testing.version>0.21.0</compile-testing.version>
     <elemental2.version>1.1.0</elemental2.version>
@@ -259,7 +259,7 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>${plugin.version.javadoc}</version>
             <configuration>
-              <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+              <javadocExecutable>${java.home}/../bin/javadoc</javadocExecutable>
             </configuration>
             <executions>
               <execution>
