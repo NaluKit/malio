@@ -15,14 +15,11 @@
  */
 package com.github.nalukit.malio.processor.constraints.generator;
 
-import com.github.nalukit.malio.processor.Constants;
 import com.github.nalukit.malio.processor.ProcessorException;
 import com.github.nalukit.malio.processor.constraints.AbstractConstraint;
 import com.github.nalukit.malio.processor.util.BuildWithMalioCommentProvider;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.DecimalMaxValue;
-import com.github.nalukit.malio.shared.internal.constraints.AbstractMaxDecimalValueConstraint;
-import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
@@ -37,19 +34,21 @@ public class ConstraintMaxDecimalValueGenerator
     extends AbstractGenerator {
 
   private AbstractConstraint<DecimalMaxValue> constraint;
+
   private ConstraintMaxDecimalValueGenerator(Builder builder) {
-    this.elements         = builder.elements;
-    this.types            = builder.types;
-    this.filer            = builder.filer;
-    this.processorUtils   = builder.processorUtils;
-    this.constraint = builder.constraint;
+    this.elements       = builder.elements;
+    this.types          = builder.types;
+    this.filer          = builder.filer;
+    this.processorUtils = builder.processorUtils;
+    this.constraint     = builder.constraint;
   }
 
   public static Builder builder() {
     return new Builder();
   }
 
-  public void generate(Element validatorElement, VariableElement variableElement)
+  public void generate(Element validatorElement,
+                       VariableElement variableElement)
       throws ProcessorException {
 
     TypeSpec.Builder typeSpec = createConstraintTypeSpec(validatorElement,
@@ -69,7 +68,7 @@ public class ConstraintMaxDecimalValueGenerator
                                  .build());
 
     super.writeFile(variableElement,
-            constraint.getImplementationName(),
+                    constraint.getImplementationName(),
                     typeSpec);
   }
 
@@ -79,7 +78,7 @@ public class ConstraintMaxDecimalValueGenerator
                                                                                 .toString(),
                                                                 variableElement.getSimpleName()
                                                                                .toString(),
-                    constraint.getImplementationName()))
+                                                                constraint.getImplementationName()))
                    .addJavadoc(BuildWithMalioCommentProvider.INSTANCE.getGeneratedComment())
                    .superclass(constraint.getValidationClass(variableElement))
                    .addModifiers(Modifier.PUBLIC,
@@ -88,10 +87,10 @@ public class ConstraintMaxDecimalValueGenerator
 
   public static class Builder {
 
-    Elements        elements;
-    Types           types;
-    Filer           filer;
-    ProcessorUtils  processorUtils;
+    Elements       elements;
+    Types          types;
+    Filer          filer;
+    ProcessorUtils processorUtils;
 
     AbstractConstraint<DecimalMaxValue> constraint;
 

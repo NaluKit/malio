@@ -62,12 +62,9 @@ import static java.util.stream.Collectors.toSet;
 public class MalioProcessor
     extends AbstractProcessor {
 
+  @SuppressWarnings("rawtypes") List<AbstractConstraint> constraints;
   private ProcessorUtils processorUtils;
   private Stopwatch      stopwatch;
-
-
-  @SuppressWarnings("rawtypes")
-  List<AbstractConstraint> constraints;
 
   public MalioProcessor() {
     super();
@@ -99,36 +96,36 @@ public class MalioProcessor
                                         .processingEnvironment(processingEnv)
                                         .build();
 
-    BlacklistConstraint       blacklistConstraint       = new BlacklistConstraint(this.processingEnv,
-                                                                                  this.processorUtils);
-    EmailConstraint           emailConstraint           = new EmailConstraint(this.processingEnv,
-                                                                              this.processorUtils);
+    BlacklistConstraint blacklistConstraint = new BlacklistConstraint(this.processingEnv,
+                                                                      this.processorUtils);
+    EmailConstraint emailConstraint = new EmailConstraint(this.processingEnv,
+                                                          this.processorUtils);
     MaxDecimalValueConstraint maxDecimalValueConstraint = new MaxDecimalValueConstraint(this.processingEnv,
                                                                                         this.processorUtils);
-    MaxLengthConstraint       maxLengthConstraint       = new MaxLengthConstraint(this.processingEnv,
-                                                                                  this.processorUtils);
-    MaxValueConstraint        maxValueConstraint        = new MaxValueConstraint(this.processingEnv,
-                                                                                 this.processorUtils);
+    MaxLengthConstraint maxLengthConstraint = new MaxLengthConstraint(this.processingEnv,
+                                                                      this.processorUtils);
+    MaxValueConstraint maxValueConstraint = new MaxValueConstraint(this.processingEnv,
+                                                                   this.processorUtils);
     MinDecimalValueConstraint minDecimalValueConstraint = new MinDecimalValueConstraint(this.processingEnv,
                                                                                         this.processorUtils);
-    MinLengthConstraint       minLengthConstraint       = new MinLengthConstraint(this.processingEnv,
-                                                                                  this.processorUtils);
-    MinValueConstraint        minValueConstraint        = new MinValueConstraint(this.processingEnv,
-                                                                                 this.processorUtils);
-    NotBlankConstraint        notBlankConstraint        = new NotBlankConstraint(this.processingEnv,
-                                                                                 this.processorUtils);
-    NotEmptyConstraint        notEmptyConstraint        = new NotEmptyConstraint(this.processingEnv,
-                                                                                 this.processorUtils);
-    NotNullConstraint         notNullConstraint         = new NotNullConstraint(this.processingEnv,
-                                                                                this.processorUtils);
-    RegexpConstraint          regexpConstraint          = new RegexpConstraint(this.processingEnv,
-                                                                               this.processorUtils);
-    SizeConstraint            sizeConstraint            = new SizeConstraint(this.processingEnv,
-                                                                             this.processorUtils);
-    UuidConstraint            uuidConstraint            = new UuidConstraint(this.processingEnv,
-                                                                             this.processorUtils);
-    WhitelistConstraint       whitelistConstraint       = new WhitelistConstraint(this.processingEnv,
-                                                                                  this.processorUtils);
+    MinLengthConstraint minLengthConstraint = new MinLengthConstraint(this.processingEnv,
+                                                                      this.processorUtils);
+    MinValueConstraint minValueConstraint = new MinValueConstraint(this.processingEnv,
+                                                                   this.processorUtils);
+    NotBlankConstraint notBlankConstraint = new NotBlankConstraint(this.processingEnv,
+                                                                   this.processorUtils);
+    NotEmptyConstraint notEmptyConstraint = new NotEmptyConstraint(this.processingEnv,
+                                                                   this.processorUtils);
+    NotNullConstraint notNullConstraint = new NotNullConstraint(this.processingEnv,
+                                                                this.processorUtils);
+    RegexpConstraint regexpConstraint = new RegexpConstraint(this.processingEnv,
+                                                             this.processorUtils);
+    SizeConstraint sizeConstraint = new SizeConstraint(this.processingEnv,
+                                                       this.processorUtils);
+    UuidConstraint uuidConstraint = new UuidConstraint(this.processingEnv,
+                                                       this.processorUtils);
+    WhitelistConstraint whitelistConstraint = new WhitelistConstraint(this.processingEnv,
+                                                                      this.processorUtils);
 
     this.constraints = Arrays.asList(notNullConstraint,
                                      notBlankConstraint,
@@ -144,8 +141,7 @@ public class MalioProcessor
                                      maxDecimalValueConstraint,
                                      minDecimalValueConstraint,
                                      notEmptyConstraint,
-                                     sizeConstraint
-            );
+                                     sizeConstraint);
   }
 
   @Override
@@ -157,7 +153,8 @@ public class MalioProcessor
                                               this.stopwatch.stop()
                                                             .toString());
       } else {
-        processSingleRun(annotations, roundEnv);
+        processSingleRun(annotations,
+                         roundEnv);
       }
     } catch (ProcessorException e) {
       this.processorUtils.createErrorMessage(e.getMessage());
@@ -167,48 +164,58 @@ public class MalioProcessor
     return true;
   }
 
-  private void processSingleRun(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) throws ProcessorException {
+  private void processSingleRun(Set<? extends TypeElement> annotations,
+                                RoundEnvironment roundEnv)
+      throws ProcessorException {
     if (annotations.size() > 0) {
       for (TypeElement annotation : annotations) {
-        if (MalioValidator.class.getCanonicalName().equals(annotation.toString())) {
+        if (MalioValidator.class.getCanonicalName()
+                                .equals(annotation.toString())) {
           processMalioValidator(roundEnv);
         }
       }
     }
   }
 
-  private void processMalioValidator(RoundEnvironment roundEnv) throws ProcessorException {
+  private void processMalioValidator(RoundEnvironment roundEnv)
+      throws ProcessorException {
     for (Element validatorElement : roundEnv.getElementsAnnotatedWith(MalioValidator.class)) {
-        processClass(validatorElement);
+      processClass(validatorElement);
     }
   }
 
-    private void processClass(Element validatorElement) throws ProcessorException {
-        this.createValidator(validatorElement,
-                             processVariable(validatorElement.asType()));
-    }
+  private void processClass(Element validatorElement)
+      throws ProcessorException {
+    this.createValidator(validatorElement,
+                         processVariable(validatorElement.asType()));
+  }
 
-    private List<ConstraintModel> processVariable(TypeMirror mirror) throws ProcessorException {
-        Element element = this.processingEnv.getTypeUtils().asElement(mirror);
-        return createConstraints(element);
-    }
+  private List<ConstraintModel> processVariable(TypeMirror mirror)
+      throws ProcessorException {
+    Element element = this.processingEnv.getTypeUtils()
+                                        .asElement(mirror);
+    return createConstraints(element);
+  }
 
-    private List<ConstraintModel> createConstraints(Element element) throws ProcessorException {
-      List<ConstraintModel> constraintsPerVariable = new ArrayList<>();
+  private List<ConstraintModel> createConstraints(Element element)
+      throws ProcessorException {
+    List<ConstraintModel> constraintsPerVariable = new ArrayList<>();
 
-    for (@SuppressWarnings("rawtypes") AbstractConstraint constraint: this.constraints) {
+    for (
+        @SuppressWarnings("rawtypes") AbstractConstraint constraint : this.constraints) {
       for (Object varWithAnnotation : constraint.getVarsWithAnnotation((TypeElement) element)) {
-        Element elementWithAnnotation = (Element) varWithAnnotation;
-        VariableElement variableElement = (VariableElement) elementWithAnnotation;
+        Element         elementWithAnnotation = (Element) varWithAnnotation;
+        VariableElement variableElement       = (VariableElement) elementWithAnnotation;
 
         constraint.check(variableElement);
-        constraintsPerVariable.add(constraint.createConstraintModel(element, elementWithAnnotation));
-        constraint.generate(element, variableElement);
+        constraintsPerVariable.add(constraint.createConstraintModel(element,
+                                                                    elementWithAnnotation));
+        constraint.generate(element,
+                            variableElement);
       }
     }
     return constraintsPerVariable;
   }
-
 
   private void createValidator(Element validatorElement,
                                List<ConstraintModel> constraintList)
@@ -238,7 +245,8 @@ public class MalioProcessor
                       .subValidatorList(subValidatorList)
                       .processorUtils(this.processorUtils)
                       .build()
-                      .generate(validatorElement, null);
+                      .generate(validatorElement,
+                                null);
   }
 
 }

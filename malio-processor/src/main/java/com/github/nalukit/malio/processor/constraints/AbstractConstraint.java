@@ -32,62 +32,72 @@ import javax.lang.model.type.TypeKind;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-public abstract class AbstractConstraint<T extends Annotation> implements IsGenerator {
+public abstract class AbstractConstraint<T extends Annotation>
+    implements IsGenerator {
 
-    protected final ProcessingEnvironment processingEnvironment;
-    protected final ProcessorUtils processorUtils;
+  protected final ProcessingEnvironment processingEnvironment;
+  protected final ProcessorUtils        processorUtils;
 
-    public AbstractConstraint(ProcessingEnvironment processingEnv, ProcessorUtils processorUtils) {
-        this.processingEnvironment = processingEnv;
-        this.processorUtils = processorUtils;
+  public AbstractConstraint(ProcessingEnvironment processingEnv,
+                            ProcessorUtils processorUtils) {
+    this.processingEnvironment = processingEnv;
+    this.processorUtils        = processorUtils;
+  }
+
+  public ConstraintModel createConstraintModel(Element varType,
+                                               Element varName) {
+    return new ConstraintModel(this.processorUtils.getPackageAsString(varName),
+                               varType.getSimpleName()
+                                      .toString(),
+                               varName.getSimpleName()
+                                      .toString(),
+                               getImplementationName(),
+                               getConstraintType());
+  }
+
+  public void check(VariableElement variableElement) {
+    if (getSupportedDeclaredType() == null && getSupportedPrimitives() == null) {
+      return;
     }
 
-    public ConstraintModel createConstraintModel(Element varType, Element varName) {
-        return new ConstraintModel(this.processorUtils.getPackageAsString(varName),
-                varType.getSimpleName().toString(),
-                varName.getSimpleName().toString(),
-                getImplementationName(),
-                getConstraintType());
+    if (!processorUtils.checkDataType(variableElement,
+                                      getSupportedPrimitives(),
+                                      getSupportedDeclaredType())) {
+      throw new UnsupportedTypeException("Class >>" +
+                                         variableElement.getEnclosingElement() +
+                                         "<< - Type >>" +
+                                         variableElement.asType() +
+                                         "<< not supported for >>" +
+                                         getClass().getSimpleName() +
+                                         "<<");
     }
+  }
 
-    public void check(VariableElement variableElement) {
-      if (getSupportedDeclaredType() == null && getSupportedPrimitives() == null) {
-        return;
-      }
+  public abstract Class<T> annotationType();
 
-      if (!processorUtils.checkDataType(variableElement,
-                                        getSupportedPrimitives(),
-                                        getSupportedDeclaredType())) {
-        throw new UnsupportedTypeException("Class >>" +
-                                           variableElement.getEnclosingElement() +
-                                           "<< - Type >>" +
-                                           variableElement.asType() +
-                                           "<< not supported for >>" +
-                                           getClass().getSimpleName() +
-                                           "<<");
-      }
-    }
+  public List<Element> getVarsWithAnnotation(TypeElement element) {
+    return this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnvironment,
+                                                                        element,
+                                                                        this.annotationType());
+  }
 
+  public abstract String getImplementationName();
 
-    public abstract Class<T> annotationType();
+  public abstract ConstraintType getConstraintType();
 
-    public List<Element> getVarsWithAnnotation(TypeElement element) {
-        return this.processorUtils.getVariablesFromTypeElementAnnotatedWith(this.processingEnvironment,
-                element, this.annotationType());
-    }
+  public abstract TypeName getValidationClass(VariableElement variableElement);
 
-    public abstract String getImplementationName();
-    public abstract ConstraintType getConstraintType();
+  protected abstract List<TypeKind> getSupportedPrimitives();
 
-    public abstract TypeName getValidationClass(VariableElement variableElement);
+  protected abstract List<Class<?>> getSupportedDeclaredType();
 
-    protected abstract List<TypeKind> getSupportedPrimitives();
+  protected abstract AbstractGenerator createGenerator();
 
-    protected abstract List<Class<?>> getSupportedDeclaredType();
-
-    protected abstract AbstractGenerator createGenerator();
-
-    public void generate(Element validatorElement, VariableElement variableElement) throws ProcessorException {
-        this.createGenerator().generate(validatorElement, variableElement);
-    }
+  public void generate(Element validatorElement,
+                       VariableElement variableElement)
+      throws ProcessorException {
+    this.createGenerator()
+        .generate(validatorElement,
+                  variableElement);
+  }
 }

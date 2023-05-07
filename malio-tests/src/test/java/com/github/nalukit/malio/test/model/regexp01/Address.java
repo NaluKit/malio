@@ -21,13 +21,10 @@ import com.github.nalukit.malio.shared.annotation.field.Regexp;
 @MalioValidator
 public class Address {
 
-  @Regexp(regexp = ".+ Street")
-  private String street;
-  @Regexp(regexp = "\\d{5}")
-  private String zip;
+  @Regexp(regexp = ".+ Street") private String street;
+  @Regexp(regexp = "\\d{5}") private    String zip;
 
-  @Regexp(regexp = ".+ City")
-  private String city;
+  @Regexp(regexp = ".+ City") private String city;
 
   public Address() {
   }

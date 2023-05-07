@@ -168,7 +168,7 @@
       <version>${junit-jupiter.version}</version>
       <scope>test</scope>
     </dependency>
-   <dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
       <version>${junit-jupiter.version}</version>
@@ -325,32 +325,32 @@
           </execution>
         </executions>
       </plugin>
-<!--      <plugin>-->
-<!--        <groupId>com.google.code.maven-replacer-plugin</groupId>-->
-<!--        <artifactId>replacer</artifactId>-->
-<!--        <version>${plugin.version.replacer}</version>-->
-<!--        <executions>-->
-<!--          <execution>-->
-<!--            <phase>process-resources</phase>-->
-<!--            <goals>-->
-<!--              <goal>replace</goal>-->
-<!--            </goals>-->
-<!--          </execution>-->
-<!--        </executions>-->
-<!--        <configuration>-->
-<!--          <basedir>${path.test.resources}/com/github/nalukit/malio/processor.templates-->
-<!--          </basedir>-->
-<!--          <outputBasedir>${path.test.resources}/com/github/nalukit/malio/</outputBasedir>-->
-<!--          <outputDir>processor/</outputDir>-->
-<!--          <includes>**/*.java</includes>-->
-<!--          <replacements>-->
-<!--            <replacement>-->
-<!--              <token>%VERSION_TAG%</token>-->
-<!--              <value>${revision}</value>-->
-<!--            </replacement>-->
-<!--          </replacements>-->
-<!--        </configuration>-->
-<!--      </plugin>-->
+      <!--      <plugin>-->
+      <!--        <groupId>com.google.code.maven-replacer-plugin</groupId>-->
+      <!--        <artifactId>replacer</artifactId>-->
+      <!--        <version>${plugin.version.replacer}</version>-->
+      <!--        <executions>-->
+      <!--          <execution>-->
+      <!--            <phase>process-resources</phase>-->
+      <!--            <goals>-->
+      <!--              <goal>replace</goal>-->
+      <!--            </goals>-->
+      <!--          </execution>-->
+      <!--        </executions>-->
+      <!--        <configuration>-->
+      <!--          <basedir>${path.test.resources}/com/github/nalukit/malio/processor.templates-->
+      <!--          </basedir>-->
+      <!--          <outputBasedir>${path.test.resources}/com/github/nalukit/malio/</outputBasedir>-->
+      <!--          <outputDir>processor/</outputDir>-->
+      <!--          <includes>**/*.java</includes>-->
+      <!--          <replacements>-->
+      <!--            <replacement>-->
+      <!--              <token>%VERSION_TAG%</token>-->
+      <!--              <value>${revision}</value>-->
+      <!--            </replacement>-->
+      <!--          </replacements>-->
+      <!--        </configuration>-->
+      <!--      </plugin>-->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>

@@ -23,22 +23,20 @@ import java.math.BigDecimal;
 @MalioValidator
 public class Person {
 
-    @DecimalMaxValue("0.5")
-    private BigDecimal taxRate;
+  @DecimalMaxValue("0.5") private BigDecimal taxRate;
 
+  public Person() {
+  }
 
-    public Person() {
-    }
+  public Person(BigDecimal taxRate) {
+    this.taxRate = taxRate;
+  }
 
-    public Person(BigDecimal taxRate) {
-        this.taxRate = taxRate;
-    }
+  public BigDecimal getTaxRate() {
+    return taxRate;
+  }
 
-    public BigDecimal getTaxRate() {
-        return taxRate;
-    }
-
-    public void setTaxRate(BigDecimal taxRate) {
-        this.taxRate = taxRate;
-    }
+  public void setTaxRate(BigDecimal taxRate) {
+    this.taxRate = taxRate;
+  }
 }

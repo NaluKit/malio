@@ -20,10 +20,9 @@ import com.github.nalukit.malio.shared.annotation.field.NotNull;
 
 @MalioValidator
 public class Person
-  extends AbstractPerson {
+    extends AbstractPerson {
 
-  @NotNull
-  private String firstName;
+  @NotNull private String firstName;
 
   public Person() {
   }

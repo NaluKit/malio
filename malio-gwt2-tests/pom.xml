@@ -48,16 +48,14 @@
       <groupId>com.github.nalukit</groupId>
       <artifactId>malio</artifactId>
       <version>${revision}</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.github.nalukit</groupId>
       <artifactId>malio-processor</artifactId>
       <version>${revision}</version>
-      <scope>test</scope>
     </dependency>
-   </dependencies>
+  </dependencies>
 
   <build>
     <plugins>

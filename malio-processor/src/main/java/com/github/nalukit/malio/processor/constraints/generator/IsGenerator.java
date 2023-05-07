@@ -21,5 +21,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.VariableElement;
 
 public interface IsGenerator {
-    void generate(Element validatorElement, VariableElement variableElement) throws ProcessorException;
+  void generate(Element validatorElement,
+                VariableElement variableElement)
+      throws ProcessorException;
 }

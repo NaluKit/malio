@@ -15,9 +15,9 @@
  */
 package com.github.nalukit.malio.shared.internal.constraints;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
-import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
 public abstract class AbstractMaxLengthConstraint
@@ -34,19 +34,25 @@ public abstract class AbstractMaxLengthConstraint
     super(packageName,
           simpleName,
           fieldName);
-    this.message = LocalizedMessages.INSTANCE.getMaxLengthMessage(maxLength);
+    this.message   = LocalizedMessages.INSTANCE.getMaxLengthMessage(maxLength);
     this.maxLength = maxLength;
   }
 
-  public void check(String value) throws MalioValidationException {
+  public void check(String value)
+      throws MalioValidationException {
     if (value != null && value.length() > maxLength) {
       throw new MalioValidationException(this.message);
     }
   }
 
-  public void isValid(String value, ValidationResult validationResult) {
+  public void isValid(String value,
+                      ValidationResult validationResult) {
     if (value != null && value.length() > maxLength) {
-      validationResult.getMessages().add(new ErrorMessage(this.message, super.getClassName(), super.getSimpleName(), super.getFieldName()));
+      validationResult.getMessages()
+                      .add(new ErrorMessage(this.message,
+                                            super.getClassName(),
+                                            super.getSimpleName(),
+                                            super.getFieldName()));
     }
   }
 }

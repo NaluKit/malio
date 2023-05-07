@@ -32,52 +32,54 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class NotEmptyConstraint extends AbstractConstraint<NotEmpty> {
+public class NotEmptyConstraint
+    extends AbstractConstraint<NotEmpty> {
 
-    public NotEmptyConstraint(ProcessingEnvironment processingEnv, ProcessorUtils processorUtils) {
-        super(processingEnv, processorUtils);
-    }
+  public NotEmptyConstraint(ProcessingEnvironment processingEnv,
+                            ProcessorUtils processorUtils) {
+    super(processingEnv,
+          processorUtils);
+  }
 
-    @Override
-    public Class<NotEmpty> annotationType() {
-        return NotEmpty.class;
-    }
+  @Override
+  public Class<NotEmpty> annotationType() {
+    return NotEmpty.class;
+  }
 
-    @Override
-    public String getImplementationName() {
-        return Constants.MALIO_CONSTRAINT_NOTEMPTY_IMPL_NAME;
-    }
+  @Override
+  public String getImplementationName() {
+    return Constants.MALIO_CONSTRAINT_NOTEMPTY_IMPL_NAME;
+  }
 
-    @Override
-    public ConstraintType getConstraintType() {
-        return ConstraintType.NOT_EMPTY_CONSTRAINT;
-    }
+  @Override
+  public ConstraintType getConstraintType() {
+    return ConstraintType.NOT_EMPTY_CONSTRAINT;
+  }
 
-    @Override
-    public TypeName getValidationClass(VariableElement variableElement) {
-        return ClassName.get(AbstractNotEmptyConstraint.class);
-    }
+  @Override
+  public TypeName getValidationClass(VariableElement variableElement) {
+    return ClassName.get(AbstractNotEmptyConstraint.class);
+  }
 
-    @Override
-    protected List<TypeKind> getSupportedPrimitives() {
-        return null;
-    }
+  @Override
+  protected List<TypeKind> getSupportedPrimitives() {
+    return null;
+  }
 
-    @Override
-    protected List<Class<?>> getSupportedDeclaredType() {
-        return Collections.singletonList(Collection.class);
-    }
+  @Override
+  protected List<Class<?>> getSupportedDeclaredType() {
+    return Collections.singletonList(Collection.class);
+  }
 
-    @Override
-    protected AbstractGenerator createGenerator() {
-        return ConstraintNotEmptyGenerator.builder()
-                .elements(this.processingEnvironment.getElementUtils())
-                .filer(this.processingEnvironment.getFiler())
-                .types(this.processingEnvironment.getTypeUtils())
-                .processorUtils(this.processorUtils)
-                .constraint(this)
-                .build();
-    }
-
+  @Override
+  protected AbstractGenerator createGenerator() {
+    return ConstraintNotEmptyGenerator.builder()
+                                      .elements(this.processingEnvironment.getElementUtils())
+                                      .filer(this.processingEnvironment.getFiler())
+                                      .types(this.processingEnvironment.getTypeUtils())
+                                      .processorUtils(this.processorUtils)
+                                      .constraint(this)
+                                      .build();
+  }
 
 }

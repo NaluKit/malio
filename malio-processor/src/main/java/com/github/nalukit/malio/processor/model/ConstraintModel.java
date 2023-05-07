@@ -17,9 +17,9 @@ package com.github.nalukit.malio.processor.model;
 
 public class ConstraintModel {
 
-  private String packageName;
-  private String simpleClassName;
-  private String fieldName;
+  private String         packageName;
+  private String         simpleClassName;
+  private String         fieldName;
   private String         postFix;
   private ConstraintType constraintType;
 

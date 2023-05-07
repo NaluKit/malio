@@ -48,70 +48,85 @@ public class ValidatorUuid01Test {
     PersonMalioValidator.INSTANCE.check(model);
   }
 
-    @Test
-    public void testValidateOk() {
-      Person model = new Person(ValidatorUuid01Test.UUID);
-        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+  @Test
+  public void testValidateOk() {
+    Person           model  = new Person(ValidatorUuid01Test.UUID);
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-    @Test
-    public void testCheckNullOk() throws MalioValidationException {
-        Person model = new Person(null);
-        PersonMalioValidator.INSTANCE.check(model);
-    }
+  @Test
+  public void testCheckNullOk()
+      throws MalioValidationException {
+    Person model = new Person(null);
+    PersonMalioValidator.INSTANCE.check(model);
+  }
 
-    @Test
-    public void testValidateNullOk() {
-        Person model = new Person(null);
+  @Test
+  public void testValidateNullOk() {
+    Person model = new Person(null);
 
-        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-    @Test
-    public void testCheckFail01() {
-      Person model = new Person("944ee2b0-dd52-46c2-a57b-dbf4bbafd53aa");
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
-    }
+  @Test
+  public void testCheckFail01() {
+    Person                   model  = new Person("944ee2b0-dd52-46c2-a57b-dbf4bbafd53aa");
+    MalioValidationException thrown = assertThrows(MalioValidationException.class,
+                                                   () -> PersonMalioValidator.INSTANCE.check(model));
+  }
 
-    @Test
-    public void testValidateFail01() {
-      Person model = new Person("944ee2b0-dd52-46c2-a57b-dbf4bbafd53aa");
-        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
-        assertFalse(validationResult.isValid());
-        assertEquals(1, validationResult.getMessages().size());
-        assertEquals("String does not represent an UUID!",
-                validationResult.getMessages().get(0).getMessage());
-    }
+  @Test
+  public void testValidateFail01() {
+    Person           model            = new Person("944ee2b0-dd52-46c2-a57b-dbf4bbafd53aa");
+    ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+                 validationResult.getMessages()
+                                 .size());
+    assertEquals("String does not represent an UUID!",
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
+  }
 
-    @Test
-    public void testCheckFail02() {
-      Person model = new Person("944ee2b0-dd52-46c2-a57b-dbf4bbafd53z");
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
-    }
+  @Test
+  public void testCheckFail02() {
+    Person                   model  = new Person("944ee2b0-dd52-46c2-a57b-dbf4bbafd53z");
+    MalioValidationException thrown = assertThrows(MalioValidationException.class,
+                                                   () -> PersonMalioValidator.INSTANCE.check(model));
+  }
 
-    @Test
-    public void testValidateFail02() {
-      Person model = new Person("944ee2b0-dd52-46c2-a57b-dbf4bbafd53z");
-        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
-        assertFalse(validationResult.isValid());
-        assertEquals(1, validationResult.getMessages().size());
-        assertEquals("String does not represent an UUID!",
-                validationResult.getMessages().get(0).getMessage());
-    }
+  @Test
+  public void testValidateFail02() {
+    Person           model            = new Person("944ee2b0-dd52-46c2-a57b-dbf4bbafd53z");
+    ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+                 validationResult.getMessages()
+                                 .size());
+    assertEquals("String does not represent an UUID!",
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
+  }
 
-    @Test
-    public void testValidateFail01German() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-        Person model = new Person("medomain.com");
+  @Test
+  public void testValidateFail01German() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Person model = new Person("medomain.com");
 
-        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
-        assertFalse(validationResult.isValid());
-        assertEquals(1, validationResult.getMessages().size());
-        assertEquals("String repräsentiert keine UUID!",
-                validationResult.getMessages().get(0).getMessage());
-    }
+    ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+                 validationResult.getMessages()
+                                 .size());
+    assertEquals("String repräsentiert keine UUID!",
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
+  }
 }
 
 

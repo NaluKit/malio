@@ -25,9 +25,8 @@ public class Person {
   @NotNull private String name;
   @NotNull private String firstName;
 
-  @MalioIgnore
-  private Person parent;
-  private Person child;
+  @MalioIgnore private Person parent;
+  private              Person child;
 
   public Person() {
   }

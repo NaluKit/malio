@@ -21,22 +21,20 @@ import com.github.nalukit.malio.shared.annotation.field.Uuid;
 @MalioValidator
 public class Person {
 
-    @Uuid
-    private String uuid;
+  @Uuid private String uuid;
 
+  public Person() {
+  }
 
-    public Person() {
-    }
+  public Person(String uuid) {
+    this.uuid = uuid;
+  }
 
-    public Person(String uuid) {
-        this.uuid = uuid;
-    }
+  public String getUuid() {
+    return uuid;
+  }
 
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
+  public void setUuid(String uuid) {
+    this.uuid = uuid;
+  }
 }

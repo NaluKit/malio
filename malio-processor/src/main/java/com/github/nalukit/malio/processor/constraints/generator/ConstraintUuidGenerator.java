@@ -33,90 +33,90 @@ import javax.lang.model.util.Types;
 public class ConstraintUuidGenerator
     extends AbstractGenerator {
 
-    private AbstractConstraint<Uuid> constraint;
+  private AbstractConstraint<Uuid> constraint;
 
-    private ConstraintUuidGenerator(Builder builder) {
-        this.elements       = builder.elements;
-        this.types          = builder.types;
-        this.filer          = builder.filer;
-        this.processorUtils = builder.processorUtils;
-        this.constraint     = builder.constraint;
+  private ConstraintUuidGenerator(Builder builder) {
+    this.elements       = builder.elements;
+    this.types          = builder.types;
+    this.filer          = builder.filer;
+    this.processorUtils = builder.processorUtils;
+    this.constraint     = builder.constraint;
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  public void generate(Element validatorElement,
+                       VariableElement variableElement)
+      throws ProcessorException {
+    TypeSpec.Builder typeSpec = createConstraintTypeSpec(validatorElement,
+                                                         variableElement);
+
+    typeSpec.addMethod(MethodSpec.constructorBuilder()
+                                 .addModifiers(Modifier.PUBLIC)
+                                 .addStatement("super($S, $S, $S)",
+                                               this.processorUtils.getPackage(variableElement),
+                                               this.processorUtils.setFirstCharacterToUpperCase(variableElement.getEnclosingElement()
+                                                                                                               .getSimpleName()
+                                                                                                               .toString()),
+                                               variableElement.getSimpleName()
+                                                              .toString())
+
+                                 .build());
+
+    super.writeFile(variableElement,
+                    constraint.getImplementationName(),
+                    typeSpec);
+  }
+
+  private TypeSpec.Builder createConstraintTypeSpec(Element validatorElement,
+                                                    VariableElement variableElement) {
+    return TypeSpec.classBuilder(this.createConstraintClassName(validatorElement.getSimpleName()
+                                                                                .toString(),
+                                                                variableElement.getSimpleName()
+                                                                               .toString(),
+                                                                constraint.getImplementationName()))
+                   .addJavadoc(BuildWithMalioCommentProvider.INSTANCE.getGeneratedComment())
+                   .superclass(constraint.getValidationClass(variableElement))
+                   .addModifiers(Modifier.PUBLIC,
+                                 Modifier.FINAL);
+  }
+
+  public static class Builder {
+    Elements                 elements;
+    Types                    types;
+    Filer                    filer;
+    ProcessorUtils           processorUtils;
+    AbstractConstraint<Uuid> constraint;
+
+    public Builder elements(Elements elements) {
+      this.elements = elements;
+      return this;
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public Builder types(Types types) {
+      this.types = types;
+      return this;
     }
 
-    public void generate(Element validatorElement,
-                         VariableElement variableElement)
-        throws ProcessorException {
-        TypeSpec.Builder typeSpec = createConstraintTypeSpec(validatorElement,
-                                                             variableElement);
-
-        typeSpec.addMethod(MethodSpec.constructorBuilder()
-                                     .addModifiers(Modifier.PUBLIC)
-                                     .addStatement("super($S, $S, $S)",
-                                                   this.processorUtils.getPackage(variableElement),
-                                                   this.processorUtils.setFirstCharacterToUpperCase(variableElement.getEnclosingElement()
-                                                                                                                   .getSimpleName()
-                                                                                                                   .toString()),
-                                                   variableElement.getSimpleName()
-                                                                  .toString())
-
-                                     .build());
-
-        super.writeFile(variableElement,
-                        constraint.getImplementationName(),
-                        typeSpec);
+    public Builder filer(Filer filer) {
+      this.filer = filer;
+      return this;
     }
 
-    private TypeSpec.Builder createConstraintTypeSpec(Element validatorElement,
-                                                      VariableElement variableElement) {
-        return TypeSpec.classBuilder(this.createConstraintClassName(validatorElement.getSimpleName()
-                                                                                    .toString(),
-                                                                    variableElement.getSimpleName()
-                                                                                   .toString(),
-                                                                    constraint.getImplementationName()))
-                       .addJavadoc(BuildWithMalioCommentProvider.INSTANCE.getGeneratedComment())
-                       .superclass(constraint.getValidationClass(variableElement))
-                       .addModifiers(Modifier.PUBLIC,
-                                     Modifier.FINAL);
+    public Builder processorUtils(ProcessorUtils processorUtils) {
+      this.processorUtils = processorUtils;
+      return this;
     }
 
-    public static class Builder {
-        Elements                 elements;
-        Types                    types;
-        Filer                    filer;
-        ProcessorUtils           processorUtils;
-        AbstractConstraint<Uuid> constraint;
-
-        public Builder elements(Elements elements) {
-            this.elements = elements;
-            return this;
-        }
-
-        public Builder types(Types types) {
-            this.types = types;
-            return this;
-        }
-
-        public Builder filer(Filer filer) {
-            this.filer = filer;
-            return this;
-        }
-
-        public Builder processorUtils(ProcessorUtils processorUtils) {
-            this.processorUtils = processorUtils;
-            return this;
-        }
-
-        public Builder constraint(AbstractConstraint<Uuid> constraint) {
-            this.constraint = constraint;
-            return this;
-        }
-
-        public ConstraintUuidGenerator build() {
-            return new ConstraintUuidGenerator(this);
-        }
+    public Builder constraint(AbstractConstraint<Uuid> constraint) {
+      this.constraint = constraint;
+      return this;
     }
+
+    public ConstraintUuidGenerator build() {
+      return new ConstraintUuidGenerator(this);
+    }
+  }
 }

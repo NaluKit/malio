@@ -32,52 +32,54 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class SizeConstraint extends AbstractConstraint<Size> {
+public class SizeConstraint
+    extends AbstractConstraint<Size> {
 
-    public SizeConstraint(ProcessingEnvironment processingEnv, ProcessorUtils processorUtils) {
-        super(processingEnv, processorUtils);
-    }
+  public SizeConstraint(ProcessingEnvironment processingEnv,
+                        ProcessorUtils processorUtils) {
+    super(processingEnv,
+          processorUtils);
+  }
 
-    @Override
-    public Class<Size> annotationType() {
-        return Size.class;
-    }
+  @Override
+  public Class<Size> annotationType() {
+    return Size.class;
+  }
 
-    @Override
-    public String getImplementationName() {
-        return Constants.MALIO_CONSTRAINT_SIZE_IMPL_NAME;
-    }
+  @Override
+  public String getImplementationName() {
+    return Constants.MALIO_CONSTRAINT_SIZE_IMPL_NAME;
+  }
 
-    @Override
-    public ConstraintType getConstraintType() {
-        return ConstraintType.SIZE_CONSTRAINT;
-    }
+  @Override
+  public ConstraintType getConstraintType() {
+    return ConstraintType.SIZE_CONSTRAINT;
+  }
 
-    @Override
-    public TypeName getValidationClass(VariableElement variableElement) {
-        return ClassName.get(AbstractSizeConstraint.class);
-    }
+  @Override
+  public TypeName getValidationClass(VariableElement variableElement) {
+    return ClassName.get(AbstractSizeConstraint.class);
+  }
 
-    @Override
-    protected List<TypeKind> getSupportedPrimitives() {
-        return null;
-    }
+  @Override
+  protected List<TypeKind> getSupportedPrimitives() {
+    return null;
+  }
 
-    @Override
-    protected List<Class<?>> getSupportedDeclaredType() {
-        return Collections.singletonList(Collection.class);
-    }
+  @Override
+  protected List<Class<?>> getSupportedDeclaredType() {
+    return Collections.singletonList(Collection.class);
+  }
 
-    @Override
-    protected AbstractGenerator createGenerator() {
-        return ConstraintSizeGenerator.builder()
-                .elements(this.processingEnvironment.getElementUtils())
-                .filer(this.processingEnvironment.getFiler())
-                .types(this.processingEnvironment.getTypeUtils())
-                .processorUtils(this.processorUtils)
-                .constraint(this)
-                .build();
-    }
-
+  @Override
+  protected AbstractGenerator createGenerator() {
+    return ConstraintSizeGenerator.builder()
+                                  .elements(this.processingEnvironment.getElementUtils())
+                                  .filer(this.processingEnvironment.getFiler())
+                                  .types(this.processingEnvironment.getTypeUtils())
+                                  .processorUtils(this.processorUtils)
+                                  .constraint(this)
+                                  .build();
+  }
 
 }

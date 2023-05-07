@@ -56,11 +56,11 @@ public class SubValidator01Test {
 
   @Test
   public void testValidateOk() {
-    Person           model  = new Person("Flintstones",
-                                         "Fred",
-                                         new Address("Test Avenue 21",
-                                                     "123456",
-                                                     "Test City"));
+    Person model = new Person("Flintstones",
+                              "Fred",
+                              new Address("Test Avenue 21",
+                                          "123456",
+                                          "Test City"));
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }

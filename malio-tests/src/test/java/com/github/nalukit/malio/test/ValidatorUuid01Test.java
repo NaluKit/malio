@@ -93,7 +93,7 @@ public class ValidatorUuid01Test {
 
   @Test
   public void testCheckFail02() {
-    Person                   model  = new Person("944ee2b0-dd52-46c2-a57b-dbf4bbafd53z");
+    Person model = new Person("944ee2b0-dd52-46c2-a57b-dbf4bbafd53z");
     MalioValidationException thrown = assertThrows(MalioValidationException.class,
                                                    () -> PersonMalioValidator.INSTANCE.check(model));
   }

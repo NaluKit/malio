@@ -17,27 +17,24 @@ package com.github.nalukit.malio.test.model.email01;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.Email;
-import com.github.nalukit.malio.shared.annotation.field.MaxValue;
 
 @MalioValidator
 public class Person {
 
-    @Email
-    private String email;
+  @Email private String email;
 
+  public Person() {
+  }
 
-    public Person() {
-    }
+  public Person(String email) {
+    this.email = email;
+  }
 
-    public Person(String email) {
-        this.email = email;
-    }
+  public String getEmail() {
+    return email;
+  }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  public void setEmail(String email) {
+    this.email = email;
+  }
 }

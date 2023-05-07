@@ -22,14 +22,11 @@ import com.github.nalukit.malio.test.model.notnull03.helper.Address;
 @MalioValidator
 public class Person {
 
-  @NotNull
-  private String name;
+  @NotNull private String name;
 
-  @NotNull
-  private String firstName;
+  @NotNull private String firstName;
 
-  @NotNull
-  private Address address;
+  @NotNull private Address address;
 
   public Person() {
   }

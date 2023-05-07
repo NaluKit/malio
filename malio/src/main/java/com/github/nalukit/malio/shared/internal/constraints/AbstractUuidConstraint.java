@@ -27,6 +27,7 @@ public abstract class AbstractUuidConstraint
     extends AbstractConstraint<String> {
 
   private final static RegExp regExp = RegExp.compile("^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$");
+
   public AbstractUuidConstraint(String packageName,
                                 String simpleName,
                                 String fieldName) {
@@ -35,14 +36,16 @@ public abstract class AbstractUuidConstraint
           fieldName);
   }
 
-  public void check(String value) throws MalioValidationException {
+  public void check(String value)
+      throws MalioValidationException {
     String message = LocalizedMessages.INSTANCE.getUuidMessage();
     if (Objects.nonNull(value) && !AbstractUuidConstraint.regExp.test(value)) {
       throw new MalioValidationException(message);
     }
   }
 
-  public void  isValid(String value, ValidationResult validationResult) {
+  public void isValid(String value,
+                      ValidationResult validationResult) {
     String message = LocalizedMessages.INSTANCE.getUuidMessage();
     if (Objects.nonNull(value) && !AbstractUuidConstraint.regExp.test(value)) {
       validationResult.getMessages()

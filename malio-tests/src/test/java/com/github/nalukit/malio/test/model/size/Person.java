@@ -16,7 +16,6 @@
 package com.github.nalukit.malio.test.model.size;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
-import com.github.nalukit.malio.shared.annotation.field.NotEmpty;
 import com.github.nalukit.malio.shared.annotation.field.Size;
 
 import java.util.List;
@@ -24,8 +23,8 @@ import java.util.List;
 @MalioValidator
 public class Person {
 
-  @Size(min = 2, max = 4)
-  private List<String> pocket;
+  @Size(min = 2, max = 4) private List<String> pocket;
+
   public Person() {
   }
 

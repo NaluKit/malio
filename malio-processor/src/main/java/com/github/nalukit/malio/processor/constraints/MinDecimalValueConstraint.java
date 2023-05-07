@@ -32,52 +32,54 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
-public class MinDecimalValueConstraint extends AbstractConstraint<DecimalMinValue> {
+public class MinDecimalValueConstraint
+    extends AbstractConstraint<DecimalMinValue> {
 
-    public MinDecimalValueConstraint(ProcessingEnvironment processingEnv, ProcessorUtils processorUtils) {
-        super(processingEnv, processorUtils);
-    }
+  public MinDecimalValueConstraint(ProcessingEnvironment processingEnv,
+                                   ProcessorUtils processorUtils) {
+    super(processingEnv,
+          processorUtils);
+  }
 
-    @Override
-    public Class<DecimalMinValue> annotationType() {
-        return DecimalMinValue.class;
-    }
+  @Override
+  public Class<DecimalMinValue> annotationType() {
+    return DecimalMinValue.class;
+  }
 
-    @Override
-    public String getImplementationName() {
-        return Constants.MALIO_CONSTRAINT_MINDECIMALVALUE_IMPL_NAME;
-    }
+  @Override
+  public String getImplementationName() {
+    return Constants.MALIO_CONSTRAINT_MINDECIMALVALUE_IMPL_NAME;
+  }
 
-    @Override
-    public ConstraintType getConstraintType() {
-        return ConstraintType.MIN_DECIMAL_VALUE_CONSTRAINT;
-    }
+  @Override
+  public ConstraintType getConstraintType() {
+    return ConstraintType.MIN_DECIMAL_VALUE_CONSTRAINT;
+  }
 
-    @Override
-    public TypeName getValidationClass(VariableElement variableElement) {
-        return ClassName.get(AbstractMinDecimalValueConstraint.class);
-    }
+  @Override
+  public TypeName getValidationClass(VariableElement variableElement) {
+    return ClassName.get(AbstractMinDecimalValueConstraint.class);
+  }
 
-    @Override
-    protected List<TypeKind> getSupportedPrimitives() {
-        return null;
-    }
+  @Override
+  protected List<TypeKind> getSupportedPrimitives() {
+    return null;
+  }
 
-    @Override
-    protected List<Class<?>> getSupportedDeclaredType() {
-        return Collections.singletonList(BigDecimal.class);
-    }
+  @Override
+  protected List<Class<?>> getSupportedDeclaredType() {
+    return Collections.singletonList(BigDecimal.class);
+  }
 
-    @Override
-    protected AbstractGenerator createGenerator() {
-        return ConstraintMinDecimalValueGenerator.builder()
-                .elements(this.processingEnvironment.getElementUtils())
-                .filer(this.processingEnvironment.getFiler())
-                .types(this.processingEnvironment.getTypeUtils())
-                .processorUtils(this.processorUtils)
-                .constraint(this)
-                .build();
-    }
-
+  @Override
+  protected AbstractGenerator createGenerator() {
+    return ConstraintMinDecimalValueGenerator.builder()
+                                             .elements(this.processingEnvironment.getElementUtils())
+                                             .filer(this.processingEnvironment.getFiler())
+                                             .types(this.processingEnvironment.getTypeUtils())
+                                             .processorUtils(this.processorUtils)
+                                             .constraint(this)
+                                             .build();
+  }
 
 }

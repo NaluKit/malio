@@ -15,9 +15,9 @@
  */
 package com.github.nalukit.malio.shared.internal.constraints;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
-import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
 import java.util.Collection;
@@ -38,12 +38,14 @@ public abstract class AbstractSizeConstraint<T extends Collection<?>>
     super(packageName,
           simpleName,
           fieldName);
-    this.message = LocalizedMessages.INSTANCE.getSizeMessage(min, max);
-    this.min = min;
-    this.max = max;
+    this.message = LocalizedMessages.INSTANCE.getSizeMessage(min,
+                                                             max);
+    this.min     = min;
+    this.max     = max;
   }
 
-  public void check(T value) throws MalioValidationException {
+  public void check(T value)
+      throws MalioValidationException {
     if (Objects.nonNull(value)) {
       int size = value.size();
 
@@ -53,12 +55,17 @@ public abstract class AbstractSizeConstraint<T extends Collection<?>>
     }
   }
 
-  public void  isValid(T value, ValidationResult validationResult) {
+  public void isValid(T value,
+                      ValidationResult validationResult) {
     if (Objects.nonNull(value)) {
       int size = value.size();
 
       if (size < this.min || size > this.max) {
-        validationResult.getMessages().add(new ErrorMessage(this.message, super.getClassName(), super.getSimpleName(), super.getFieldName()));
+        validationResult.getMessages()
+                        .add(new ErrorMessage(this.message,
+                                              super.getClassName(),
+                                              super.getSimpleName(),
+                                              super.getFieldName()));
       }
     }
   }

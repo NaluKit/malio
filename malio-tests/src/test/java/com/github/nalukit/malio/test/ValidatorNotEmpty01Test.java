@@ -35,65 +35,81 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ValidatorNotEmpty01Test {
 
-    @Before
-    public void setup() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
-    }
-    @Test
-    public void testCheckOk() throws MalioValidationException {
-        Person model = new Person(Arrays.asList("Card", "Mobile Phone"));
-        PersonMalioValidator.INSTANCE.check(model);
-    }
+  @Before
+  public void setup() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
 
-    @Test
-    public void testValidateOk() {
-        Person model = new Person(Arrays.asList("Card", "Mobile Phone"));
+  @Test
+  public void testCheckOk()
+      throws MalioValidationException {
+    Person model = new Person(Arrays.asList("Card",
+                                            "Mobile Phone"));
+    PersonMalioValidator.INSTANCE.check(model);
+  }
 
-        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+  @Test
+  public void testValidateOk() {
+    Person model = new Person(Arrays.asList("Card",
+                                            "Mobile Phone"));
 
-    @Test
-    public void testCheckNullOk() throws MalioValidationException {
-        Person model = new Person(null);
-        PersonMalioValidator.INSTANCE.check(model);
-    }
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-    @Test
-    public void testValidateNullOk() {
-        Person model = new Person(null);
+  @Test
+  public void testCheckNullOk()
+      throws MalioValidationException {
+    Person model = new Person(null);
+    PersonMalioValidator.INSTANCE.check(model);
+  }
 
-        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+  @Test
+  public void testValidateNullOk() {
+    Person model = new Person(null);
 
-    @Test
-    public void testCheckFail01() {
-        Person model = new Person(new ArrayList<>());
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
-    }
+  @Test
+  public void testCheckFail01() {
+    Person model = new Person(new ArrayList<>());
 
-    @Test
-    public void testValidateFail01() {
-        Person model = new Person(new ArrayList<>());
+    MalioValidationException thrown = assertThrows(MalioValidationException.class,
+                                                   () -> PersonMalioValidator.INSTANCE.check(model));
+  }
 
-        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
-        assertFalse(validationResult.isValid());
-        assertEquals(1, validationResult.getMessages().size());
-        assertEquals("Collection must not be empty!", validationResult.getMessages().get(0).getMessage());
-    }
+  @Test
+  public void testValidateFail01() {
+    Person model = new Person(new ArrayList<>());
 
-    @Test
-    public void testValidateFail01German() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-        Person model = new Person(new ArrayList<>());
+    ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+                 validationResult.getMessages()
+                                 .size());
+    assertEquals("Collection must not be empty!",
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
+  }
 
-        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
-        assertFalse(validationResult.isValid());
-        assertEquals(1, validationResult.getMessages().size());
-        assertEquals("Collection darf nicht leer sein!", validationResult.getMessages().get(0).getMessage());
-    }
+  @Test
+  public void testValidateFail01German() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Person model = new Person(new ArrayList<>());
+
+    ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+                 validationResult.getMessages()
+                                 .size());
+    assertEquals("Collection darf nicht leer sein!",
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
+  }
 }
 
 

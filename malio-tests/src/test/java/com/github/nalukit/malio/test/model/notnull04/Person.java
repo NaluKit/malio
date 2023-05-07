@@ -23,8 +23,7 @@ import com.github.nalukit.malio.test.model.notnull04.helper.AbstractPerson;
 public class Person
     extends AbstractPerson {
 
-  @NotNull
-  private String firstName;
+  @NotNull private String firstName;
 
   public Person() {
   }

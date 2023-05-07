@@ -42,7 +42,7 @@ public class Person {
 }
 ```
 
-and 
+and
 
 ```java
 @MalioValidator
@@ -108,6 +108,7 @@ These are the steps to trigger the creation of a validator.
 To use Malio, add the following dependencies to your pom (in case they are missing):
 
 * **SNAPSHOT**
+
 ```XML
 <dependency>
     <groupId>com.github.nalukit</groupId>
@@ -121,7 +122,9 @@ To use Malio, add the following dependencies to your pom (in case they are missi
     <scope>provided</scope>
 </dependency>
 ```
+
 * **GWT 2.9.0 (and newer)  - Release**
+
 ```XML
 <dependency>
     <groupId>com.github.nalukit</groupId>

@@ -15,7 +15,8 @@
  */
 package com.github.nalukit.malio.shared.internal.constraints;
 
-public abstract class AbstractConstraint<T> implements IsMalioConstraint<T> {
+public abstract class AbstractConstraint<T>
+    implements IsMalioConstraint<T> {
 
   private String packageName;
   private String simpleName;
