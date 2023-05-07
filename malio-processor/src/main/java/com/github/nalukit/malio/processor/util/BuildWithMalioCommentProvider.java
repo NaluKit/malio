@@ -26,7 +26,7 @@ public class BuildWithMalioCommentProvider {
   }
 
   public CodeBlock getGeneratedComment() {
-    String sb = "Build with Malio version >>" + ProcessorConstants.PROCESSOR_VERSION + "<< at " + ProcessorConstants.BUILD_TIME;
+    String sb = "Build with Malio version '" + ProcessorConstants.PROCESSOR_VERSION + "' at " + ProcessorConstants.BUILD_TIME;
     return CodeBlock.builder()
                     .add(sb)
                     .build();
