@@ -93,10 +93,15 @@
     <maven.compiler.target>1.8</maven.compiler.target>
 
     <maven.deploy.plugin>3.0.0-M1</maven.deploy.plugin>
-    <plugin.version.flatten>1.2.2</plugin.version.flatten>
     <plugin.version.clean>3.1.0</plugin.version.clean>
+    <plugin.version.flatten>1.2.2</plugin.version.flatten>
+    <plugin.version.gpg.maven>1.6</plugin.version.gpg.maven>
+    <plugin.version.javadoc>3.2.0</plugin.version.javadoc>
     <plugin.version.license>4.2</plugin.version.license>
+    <plugin.version.nexus.staging>1.6.8</plugin.version.nexus.staging>
+    <plugin.version.project.info.report>3.0.0</plugin.version.project.info.report>
     <plugin.version.replacer>1.5.2</plugin.version.replacer>
+    <plugin.version.source>3.2.1</plugin.version.source>
     <plugin.version.surefire>3.0.0</plugin.version.surefire>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -220,7 +225,135 @@
   </pluginRepositories>
 
   <profiles>
-    <!--    <profile>-->    <!--      <id>release</id>-->    <!--      <modules>-->    <!--        <module>malio</module>-->    <!--        <module>malio-processor</module>-->    <!--        <module>malio-plugin-core-web</module>-->    <!--        <module>malio-plugin-elemental2</module>-->    <!--        <module>malio-plugin-gwt</module>-->    <!--        <module>malio-plugin-gwt-processor</module>-->    <!--      </modules>-->    <!--      <build>-->    <!--        <plugins>-->    <!--          <plugin>-->    <!--            <groupId>org.apache.maven.plugins</groupId>-->    <!--            <artifactId>maven-gpg-plugin</artifactId>-->    <!--            <version>${plugin.version.gpg.maven}</version>-->    <!--            <executions>-->    <!--              <execution>-->    <!--                <id>sign-artifacts</id>-->    <!--                <phase>verify</phase>-->    <!--                <goals>-->    <!--                  <goal>sign</goal>-->    <!--                </goals>-->    <!--              </execution>-->    <!--            </executions>-->    <!--          </plugin>-->    <!--          <plugin>-->    <!--            <groupId>org.apache.maven.plugins</groupId>-->    <!--            <artifactId>maven-javadoc-plugin</artifactId>-->    <!--            <version>${plugin.version.javadoc}</version>-->    <!--            <configuration>-->    <!--              <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>-->    <!--            </configuration>-->    <!--            <executions>-->    <!--              <execution>-->    <!--                <id>attach-javadocs</id>-->    <!--                <goals>-->    <!--                  <goal>jar</goal>-->    <!--                </goals>-->    <!--              </execution>-->    <!--            </executions>-->    <!--          </plugin>-->    <!--          <plugin>-->    <!--            <groupId>org.apache.maven.plugins</groupId>-->    <!--            <artifactId>maven-source-plugin</artifactId>-->    <!--            <version>${plugin.version.source}</version>-->    <!--            <executions>-->    <!--              <execution>-->    <!--                <id>attach-sources</id>-->    <!--                <goals>-->    <!--                  <goal>jar-no-fork</goal>-->    <!--                </goals>-->    <!--              </execution>-->    <!--            </executions>-->    <!--          </plugin>-->    <!--          <plugin>-->    <!--            <groupId>org.sonatype.plugins</groupId>-->    <!--            <artifactId>nexus-staging-maven-plugin</artifactId>-->    <!--            <version>${plugin.version.nexus.staging}</version>-->    <!--            <extensions>true</extensions>-->    <!--            <configuration>-->    <!--              <serverId>ossrh</serverId>-->    <!--              <nexusUrl>https://oss.sonatype.org/</nexusUrl>-->    <!--              <autoReleaseAfterClose>false</autoReleaseAfterClose>-->    <!--            </configuration>-->    <!--          </plugin>-->    <!--        </plugins>-->    <!--      </build>-->    <!--    </profile>-->    <!--    <profile>-->    <!--      <id>site</id>-->    <!--      <modules>-->    <!--        <module>malio</module>-->    <!--        <module>malio-processor</module>-->    <!--        <module>malio-plugin-core-web</module>-->    <!--        <module>malio-plugin-elemental2</module>-->    <!--        <module>malio-plugin-gwt</module>-->    <!--        <module>malio-plugin-gwt-processor</module>-->    <!--      </modules>-->    <!--      <build>-->    <!--        <plugins>-->    <!--          <plugin>-->    <!--            <groupId>com.github.github</groupId>-->    <!--            <artifactId>site-maven-plugin</artifactId>-->    <!--            <version>${plugin.version.github.site}</version>-->    <!--            <configuration>-->    <!--              <branch>refs/heads/site</branch>-->    <!--              <message>Creating site for ${project.name} ${project.version}</message>-->    <!--            </configuration>-->    <!--            <executions>-->    <!--              <execution>-->    <!--                <goals>-->    <!--                  <goal>site</goal>-->    <!--                </goals>-->    <!--                <phase>site</phase>-->    <!--              </execution>-->    <!--            </executions>-->    <!--          </plugin>-->    <!--        </plugins>-->    <!--      </build>-->    <!--      <reporting>-->    <!--        <plugins>-->    <!--          <plugin>-->    <!--            <groupId>org.apache.maven.plugins</groupId>-->    <!--            <artifactId>maven-project-info-reports-plugin</artifactId>-->    <!--            <version>${plugin.version.project.info.report}</version>-->    <!--            <reportSets>-->    <!--              <reportSet>-->    <!--                <reports>-->    <!--                  <report>index</report>-->    <!--                </reports>-->    <!--              </reportSet>-->    <!--            </reportSets>-->    <!--          </plugin>-->    <!--          <plugin>-->    <!--            <groupId>org.apache.maven.plugins</groupId>-->    <!--            <artifactId>maven-javadoc-plugin</artifactId>-->    <!--            <version>${plugin.version.javadoc}</version>-->    <!--            <configuration>-->    <!--              <detectLinks>true</detectLinks>-->    <!--              <links>-->    <!--                <link>http://www.gwtproject.org/javadoc/latest/</link>-->    <!--              </links>-->    <!--              <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>-->    <!--            </configuration>-->    <!--            <reportSets>-->    <!--              <reportSet>-->    <!--                <id>aggregate</id>-->    <!--                <reports>-->    <!--                  <report>aggregate</report>-->    <!--                </reports>-->    <!--              </reportSet>-->    <!--            </reportSets>-->    <!--          </plugin>-->    <!--        </plugins>-->    <!--      </reporting>-->    <!--    </profile>-->
+    <profile>
+      <id>release</id>
+      <modules>
+        <module>malio</module>
+        <module>malio-processor</module>
+      </modules>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>${plugin.version.gpg.maven}</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>${plugin.version.javadoc}</version>
+            <configuration>
+              <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+            </configuration>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>${plugin.version.source}</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+<!--          <plugin>-->
+<!--            <groupId>org.sonatype.plugins</groupId>-->
+<!--            <artifactId>nexus-staging-maven-plugin</artifactId>-->
+<!--            <version>${plugin.version.nexus.staging}</version>-->
+<!--            <extensions>true</extensions>-->
+<!--            <configuration>-->
+<!--              <serverId>ossrh</serverId>-->
+<!--              <nexusUrl>https://oss.sonatype.org/</nexusUrl>-->
+<!--              <autoReleaseAfterClose>false</autoReleaseAfterClose>-->
+<!--            </configuration>-->
+<!--          </plugin>-->
+        </plugins>
+      </build>
+    </profile>
+<!--    <profile>-->
+<!--      <id>site</id>-->
+<!--      <modules>-->
+<!--        <module>malio</module>-->
+<!--        <module>malio-processor</module>-->
+<!--      </modules>-->
+<!--      <build>-->
+<!--        <plugins>-->
+<!--          <plugin>-->
+<!--            <groupId>com.github.github</groupId>-->
+<!--            <artifactId>site-maven-plugin</artifactId>-->
+<!--            <version>${plugin.version.github.site}</version>-->
+<!--            <configuration>-->
+<!--              <branch>refs/heads/site</branch>-->
+<!--              <message>Creating site for ${project.name} ${project.version}</message>-->
+<!--            </configuration>-->
+<!--            <executions>-->
+<!--              <execution>-->
+<!--                <goals>-->
+<!--                  <goal>site</goal>-->
+<!--                </goals>-->
+<!--                <phase>site</phase>-->
+<!--              </execution>-->
+<!--            </executions>-->
+<!--          </plugin>-->
+<!--        </plugins>-->
+<!--      </build>-->
+<!--      <reporting>-->
+<!--        <plugins>-->
+<!--          <plugin>-->
+<!--            <groupId>org.apache.maven.plugins</groupId>-->
+<!--            <artifactId>maven-project-info-reports-plugin</artifactId>-->
+<!--            <version>${plugin.version.project.info.report}</version>-->
+<!--            <reportSets>-->
+<!--              <reportSet>-->
+<!--                <reports>-->
+<!--                  <report>index</report>-->
+<!--                </reports>-->
+<!--              </reportSet>-->
+<!--            </reportSets>-->
+<!--          </plugin>-->
+<!--          <plugin>-->
+<!--            <groupId>org.apache.maven.plugins</groupId>-->
+<!--            <artifactId>maven-javadoc-plugin</artifactId>-->
+<!--            <version>${plugin.version.javadoc}</version>-->
+<!--            <configuration>-->
+<!--              <detectLinks>true</detectLinks>-->
+<!--              <links>-->
+<!--                <link>http://www.gwtproject.org/javadoc/latest/</link>-->
+<!--              </links>-->
+<!--              <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>-->
+<!--            </configuration>-->
+<!--            <reportSets>-->
+<!--              <reportSet>-->
+<!--                <id>aggregate</id>-->
+<!--                <reports>-->
+<!--                  <report>aggregate</report>-->
+<!--                </reports>-->
+<!--              </reportSet>-->
+<!--            </reportSets>-->
+<!--          </plugin>-->
+<!--        </plugins>-->
+<!--      </reporting>-->
+<!--    </profile>-->
     <profile>
       <id>jdk-8-config</id>
       <activation>
