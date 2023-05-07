@@ -29,79 +29,99 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-public class ValidatorSize01Test extends GWTTestCase {
+public class ValidatorSize01Test
+    extends GWTTestCase {
 
-    @Override
-    public void gwtSetUp() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  @Override
+  public void gwtSetUp() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
+
+  @Override
+  public String getModuleName() {
+    return "com.github.nalukit.malio.MalioGwt2Test";
+  }
+
+  @Test
+  public void testCheckOk()
+      throws MalioValidationException {
+    Person model = new Person(Arrays.asList("Card",
+                                            "Mobile Phone"));
+    PersonMalioValidator.INSTANCE.check(model);
+  }
+
+  @Test
+  public void testValidateOk() {
+    Person model = new Person(Arrays.asList("Card",
+                                            "Mobile Phone",
+                                            "Keys"));
+
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
+
+  @Test
+  public void testCheckNullOk()
+      throws MalioValidationException {
+    Person model = new Person(null);
+    PersonMalioValidator.INSTANCE.check(model);
+  }
+
+  @Test
+  public void testValidateNullOk() {
+    Person model = new Person(null);
+
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
+
+  @Test
+  public void testCheckFailTooFew() {
+    Person model = new Person(Arrays.asList("Card"));
+
+    try {
+      PersonMalioValidator.INSTANCE.check(model);
+      fail();
+    } catch (MalioValidationException e) {
     }
+  }
 
-    @Override
-    public String getModuleName() {
-        return "com.github.nalukit.malio.MalioGwt2Test";
-    }
+  @Test
+  public void testValidateFailTooMany() {
+    Person model = new Person(Arrays.asList("Card",
+                                            "Mobile Phone",
+                                            "Keys",
+                                            "Sun Creme",
+                                            "Screws"));
 
-    @Test
-    public void testCheckOk() throws MalioValidationException {
-        Person model = new Person(Arrays.asList("Card", "Mobile Phone"));
-        PersonMalioValidator.INSTANCE.check(model);
-    }
+    ValidationResult   validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    List<ErrorMessage> messages         = validationResult.getMessages();
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+                 messages.size());
+    assertEquals("Collection size must be between 2 and 4!",
+                 messages.get(0)
+                         .getMessage());
+  }
 
-    @Test
-    public void testValidateOk() {
-        Person model = new Person(Arrays.asList("Card", "Mobile Phone", "Keys"));
+  @Test
+  public void testValidateFailTooManyGerman() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Person model = new Person(Arrays.asList("Card",
+                                            "Mobile Phone",
+                                            "Keys",
+                                            "Sun Creme",
+                                            "Screws"));
 
-        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
-
-    @Test
-    public void testCheckNullOk() throws MalioValidationException {
-        Person model = new Person(null);
-        PersonMalioValidator.INSTANCE.check(model);
-    }
-
-    @Test
-    public void testValidateNullOk() {
-        Person model = new Person(null);
-
-        ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
-
-    @Test
-    public void testCheckFailTooFew() {
-      Person model = new Person(Arrays.asList("Card"));
-
-      try {
-        PersonMalioValidator.INSTANCE.check(model);
-        fail();
-      } catch (MalioValidationException e) {
-      }
-    }
-
-    @Test
-    public void testValidateFailTooMany() {
-        Person model = new Person(Arrays.asList("Card", "Mobile Phone", "Keys", "Sun Creme", "Screws"));
-
-        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
-        List<ErrorMessage> messages = validationResult.getMessages();
-        assertFalse(validationResult.isValid());
-        assertEquals(1, messages.size());
-        assertEquals("Collection size must be between 2 and 4!", messages.get(0).getMessage());
-    }
-
-    @Test
-    public void testValidateFailTooManyGerman() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-        Person model = new Person(Arrays.asList("Card", "Mobile Phone", "Keys", "Sun Creme", "Screws"));
-
-        ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
-        List<ErrorMessage> messages = validationResult.getMessages();
-        assertFalse(validationResult.isValid());
-        assertEquals(1, messages.size());
-        assertEquals("Collection Länge muss zwischen 2 und 4 sein!", messages.get(0).getMessage());
-    }
+    ValidationResult   validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    List<ErrorMessage> messages         = validationResult.getMessages();
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+                 messages.size());
+    assertEquals("Collection Länge muss zwischen 2 und 4 sein!",
+                 messages.get(0)
+                         .getMessage());
+  }
 }
 
 

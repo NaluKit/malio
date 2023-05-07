@@ -57,11 +57,11 @@ public class SubValidator01Test {
 
   @Test
   public void testValidateOk() {
-    Person           model  = new Person("Flintstones",
-                                         "Fred",
-                                         new Address("Test Avenue 21",
-                                                     "123456",
-                                                     "Test City"));
+    Person model = new Person("Flintstones",
+                              "Fred",
+                              new Address("Test Avenue 21",
+                                          "123456",
+                                          "Test City"));
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }
@@ -89,11 +89,11 @@ public class SubValidator01Test {
                                           "Test City"));
 
     try {
-    PersonMalioValidator.INSTANCE.check(model);
-    fail();
-  } catch (MalioValidationException e) {
-    //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
-  }
+      PersonMalioValidator.INSTANCE.check(model);
+      fail();
+    } catch (MalioValidationException e) {
+      //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
+    }
   }
 
   @Test

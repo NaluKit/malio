@@ -32,6 +32,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Size {
-    int min();
-    int max();
+  int min();
+
+  int max();
 }

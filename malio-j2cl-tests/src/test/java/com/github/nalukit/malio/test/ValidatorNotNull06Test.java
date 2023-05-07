@@ -64,5 +64,4 @@ public class ValidatorNotNull06Test {
     assertTrue(result.isValid());
   }
 
-
 }

@@ -22,8 +22,10 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 @MalioInternalUse
 public interface IsMalioConstraint<T> {
 
- void check(T value) throws MalioValidationException;
+  void check(T value)
+      throws MalioValidationException;
 
-  void  isValid(T value, ValidationResult validationResult);
+  void isValid(T value,
+               ValidationResult validationResult);
 
 }

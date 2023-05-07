@@ -34,70 +34,94 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ValidatorBlacklist01Test {
-    @Before
-    public void setup() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
-    }
+  @Before
+  public void setup() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
+  }
 
-    @Test
-    public void testCheckOk() throws MalioValidationException {
-        Address model = new Address("Street", "13579", "City");
-        AddressMalioValidator.INSTANCE.check(model);
-    }
+  @Test
+  public void testCheckOk()
+      throws MalioValidationException {
+    Address model = new Address("Street",
+                                "13579",
+                                "City");
+    AddressMalioValidator.INSTANCE.check(model);
+  }
 
-    @Test
-    public void testValidateOk() {
-        Address model = new Address("Street", "13579", "City");
+  @Test
+  public void testValidateOk() {
+    Address model = new Address("Street",
+                                "13579",
+                                "City");
 
-        ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+    ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-    @Test
-    public void testCheckFail01() {
-        Address model = new Address("Secret", "123", "City");
+  @Test
+  public void testCheckFail01() {
+    Address model = new Address("Secret",
+                                "123",
+                                "City");
 
-        MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> AddressMalioValidator.INSTANCE.check(model));
-    }
+    MalioValidationException thrown = assertThrows(MalioValidationException.class,
+                                                   () -> AddressMalioValidator.INSTANCE.check(model));
+  }
 
-    @Test
-    public void testCheckNull() throws MalioValidationException {
-        Address model = new Address(null, "123", "City");
-        AddressMalioValidator.INSTANCE.check(model);
-    }
+  @Test
+  public void testCheckNull()
+      throws MalioValidationException {
+    Address model = new Address(null,
+                                "123",
+                                "City");
+    AddressMalioValidator.INSTANCE.check(model);
+  }
 
-    @Test
-    public void testValidateNull() throws MalioValidationException {
-        Address model = new Address(null, "123", "City");
-        ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
-        assertTrue(result.isValid());
-    }
+  @Test
+  public void testValidateNull()
+      throws MalioValidationException {
+    Address          model  = new Address(null,
+                                          "123",
+                                          "City");
+    ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
-    @Test
-    public void testValidateFail01() {
-        Address model = new Address("Secret", "12345", "City");
+  @Test
+  public void testValidateFail01() {
+    Address model = new Address("Secret",
+                                "12345",
+                                "City");
 
-        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
-        assertFalse(validationResult.isValid());
-        assertEquals(2, validationResult.getMessages().size());
-        assertEquals("String 'Secret' is not allowed!",
-                validationResult.getMessages().get(0).getMessage());
+    ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(2,
+                 validationResult.getMessages()
+                                 .size());
+    assertEquals("String 'Secret' is not allowed!",
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
 
-    }
+  }
 
-    @Test
-    public void testValidateFail01German() {
-        LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-        Address model = new Address("Secret", "12345", "City");
+  @Test
+  public void testValidateFail01German() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Address model = new Address("Secret",
+                                "12345",
+                                "City");
 
-        ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
-        List<ErrorMessage> messages = validationResult.getMessages();
-        ErrorMessage errorMessage = messages.get(0);
+    ValidationResult   validationResult = AddressMalioValidator.INSTANCE.validate(model);
+    List<ErrorMessage> messages         = validationResult.getMessages();
+    ErrorMessage       errorMessage     = messages.get(0);
 
-        assertFalse(validationResult.isValid());
-        assertEquals(2, messages.size());
-        assertEquals("String 'Secret' ist nicht erlaubt!", errorMessage.getMessage());
-    }
+    assertFalse(validationResult.isValid());
+    assertEquals(2,
+                 messages.size());
+    assertEquals("String 'Secret' ist nicht erlaubt!",
+                 errorMessage.getMessage());
+  }
 }
 
 

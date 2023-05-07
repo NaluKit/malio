@@ -24,20 +24,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.github.nalukit</groupId>
-      <artifactId>malio</artifactId>
-      <version>${revision}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.github.nalukit</groupId>
-      <artifactId>malio-processor</artifactId>
-      <version>${revision}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
       <groupId>org.gwtproject</groupId>
       <artifactId>gwt-user</artifactId>
       <version>${gwt.version}</version>
@@ -56,6 +42,18 @@
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.nalukit</groupId>
+      <artifactId>malio</artifactId>
+      <version>${revision}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.nalukit</groupId>
+      <artifactId>malio-processor</artifactId>
+      <version>${revision}</version>
     </dependency>
   </dependencies>
 

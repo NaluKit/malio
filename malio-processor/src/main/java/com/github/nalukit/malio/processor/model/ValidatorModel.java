@@ -45,7 +45,11 @@ public class ValidatorModel {
                         String postFix,
                         Type type,
                         TypeElement genericTypeElement01) {
-    this(packageName, simpleClassName, fieldName, postFix, type);
+    this(packageName,
+         simpleClassName,
+         fieldName,
+         postFix,
+         type);
     this.genericTypeElement01 = genericTypeElement01;
   }
 
@@ -56,7 +60,12 @@ public class ValidatorModel {
                         Type type,
                         TypeElement genericTypeElement01,
                         TypeElement genericTypeElement02) {
-    this(packageName, simpleClassName, fieldName, postFix, type, genericTypeElement01);
+    this(packageName,
+         simpleClassName,
+         fieldName,
+         postFix,
+         type,
+         genericTypeElement01);
     this.genericTypeElement02 = genericTypeElement02;
   }
 

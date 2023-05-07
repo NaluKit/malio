@@ -150,24 +150,25 @@ public class ValidatorNotNull04Test {
   public void testValidateFail01GermanMessage() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
 
-    Person model = new Person(null, "Fred");
+    Person model = new Person(null,
+                              "Fred");
 
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
 
     assertFalse(result.isValid());
     assertEquals(1,
-            result.getMessages()
-                    .size());
+                 result.getMessages()
+                       .size());
     ErrorMessage errorMessage = result.getMessages()
-            .get(0);
+                                      .get(0);
     assertEquals("com.github.nalukit.malio.test.model.notnull04.helper.AbstractPerson",
-            errorMessage .getClassname());
+                 errorMessage.getClassname());
     assertEquals("AbstractPerson",
-            errorMessage  .getSimpleClassname());
+                 errorMessage.getSimpleClassname());
     assertEquals("name",
-            errorMessage   .getField());
+                 errorMessage.getField());
     assertEquals("Objekt darf nicht null sein!",
-            errorMessage    .getMessage());
+                 errorMessage.getMessage());
   }
 
 }

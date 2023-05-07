@@ -41,7 +41,11 @@ public class ValidatorNotNull01Test {
 
   @Test
   public void testCheckOk() {
-    Person model = new Person("Flintstones", "Fred", new Address("Test Avenue 21", "123456", "Test City"));
+    Person model = new Person("Flintstones",
+                              "Fred",
+                              new Address("Test Avenue 21",
+                                          "123456",
+                                          "Test City"));
 
     try {
       PersonMalioValidator.INSTANCE.check(model);
@@ -52,39 +56,61 @@ public class ValidatorNotNull01Test {
 
   @Test
   public void testValidateOk() {
-    Person           model  = new Person("Flintstones", "Fred", new Address("Test Avenue 21", "123456", "Test City"));
+    Person           model  = new Person("Flintstones",
+                                         "Fred",
+                                         new Address("Test Avenue 21",
+                                                     "123456",
+                                                     "Test City"));
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }
 
   @Test
   public void testCheckFail01() {
-    Person model = new Person(null, "Fred", new Address("Test Avenue 21", "123456", "Test City"));
+    Person model = new Person(null,
+                              "Fred",
+                              new Address("Test Avenue 21",
+                                          "123456",
+                                          "Test City"));
 
-    MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
-//    assertTrue(thrown.getMessage().contentEquals("asd sad "));
+    MalioValidationException thrown = assertThrows(MalioValidationException.class,
+                                                   () -> PersonMalioValidator.INSTANCE.check(model));
+    //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
   }
 
   @Test
   public void testCheckFail02() {
-    Person model = new Person(null, null, new Address("Test Avenue 21", "123456", "Test City"));
+    Person model = new Person(null,
+                              null,
+                              new Address("Test Avenue 21",
+                                          "123456",
+                                          "Test City"));
 
-    MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
-//    assertTrue(thrown.getMessage().contentEquals("asd sad "));
+    MalioValidationException thrown = assertThrows(MalioValidationException.class,
+                                                   () -> PersonMalioValidator.INSTANCE.check(model));
+    //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
   }
-
 
   @Test
   public void testCheckFail03() {
-    Person model = new Person("Fred", "Flintstones", new Address(null, "123456", "Test City"));
+    Person model = new Person("Fred",
+                              "Flintstones",
+                              new Address(null,
+                                          "123456",
+                                          "Test City"));
 
-    MalioValidationException thrown = assertThrows(MalioValidationException.class, () -> PersonMalioValidator.INSTANCE.check(model));
-//    assertTrue(thrown.getMessage().contentEquals("asd sad "));
+    MalioValidationException thrown = assertThrows(MalioValidationException.class,
+                                                   () -> PersonMalioValidator.INSTANCE.check(model));
+    //    assertTrue(thrown.getMessage().contentEquals("asd sad "));
   }
 
   @Test
   public void testValidateFail01() {
-    Person model = new Person(null, "Fred", new Address("Test Avenue 21", "123456", "Test City"));
+    Person model = new Person(null,
+                              "Fred",
+                              new Address("Test Avenue 21",
+                                          "123456",
+                                          "Test City"));
 
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
 
@@ -93,20 +119,24 @@ public class ValidatorNotNull01Test {
                  result.getMessages()
                        .size());
     ErrorMessage errorMessage = result.getMessages()
-                                     .get(0);
+                                      .get(0);
     assertEquals("com.github.nalukit.malio.test.model.notnull01.Person",
-                 errorMessage .getClassname());
+                 errorMessage.getClassname());
     assertEquals("Person",
-                 errorMessage  .getSimpleClassname());
+                 errorMessage.getSimpleClassname());
     assertEquals("name",
-                 errorMessage   .getField());
+                 errorMessage.getField());
     assertEquals("Object must not be null!",
-                 errorMessage    .getMessage());
+                 errorMessage.getMessage());
   }
 
   @Test
   public void testValidateFail02() {
-    Person model = new Person(null, null, new Address("Test Avenue 21", "123456", "Test City"));
+    Person model = new Person(null,
+                              null,
+                              new Address("Test Avenue 21",
+                                          "123456",
+                                          "Test City"));
 
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
 
@@ -116,31 +146,35 @@ public class ValidatorNotNull01Test {
                        .size());
 
     ErrorMessage errorMessage01 = result.getMessages()
-                                     .get(0);
+                                        .get(0);
     assertEquals("com.github.nalukit.malio.test.model.notnull01.Person",
-                 errorMessage01 .getClassname());
+                 errorMessage01.getClassname());
     assertEquals("Person",
-                 errorMessage01  .getSimpleClassname());
+                 errorMessage01.getSimpleClassname());
     assertEquals("name",
-                 errorMessage01   .getField());
+                 errorMessage01.getField());
     assertEquals("Object must not be null!",
-                 errorMessage01    .getMessage());
+                 errorMessage01.getMessage());
 
     ErrorMessage errorMessage02 = result.getMessages()
-                                     .get(1);
+                                        .get(1);
     assertEquals("com.github.nalukit.malio.test.model.notnull01.Person",
-                 errorMessage02 .getClassname());
+                 errorMessage02.getClassname());
     assertEquals("Person",
-                 errorMessage02  .getSimpleClassname());
+                 errorMessage02.getSimpleClassname());
     assertEquals("firstName",
-                 errorMessage02   .getField());
+                 errorMessage02.getField());
     assertEquals("Object must not be null!",
-                 errorMessage02    .getMessage());
+                 errorMessage02.getMessage());
   }
 
   @Test
   public void testValidateFail03() {
-    Person model = new Person("Fred", "Flintstones", new Address(null, "123456", "Test City"));
+    Person model = new Person("Fred",
+                              "Flintstones",
+                              new Address(null,
+                                          "123456",
+                                          "Test City"));
 
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
 
@@ -150,17 +184,15 @@ public class ValidatorNotNull01Test {
                        .size());
 
     ErrorMessage errorMessage01 = result.getMessages()
-                                     .get(0);
+                                        .get(0);
     assertEquals("com.github.nalukit.malio.test.model.notnull01.Address",
-                 errorMessage01 .getClassname());
+                 errorMessage01.getClassname());
     assertEquals("Address",
-                 errorMessage01  .getSimpleClassname());
+                 errorMessage01.getSimpleClassname());
     assertEquals("street",
-                 errorMessage01   .getField());
+                 errorMessage01.getField());
     assertEquals("Object must not be null!",
-                 errorMessage01    .getMessage());
+                 errorMessage01.getMessage());
   }
-
-
 
 }
