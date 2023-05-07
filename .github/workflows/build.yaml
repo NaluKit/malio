@@ -92,7 +92,7 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: OWASP report
-          path: ${{github.workspace}}/reports
+          path: ${{github.workspace}}/**/reports/dependency-check-report.html
 
   maven-deploy-dev:
     runs-on: ubuntu-latest
