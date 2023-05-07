@@ -330,7 +330,7 @@ This annotation can only be used on fields of types extending **Collection** (Li
 #### NotNull
 
 ```java
-@MaxLength(20)
+@NotNull
 ```
 
 The annotation indicates that the variable should not be null.
