@@ -287,6 +287,20 @@ The annotation indicates that the variable should not be null.
 
 This annotation can be used on any type of a field.
 
+#### RegExp
+
+The annotation indicates that the value of the variable will be tested against the regular expression - if the value of
+the variable should is not null.
+
+This annotation can only be used on fields of type **String**.
+
+#### Size
+
+The annotation indicates that the size of a collection. It takes minimal and maximal number of entries - if the value of
+the variable should is not null.
+
+This annotation can only be used on fields of type **Collection**.
+
 #### Whitelist
 
 The annotation accepts a list of String values that are allowed for the field. The constrain will look for the String
