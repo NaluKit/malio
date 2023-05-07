@@ -13,35 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.test.model.mixedup01;
+package com.github.nalukit.malio.test.model.notblank01;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
-import com.github.nalukit.malio.shared.annotation.field.MaxLength;
-import com.github.nalukit.malio.shared.annotation.field.MinLength;
-import com.github.nalukit.malio.shared.annotation.field.NotNull;
+import com.github.nalukit.malio.shared.annotation.field.NotBlank;
 
 @MalioValidator
 public class Person {
 
-  @NotNull
-  @MaxLength(128)
+  @NotBlank
   private String name;
 
-  @NotNull
-  @MaxLength(128)
+  @NotBlank
   private String firstName;
 
-  @NotNull private Address address;
 
   public Person() {
   }
 
   public Person(String name,
-                String firstName,
-                Address address) {
+                String firstName) {
     this.name      = name;
     this.firstName = firstName;
-    this.address   = address;
   }
 
   public String getName() {
@@ -60,11 +53,4 @@ public class Person {
     this.firstName = firstName;
   }
 
-  public Address getAddress() {
-    return address;
-  }
-
-  public void setAddress(Address address) {
-    this.address = address;
-  }
 }
