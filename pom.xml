@@ -13,7 +13,7 @@
 
   <description>TBD</description>
 
-  <url>https://github.com/maliokit/malio</url>
+  <url>https://github.com/nalukit/malio</url>
 
   <modules>
     <module>malio</module>
@@ -62,7 +62,7 @@
 
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/maliokit/nalukit/issues</url>
+    <url>https://github.com/nalukit/malio/issues</url>
   </issueManagement>
 
   <distributionManagement>

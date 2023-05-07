@@ -66,14 +66,14 @@
   </developers>
 
   <scm>
-    <connection>scm:git@github.com:maliokit/malio-parent.git</connection>
-    <developerConnection>scm:git:git@github.com:maliokit/malio.git</developerConnection>
-    <url>scm:git:https://github.com/maliokit/malio</url>
+    <connection>scm:git@github.com:nalukit/malio-parent.git</connection>
+    <developerConnection>scm:git:git@github.com:nalukit/malio.git</developerConnection>
+    <url>scm:git:https://github.com/nalukit/malio</url>
   </scm>
 
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/maliokit/malio/issues</url>
+    <url>https://github.com/nalukit/malio/issues</url>
   </issueManagement>
 
   <dependencies>
@@ -301,10 +301,7 @@
             <configuration>
               <artifactSet>
                 <excludes>
-                  <exclude>com.github.maliokit:malio</exclude>
-                  <exclude>com.github.maliokit:malio-plugin-core</exclude>
-                  <exclude>com.github.maliokit:malio-plugin-elemental2</exclude>
-                  <exclude>com.github.maliokit:nalu-plugin-elemento</exclude>
+                  <exclude>com.github.nalukit:malio</exclude>
                   <exclude>com.google.auto.service:*</exclude>
                   <exclude>org.slf4j:slf4j-api</exclude>
                   <exclude>com.google.elemental2:*</exclude>
