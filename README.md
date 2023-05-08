@@ -315,7 +315,7 @@ This annotation can only be used on fields of type **Number** and their unboxed 
 @NotBlank
 ```
 
-The annotation indicates that the String should be empty - if the value is not null.
+The annotation indicates that the String should not be empty - if the value is not null.
 
 This annotation can only be used on fields of type **String**.
 
