@@ -194,7 +194,7 @@ To validate an instance of the class, call:
 
 Malio will generate for each variable and annotation a constraint class. Inside the validator, all constraints are
 collected and processed. In case the type of a variable has a Malio validator, the validator of the type will be called.
-In case classes are extending user classes, Malio will also look for existing validators for the super classes.
+In case classes are extending user classes, Malio will also look for existing validators of super classes.
 
 ## Supported Annotations
 
