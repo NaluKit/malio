@@ -133,7 +133,7 @@ public class ProcessorUtils {
                         .toUpperCase() + value.substring(1);
   }
 
-  public String createStringInitializationFromArray(String[] array) {
+  public String createStringInitFromArray(String[] array) {
     String[] newArray = new String[array.length];
     for (int i = 0; i < array.length; i++) {
       newArray[i] = String.format("\"%s\"",

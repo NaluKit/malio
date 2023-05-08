@@ -63,7 +63,7 @@ public class ConstraintBlacklistGenerator
                                           .toString();
     String[] blacklist   = variableElement.getAnnotation(Blacklist.class)
                                           .value();
-    String   arraySyntax = processorUtils.createStringInitializationFromArray(blacklist);
+    String   arraySyntax = processorUtils.createStringInitFromArray(blacklist);
     typeSpec.addMethod(MethodSpec.constructorBuilder()
                                  .addModifiers(Modifier.PUBLIC)
                                  .addStatement("super($S, $S, $S, $L)",

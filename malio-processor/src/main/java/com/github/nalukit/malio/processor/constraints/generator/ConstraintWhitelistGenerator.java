@@ -61,7 +61,7 @@ public class ConstraintWhitelistGenerator
                                           .toString();
     String[] whitelist   = variableElement.getAnnotation(Whitelist.class)
                                           .value();
-    String   arraySyntax = processorUtils.createStringInitializationFromArray(whitelist);
+    String   arraySyntax = processorUtils.createStringInitFromArray(whitelist);
     typeSpec.addMethod(MethodSpec.constructorBuilder()
                                  .addModifiers(Modifier.PUBLIC)
                                  .addStatement("super($S, $S, $S, $L)",
