@@ -44,29 +44,148 @@ public abstract class AbstractArraySizeConstraint<T>
     this.max     = max;
   }
 
+  public void check(int[] value) {
+    if (Objects.nonNull(value)) {
+      internCheck(value.length);
+    }
+  }
+
+  public void check(float[] value) {
+    if (Objects.nonNull(value)) {
+      internCheck(value.length);
+    }
+  }
+
+  public void check(byte[] value) {
+    if (Objects.nonNull(value)) {
+      internCheck(value.length);
+    }
+  }
+
+  public void check(short[] value) {
+    if (Objects.nonNull(value)) {
+      internCheck(value.length);
+    }
+  }
+
+  public void check(boolean[] value) {
+    if (Objects.nonNull(value)) {
+      internCheck(value.length);
+    }
+  }
+
+  public void check(double[] value) {
+    if (Objects.nonNull(value)) {
+      internCheck(value.length);
+    }
+  }
+
+  public void check(long[] value) {
+    if (Objects.nonNull(value)) {
+      internCheck(value.length);
+    }
+  }
+
+  public void check(char[] value) {
+    if (Objects.nonNull(value)) {
+      internCheck(value.length);
+    }
+  }
+
   public void check(T[] value)
       throws MalioValidationException {
     if (Objects.nonNull(value)) {
-      int size = value.length;
+      internCheck(value.length);
+    }
+  }
 
+  private void internCheck(int size) {
       if (size < this.min || size > this.max) {
         throw new MalioValidationException(this.message);
       }
-    }
+
   }
+
 
   public void isValid(T[] value,
                       ValidationResult validationResult) {
     if (Objects.nonNull(value)) {
       int size = value.length;
+        internIsValid(size, validationResult);
+    }
+  }
 
-      if (size < this.min || size > this.max) {
-        validationResult.getMessages()
-                        .add(new ErrorMessage(this.message,
-                                              super.getClassName(),
-                                              super.getSimpleName(),
-                                              super.getFieldName()));
-      }
+  public void isValid(int[] value,
+                      ValidationResult validationResult) {
+    if (Objects.nonNull(value)) {
+      int size = value.length;
+      internIsValid(size, validationResult);
+    }
+  }
+
+  public void isValid(long[] value,
+                      ValidationResult validationResult) {
+    if (Objects.nonNull(value)) {
+      int size = value.length;
+      internIsValid(size, validationResult);
+    }
+  }
+
+  public void isValid(float[] value,
+                      ValidationResult validationResult) {
+    if (Objects.nonNull(value)) {
+      int size = value.length;
+      internIsValid(size, validationResult);
+    }
+  }
+
+  public void isValid(double[] value,
+                      ValidationResult validationResult) {
+    if (Objects.nonNull(value)) {
+      int size = value.length;
+      internIsValid(size, validationResult);
+    }
+  }
+
+  public void isValid(short[] value,
+                      ValidationResult validationResult) {
+    if (Objects.nonNull(value)) {
+      int size = value.length;
+      internIsValid(size, validationResult);
+    }
+  }
+
+  public void isValid(boolean[] value,
+                      ValidationResult validationResult) {
+    if (Objects.nonNull(value)) {
+      int size = value.length;
+      internIsValid(size, validationResult);
+    }
+  }
+
+  public void isValid(char[] value,
+                      ValidationResult validationResult) {
+    if (Objects.nonNull(value)) {
+      int size = value.length;
+      internIsValid(size, validationResult);
+    }
+  }
+
+  public void isValid(byte[] value,
+                      ValidationResult validationResult) {
+    if (Objects.nonNull(value)) {
+      int size = value.length;
+      internIsValid(size, validationResult);
+    }
+  }
+
+  private void internIsValid(int size, ValidationResult validationResult) {
+    if (size < this.min || size > this.max) {
+      validationResult.getMessages()
+              .add(new ErrorMessage(this.message,
+                      super.getClassName(),
+                      super.getSimpleName(),
+                      super.getFieldName()));
     }
   }
 }

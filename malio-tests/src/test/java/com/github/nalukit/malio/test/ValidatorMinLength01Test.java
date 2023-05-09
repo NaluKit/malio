@@ -21,7 +21,7 @@ import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.model.minlength01.Address;
-import com.github.nalukit.malio.test.model.minlength01.AddressMalioValidator;
+import com.github.nalukit.malio.model.minlength01.AddressMalioValidator;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -21,7 +21,7 @@ import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.model.notnull03.Person;
-import com.github.nalukit.malio.test.model.notnull03.PersonMalioValidator;
+import com.github.nalukit.malio.model.notnull03.PersonMalioValidator;
 import com.github.nalukit.malio.model.notnull03.helper.Address;
 import org.junit.Before;
 import org.junit.Test;
@@ -130,7 +130,7 @@ public class ValidatorNotNull03Test {
                        .size());
     ErrorMessage errorMessage = result.getMessages()
                                       .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.notnull03.Person",
+    assertEquals("com.github.nalukit.malio.model.notnull03.Person",
                  errorMessage.getClassname());
     assertEquals("Person",
                  errorMessage.getSimpleClassname());
@@ -157,7 +157,7 @@ public class ValidatorNotNull03Test {
 
     ErrorMessage errorMessage01 = result.getMessages()
                                         .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.notnull03.Person",
+    assertEquals("com.github.nalukit.malio.model.notnull03.Person",
                  errorMessage01.getClassname());
     assertEquals("Person",
                  errorMessage01.getSimpleClassname());
@@ -168,7 +168,7 @@ public class ValidatorNotNull03Test {
 
     ErrorMessage errorMessage02 = result.getMessages()
                                         .get(1);
-    assertEquals("com.github.nalukit.malio.test.model.notnull03.Person",
+    assertEquals("com.github.nalukit.malio.model.notnull03.Person",
                  errorMessage02.getClassname());
     assertEquals("Person",
                  errorMessage02.getSimpleClassname());
@@ -195,7 +195,7 @@ public class ValidatorNotNull03Test {
 
     ErrorMessage errorMessage01 = result.getMessages()
                                         .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.notnull03.helper.Address",
+    assertEquals("com.github.nalukit.malio.model.notnull03.helper.Address",
                  errorMessage01.getClassname());
     assertEquals("Address",
                  errorMessage01.getSimpleClassname());

@@ -22,7 +22,7 @@ import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import com.github.nalukit.malio.model.size.Person;
-import com.github.nalukit.malio.test.model.size.PersonMalioValidator;
+import com.github.nalukit.malio.model.size.PersonMalioValidator;
 import org.junit.Before;
 import org.junit.Test;
 
