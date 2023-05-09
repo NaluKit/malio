@@ -108,6 +108,7 @@
                 <test>com.github.nalukit.malio.test.ValidatorSize01Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorUuis01Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorWhitelistTest</test>
+                <test>com.github.nalukit.malio.test.ValidatorArraySize01Test</test>
               </tests>
             </configuration>
           </execution>
