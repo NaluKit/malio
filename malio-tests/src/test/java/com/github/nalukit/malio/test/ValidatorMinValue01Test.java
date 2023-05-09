@@ -20,7 +20,7 @@ import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.minvalue01.Person;
+import com.github.nalukit.malio.model.minvalue01.Person;
 import com.github.nalukit.malio.test.model.minvalue01.PersonMalioValidator;
 import org.junit.Before;
 import org.junit.Test;

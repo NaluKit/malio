@@ -89,6 +89,11 @@ public class MessagesDE
   }
 
   @Override
+  public String getArraySizeMessage(int min, int max) {
+    return "Array Länge muss zwischen {0} und {1} sein!";
+  }
+
+  @Override
   public String getUuidMessage() {
     return "String repräsentiert keine UUID!";
   }

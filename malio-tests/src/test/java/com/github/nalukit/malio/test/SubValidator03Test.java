@@ -17,8 +17,8 @@ package com.github.nalukit.malio.test;
 
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.subvalidator03.Address;
-import com.github.nalukit.malio.test.model.subvalidator03.Person;
+import com.github.nalukit.malio.model.subvalidator03.Address;
+import com.github.nalukit.malio.model.subvalidator03.Person;
 import com.github.nalukit.malio.test.model.subvalidator03.PersonMalioValidator;
 import org.junit.Test;
 

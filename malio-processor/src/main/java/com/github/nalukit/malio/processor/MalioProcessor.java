@@ -15,22 +15,7 @@
  */
 package com.github.nalukit.malio.processor;
 
-import com.github.nalukit.malio.processor.constraints.AbstractConstraint;
-import com.github.nalukit.malio.processor.constraints.BlacklistConstraint;
-import com.github.nalukit.malio.processor.constraints.EmailConstraint;
-import com.github.nalukit.malio.processor.constraints.MaxDecimalValueConstraint;
-import com.github.nalukit.malio.processor.constraints.MaxLengthConstraint;
-import com.github.nalukit.malio.processor.constraints.MaxValueConstraint;
-import com.github.nalukit.malio.processor.constraints.MinDecimalValueConstraint;
-import com.github.nalukit.malio.processor.constraints.MinLengthConstraint;
-import com.github.nalukit.malio.processor.constraints.MinValueConstraint;
-import com.github.nalukit.malio.processor.constraints.NotBlankConstraint;
-import com.github.nalukit.malio.processor.constraints.NotEmptyConstraint;
-import com.github.nalukit.malio.processor.constraints.NotNullConstraint;
-import com.github.nalukit.malio.processor.constraints.RegexpConstraint;
-import com.github.nalukit.malio.processor.constraints.SizeConstraint;
-import com.github.nalukit.malio.processor.constraints.UuidConstraint;
-import com.github.nalukit.malio.processor.constraints.WhitelistConstraint;
+import com.github.nalukit.malio.processor.constraints.*;
 import com.github.nalukit.malio.processor.constraints.generator.ValidatorGenerator;
 import com.github.nalukit.malio.processor.constraints.scanner.ValidatorScanner;
 import com.github.nalukit.malio.processor.model.ConstraintModel;
@@ -122,6 +107,8 @@ public class MalioProcessor
                                                              this.processorUtils);
     SizeConstraint sizeConstraint = new SizeConstraint(this.processingEnv,
                                                        this.processorUtils);
+    ArraySizeConstraint arraySizeConstraint = new ArraySizeConstraint(this.processingEnv,
+            this.processorUtils);
     UuidConstraint uuidConstraint = new UuidConstraint(this.processingEnv,
                                                        this.processorUtils);
     WhitelistConstraint whitelistConstraint = new WhitelistConstraint(this.processingEnv,
@@ -141,7 +128,8 @@ public class MalioProcessor
                                      maxDecimalValueConstraint,
                                      minDecimalValueConstraint,
                                      notEmptyConstraint,
-                                     sizeConstraint);
+                                     sizeConstraint,
+                arraySizeConstraint);
   }
 
   @Override
