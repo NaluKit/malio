@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>The annotation will check if the value of the field is a UUIDs.</p>
+ * <p>The annotation will check if the value of the field is a UUID.</p>
  *
  * <p>The validation will only occur in case the value is not null.</p>
  *

@@ -21,8 +21,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>The annotation accepts a int value of the maximal numbers of characters. This is the
- * maximal length allowed for the variable - if the value is not null. </p>
+ * <p>The annotation accepts an int value of the maximal numbers of characters. This is the
+ * maximal length allowed for the variable. </p>
  *
  * <p>The validation will only occur in case the value is not null.</p>
  *

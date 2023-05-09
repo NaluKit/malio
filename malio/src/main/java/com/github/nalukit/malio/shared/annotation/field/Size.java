@@ -22,8 +22,7 @@ import java.lang.annotation.Target;
 
 /**
  * <p>The annotation indicates that the size of a collection.
- * It takes minimal and maximal number of entries - if the
- * value of the variable should is not null.</p>
+ * It takes minimal and maximal number of entries. </p>
  *
  * <p>This annotation can only be used on fields of type <b>Collection</b>.</p>
  *

@@ -21,11 +21,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>The annotation indicates that the String should be empty - if the value is not null.</p>
+ * <p>The annotation indicates that an given collection is not empty.</p>
  *
  * <p>The validation will only occur in case the value is not null.</p>
  *
- * <p>This annotation can only be used on fields of type <b>String</b>.</p>
+ * <p>This annotation can only be used on fields of type <b>Collection</b>.</p>
  *
  * @author Frank Hossfeld, Philipp Kohl
  */

@@ -22,8 +22,7 @@ import java.lang.annotation.Target;
 
 /**
  * <p>The annotation indicates that the value of the variable will be
- * tested against the regular expression - if the value of the
- * variable should is not null.</p>
+ * tested against the regular expression.</p>
  *
  * <p>This annotation can only be used on fields of type <b>String</b>.</p>
  *
