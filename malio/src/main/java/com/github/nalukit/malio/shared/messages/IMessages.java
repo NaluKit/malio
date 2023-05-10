@@ -52,4 +52,6 @@ public interface IMessages {
   String getUuidMessage();
 
   String getWhitelistMessage(String value);
+
+  String getNotZeroMessage();
 }

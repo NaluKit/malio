@@ -102,4 +102,9 @@ public class MessagesDE
   public String getWhitelistMessage(String value) {
     return "String '{0}' ist nicht erlaubt!";
   }
+
+  @Override
+  public String getNotZeroMessage() {
+    return "Wert muss ungleich/größer als 0 sein!";
+  }
 }
