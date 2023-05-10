@@ -22,8 +22,7 @@ import java.lang.annotation.Target;
 
 /**
  * <p>The annotation accepts a long value of the minimal value of Number.
- * This is the minimal value allowed for the variable - if the value
- * is not null.</p>
+ * This is the minimal value allowed for the variable</p>
  *
  * <p>The validation will only occur in case the value is not null.</p>
  *

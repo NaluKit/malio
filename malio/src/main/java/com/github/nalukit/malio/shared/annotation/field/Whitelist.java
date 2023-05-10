@@ -22,8 +22,7 @@ import java.lang.annotation.Target;
 
 /**
  * <p>This annotation accepts a list of String values that are allowed for the field.
- * The constrain will look for the String inside the variable and in case it is found,
- * create an error.</p>
+ * If the annotated field contains a value not listed in the whitelist, malio classifies the field as not valid. </p>
  *
  * <p>The validation will only occur in case the value is not null.</p>
  *

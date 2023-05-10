@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 /**
  * <p>The annotation indicates that the variable should not be null.</p>
  *
- * <p>This annotation can be used on any type of a field.</p>
+ * <p>This annotation can be used on any complex type of a field.</p>
  *
  * @author Frank Hossfeld, Philipp Kohl
  */
