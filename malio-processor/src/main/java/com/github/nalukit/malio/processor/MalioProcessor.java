@@ -84,17 +84,17 @@ public class MalioProcessor
                                                                       this.processorUtils);
     EmailConstraint emailConstraint = new EmailConstraint(this.processingEnv,
                                                           this.processorUtils);
-    MaxDecimalValueConstraint maxDecimalValueConstraint = new MaxDecimalValueConstraint(this.processingEnv,
+    MaxDecimalConstraint maxDecimalConstraint = new MaxDecimalConstraint(this.processingEnv,
                                                                                         this.processorUtils);
     MaxLengthConstraint maxLengthConstraint = new MaxLengthConstraint(this.processingEnv,
                                                                       this.processorUtils);
-    MaxValueConstraint maxValueConstraint = new MaxValueConstraint(this.processingEnv,
+    MaxConstraint maxConstraint = new MaxConstraint(this.processingEnv,
                                                                    this.processorUtils);
-    MinDecimalValueConstraint minDecimalValueConstraint = new MinDecimalValueConstraint(this.processingEnv,
+    MinDecimalConstraint minDecimalConstraint = new MinDecimalConstraint(this.processingEnv,
                                                                                         this.processorUtils);
     MinLengthConstraint minLengthConstraint = new MinLengthConstraint(this.processingEnv,
                                                                       this.processorUtils);
-    MinValueConstraint minValueConstraint = new MinValueConstraint(this.processingEnv,
+    MinConstraint minConstraint = new MinConstraint(this.processingEnv,
                                                                    this.processorUtils);
     NotBlankConstraint notBlankConstraint = new NotBlankConstraint(this.processingEnv,
                                                                    this.processorUtils);
@@ -119,14 +119,14 @@ public class MalioProcessor
                                      regexpConstraint,
                                      emailConstraint,
                                      uuidConstraint,
-                                     maxValueConstraint,
-                                     minValueConstraint,
+            maxConstraint,
+            minConstraint,
                                      maxLengthConstraint,
                                      minLengthConstraint,
                                      blacklistConstraint,
                                      whitelistConstraint,
-                                     maxDecimalValueConstraint,
-                                     minDecimalValueConstraint,
+            maxDecimalConstraint,
+            minDecimalConstraint,
                                      notEmptyConstraint,
                                      sizeConstraint,
                                      arraySizeConstraint,

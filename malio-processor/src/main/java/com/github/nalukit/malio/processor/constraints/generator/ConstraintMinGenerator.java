@@ -17,7 +17,7 @@ package com.github.nalukit.malio.processor.constraints.generator;
 
 import com.github.nalukit.malio.processor.constraints.AbstractConstraint;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
-import com.github.nalukit.malio.shared.annotation.field.NotZero;
+import com.github.nalukit.malio.shared.annotation.field.Min;
 import com.squareup.javapoet.CodeBlock;
 
 import javax.annotation.processing.Filer;
@@ -26,12 +26,12 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-public class ConstraintNotZeroGenerator
+public class ConstraintMinGenerator
     extends AbstractGenerator {
 
-  private AbstractConstraint<NotZero> constraint;
+  private AbstractConstraint<Min> constraint;
 
-  private ConstraintNotZeroGenerator(Builder builder) {
+  private ConstraintMinGenerator(Builder builder) {
     this.elements       = builder.elements;
     this.types          = builder.types;
     this.filer          = builder.filer;
@@ -47,7 +47,7 @@ public class ConstraintNotZeroGenerator
   @Override
   protected CodeBlock generate(Element clazz, VariableElement field, String suffix) {
     return CodeBlock.builder().add(
-            "new $T($S, $S, $S, $L)" + suffix,
+            "new $T($S, $S, $S, Long.valueOf($L))" + suffix,
             constraint.getValidationClass(field),
             this.processorUtils.getPackage(field),
             this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
@@ -55,8 +55,8 @@ public class ConstraintNotZeroGenerator
                     .toString()),
             field.getSimpleName()
                     .toString(),
-            field.getAnnotation(NotZero.class)
-                    .allowNegativeValues(),
+            field.getAnnotation(Min.class)
+                    .value(),
             this.processorUtils.createGetMethodName(field.getSimpleName().toString())
     ).build();
   }
@@ -67,7 +67,7 @@ public class ConstraintNotZeroGenerator
     Types                        types;
     Filer                        filer;
     ProcessorUtils               processorUtils;
-    AbstractConstraint<NotZero> constraint;
+    AbstractConstraint<Min> constraint;
 
     public Builder elements(Elements elements) {
       this.elements = elements;
@@ -89,13 +89,13 @@ public class ConstraintNotZeroGenerator
       return this;
     }
 
-    public Builder constraint(AbstractConstraint<NotZero> constraint) {
+    public Builder constraint(AbstractConstraint<Min> constraint) {
       this.constraint = constraint;
       return this;
     }
 
-    public ConstraintNotZeroGenerator build() {
-      return new ConstraintNotZeroGenerator(this);
+    public ConstraintMinGenerator build() {
+      return new ConstraintMinGenerator(this);
     }
   }
 }
