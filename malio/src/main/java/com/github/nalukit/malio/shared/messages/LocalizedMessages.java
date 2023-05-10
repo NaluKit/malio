@@ -133,6 +133,11 @@ public class LocalizedMessages
                   value);
   }
 
+  @Override
+  public String getNotZeroMessage() {
+    return messages.getNotZeroMessage();
+  }
+
   private String format(String message,
                         String... args) {
     for (int i = 0; i < args.length; i++) {

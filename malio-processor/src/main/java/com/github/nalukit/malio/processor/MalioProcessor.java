@@ -112,6 +112,7 @@ public class MalioProcessor
                                                        this.processorUtils);
     WhitelistConstraint whitelistConstraint = new WhitelistConstraint(this.processingEnv,
                                                                       this.processorUtils);
+    NotZeroConstraint notZeroConstraint = new NotZeroConstraint(this.processingEnv, this.processorUtils);
 
     this.constraints = Arrays.asList(notNullConstraint,
                                      notBlankConstraint,
@@ -128,7 +129,8 @@ public class MalioProcessor
                                      minDecimalValueConstraint,
                                      notEmptyConstraint,
                                      sizeConstraint,
-                arraySizeConstraint);
+                                     arraySizeConstraint,
+                                     notZeroConstraint);
   }
 
   @Override

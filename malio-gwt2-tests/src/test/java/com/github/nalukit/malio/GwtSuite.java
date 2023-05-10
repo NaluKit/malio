@@ -50,6 +50,7 @@ public class GwtSuite {
     suite.addTestSuite(ValidatorUuid01Test.class);
     suite.addTestSuite(ValidatorWhitelistTest.class);
     suite.addTestSuite(ValidatorArraySize01Test.class);
+    suite.addTestSuite(ValidatorNotZeroTest.class);
     return suite;
   }
 }
