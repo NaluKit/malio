@@ -18,13 +18,13 @@ package com.github.nalukit.malio.processor;
 import com.github.nalukit.malio.processor.constraints.*;
 import com.github.nalukit.malio.processor.constraints.generator.ValidatorGenerator;
 import com.github.nalukit.malio.processor.constraints.scanner.ValidatorScanner;
-import com.github.nalukit.malio.processor.model.ConstraintModel;
 import com.github.nalukit.malio.processor.model.ValidatorModel;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.Malio;
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.google.auto.service.AutoService;
 import com.google.common.base.Stopwatch;
+import com.squareup.javapoet.CodeBlock;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -35,7 +35,6 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -172,41 +171,42 @@ public class MalioProcessor
     }
   }
 
-  private void processClass(Element validatorElement)
+  private void processClass(Element clazz)
       throws ProcessorException {
-    this.createValidator(validatorElement,
-                         processVariable(validatorElement.asType()));
+    MalioValidatorGenerator malioValidatorGenerator = new MalioValidatorGenerator(this.processingEnv, processorUtils, clazz);
+    this.processVariable(clazz.asType(), malioValidatorGenerator);
+    this.createSubAndSuperValidators(clazz, malioValidatorGenerator);
+    malioValidatorGenerator.writeFile();
   }
 
-  private List<ConstraintModel> processVariable(TypeMirror mirror)
+  private void processVariable(TypeMirror mirror, MalioValidatorGenerator malioValidatorGenerator)
       throws ProcessorException {
     Element element = this.processingEnv.getTypeUtils()
                                         .asElement(mirror);
-    return createConstraints(element);
+    createConstraints(element, malioValidatorGenerator);
   }
 
-  private List<ConstraintModel> createConstraints(Element element)
+  private void createConstraints(Element clazz, MalioValidatorGenerator malioValidatorGenerator)
       throws ProcessorException {
-    List<ConstraintModel> constraintsPerVariable = new ArrayList<>();
 
     for (
         @SuppressWarnings("rawtypes") AbstractConstraint constraint : this.constraints) {
-      for (Object varWithAnnotation : constraint.getVarsWithAnnotation((TypeElement) element)) {
+      for (Object varWithAnnotation : constraint.getVarsWithAnnotation((TypeElement) clazz)) {
         Element         elementWithAnnotation = (Element) varWithAnnotation;
-        VariableElement variableElement       = (VariableElement) elementWithAnnotation;
+        VariableElement field       = (VariableElement) elementWithAnnotation;
 
-        constraint.check(variableElement);
-        constraintsPerVariable.add(constraint.createConstraintModel(element,
-                                                                    elementWithAnnotation));
-        constraint.generate(element,
-                            variableElement);
+        constraint.check(field);
+        CodeBlock checkBlock = constraint.generateCheck(clazz, field);
+        CodeBlock validBlock = constraint.generateValid(clazz, field);
+
+        malioValidatorGenerator.appendCheckStatement(checkBlock);
+        malioValidatorGenerator.appendValidStatement(validBlock);
       }
     }
-    return constraintsPerVariable;
+
   }
 
-  private void createValidator(Element validatorElement,
-                               List<ConstraintModel> constraintList)
+  private void createSubAndSuperValidators(Element validatorElement, MalioValidatorGenerator malioValidatorGenerator)
       throws ProcessorException {
     List<ValidatorModel> subValidatorList = ValidatorScanner.builder()
                                                             .elements(this.processingEnv.getElementUtils())
@@ -224,17 +224,17 @@ public class MalioProcessor
                                                               .build()
                                                               .createSuperValidatorList();
 
-    ValidatorGenerator.builder()
-                      .elements(this.processingEnv.getElementUtils())
-                      .filer(this.processingEnv.getFiler())
-                      .types(this.processingEnv.getTypeUtils())
-                      .constraintList(constraintList)
-                      .superValidatorList(superValidatorList)
-                      .subValidatorList(subValidatorList)
-                      .processorUtils(this.processorUtils)
-                      .build()
-                      .generate(validatorElement,
-                                null);
+    ValidatorGenerator generator = ValidatorGenerator.builder()
+            .elements(this.processingEnv.getElementUtils())
+            .filer(this.processingEnv.getFiler())
+            .types(this.processingEnv.getTypeUtils())
+            .superValidatorList(superValidatorList)
+            .subValidatorList(subValidatorList)
+            .malioValidatorGenerator(malioValidatorGenerator)
+            .processorUtils(this.processorUtils)
+            .build();
+    generator.appendSuperAndSubValidatorsCheck();
+    generator.appendSuperAndSubValidatorsValid();
   }
 
 }

@@ -20,37 +20,38 @@ import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
-import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
-public abstract class AbstractMaxDecimalValueConstraint
-    extends AbstractConstraint<BigDecimal> {
+public class WhitelistConstraint
+    extends AbstractConstraint<String> {
 
-  private String     message;
-  private BigDecimal maxValue;
+  private List<String> whitelist;
 
-  public AbstractMaxDecimalValueConstraint(String packageName,
-                                           String simpleName,
-                                           String fieldName,
-                                           String maxValue) {
+  public WhitelistConstraint(String packageName,
+                             String simpleName,
+                             String fieldName,
+                             String[] whitelist) {
     super(packageName,
           simpleName,
           fieldName);
-    this.maxValue = new BigDecimal(maxValue);
-    this.message  = LocalizedMessages.INSTANCE.getMaxDecimalValueMessage(this.maxValue);
+    this.whitelist = Arrays.asList(whitelist);
   }
 
-  public void check(BigDecimal value)
+  public void check(String value)
       throws MalioValidationException {
-    if (value != null && value.compareTo(this.maxValue) > 0) {
-      throw new MalioValidationException(this.message);
+    String message = LocalizedMessages.INSTANCE.getWhitelistMessage(value);
+    if (value != null && !whitelist.contains(value)) {
+      throw new MalioValidationException(message);
     }
   }
 
-  public void isValid(BigDecimal value,
+  public void isValid(String value,
                       ValidationResult validationResult) {
-    if (value != null && value.compareTo(this.maxValue) > 0) {
+    String message = LocalizedMessages.INSTANCE.getWhitelistMessage(value);
+    if (value != null && !whitelist.contains(value)) {
       validationResult.getMessages()
-                      .add(new ErrorMessage(this.message,
+                      .add(new ErrorMessage(message,
                                             super.getClassName(),
                                             super.getSimpleName(),
                                             super.getFieldName()));

@@ -21,7 +21,6 @@ import com.github.nalukit.malio.processor.constraints.generator.ConstraintMinLen
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.MinLength;
-import com.github.nalukit.malio.shared.internal.constraints.AbstractMinLengthConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
@@ -57,7 +56,7 @@ public class MinLengthConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(AbstractMinLengthConstraint.class);
+    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.MinLengthConstraint.class);
   }
 
   @Override

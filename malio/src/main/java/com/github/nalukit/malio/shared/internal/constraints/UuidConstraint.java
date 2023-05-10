@@ -19,37 +19,35 @@ import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
+import org.gwtproject.regexp.shared.RegExp;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Objects;
 
-public abstract class AbstractWhitelistConstraint
+public class UuidConstraint
     extends AbstractConstraint<String> {
 
-  private List<String> whitelist;
+  private final static RegExp regExp = RegExp.compile("^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$");
 
-  public AbstractWhitelistConstraint(String packageName,
-                                     String simpleName,
-                                     String fieldName,
-                                     String[] whitelist) {
+  public UuidConstraint(String packageName,
+                        String simpleName,
+                        String fieldName) {
     super(packageName,
           simpleName,
           fieldName);
-    this.whitelist = Arrays.asList(whitelist);
   }
 
   public void check(String value)
       throws MalioValidationException {
-    String message = LocalizedMessages.INSTANCE.getWhitelistMessage(value);
-    if (value != null && !whitelist.contains(value)) {
+    String message = LocalizedMessages.INSTANCE.getUuidMessage();
+    if (Objects.nonNull(value) && !UuidConstraint.regExp.test(value)) {
       throw new MalioValidationException(message);
     }
   }
 
   public void isValid(String value,
                       ValidationResult validationResult) {
-    String message = LocalizedMessages.INSTANCE.getWhitelistMessage(value);
-    if (value != null && !whitelist.contains(value)) {
+    String message = LocalizedMessages.INSTANCE.getUuidMessage();
+    if (Objects.nonNull(value) && !UuidConstraint.regExp.test(value)) {
       validationResult.getMessages()
                       .add(new ErrorMessage(message,
                                             super.getClassName(),

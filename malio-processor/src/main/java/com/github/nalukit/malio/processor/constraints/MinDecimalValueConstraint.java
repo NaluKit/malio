@@ -21,7 +21,6 @@ import com.github.nalukit.malio.processor.constraints.generator.ConstraintMinDec
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.DecimalMinValue;
-import com.github.nalukit.malio.shared.internal.constraints.AbstractMinDecimalValueConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
@@ -58,7 +57,7 @@ public class MinDecimalValueConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(AbstractMinDecimalValueConstraint.class);
+    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.MinDecimalValueConstraint.class);
   }
 
   @Override

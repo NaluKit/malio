@@ -20,35 +20,38 @@ import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
-public abstract class AbstractMaxValueConstraint
-    extends AbstractConstraint<Number> {
+import java.util.Arrays;
+import java.util.List;
 
-  private String message;
-  private Long   maxValue;
+public class BlacklistConstraint
+    extends AbstractConstraint<String> {
 
-  public AbstractMaxValueConstraint(String packageName,
-                                    String simpleName,
-                                    String fieldName,
-                                    Number maxValue) {
+  private List<String> blacklist;
+
+  public BlacklistConstraint(String packageName,
+                             String simpleName,
+                             String fieldName,
+                             String[] blacklist) {
     super(packageName,
           simpleName,
           fieldName);
-    this.message  = LocalizedMessages.INSTANCE.getMaxValueMessage(maxValue.longValue());
-    this.maxValue = maxValue.longValue();
+    this.blacklist = Arrays.asList(blacklist);
   }
 
-  public void check(Number value)
+  public void check(String value)
       throws MalioValidationException {
-    if (value != null && value.longValue() > this.maxValue) {
-      throw new MalioValidationException(this.message);
+    String message = LocalizedMessages.INSTANCE.getBlacklistMessage(value);
+    if (value != null && blacklist.contains(value)) {
+      throw new MalioValidationException(message);
     }
   }
 
-  public void isValid(Number value,
+  public void isValid(String value,
                       ValidationResult validationResult) {
-    if (value != null && value.longValue() > this.maxValue) {
+    String message = LocalizedMessages.INSTANCE.getBlacklistMessage(value);
+    if (value != null && blacklist.contains(value)) {
       validationResult.getMessages()
-                      .add(new ErrorMessage(this.message,
+                      .add(new ErrorMessage(message,
                                             super.getClassName(),
                                             super.getSimpleName(),
                                             super.getFieldName()));

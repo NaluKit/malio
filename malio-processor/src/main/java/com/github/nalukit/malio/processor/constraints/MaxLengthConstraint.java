@@ -21,7 +21,6 @@ import com.github.nalukit.malio.processor.constraints.generator.ConstraintMaxLen
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.MaxLength;
-import com.github.nalukit.malio.shared.internal.constraints.AbstractMaxLengthConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
@@ -57,7 +56,7 @@ public class MaxLengthConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(AbstractMaxLengthConstraint.class);
+    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.MaxLengthConstraint.class);
   }
 
   @Override

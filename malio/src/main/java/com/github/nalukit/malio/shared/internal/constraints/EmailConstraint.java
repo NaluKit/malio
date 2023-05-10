@@ -19,37 +19,37 @@ import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
+import org.gwtproject.regexp.shared.RegExp;
 
-public abstract class AbstractMinLengthConstraint
+import java.util.Objects;
+
+public class EmailConstraint
     extends AbstractConstraint<String> {
 
-  private String message;
+  private final static RegExp regExp = RegExp.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
 
-  private int minLength;
-
-  public AbstractMinLengthConstraint(String packageName,
-                                     String simpleName,
-                                     String fieldName,
-                                     int minLength) {
+  public EmailConstraint(String packageName,
+                         String simpleName,
+                         String fieldName) {
     super(packageName,
           simpleName,
           fieldName);
-    this.message   = LocalizedMessages.INSTANCE.getMinLengthMessage(minLength);
-    this.minLength = minLength;
   }
 
   public void check(String value)
       throws MalioValidationException {
-    if (value != null && value.length() < minLength) {
-      throw new MalioValidationException(this.message);
+    String message = LocalizedMessages.INSTANCE.getEmailMessage();
+    if (Objects.nonNull(value) && !EmailConstraint.regExp.test(value)) {
+      throw new MalioValidationException(message);
     }
   }
 
   public void isValid(String value,
                       ValidationResult validationResult) {
-    if (value != null && value.length() < minLength) {
+    String message = LocalizedMessages.INSTANCE.getEmailMessage();
+    if (Objects.nonNull(value) && !EmailConstraint.regExp.test(value)) {
       validationResult.getMessages()
-                      .add(new ErrorMessage(this.message,
+                      .add(new ErrorMessage(message,
                                             super.getClassName(),
                                             super.getSimpleName(),
                                             super.getFieldName()));

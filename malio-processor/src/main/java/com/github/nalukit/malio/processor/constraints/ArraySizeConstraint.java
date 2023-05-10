@@ -21,14 +21,12 @@ import com.github.nalukit.malio.processor.constraints.generator.ConstraintArrayS
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.ArraySize;
-import com.github.nalukit.malio.shared.internal.constraints.AbstractArraySizeConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -59,7 +57,7 @@ public class ArraySizeConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(AbstractArraySizeConstraint.class);
+    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.ArraySizeConstraint.class);
   }
 
   @Override

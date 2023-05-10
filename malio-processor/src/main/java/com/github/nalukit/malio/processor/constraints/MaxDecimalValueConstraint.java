@@ -21,7 +21,6 @@ import com.github.nalukit.malio.processor.constraints.generator.ConstraintMaxDec
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.DecimalMaxValue;
-import com.github.nalukit.malio.shared.internal.constraints.AbstractMaxDecimalValueConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
@@ -58,7 +57,7 @@ public class MaxDecimalValueConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(AbstractMaxDecimalValueConstraint.class);
+    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.MaxDecimalValueConstraint.class);
   }
 
   @Override

@@ -21,7 +21,7 @@ import com.github.nalukit.malio.processor.constraints.generator.ConstraintBlackl
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.Blacklist;
-import com.github.nalukit.malio.shared.internal.constraints.AbstractEmailConstraint;
+import com.github.nalukit.malio.shared.internal.constraints.EmailConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
@@ -57,7 +57,7 @@ public class BlacklistConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(AbstractEmailConstraint.class);
+    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.BlacklistConstraint.class);
   }
 
   @Override

@@ -21,7 +21,6 @@ import com.github.nalukit.malio.processor.constraints.generator.ConstraintNotNul
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
-import com.github.nalukit.malio.shared.internal.constraints.AbstractNotNullConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
@@ -58,7 +57,7 @@ public class NotNullConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ParameterizedTypeName.get(ClassName.get(AbstractNotNullConstraint.class),
+    return ParameterizedTypeName.get(ClassName.get(com.github.nalukit.malio.shared.internal.constraints.NotNullConstraint.class),
                                      ClassName.get(variableElement.asType()));
   }
 

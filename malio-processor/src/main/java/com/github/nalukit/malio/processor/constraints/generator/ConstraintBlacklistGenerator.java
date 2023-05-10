@@ -15,19 +15,13 @@
  */
 package com.github.nalukit.malio.processor.constraints.generator;
 
-import com.github.nalukit.malio.processor.ProcessorException;
 import com.github.nalukit.malio.processor.constraints.AbstractConstraint;
-import com.github.nalukit.malio.processor.util.BuildWithMalioCommentProvider;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.Blacklist;
-import com.github.nalukit.malio.shared.internal.constraints.AbstractBlacklistConstraint;
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.CodeBlock;
 
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.Modifier;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -49,45 +43,30 @@ public class ConstraintBlacklistGenerator
     return new Builder();
   }
 
-  public void generate(Element validatorElement,
-                       VariableElement variableElement)
-      throws ProcessorException {
-    TypeSpec.Builder typeSpec    = createConstraintTypeSpec(validatorElement,
-                                                            variableElement);
-    String           packageName = this.processorUtils.getPackage(variableElement)
-                                                      .toString();
-    String className = this.processorUtils.setFirstCharacterToUpperCase(variableElement.getEnclosingElement()
-                                                                                       .getSimpleName()
-                                                                                       .toString());
-    String   simpleName  = variableElement.getSimpleName()
-                                          .toString();
-    String[] blacklist   = variableElement.getAnnotation(Blacklist.class)
-                                          .value();
-    String   arraySyntax = processorUtils.createStringInitializationFromArray(blacklist);
-    typeSpec.addMethod(MethodSpec.constructorBuilder()
-                                 .addModifiers(Modifier.PUBLIC)
-                                 .addStatement("super($S, $S, $S, $L)",
-                                               packageName,
-                                               className,
-                                               simpleName,
-                                               arraySyntax)
-                                 .build());
-    super.writeFile(variableElement,
-                    constraint.getImplementationName(),
-                    typeSpec);
-  }
 
-  private TypeSpec.Builder createConstraintTypeSpec(Element validatorElement,
-                                                    VariableElement variableElement) {
-    return TypeSpec.classBuilder(this.createConstraintClassName(validatorElement.getSimpleName()
-                                                                                .toString(),
-                                                                variableElement.getSimpleName()
-                                                                               .toString(),
-                                                                constraint.getImplementationName()))
-                   .addJavadoc(BuildWithMalioCommentProvider.INSTANCE.getGeneratedComment())
-                   .superclass(ClassName.get(AbstractBlacklistConstraint.class))
-                   .addModifiers(Modifier.PUBLIC,
-                                 Modifier.FINAL);
+  @Override
+  protected CodeBlock generate(Element clazz, VariableElement field, String suffix) {
+    String           packageName = this.processorUtils.getPackage(field)
+            .toString();
+    String className = this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
+            .getSimpleName()
+            .toString());
+    String   simpleName  = field.getSimpleName()
+            .toString();
+    String[] blacklist   = field.getAnnotation(Blacklist.class)
+            .value();
+    String   arraySyntax = processorUtils.createStringInitializationFromArray(blacklist);
+
+
+    return CodeBlock.builder().add(
+            "new $T($S, $S, $S, $L)" + suffix,
+            constraint.getValidationClass(field),
+            packageName,
+            className,
+            simpleName,
+            arraySyntax,
+            this.processorUtils.createGetMethodName(field.getSimpleName().toString())
+    ).build();
   }
 
   public static class Builder {
