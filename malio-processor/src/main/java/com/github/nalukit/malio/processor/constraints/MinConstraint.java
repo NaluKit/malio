@@ -56,7 +56,7 @@ public class MinConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.MinValueConstraint.class);
+    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.MinConstraint.class);
   }
 
   @Override

@@ -57,7 +57,7 @@ public class MinDecimalConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.MinDecimalValueConstraint.class);
+    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.MinDecimalConstraint.class);
   }
 
   @Override

@@ -22,33 +22,33 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 
 import java.math.BigDecimal;
 
-public class MaxDecimalValueConstraint
+public class MinDecimalConstraint
     extends AbstractConstraint<BigDecimal> {
 
   private String     message;
-  private BigDecimal maxValue;
+  private BigDecimal minValue;
 
-  public MaxDecimalValueConstraint(String packageName,
-                                   String simpleName,
-                                   String fieldName,
-                                   String maxValue) {
+  public MinDecimalConstraint(String packageName,
+                              String simpleName,
+                              String fieldName,
+                              String minValue) {
     super(packageName,
           simpleName,
           fieldName);
-    this.maxValue = new BigDecimal(maxValue);
-    this.message  = LocalizedMessages.INSTANCE.getMaxDecimalValueMessage(this.maxValue);
+    this.minValue = new BigDecimal(minValue);
+    this.message  = LocalizedMessages.INSTANCE.getMinDecimalValueMessage(this.minValue);
   }
 
   public void check(BigDecimal value)
       throws MalioValidationException {
-    if (value != null && value.compareTo(this.maxValue) > 0) {
+    if (value != null && value.compareTo(this.minValue) < 0) {
       throw new MalioValidationException(this.message);
     }
   }
 
   public void isValid(BigDecimal value,
                       ValidationResult validationResult) {
-    if (value != null && value.compareTo(this.maxValue) > 0) {
+    if (value != null && value.compareTo(this.minValue) < 0) {
       validationResult.getMessages()
                       .add(new ErrorMessage(this.message,
                                             super.getClassName(),

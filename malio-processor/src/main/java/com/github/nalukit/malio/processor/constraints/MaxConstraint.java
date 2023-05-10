@@ -56,7 +56,7 @@ public class MaxConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.MaxValueConstraint.class);
+    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.MaxConstraint.class);
   }
 
   @Override

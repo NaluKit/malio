@@ -226,20 +226,20 @@ String values inside the variable and in case one of the values are found, creat
 
 This annotation can only be used on fields of type **String**.
 
-#### DecimalMaxValue
+#### DecimalMax
 
 ```java
-@DecimalMaxValue("0.5")
+@DecimalMax("0.5")
 ```
 
 The annotation accepts a String value of the maximal value that is allowed for the field - if the value is not null.
 
 This annotation can only be used on fields of type **BigDecimal**.
 
-#### DecimalMinValue
+#### DecimalMin
 
 ```java
-@DecimalMinValue("0.5")
+@DecimalMin("0.5")
 ```
 
 The annotation accepts a String value of the minimal value that is allowed for the field - if the value is not null.
@@ -276,10 +276,10 @@ variable - if the value is not null.
 
 This annotation can only be used on fields of type **String**.
 
-#### MaxValue
+#### Max
 
 ```java
-@MaxValue(99)
+@Max(99)
 ```
 
 The annotation accepts a long value of the maximal value of Number. This is the maximal length allowed for the
@@ -298,10 +298,10 @@ variable - if the value is not null.
 
 This annotation can only be used on fields of type **String**.
 
-#### MinValue
+#### Min
 
 ```java
-@MinValue(10)
+@Min(10)
 ```
 
 The annotation accepts a long value of the maximal value of Number. This is the maximum allowed for the

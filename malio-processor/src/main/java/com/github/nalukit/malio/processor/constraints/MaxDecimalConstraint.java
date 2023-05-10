@@ -57,7 +57,7 @@ public class MaxDecimalConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.MaxDecimalValueConstraint.class);
+    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.MaxDecimalConstraint.class);
   }
 
   @Override
