@@ -32,5 +32,6 @@ public class Constants {
   public static final String MALIO_CONSTRAINT_MINDECIMALVALUE_IMPL_NAME = "MalioConstraintMinDecimal";
   public static final String MALIO_CONSTRAINT_NOTBLANK_IMPL_NAME        = "MalioConstraintNotBlank";
   public static final String MALIO_CONSTRAINT_NOTEMPTY_IMPL_NAME        = "MalioConstraintNotEmpty";
-  public static final String MALIO_CONSTRAINT_SIZE_IMPL_NAME            = "MalioConstraintNotEmpty";
+  public static final String MALIO_CONSTRAINT_SIZE_IMPL_NAME            = "MalioConstraintSize";
+  public static final String MALIO_CONSTRAINT_ARRAYSIZE_IMPL_NAME            = "MalioConstraintArraySize";
 }

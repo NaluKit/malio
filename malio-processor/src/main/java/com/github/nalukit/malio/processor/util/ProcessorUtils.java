@@ -22,6 +22,7 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -155,9 +156,8 @@ public class ProcessorUtils {
                                 .collect(Collectors.toList());
   }
 
-  public boolean checkPrimitiveDataType(VariableElement variableElement,
+  public boolean checkPrimitiveDataType(TypeMirror type,
                                         TypeKind... typeKind) {
-    TypeMirror type = variableElement.asType();
     if (!type.getKind()
              .isPrimitive()) {
       return false;
@@ -167,30 +167,50 @@ public class ProcessorUtils {
                  .contains(type.getKind());
   }
 
-  private List<TypeMirror> getAllSuperTypes(TypeMirror type,
-                                            Types types) {
-    List<TypeMirror>           allSuperTypes    = new ArrayList<>();
-    List<? extends TypeMirror> directSuperTypes = types.directSupertypes(type);
-    for (TypeMirror directSuperType : directSuperTypes) {
-      if (!allSuperTypes.contains(directSuperType)) {
-        allSuperTypes.add(directSuperType);
-        allSuperTypes.addAll(getAllSuperTypes(directSuperType,
-                                              types));
+
+
+  public boolean checkDataType(VariableElement variableElement,
+                               List<TypeKind> supportedPrimitiveTypes,
+                               List<Class<?>> supportedDeclaredTypes) {
+    if (variableElement.asType().getKind().equals(TypeKind.ARRAY)) {
+      ArrayType arrayType = (ArrayType) variableElement.asType();
+      TypeMirror elementType = arrayType.getComponentType();
+
+      if (elementType.getKind().isPrimitive()) {
+        return checkPrimitiveDataType(elementType, supportedPrimitiveTypes.toArray(new TypeKind[] {}));
+      }else {
+        Class<?>[] validArrayTypes = supportedDeclaredTypes.stream().filter(Class::isArray)
+                .map(Class::getComponentType).toArray(Class<?>[]::new);
+        DeclaredType typeToCheck = (DeclaredType) elementType;
+        return checkDeclaredDataType(typeToCheck, validArrayTypes);
       }
     }
 
-    return allSuperTypes;
+    if (variableElement.asType()
+                       .getKind()
+                       .isPrimitive()) {
+      if (supportedPrimitiveTypes == null) {
+        return false;
+      }
+      return checkPrimitiveDataType(variableElement.asType(),
+                                    supportedPrimitiveTypes.toArray(new TypeKind[] {}));
+    }
+    if (supportedDeclaredTypes == null) {
+      return false;
+    }
+
+    return checkDeclaredDataType((DeclaredType) variableElement.asType(),
+                                 supportedDeclaredTypes.toArray(new Class<?>[] {}));
   }
 
-  public boolean checkDeclaredDataType(VariableElement variableElement,
+  public boolean checkDeclaredDataType(DeclaredType typeToCheck,
                                        Class<?>... classes) {
-    DeclaredType typeToCheck = (DeclaredType) variableElement.asType();
     Elements     elements    = this.processingEnvironment.getElementUtils();
     Types        types       = this.processingEnvironment.getTypeUtils();
 
     for (Class<?> c : classes) {
       DeclaredType type = (DeclaredType) elements.getTypeElement(c.getName())
-                                                 .asType();
+              .asType();
 
       if (type.asElement()
               .equals(typeToCheck.asElement())) {
@@ -199,13 +219,13 @@ public class ProcessorUtils {
     }
 
     List<TypeMirror> typeMirrors = getAllSuperTypes(typeToCheck,
-                                                    types);
+            types);
     for (TypeMirror superType : typeMirrors) {
       DeclaredType declaredSuperType = (DeclaredType) superType;
 
       for (Class<?> c : classes) {
         DeclaredType type = (DeclaredType) elements.getTypeElement(c.getName())
-                                                   .asType();
+                .asType();
 
         if (type.asElement()
                 .equals(declaredSuperType.asElement())) {
@@ -217,23 +237,19 @@ public class ProcessorUtils {
     return false;
   }
 
-  public boolean checkDataType(VariableElement variableElement,
-                               List<TypeKind> typeKind,
-                               List<Class<?>> classes) {
-    if (variableElement.asType()
-                       .getKind()
-                       .isPrimitive()) {
-      if (typeKind == null) {
-        return false;
+  private List<TypeMirror> getAllSuperTypes(TypeMirror type,
+                                            Types types) {
+    List<TypeMirror>           allSuperTypes    = new ArrayList<>();
+    List<? extends TypeMirror> directSuperTypes = types.directSupertypes(type);
+    for (TypeMirror directSuperType : directSuperTypes) {
+      if (!allSuperTypes.contains(directSuperType)) {
+        allSuperTypes.add(directSuperType);
+        allSuperTypes.addAll(getAllSuperTypes(directSuperType,
+                types));
       }
-      return checkPrimitiveDataType(variableElement,
-                                    typeKind.toArray(new TypeKind[] {}));
     }
-    if (classes == null) {
-      return false;
-    }
-    return checkDeclaredDataType(variableElement,
-                                 classes.toArray(new Class<?>[] {}));
+
+    return allSuperTypes;
   }
 
   public static class Builder {

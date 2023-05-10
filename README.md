@@ -360,6 +360,16 @@ The annotation defines the minimum and maximum size of a collection. The constra
 
 This annotation can only be used on fields of types extending **Collection** (List, Set, ...).
 
+#### ArraySize
+
+```java
+@ArraySize(min=1, max=99)
+```
+
+The annotation defines the minimum and maximum size of an array. The constraint will not be checked if the array is null.
+
+This annotation can only be used on fields of types **array** (int[], String[], ...).
+
 #### UUID
 
 ```java

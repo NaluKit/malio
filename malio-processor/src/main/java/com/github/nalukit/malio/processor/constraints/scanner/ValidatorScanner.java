@@ -25,6 +25,8 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.ArrayType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -98,7 +100,19 @@ public class ValidatorScanner
   }
 
   private void checkNeedForSubvalidator(VariableElement variableElement) {
-    TypeElement elementOfVariableType = (TypeElement) types.asElement(variableElement.asType());
+    TypeElement elementOfVariableType = null;
+    if (variableElement.asType().getKind().equals(TypeKind.ARRAY)) {
+      ArrayType arrayType = (ArrayType) variableElement.asType();
+      TypeMirror elementType = arrayType.getComponentType();
+
+      if (elementType.getKind().isPrimitive()) {
+        return; // We do have to check for subvalidators if type is primitive :)
+      }
+      elementOfVariableType = (TypeElement) types.asElement(elementType);
+    } else {
+      elementOfVariableType = (TypeElement) types.asElement(variableElement.asType());
+    }
+
     this.checkForDirectSubValidators(variableElement,
                                      elementOfVariableType);
     this.checkForSubValidatorAsGenricInCollections(variableElement,

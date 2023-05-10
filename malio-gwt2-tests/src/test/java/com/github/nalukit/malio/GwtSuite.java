@@ -15,32 +15,7 @@
  */
 package com.github.nalukit.malio;
 
-import com.github.nalukit.malio.test.SubValidator01Test;
-import com.github.nalukit.malio.test.SubValidator02Test;
-import com.github.nalukit.malio.test.SubValidator03Test;
-import com.github.nalukit.malio.test.ValidatorBlacklist01Test;
-import com.github.nalukit.malio.test.ValidatorDecimalMaxValue01Test;
-import com.github.nalukit.malio.test.ValidatorDecimalMinValue01Test;
-import com.github.nalukit.malio.test.ValidatorEmail01Test;
-import com.github.nalukit.malio.test.ValidatorMaxLength01Test;
-import com.github.nalukit.malio.test.ValidatorMaxValue01Test;
-import com.github.nalukit.malio.test.ValidatorMinLength01Test;
-import com.github.nalukit.malio.test.ValidatorMinValue01Test;
-import com.github.nalukit.malio.test.ValidatorMixedUp01Test;
-import com.github.nalukit.malio.test.ValidatorMixedUp02Test;
-import com.github.nalukit.malio.test.ValidatorNotBlank01Test;
-import com.github.nalukit.malio.test.ValidatorNotEmpty01Test;
-import com.github.nalukit.malio.test.ValidatorNotNull01Test;
-import com.github.nalukit.malio.test.ValidatorNotNull02Test;
-import com.github.nalukit.malio.test.ValidatorNotNull03Test;
-import com.github.nalukit.malio.test.ValidatorNotNull04Test;
-import com.github.nalukit.malio.test.ValidatorNotNull05Test;
-import com.github.nalukit.malio.test.ValidatorNotNull06Test;
-import com.github.nalukit.malio.test.ValidatorNotNull07Test;
-import com.github.nalukit.malio.test.ValidatorRegexpTest;
-import com.github.nalukit.malio.test.ValidatorSize01Test;
-import com.github.nalukit.malio.test.ValidatorUuid01Test;
-import com.github.nalukit.malio.test.ValidatorWhitelistTest;
+import com.github.nalukit.malio.test.*;
 import com.google.gwt.junit.tools.GWTTestSuite;
 import junit.framework.Test;
 
@@ -74,6 +49,7 @@ public class GwtSuite {
     suite.addTestSuite(ValidatorSize01Test.class);
     suite.addTestSuite(ValidatorUuid01Test.class);
     suite.addTestSuite(ValidatorWhitelistTest.class);
+    suite.addTestSuite(ValidatorArraySize01Test.class);
     return suite;
   }
 }

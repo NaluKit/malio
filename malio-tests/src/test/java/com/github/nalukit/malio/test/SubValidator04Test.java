@@ -16,8 +16,8 @@
 package com.github.nalukit.malio.test;
 
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.subvalidator04.Person;
-import com.github.nalukit.malio.test.model.subvalidator04.PersonMalioValidator;
+import com.github.nalukit.malio.model.subvalidator04.Person;
+import com.github.nalukit.malio.model.subvalidator04.PersonMalioValidator;
 import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.fail;

@@ -20,9 +20,9 @@ import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.subvalidator01.Address;
-import com.github.nalukit.malio.test.model.subvalidator01.Person;
-import com.github.nalukit.malio.test.model.subvalidator01.PersonMalioValidator;
+import com.github.nalukit.malio.model.subvalidator01.Address;
+import com.github.nalukit.malio.model.subvalidator01.Person;
+import com.github.nalukit.malio.model.subvalidator01.PersonMalioValidator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -104,7 +104,7 @@ public class SubValidator01Test {
 
     ErrorMessage errorMessage01 = result.getMessages()
                                         .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.subvalidator01.Person",
+    assertEquals("com.github.nalukit.malio.model.subvalidator01.Person",
                  errorMessage01.getClassname());
     assertEquals("Person",
                  errorMessage01.getSimpleClassname());
@@ -131,7 +131,7 @@ public class SubValidator01Test {
 
     ErrorMessage errorMessage01 = result.getMessages()
                                         .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.subvalidator01.Address",
+    assertEquals("com.github.nalukit.malio.model.subvalidator01.Address",
                  errorMessage01.getClassname());
     assertEquals("Address",
                  errorMessage01.getSimpleClassname());

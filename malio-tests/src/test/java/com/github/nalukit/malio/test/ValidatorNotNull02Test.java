@@ -20,8 +20,8 @@ import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.notnull02.Person;
-import com.github.nalukit.malio.test.model.notnull02.PersonMalioValidator;
+import com.github.nalukit.malio.model.notnull02.Person;
+import com.github.nalukit.malio.model.notnull02.PersonMalioValidator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -91,7 +91,7 @@ public class ValidatorNotNull02Test {
                        .size());
     ErrorMessage errorMessage = result.getMessages()
                                       .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.notnull02.AbstractPerson",
+    assertEquals("com.github.nalukit.malio.model.notnull02.AbstractPerson",
                  errorMessage.getClassname());
     assertEquals("AbstractPerson",
                  errorMessage.getSimpleClassname());
@@ -115,7 +115,7 @@ public class ValidatorNotNull02Test {
 
     ErrorMessage errorMessage01 = result.getMessages()
                                         .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.notnull02.Person",
+    assertEquals("com.github.nalukit.malio.model.notnull02.Person",
                  errorMessage01.getClassname());
     assertEquals("Person",
                  errorMessage01.getSimpleClassname());
@@ -126,7 +126,7 @@ public class ValidatorNotNull02Test {
 
     ErrorMessage errorMessage02 = result.getMessages()
                                         .get(1);
-    assertEquals("com.github.nalukit.malio.test.model.notnull02.AbstractPerson",
+    assertEquals("com.github.nalukit.malio.model.notnull02.AbstractPerson",
                  errorMessage02.getClassname());
     assertEquals("AbstractPerson",
                  errorMessage02.getSimpleClassname());
