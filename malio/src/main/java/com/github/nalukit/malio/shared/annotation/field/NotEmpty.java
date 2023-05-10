@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>The annotation indicates that an given collection is not empty.</p>
+ * <p>The annotation indicates that a given collection is not empty.</p>
  *
  * <p>The validation will only occur in case the value is not null.</p>
  *
