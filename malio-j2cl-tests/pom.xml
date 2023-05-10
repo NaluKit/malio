@@ -94,12 +94,13 @@
                 <test>com.github.nalukit.malio.test.SubValidator03Test</test>
                 <test>com.github.nalukit.malio.test.SubValidator04Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorBlacklist01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorDecimalMaxValue01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorDecimalMinValue01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorDecimalMax01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorDecimalMin01Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorEmail01Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorMaxLength01Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorMinLength01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorMinValue01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorMin01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorMax01Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorMixedUp01Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorMixedUp02Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorNotBlank01Test</test>

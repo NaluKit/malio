@@ -27,13 +27,13 @@ public class GwtSuite {
     suite.addTestSuite(SubValidator02Test.class);
     suite.addTestSuite(SubValidator03Test.class);
     suite.addTestSuite(ValidatorBlacklist01Test.class);
-    suite.addTestSuite(ValidatorDecimalMaxValue01Test.class);
-    suite.addTestSuite(ValidatorDecimalMinValue01Test.class);
+    suite.addTestSuite(ValidatorDecimalMax01Test.class);
+    suite.addTestSuite(ValidatorDecimalMin01Test.class);
     suite.addTestSuite(ValidatorEmail01Test.class);
     suite.addTestSuite(ValidatorMaxLength01Test.class);
-    suite.addTestSuite(ValidatorMaxValue01Test.class);
+    suite.addTestSuite(ValidatorMax01Test.class);
     suite.addTestSuite(ValidatorMinLength01Test.class);
-    suite.addTestSuite(ValidatorMinValue01Test.class);
+    suite.addTestSuite(ValidatorMin01Test.class);
     suite.addTestSuite(ValidatorMixedUp01Test.class);
     suite.addTestSuite(ValidatorMixedUp02Test.class);
     suite.addTestSuite(ValidatorNotBlank01Test.class);

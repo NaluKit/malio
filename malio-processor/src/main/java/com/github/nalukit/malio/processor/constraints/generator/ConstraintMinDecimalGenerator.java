@@ -17,7 +17,7 @@ package com.github.nalukit.malio.processor.constraints.generator;
 
 import com.github.nalukit.malio.processor.constraints.AbstractConstraint;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
-import com.github.nalukit.malio.shared.annotation.field.NotZero;
+import com.github.nalukit.malio.shared.annotation.field.DecimalMin;
 import com.squareup.javapoet.CodeBlock;
 
 import javax.annotation.processing.Filer;
@@ -26,12 +26,12 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-public class ConstraintNotZeroGenerator
+public class ConstraintMinDecimalGenerator
     extends AbstractGenerator {
 
-  private AbstractConstraint<NotZero> constraint;
+  private AbstractConstraint<DecimalMin> constraint;
 
-  private ConstraintNotZeroGenerator(Builder builder) {
+  private ConstraintMinDecimalGenerator(Builder builder) {
     this.elements       = builder.elements;
     this.types          = builder.types;
     this.filer          = builder.filer;
@@ -43,11 +43,10 @@ public class ConstraintNotZeroGenerator
     return new Builder();
   }
 
-
   @Override
   protected CodeBlock generate(Element clazz, VariableElement field, String suffix) {
     return CodeBlock.builder().add(
-            "new $T($S, $S, $S, $L)" + suffix,
+            "new $T($S, $S, $S, $S)" + suffix,
             constraint.getValidationClass(field),
             this.processorUtils.getPackage(field),
             this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
@@ -55,19 +54,19 @@ public class ConstraintNotZeroGenerator
                     .toString()),
             field.getSimpleName()
                     .toString(),
-            field.getAnnotation(NotZero.class)
-                    .allowNegativeValues(),
+            field.getAnnotation(constraint.annotationType())
+                    .value(),
             this.processorUtils.createGetMethodName(field.getSimpleName().toString())
     ).build();
   }
 
   public static class Builder {
 
-    Elements                     elements;
-    Types                        types;
-    Filer                        filer;
-    ProcessorUtils               processorUtils;
-    AbstractConstraint<NotZero> constraint;
+    Elements                            elements;
+    Types                               types;
+    Filer                               filer;
+    ProcessorUtils                      processorUtils;
+    AbstractConstraint<DecimalMin> constraint;
 
     public Builder elements(Elements elements) {
       this.elements = elements;
@@ -89,13 +88,13 @@ public class ConstraintNotZeroGenerator
       return this;
     }
 
-    public Builder constraint(AbstractConstraint<NotZero> constraint) {
+    public Builder constraint(AbstractConstraint<DecimalMin> constraint) {
       this.constraint = constraint;
       return this;
     }
 
-    public ConstraintNotZeroGenerator build() {
-      return new ConstraintNotZeroGenerator(this);
+    public ConstraintMinDecimalGenerator build() {
+      return new ConstraintMinDecimalGenerator(this);
     }
   }
 }
