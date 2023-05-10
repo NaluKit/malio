@@ -63,9 +63,10 @@ public class ArraySizeConstraint
   }
 
   @Override
+  // we miss the array type here and use only the primitive types, which will be used to check the array type.
   protected List<TypeKind> getSupportedPrimitives() {
     return Arrays.asList(TypeKind.INT, TypeKind.LONG, TypeKind.SHORT, TypeKind.BOOLEAN, TypeKind.BYTE,
-            TypeKind.FLOAT, TypeKind.DOUBLE, TypeKind.CHAR); // TODO we miss the array type here and use only the single type
+            TypeKind.FLOAT, TypeKind.DOUBLE, TypeKind.CHAR);
   }
 
   @Override

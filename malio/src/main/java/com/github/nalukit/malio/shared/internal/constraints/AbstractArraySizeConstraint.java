@@ -23,8 +23,8 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 import java.util.Collection;
 import java.util.Objects;
 
-public abstract class AbstractArraySizeConstraint<T>
-    extends AbstractConstraint<T[]> {
+public abstract class AbstractArraySizeConstraint
+    extends AbstractConstraint<Object[]> {
 
   private final String message;
   private final int    min;
@@ -92,7 +92,7 @@ public abstract class AbstractArraySizeConstraint<T>
     }
   }
 
-  public void check(T[] value)
+  public void check(Object[] value)
       throws MalioValidationException {
     if (Objects.nonNull(value)) {
       internCheck(value.length);
@@ -107,7 +107,7 @@ public abstract class AbstractArraySizeConstraint<T>
   }
 
 
-  public void isValid(T[] value,
+  public void isValid(Object[] value,
                       ValidationResult validationResult) {
     if (Objects.nonNull(value)) {
       int size = value.length;
