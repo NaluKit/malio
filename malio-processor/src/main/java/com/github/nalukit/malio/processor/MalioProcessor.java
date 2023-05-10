@@ -199,8 +199,8 @@ public class MalioProcessor
         CodeBlock checkBlock = constraint.generateCheck(clazz, field);
         CodeBlock validBlock = constraint.generateValid(clazz, field);
 
-        malioValidatorGenerator.appendCheckBlock(checkBlock);
-        malioValidatorGenerator.appendValidBlock(validBlock);
+        malioValidatorGenerator.appendCheckStatement(checkBlock);
+        malioValidatorGenerator.appendValidStatement(validBlock);
       }
     }
 

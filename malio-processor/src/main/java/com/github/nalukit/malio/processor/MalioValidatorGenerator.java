@@ -116,11 +116,19 @@ public class MalioValidatorGenerator {
     }
 
     public void appendCheckBlock(CodeBlock checkBlock) {
-        this.checkMethodBuilder.addCode(checkBlock).addCode(";\n");
+        this.checkMethodBuilder.addCode(checkBlock);
+    }
+
+    public void appendCheckStatement(CodeBlock checkBlock) {
+        this.checkMethodBuilder.addStatement(checkBlock);
     }
 
     public void appendValidBlock(CodeBlock checkBlock) {
-        this.validMethodTwoParameterBuilder.addCode(checkBlock).addCode(";\n");
+        this.validMethodTwoParameterBuilder.addCode(checkBlock);
+    }
+
+    public void appendValidStatement(CodeBlock checkBlock) {
+        this.validMethodTwoParameterBuilder.addStatement(checkBlock);
     }
 
     private TypeSpec build() {

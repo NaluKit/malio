@@ -79,7 +79,7 @@ public class ValidatorGenerator
 
   private CodeBlock createCheckMethodForSuperValidator(ValidatorModel model) {
     String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
-    return CodeBlock.builder().add("$T.INSTANCE.check(bean)",
+    return CodeBlock.builder().add("$T.INSTANCE.check(bean);",
                                     ClassName.get(model.getPackageName(),
                                                   vaidatorClassName)).build();
   }
@@ -92,7 +92,7 @@ public class ValidatorGenerator
     switch (model.getType()) {
       case NATIVE:
         String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
-        builder.addStatement("$T.INSTANCE.check(bean.$L())",
+        builder.add("$T.INSTANCE.check(bean.$L());",
                                         ClassName.get(model.getPackageName(),
                                                       vaidatorClassName),
                                         this.processorUtils.createGetMethodName(model.getFieldName()));
@@ -103,7 +103,7 @@ public class ValidatorGenerator
         builder.beginControlFlow("for ($T model : bean.$L())",
                                             ClassName.get(model.getGenericTypeElement01()),
                                             this.processorUtils.createGetMethodName(model.getFieldName()))
-                          .addStatement("$L.INSTANCE.check(model)",
+                          .add("$L.INSTANCE.check(model);",
                                         vaidatorClassNameList)
                           .endControlFlow();
         break;
@@ -139,7 +139,7 @@ public class ValidatorGenerator
 
   private CodeBlock createSuperValidateMethod(ValidatorModel model) {
     String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
-    return CodeBlock.builder().add("$T.INSTANCE.validate(bean, validationResult)",
+    return CodeBlock.builder().add("$T.INSTANCE.validate(bean, validationResult);",
                                                 ClassName.get(model.getPackageName(),
                                                               vaidatorClassName)).build();
   }
@@ -152,7 +152,7 @@ public class ValidatorGenerator
     switch (model.getType()) {
       case NATIVE:
         String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
-        builder.addStatement("validationResult = $T.INSTANCE.validate(bean.$L(), validationResult)",
+        builder.add("validationResult = $T.INSTANCE.validate(bean.$L(), validationResult);",
                                                     ClassName.get(model.getPackageName(),
                                                                   vaidatorClassName),
                                                     this.processorUtils.createGetMethodName(model.getFieldName()));
@@ -163,7 +163,7 @@ public class ValidatorGenerator
         builder.beginControlFlow("for ($T model : bean.$L())",
                                                         ClassName.get(model.getGenericTypeElement01()),
                                                         this.processorUtils.createGetMethodName(model.getFieldName()))
-                                      .addStatement("validationResult = $L.INSTANCE.validate(model, validationResult)",
+                                      .add("validationResult = $L.INSTANCE.validate(model, validationResult);",
                                                     vaidatorClassNameList)
                                       .endControlFlow();
         break;
