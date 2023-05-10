@@ -21,7 +21,6 @@ import com.github.nalukit.malio.processor.constraints.generator.ConstraintWhitel
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.Whitelist;
-import com.github.nalukit.malio.shared.internal.constraints.AbstractWhitelistConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
@@ -57,7 +56,7 @@ public class WhitelistConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(AbstractWhitelistConstraint.class);
+    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.WhitelistConstraint.class);
   }
 
   @Override

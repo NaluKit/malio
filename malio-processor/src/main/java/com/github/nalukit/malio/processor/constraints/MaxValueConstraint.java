@@ -21,7 +21,6 @@ import com.github.nalukit.malio.processor.constraints.generator.ConstraintMaxVal
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.MaxValue;
-import com.github.nalukit.malio.shared.internal.constraints.AbstractMaxValueConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
@@ -57,7 +56,7 @@ public class MaxValueConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(AbstractMaxValueConstraint.class);
+    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.MaxValueConstraint.class);
   }
 
   @Override

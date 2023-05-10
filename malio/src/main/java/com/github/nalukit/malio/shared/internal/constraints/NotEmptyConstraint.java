@@ -20,30 +20,31 @@ import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
+import java.util.Collection;
 import java.util.Objects;
 
-public abstract class AbstractNotBlankConstraint
-    extends AbstractConstraint<String> {
+public class NotEmptyConstraint<T extends Collection<?>>
+    extends AbstractConstraint<T> {
 
-  private String message;
+  private final String message;
 
-  public AbstractNotBlankConstraint(String packageName,
-                                    String simpleName,
-                                    String fieldName) {
+  public NotEmptyConstraint(String packageName,
+                            String simpleName,
+                            String fieldName) {
     super(packageName,
           simpleName,
           fieldName);
-    this.message = LocalizedMessages.INSTANCE.getNotBlankMessage();
+    this.message = LocalizedMessages.INSTANCE.getNotEmptyMessage();
   }
 
-  public void check(String value)
+  public void check(T value)
       throws MalioValidationException {
     if (Objects.nonNull(value) && value.isEmpty()) {
       throw new MalioValidationException(this.message);
     }
   }
 
-  public void isValid(String value,
+  public void isValid(T value,
                       ValidationResult validationResult) {
     if (Objects.nonNull(value) && value.isEmpty()) {
       validationResult.getMessages()

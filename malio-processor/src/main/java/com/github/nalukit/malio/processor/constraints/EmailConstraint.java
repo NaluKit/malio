@@ -21,7 +21,6 @@ import com.github.nalukit.malio.processor.constraints.generator.ConstraintEmailG
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.Email;
-import com.github.nalukit.malio.shared.internal.constraints.AbstractEmailConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
@@ -57,7 +56,7 @@ public class EmailConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(AbstractEmailConstraint.class);
+    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.EmailConstraint.class);
   }
 
   @Override

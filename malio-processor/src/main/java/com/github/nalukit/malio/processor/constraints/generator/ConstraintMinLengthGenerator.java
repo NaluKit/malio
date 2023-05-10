@@ -20,6 +20,7 @@ import com.github.nalukit.malio.processor.constraints.AbstractConstraint;
 import com.github.nalukit.malio.processor.util.BuildWithMalioCommentProvider;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.MinLength;
+import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
@@ -47,41 +48,21 @@ public class ConstraintMinLengthGenerator
     return new Builder();
   }
 
-  public void generate(Element validatorElement,
-                       VariableElement variableElement)
-      throws ProcessorException {
-    TypeSpec.Builder typeSpec = createConstraintTypeSpec(validatorElement,
-                                                         variableElement);
-    typeSpec.addMethod(MethodSpec.constructorBuilder()
-                                 .addModifiers(Modifier.PUBLIC)
-                                 .addStatement("super($S, $S, $S, $L)",
-                                               this.processorUtils.getPackage(variableElement),
-                                               this.processorUtils.setFirstCharacterToUpperCase(variableElement.getEnclosingElement()
-                                                                                                               .getSimpleName()
-                                                                                                               .toString()),
-                                               variableElement.getSimpleName()
-                                                              .toString(),
-                                               variableElement.getAnnotation(MinLength.class)
-                                                              .value())
-
-                                 .build());
-
-    super.writeFile(variableElement,
-                    constraint.getImplementationName(),
-                    typeSpec);
-  }
-
-  private TypeSpec.Builder createConstraintTypeSpec(Element validatorElement,
-                                                    VariableElement variableElement) {
-    return TypeSpec.classBuilder(this.createConstraintClassName(validatorElement.getSimpleName()
-                                                                                .toString(),
-                                                                variableElement.getSimpleName()
-                                                                               .toString(),
-                                                                constraint.getImplementationName()))
-                   .addJavadoc(BuildWithMalioCommentProvider.INSTANCE.getGeneratedComment())
-                   .superclass(constraint.getValidationClass(variableElement))
-                   .addModifiers(Modifier.PUBLIC,
-                                 Modifier.FINAL);
+  @Override
+  protected CodeBlock generate(Element clazz, VariableElement field, String suffix) {
+    return CodeBlock.builder().add(
+            "new $T($S, $S, $S, $L)" + suffix,
+            constraint.getValidationClass(field),
+            this.processorUtils.getPackage(field),
+            this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
+                    .getSimpleName()
+                    .toString()),
+            field.getSimpleName()
+                    .toString(),
+            field.getAnnotation(MinLength.class)
+                    .value(),
+            this.processorUtils.createGetMethodName(field.getSimpleName().toString())
+    ).build();
   }
 
   public static class Builder {

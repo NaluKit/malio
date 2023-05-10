@@ -19,44 +19,40 @@ import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import org.gwtproject.regexp.shared.RegExp;
 
-public abstract class AbstractRegexpConstraint
+public class MinLengthConstraint
     extends AbstractConstraint<String> {
 
-  private RegExp regExp;
+  private String message;
 
-  public AbstractRegexpConstraint(String packageName,
-                                  String simpleName,
-                                  String fieldName,
-                                  String regExp) {
+  private int minLength;
+
+  public MinLengthConstraint(String packageName,
+                             String simpleName,
+                             String fieldName,
+                             int minLength) {
     super(packageName,
           simpleName,
           fieldName);
-    this.regExp = RegExp.compile(regExp);
+    this.message   = LocalizedMessages.INSTANCE.getMinLengthMessage(minLength);
+    this.minLength = minLength;
   }
 
   public void check(String value)
       throws MalioValidationException {
-    String message = LocalizedMessages.INSTANCE.getRegexpMessage(value);
-    if (value != null) {
-      if (!this.regExp.test(value)) {
-        throw new MalioValidationException(message);
-      }
+    if (value != null && value.length() < minLength) {
+      throw new MalioValidationException(this.message);
     }
   }
 
   public void isValid(String value,
                       ValidationResult validationResult) {
-    String message = LocalizedMessages.INSTANCE.getRegexpMessage(value);
-    if (value != null) {
-      if (!this.regExp.test(value)) {
-        validationResult.getMessages()
-                        .add(new ErrorMessage(message,
-                                              super.getClassName(),
-                                              super.getSimpleName(),
-                                              super.getFieldName()));
-      }
+    if (value != null && value.length() < minLength) {
+      validationResult.getMessages()
+                      .add(new ErrorMessage(this.message,
+                                            super.getClassName(),
+                                            super.getSimpleName(),
+                                            super.getFieldName()));
     }
   }
 }

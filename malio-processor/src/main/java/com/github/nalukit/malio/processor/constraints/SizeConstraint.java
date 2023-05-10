@@ -21,7 +21,6 @@ import com.github.nalukit.malio.processor.constraints.generator.ConstraintSizeGe
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.Size;
-import com.github.nalukit.malio.shared.internal.constraints.AbstractSizeConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
@@ -58,7 +57,7 @@ public class SizeConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(AbstractSizeConstraint.class);
+    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.SizeConstraint.class);
   }
 
   @Override

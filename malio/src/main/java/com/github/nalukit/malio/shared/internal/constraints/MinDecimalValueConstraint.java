@@ -20,33 +20,35 @@ import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
-import java.util.Collection;
-import java.util.Objects;
+import java.math.BigDecimal;
 
-public abstract class AbstractNotEmptyConstraint<T extends Collection<?>>
-    extends AbstractConstraint<T> {
+public class MinDecimalValueConstraint
+    extends AbstractConstraint<BigDecimal> {
 
-  private final String message;
+  private String     message;
+  private BigDecimal minValue;
 
-  public AbstractNotEmptyConstraint(String packageName,
-                                    String simpleName,
-                                    String fieldName) {
+  public MinDecimalValueConstraint(String packageName,
+                                   String simpleName,
+                                   String fieldName,
+                                   String minValue) {
     super(packageName,
           simpleName,
           fieldName);
-    this.message = LocalizedMessages.INSTANCE.getNotEmptyMessage();
+    this.minValue = new BigDecimal(minValue);
+    this.message  = LocalizedMessages.INSTANCE.getMinDecimalValueMessage(this.minValue);
   }
 
-  public void check(T value)
+  public void check(BigDecimal value)
       throws MalioValidationException {
-    if (Objects.nonNull(value) && value.isEmpty()) {
+    if (value != null && value.compareTo(this.minValue) < 0) {
       throw new MalioValidationException(this.message);
     }
   }
 
-  public void isValid(T value,
+  public void isValid(BigDecimal value,
                       ValidationResult validationResult) {
-    if (Objects.nonNull(value) && value.isEmpty()) {
+    if (value != null && value.compareTo(this.minValue) < 0) {
       validationResult.getMessages()
                       .add(new ErrorMessage(this.message,
                                             super.getClassName(),

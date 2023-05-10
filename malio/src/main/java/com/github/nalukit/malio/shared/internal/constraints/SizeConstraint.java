@@ -20,37 +20,53 @@ import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
+import java.util.Collection;
 import java.util.Objects;
 
-public abstract class AbstractNotNullConstraint<T>
+public class SizeConstraint<T extends Collection<?>>
     extends AbstractConstraint<T> {
 
-  private String message;
+  private final String message;
+  private final int    min;
+  private final int    max;
 
-  public AbstractNotNullConstraint(String packageName,
-                                   String simpleName,
-                                   String fieldName) {
+  public SizeConstraint(String packageName,
+                        String simpleName,
+                        String fieldName,
+                        int min,
+                        int max) {
     super(packageName,
           simpleName,
           fieldName);
-    this.message = LocalizedMessages.INSTANCE.getNotNullMessage();
+    this.message = LocalizedMessages.INSTANCE.getSizeMessage(min,
+                                                             max);
+    this.min     = min;
+    this.max     = max;
   }
 
   public void check(T value)
       throws MalioValidationException {
-    if (Objects.isNull(value)) {
-      throw new MalioValidationException(this.message);
+    if (Objects.nonNull(value)) {
+      int size = value.size();
+
+      if (size < this.min || size > this.max) {
+        throw new MalioValidationException(this.message);
+      }
     }
   }
 
   public void isValid(T value,
                       ValidationResult validationResult) {
-    if (Objects.isNull(value)) {
-      validationResult.getMessages()
-                      .add(new ErrorMessage(this.message,
-                                            super.getClassName(),
-                                            super.getSimpleName(),
-                                            super.getFieldName()));
+    if (Objects.nonNull(value)) {
+      int size = value.size();
+
+      if (size < this.min || size > this.max) {
+        validationResult.getMessages()
+                        .add(new ErrorMessage(this.message,
+                                              super.getClassName(),
+                                              super.getSimpleName(),
+                                              super.getFieldName()));
+      }
     }
   }
 }

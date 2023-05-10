@@ -20,35 +20,33 @@ import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
-import java.math.BigDecimal;
+public class MaxValueConstraint
+    extends AbstractConstraint<Number> {
 
-public abstract class AbstractMinDecimalValueConstraint
-    extends AbstractConstraint<BigDecimal> {
+  private String message;
+  private Long   maxValue;
 
-  private String     message;
-  private BigDecimal minValue;
-
-  public AbstractMinDecimalValueConstraint(String packageName,
-                                           String simpleName,
-                                           String fieldName,
-                                           String minValue) {
+  public MaxValueConstraint(String packageName,
+                            String simpleName,
+                            String fieldName,
+                            Number maxValue) {
     super(packageName,
           simpleName,
           fieldName);
-    this.minValue = new BigDecimal(minValue);
-    this.message  = LocalizedMessages.INSTANCE.getMinDecimalValueMessage(this.minValue);
+    this.message  = LocalizedMessages.INSTANCE.getMaxValueMessage(maxValue.longValue());
+    this.maxValue = maxValue.longValue();
   }
 
-  public void check(BigDecimal value)
+  public void check(Number value)
       throws MalioValidationException {
-    if (value != null && value.compareTo(this.minValue) < 0) {
+    if (value != null && value.longValue() > this.maxValue) {
       throw new MalioValidationException(this.message);
     }
   }
 
-  public void isValid(BigDecimal value,
+  public void isValid(Number value,
                       ValidationResult validationResult) {
-    if (value != null && value.compareTo(this.minValue) < 0) {
+    if (value != null && value.longValue() > this.maxValue) {
       validationResult.getMessages()
                       .add(new ErrorMessage(this.message,
                                             super.getClassName(),

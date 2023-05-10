@@ -22,6 +22,7 @@ import com.github.nalukit.malio.processor.exceptions.UnsupportedTypeException;
 import com.github.nalukit.malio.processor.model.ConstraintModel;
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
+import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.TypeName;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -93,11 +94,21 @@ public abstract class AbstractConstraint<T extends Annotation>
 
   protected abstract AbstractGenerator createGenerator();
 
-  public void generate(Element validatorElement,
-                       VariableElement variableElement)
+  @Override
+  public CodeBlock generateCheck(Element clazz,
+                                 VariableElement field)
       throws ProcessorException {
-    this.createGenerator()
-        .generate(validatorElement,
-                  variableElement);
+    return this.createGenerator()
+        .generateCheck(clazz,
+                  field);
+  }
+
+  @Override
+  public CodeBlock generateValid(Element clazz,
+                                 VariableElement field)
+          throws ProcessorException {
+    return this.createGenerator()
+            .generateValid(clazz,
+                    field);
   }
 }

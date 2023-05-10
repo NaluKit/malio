@@ -21,7 +21,6 @@ import com.github.nalukit.malio.processor.constraints.generator.ConstraintNotEmp
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.NotEmpty;
-import com.github.nalukit.malio.shared.internal.constraints.AbstractNotEmptyConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
@@ -58,7 +57,7 @@ public class NotEmptyConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(AbstractNotEmptyConstraint.class);
+    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.NotEmptyConstraint.class);
   }
 
   @Override

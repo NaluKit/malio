@@ -17,11 +17,13 @@ package com.github.nalukit.malio.processor.constraints.generator;
 
 import com.github.nalukit.malio.processor.ProcessorException;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
+import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
 
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.io.IOException;
@@ -37,27 +39,17 @@ public abstract class AbstractGenerator
   public AbstractGenerator() {
   }
 
-  protected String createConstraintClassName(String modelName,
-                                             String fieldName,
-                                             String postFix) {
-    return modelName + "_" + this.processorUtils.setFirstCharacterToUpperCase(fieldName) + "_" + postFix;
+  protected abstract CodeBlock generate(Element clazz, VariableElement field, String suffix);
+
+  @Override
+  public final CodeBlock generateCheck(Element clazz,
+                                 VariableElement field)
+          throws ProcessorException {
+    return generate(clazz, field, ".check(bean.$L())");
   }
 
-  protected void writeFile(Element element,
-                           String postFix,
-                           TypeSpec.Builder typeSpec)
-      throws ProcessorException {
-    JavaFile javaFile = JavaFile.builder(this.processorUtils.getPackageAsString(element),
-                                         typeSpec.build())
-                                .build();
-    try {
-      javaFile.writeTo(this.filer);
-    } catch (IOException e) {
-      throw new ProcessorException("Unable to write generated file: >>" +
-                                   element.toString() +
-                                   postFix +
-                                   "<< -> exception: " +
-                                   e.getMessage());
-    }
+  @Override
+  public final CodeBlock generateValid(Element clazz, VariableElement field) throws ProcessorException {
+    return generate(clazz, field, ".isValid(bean.$L(), validationResult)");
   }
 }

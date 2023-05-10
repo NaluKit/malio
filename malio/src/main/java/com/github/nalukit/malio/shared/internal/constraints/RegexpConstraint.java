@@ -19,50 +19,40 @@ import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
+import org.gwtproject.regexp.shared.RegExp;
 
-import java.util.Collection;
-import java.util.Objects;
+public class RegexpConstraint
+    extends AbstractConstraint<String> {
 
-public abstract class AbstractSizeConstraint<T extends Collection<?>>
-    extends AbstractConstraint<T> {
+  private RegExp regExp;
 
-  private final String message;
-  private final int    min;
-  private final int    max;
-
-  public AbstractSizeConstraint(String packageName,
-                                String simpleName,
-                                String fieldName,
-                                int min,
-                                int max) {
+  public RegexpConstraint(String packageName,
+                          String simpleName,
+                          String fieldName,
+                          String regExp) {
     super(packageName,
           simpleName,
           fieldName);
-    this.message = LocalizedMessages.INSTANCE.getSizeMessage(min,
-                                                             max);
-    this.min     = min;
-    this.max     = max;
+    this.regExp = RegExp.compile(regExp);
   }
 
-  public void check(T value)
+  public void check(String value)
       throws MalioValidationException {
-    if (Objects.nonNull(value)) {
-      int size = value.size();
-
-      if (size < this.min || size > this.max) {
-        throw new MalioValidationException(this.message);
+    String message = LocalizedMessages.INSTANCE.getRegexpMessage(value);
+    if (value != null) {
+      if (!this.regExp.test(value)) {
+        throw new MalioValidationException(message);
       }
     }
   }
 
-  public void isValid(T value,
+  public void isValid(String value,
                       ValidationResult validationResult) {
-    if (Objects.nonNull(value)) {
-      int size = value.size();
-
-      if (size < this.min || size > this.max) {
+    String message = LocalizedMessages.INSTANCE.getRegexpMessage(value);
+    if (value != null) {
+      if (!this.regExp.test(value)) {
         validationResult.getMessages()
-                        .add(new ErrorMessage(this.message,
+                        .add(new ErrorMessage(message,
                                               super.getClassName(),
                                               super.getSimpleName(),
                                               super.getFieldName()));

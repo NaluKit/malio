@@ -20,21 +20,20 @@ import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
-import java.util.Collection;
 import java.util.Objects;
 
-public abstract class AbstractArraySizeConstraint
+public class ArraySizeConstraint
     extends AbstractConstraint<Object[]> {
 
   private final String message;
   private final int    min;
   private final int    max;
 
-  public AbstractArraySizeConstraint(String packageName,
-                                     String simpleName,
-                                     String fieldName,
-                                     int min,
-                                     int max) {
+  public ArraySizeConstraint(String packageName,
+                             String simpleName,
+                             String fieldName,
+                             int min,
+                             int max) {
     super(packageName,
           simpleName,
           fieldName);

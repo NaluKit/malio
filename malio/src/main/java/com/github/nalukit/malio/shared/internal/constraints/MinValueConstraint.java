@@ -20,34 +20,34 @@ import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
-public abstract class AbstractMaxLengthConstraint
-    extends AbstractConstraint<String> {
+public class MinValueConstraint
+    extends AbstractConstraint<Number> {
 
   private String message;
 
-  private int maxLength;
+  private Long minValue;
 
-  public AbstractMaxLengthConstraint(String packageName,
-                                     String simpleName,
-                                     String fieldName,
-                                     int maxLength) {
+  public MinValueConstraint(String packageName,
+                            String simpleName,
+                            String fieldName,
+                            Number minValue) {
     super(packageName,
           simpleName,
           fieldName);
-    this.message   = LocalizedMessages.INSTANCE.getMaxLengthMessage(maxLength);
-    this.maxLength = maxLength;
+    this.message  = LocalizedMessages.INSTANCE.getMinValueMessage(minValue.longValue());
+    this.minValue = minValue.longValue();
   }
 
-  public void check(String value)
+  public void check(Number value)
       throws MalioValidationException {
-    if (value != null && value.length() > maxLength) {
+    if (value != null && value.longValue() < this.minValue) {
       throw new MalioValidationException(this.message);
     }
   }
 
-  public void isValid(String value,
+  public void isValid(Number value,
                       ValidationResult validationResult) {
-    if (value != null && value.length() > maxLength) {
+    if (value != null && value.longValue() < this.minValue) {
       validationResult.getMessages()
                       .add(new ErrorMessage(this.message,
                                             super.getClassName(),

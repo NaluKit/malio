@@ -21,7 +21,6 @@ import com.github.nalukit.malio.processor.constraints.generator.ConstraintRegexp
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.Regexp;
-import com.github.nalukit.malio.shared.internal.constraints.AbstractRegexpConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
@@ -57,7 +56,7 @@ public class RegexpConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(AbstractRegexpConstraint.class);
+    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.RegexpConstraint.class);
   }
 
   @Override

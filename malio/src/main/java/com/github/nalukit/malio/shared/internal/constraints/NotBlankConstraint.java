@@ -19,37 +19,35 @@ import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import org.gwtproject.regexp.shared.RegExp;
 
 import java.util.Objects;
 
-public abstract class AbstractUuidConstraint
+public class NotBlankConstraint
     extends AbstractConstraint<String> {
 
-  private final static RegExp regExp = RegExp.compile("^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$");
+  private String message;
 
-  public AbstractUuidConstraint(String packageName,
-                                String simpleName,
-                                String fieldName) {
+  public NotBlankConstraint(String packageName,
+                            String simpleName,
+                            String fieldName) {
     super(packageName,
           simpleName,
           fieldName);
+    this.message = LocalizedMessages.INSTANCE.getNotBlankMessage();
   }
 
   public void check(String value)
       throws MalioValidationException {
-    String message = LocalizedMessages.INSTANCE.getUuidMessage();
-    if (Objects.nonNull(value) && !AbstractUuidConstraint.regExp.test(value)) {
-      throw new MalioValidationException(message);
+    if (Objects.nonNull(value) && value.isEmpty()) {
+      throw new MalioValidationException(this.message);
     }
   }
 
   public void isValid(String value,
                       ValidationResult validationResult) {
-    String message = LocalizedMessages.INSTANCE.getUuidMessage();
-    if (Objects.nonNull(value) && !AbstractUuidConstraint.regExp.test(value)) {
+    if (Objects.nonNull(value) && value.isEmpty()) {
       validationResult.getMessages()
-                      .add(new ErrorMessage(message,
+                      .add(new ErrorMessage(this.message,
                                             super.getClassName(),
                                             super.getSimpleName(),
                                             super.getFieldName()));

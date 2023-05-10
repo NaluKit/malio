@@ -15,18 +15,13 @@
  */
 package com.github.nalukit.malio.processor.constraints.generator;
 
-import com.github.nalukit.malio.processor.ProcessorException;
 import com.github.nalukit.malio.processor.constraints.AbstractConstraint;
-import com.github.nalukit.malio.processor.util.BuildWithMalioCommentProvider;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.field.ArraySize;
-import com.github.nalukit.malio.shared.annotation.field.Size;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.CodeBlock;
 
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.Modifier;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -34,7 +29,7 @@ import javax.lang.model.util.Types;
 public class ConstraintArraySizeGenerator
     extends AbstractGenerator {
 
-  private AbstractConstraint<ArraySize> constraint;
+  private final AbstractConstraint<ArraySize> constraint;
 
   private ConstraintArraySizeGenerator(Builder builder) {
     this.elements       = builder.elements;
@@ -48,46 +43,26 @@ public class ConstraintArraySizeGenerator
     return new Builder();
   }
 
-  public void generate(Element validatorElement,
-                       VariableElement variableElement)
-      throws ProcessorException {
-    TypeSpec.Builder typeSpec = createConstraintTypeSpec(validatorElement,
-                                                         variableElement);
+  @Override
+  protected CodeBlock generate(Element clazz, VariableElement field, String suffix) {
+    int minSize = field.getAnnotation(ArraySize.class)
+            .min();
+    int maxSize = field.getAnnotation(ArraySize.class)
+            .max();
 
-    int minSize = variableElement.getAnnotation(ArraySize.class)
-                                 .min();
-    int maxSize = variableElement.getAnnotation(ArraySize.class)
-                                 .max();
-    typeSpec.addMethod(MethodSpec.constructorBuilder()
-                                 .addModifiers(Modifier.PUBLIC)
-                                 .addStatement("super($S, $S, $S, $L, $L)",
-                                               this.processorUtils.getPackage(variableElement),
-                                               this.processorUtils.setFirstCharacterToUpperCase(variableElement.getEnclosingElement()
-                                                                                                               .getSimpleName()
-                                                                                                               .toString()),
-                                               variableElement.getSimpleName()
-                                                              .toString(),
-                                               minSize,
-                                               maxSize)
-
-                                 .build());
-
-    super.writeFile(variableElement,
-                    constraint.getImplementationName(),
-                    typeSpec);
-  }
-
-  private TypeSpec.Builder createConstraintTypeSpec(Element validatorElement,
-                                                    VariableElement variableElement) {
-    return TypeSpec.classBuilder(this.createConstraintClassName(validatorElement.getSimpleName()
-                                                                                .toString(),
-                                                                variableElement.getSimpleName()
-                                                                               .toString(),
-                                                                constraint.getImplementationName()))
-                   .addJavadoc(BuildWithMalioCommentProvider.INSTANCE.getGeneratedComment())
-                   .superclass(constraint.getValidationClass(variableElement))
-                   .addModifiers(Modifier.PUBLIC,
-                                 Modifier.FINAL);
+    return CodeBlock.builder().add(
+            "new $T($S, $S, $S, $L, $L)" + suffix,
+            constraint.getValidationClass(field),
+            this.processorUtils.getPackage(field),
+            this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
+                    .getSimpleName()
+                    .toString()),
+            field.getSimpleName()
+                    .toString(),
+            minSize,
+            maxSize,
+            this.processorUtils.createGetMethodName(field.getSimpleName().toString())
+    ).build();
   }
 
   public static class Builder {
