@@ -23,25 +23,24 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 public class MaxLengthConstraint
     extends AbstractConstraint<String> {
 
-  private String message;
-
   private int maxLength;
 
   public MaxLengthConstraint(String packageName,
                              String simpleName,
                              String fieldName,
-                             int maxLength) {
+                             int maxLength,
+                             String message) {
     super(packageName,
           simpleName,
-          fieldName);
-    this.message   = LocalizedMessages.INSTANCE.getMaxLengthMessage(maxLength);
+          fieldName,
+            message);
     this.maxLength = maxLength;
   }
 
   public void check(String value)
       throws MalioValidationException {
     if (value != null && value.length() > maxLength) {
-      throw new MalioValidationException(this.message);
+      throw new MalioValidationException(getMessage(value));
     }
   }
 
@@ -49,10 +48,15 @@ public class MaxLengthConstraint
                       ValidationResult validationResult) {
     if (value != null && value.length() > maxLength) {
       validationResult.getMessages()
-                      .add(new ErrorMessage(this.message,
+                      .add(new ErrorMessage(getMessage(value),
                                             super.getClassName(),
                                             super.getSimpleName(),
                                             super.getFieldName()));
     }
+  }
+
+  @Override
+  protected String getSpecializedMessage(String value) {
+    return LocalizedMessages.INSTANCE.getMaxLengthMessage(maxLength);
   }
 }

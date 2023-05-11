@@ -56,15 +56,17 @@ public class ConstraintBlacklistGenerator
     String[] blacklist   = field.getAnnotation(Blacklist.class)
             .value();
     String   arraySyntax = processorUtils.createStringInitializationFromArray(blacklist);
+    String message = field.getAnnotation(Blacklist.class).message();
 
 
     return CodeBlock.builder().add(
-            "new $T($S, $S, $S, $L)" + suffix,
+            "new $T($S, $S, $S, $L, $S)" + suffix,
             constraint.getValidationClass(field),
             packageName,
             className,
             simpleName,
             arraySyntax,
+            message,
             this.processorUtils.createGetMethodName(field.getSimpleName().toString())
     ).build();
   }

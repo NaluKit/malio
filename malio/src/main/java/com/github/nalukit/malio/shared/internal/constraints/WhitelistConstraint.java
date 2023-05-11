@@ -31,30 +31,35 @@ public class WhitelistConstraint
   public WhitelistConstraint(String packageName,
                              String simpleName,
                              String fieldName,
-                             String[] whitelist) {
+                             String[] whitelist,
+                             String message) {
     super(packageName,
           simpleName,
-          fieldName);
+          fieldName,
+            message);
     this.whitelist = Arrays.asList(whitelist);
   }
 
   public void check(String value)
       throws MalioValidationException {
-    String message = LocalizedMessages.INSTANCE.getWhitelistMessage(value);
     if (value != null && !whitelist.contains(value)) {
-      throw new MalioValidationException(message);
+      throw new MalioValidationException(getMessage(value));
     }
   }
 
   public void isValid(String value,
                       ValidationResult validationResult) {
-    String message = LocalizedMessages.INSTANCE.getWhitelistMessage(value);
     if (value != null && !whitelist.contains(value)) {
       validationResult.getMessages()
-                      .add(new ErrorMessage(message,
+                      .add(new ErrorMessage(getMessage(value),
                                             super.getClassName(),
                                             super.getSimpleName(),
                                             super.getFieldName()));
     }
+  }
+
+  @Override
+  protected String getSpecializedMessage(String value) {
+    return LocalizedMessages.INSTANCE.getWhitelistMessage(value);
   }
 }

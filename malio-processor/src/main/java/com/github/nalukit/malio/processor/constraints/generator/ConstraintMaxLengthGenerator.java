@@ -50,7 +50,7 @@ public class ConstraintMaxLengthGenerator
   @Override
   protected CodeBlock generate(Element clazz, VariableElement field, String suffix) {
     return CodeBlock.builder().add(
-            "new $T($S, $S, $S, $L)" + suffix,
+            "new $T($S, $S, $S, $L, $S)" + suffix,
             constraint.getValidationClass(field),
             this.processorUtils.getPackage(field),
             this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
@@ -60,6 +60,7 @@ public class ConstraintMaxLengthGenerator
                     .toString(),
             field.getAnnotation(MaxLength.class)
                     .value(),
+            field.getAnnotation(MaxLength.class).message(),
             this.processorUtils.createGetMethodName(field.getSimpleName().toString())
     ).build();
   }

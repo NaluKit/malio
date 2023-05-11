@@ -53,7 +53,7 @@ public class ConstraintRegexpGenerator
     String regexp = field.getAnnotation(Regexp.class)
             .regexp();
     return CodeBlock.builder().add(
-            "new $T($S, $S, $S, $L)" + suffix,
+            "new $T($S, $S, $S, $L, $S)" + suffix,
             constraint.getValidationClass(field),
             this.processorUtils.getPackage(field),
             this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
@@ -65,6 +65,7 @@ public class ConstraintRegexpGenerator
                             regexp)
                     .replace("\\",
                             "\\\\"),
+            field.getAnnotation(constraint.annotationType()).message(),
             this.processorUtils.createGetMethodName(field.getSimpleName().toString())
     ).build();
   }

@@ -51,7 +51,7 @@ public class ConstraintNotBlankGenerator
   @Override
   protected CodeBlock generate(Element clazz, VariableElement field, String suffix) {
     return CodeBlock.builder().add(
-            "new $T($S, $S, $S)" + suffix,
+            "new $T($S, $S, $S, $S)" + suffix,
             constraint.getValidationClass(field),
             this.processorUtils.getPackage(field),
             this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
@@ -59,6 +59,7 @@ public class ConstraintNotBlankGenerator
                     .toString()),
             field.getSimpleName()
                     .toString(),
+            field.getAnnotation(constraint.annotationType()).message(),
             this.processorUtils.createGetMethodName(field.getSimpleName().toString())
     ).build();
   }

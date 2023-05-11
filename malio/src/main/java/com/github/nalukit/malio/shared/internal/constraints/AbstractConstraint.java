@@ -15,6 +15,8 @@
  */
 package com.github.nalukit.malio.shared.internal.constraints;
 
+import com.github.nalukit.malio.shared.messages.LocalizedMessages;
+
 public abstract class AbstractConstraint<T>
     implements IsMalioConstraint<T> {
 
@@ -22,15 +24,19 @@ public abstract class AbstractConstraint<T>
   private String simpleName;
   private String fieldName;
 
+  private String userMessage;
+
   private AbstractConstraint() {
   }
 
   public AbstractConstraint(String packageName,
                             String simpleName,
-                            String fieldName) {
+                            String fieldName,
+                            String userMessage) {
     this.packageName = packageName;
     this.simpleName  = simpleName;
     this.fieldName   = fieldName;
+    this.userMessage = userMessage;
   }
 
   protected String getPackageName() {
@@ -48,5 +54,17 @@ public abstract class AbstractConstraint<T>
   protected String getClassName() {
     return this.packageName + "." + this.simpleName;
   }
+
+  protected String getUserMessage() { return this.userMessage; }
+
+  protected final String getMessage(T value) {
+    if (getUserMessage().isEmpty()){
+      return getSpecializedMessage(value);
+    }
+
+    return getUserMessage();
+  }
+
+  protected abstract String getSpecializedMessage(T value);
 
 }

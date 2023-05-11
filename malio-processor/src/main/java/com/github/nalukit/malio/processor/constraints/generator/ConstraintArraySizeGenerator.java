@@ -45,13 +45,13 @@ public class ConstraintArraySizeGenerator
 
   @Override
   protected CodeBlock generate(Element clazz, VariableElement field, String suffix) {
-    int minSize = field.getAnnotation(ArraySize.class)
-            .min();
-    int maxSize = field.getAnnotation(ArraySize.class)
-            .max();
+    ArraySize annotation = field.getAnnotation(ArraySize.class);
+    int minSize = annotation.min();
+    int maxSize = annotation.max();
+    String message = annotation.message();
 
     return CodeBlock.builder().add(
-            "new $T($S, $S, $S, $L, $L)" + suffix,
+            "new $T($S, $S, $S, $L, $L, $S)" + suffix,
             constraint.getValidationClass(field),
             this.processorUtils.getPackage(field),
             this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
@@ -61,6 +61,7 @@ public class ConstraintArraySizeGenerator
                     .toString(),
             minSize,
             maxSize,
+            message,
             this.processorUtils.createGetMethodName(field.getSimpleName().toString())
     ).build();
   }

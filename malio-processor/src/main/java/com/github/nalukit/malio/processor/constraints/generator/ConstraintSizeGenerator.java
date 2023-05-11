@@ -55,7 +55,7 @@ public class ConstraintSizeGenerator
     int maxSize = field.getAnnotation(Size.class)
             .max();
     return CodeBlock.builder().add(
-            "new $T($S, $S, $S, $L, $L)" + suffix,
+            "new $T($S, $S, $S, $L, $L, $S)" + suffix,
             constraint.getValidationClass(field),
             this.processorUtils.getPackage(field),
             this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
@@ -65,6 +65,7 @@ public class ConstraintSizeGenerator
                     .toString(),
             minSize,
             maxSize,
+            field.getAnnotation(constraint.annotationType()).message(),
             this.processorUtils.createGetMethodName(field.getSimpleName().toString())
     ).build();
   }

@@ -25,24 +25,24 @@ import java.math.BigDecimal;
 public class MinDecimalConstraint
     extends AbstractConstraint<BigDecimal> {
 
-  private String     message;
   private BigDecimal minValue;
 
   public MinDecimalConstraint(String packageName,
                               String simpleName,
                               String fieldName,
-                              String minValue) {
+                              String minValue,
+                              String message) {
     super(packageName,
           simpleName,
-          fieldName);
+          fieldName,
+            message);
     this.minValue = new BigDecimal(minValue);
-    this.message  = LocalizedMessages.INSTANCE.getMinDecimalValueMessage(this.minValue);
   }
 
   public void check(BigDecimal value)
       throws MalioValidationException {
     if (value != null && value.compareTo(this.minValue) < 0) {
-      throw new MalioValidationException(this.message);
+      throw new MalioValidationException(getMessage(value));
     }
   }
 
@@ -50,10 +50,15 @@ public class MinDecimalConstraint
                       ValidationResult validationResult) {
     if (value != null && value.compareTo(this.minValue) < 0) {
       validationResult.getMessages()
-                      .add(new ErrorMessage(this.message,
+                      .add(new ErrorMessage(getMessage(value),
                                             super.getClassName(),
                                             super.getSimpleName(),
                                             super.getFieldName()));
     }
+  }
+
+  @Override
+  protected String getSpecializedMessage(BigDecimal value) {
+    return LocalizedMessages.INSTANCE.getMinDecimalValueMessage(this.minValue);
   }
 }

@@ -47,7 +47,7 @@ public class ConstraintMinGenerator
   @Override
   protected CodeBlock generate(Element clazz, VariableElement field, String suffix) {
     return CodeBlock.builder().add(
-            "new $T($S, $S, $S, Long.valueOf($L))" + suffix,
+            "new $T($S, $S, $S, Long.valueOf($L), $S)" + suffix,
             constraint.getValidationClass(field),
             this.processorUtils.getPackage(field),
             this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
@@ -57,6 +57,7 @@ public class ConstraintMinGenerator
                     .toString(),
             field.getAnnotation(Min.class)
                     .value(),
+            field.getAnnotation(constraint.annotationType()).message(),
             this.processorUtils.createGetMethodName(field.getSimpleName().toString())
     ).build();
   }

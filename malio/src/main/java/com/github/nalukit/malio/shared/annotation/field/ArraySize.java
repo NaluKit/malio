@@ -31,6 +31,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface ArraySize {
+  String message() default "";
   int min();
 
   int max();
