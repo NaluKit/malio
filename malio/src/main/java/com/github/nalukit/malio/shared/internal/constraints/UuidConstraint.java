@@ -30,29 +30,34 @@ public class UuidConstraint
 
   public UuidConstraint(String packageName,
                         String simpleName,
-                        String fieldName) {
+                        String fieldName,
+                        String message) {
     super(packageName,
           simpleName,
-          fieldName);
+          fieldName,
+            message);
   }
 
   public void check(String value)
       throws MalioValidationException {
-    String message = LocalizedMessages.INSTANCE.getUuidMessage();
     if (Objects.nonNull(value) && !UuidConstraint.regExp.test(value)) {
-      throw new MalioValidationException(message);
+      throw new MalioValidationException(getMessage(value));
     }
   }
 
   public void isValid(String value,
                       ValidationResult validationResult) {
-    String message = LocalizedMessages.INSTANCE.getUuidMessage();
     if (Objects.nonNull(value) && !UuidConstraint.regExp.test(value)) {
       validationResult.getMessages()
-                      .add(new ErrorMessage(message,
+                      .add(new ErrorMessage(getMessage(value),
                                             super.getClassName(),
                                             super.getSimpleName(),
                                             super.getFieldName()));
     }
+  }
+
+  @Override
+  protected String getSpecializedMessage(String value) {
+    return LocalizedMessages.INSTANCE.getUuidMessage();
   }
 }

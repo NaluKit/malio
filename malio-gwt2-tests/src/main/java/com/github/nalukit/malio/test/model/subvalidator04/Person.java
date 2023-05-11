@@ -13,40 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.model.notblank01;
+package com.github.nalukit.malio.test.model.subvalidator04;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
-import com.github.nalukit.malio.shared.annotation.field.NotBlank;
+import com.github.nalukit.malio.shared.annotation.field.MalioIgnore;
+import com.github.nalukit.malio.shared.annotation.field.NotNull;
 
 @MalioValidator
 public class Person {
 
-  @NotBlank private String name;
+  @NotNull private String name;
+  @NotNull private String firstName;
 
-  @NotBlank private String firstName;
-  @NotBlank(message = "Override") private String override;
+  @MalioIgnore private Person parent;
+  private              Person child;
 
   public Person() {
   }
 
   public Person(String name,
                 String firstName) {
+    this();
     this.name      = name;
     this.firstName = firstName;
-  }
-
-  public Person(String name, String firstName, String override) {
-    this.name = name;
-    this.firstName = firstName;
-    this.override = override;
-  }
-
-  public String getOverride() {
-    return override;
-  }
-
-  public void setOverride(String override) {
-    this.override = override;
   }
 
   public String getName() {
@@ -65,4 +54,19 @@ public class Person {
     this.firstName = firstName;
   }
 
+  public Person getParent() {
+    return parent;
+  }
+
+  public void setParent(Person parent) {
+    this.parent = parent;
+  }
+
+  public Person getChild() {
+    return child;
+  }
+
+  public void setChild(Person child) {
+    this.child = child;
+  }
 }

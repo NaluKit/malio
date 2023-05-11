@@ -46,7 +46,7 @@ public class ConstraintMaxDecimalGenerator
   @Override
   protected CodeBlock generate(Element clazz, VariableElement field, String suffix) {
     return CodeBlock.builder().add(
-            "new $T($S, $S, $S, $S)" + suffix,
+            "new $T($S, $S, $S, $S, $S)" + suffix,
             constraint.getValidationClass(field),
             this.processorUtils.getPackage(field),
             this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
@@ -56,6 +56,8 @@ public class ConstraintMaxDecimalGenerator
                     .toString(),
             field.getAnnotation(DecimalMax.class)
                     .value(),
+            field.getAnnotation(DecimalMax.class)
+                    .message(),
             this.processorUtils.createGetMethodName(field.getSimpleName().toString())
     ).build();
   }

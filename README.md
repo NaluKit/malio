@@ -28,7 +28,7 @@ public class Person {
 
     @NotNull
     @NotBlank
-    @MaxLength(20)
+    @MaxLength(value = 20, message = "First name too long!")
     private String firstName;
 
     @NotNull
@@ -195,6 +195,19 @@ To validate an instance of the class, call:
 Malio will generate for each variable and annotation a constraint class. Inside the validator, all constraints are
 collected and processed. In case the type of a variable has a Malio validator, the validator of the type will be called.
 In case classes are extending user classes, Malio will also look for existing validators of super classes.
+
+## Custom Messages
+
+Malio comes with predefined and localized messages, which can be set via `LocalizedMessages.INSTANCE.setMessages(new MessagesEN());`.
+At the moment, malio only provides messages for english and german. Contributions are welcome! See [IMessages.java](malio%2Fsrc%2Fmain%2Fjava%2Fcom%2Fgithub%2Fnalukit%2Fmalio%2Fshared%2Fmessages%2FIMessages.java)
+and [locales](malio%2Fsrc%2Fmain%2Fjava%2Fcom%2Fgithub%2Fnalukit%2Fmalio%2Fshared%2Fmessages%2Flocales).
+
+The user can overwrite the dynamic messages with own static messages in *every* annotation. E.g., `@MaxLength`:
+
+```java
+@MaxLength(value = 20, message = "First name too long!")
+private String firstName;
+```
 
 ## Supported Annotations
 

@@ -23,24 +23,24 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 public class MaxConstraint
     extends AbstractConstraint<Number> {
 
-  private String message;
   private Long   maxValue;
 
   public MaxConstraint(String packageName,
                        String simpleName,
                        String fieldName,
-                       Number maxValue) {
+                       Number maxValue,
+                       String message) {
     super(packageName,
           simpleName,
-          fieldName);
-    this.message  = LocalizedMessages.INSTANCE.getMaxValueMessage(maxValue.longValue());
+          fieldName,
+            message);
     this.maxValue = maxValue.longValue();
   }
 
   public void check(Number value)
       throws MalioValidationException {
     if (value != null && value.longValue() > this.maxValue) {
-      throw new MalioValidationException(this.message);
+      throw new MalioValidationException(getMessage(value));
     }
   }
 
@@ -48,10 +48,15 @@ public class MaxConstraint
                       ValidationResult validationResult) {
     if (value != null && value.longValue() > this.maxValue) {
       validationResult.getMessages()
-                      .add(new ErrorMessage(this.message,
+                      .add(new ErrorMessage(getMessage(value),
                                             super.getClassName(),
                                             super.getSimpleName(),
                                             super.getFieldName()));
     }
+  }
+
+  @Override
+  protected String getSpecializedMessage(Number value) {
+    return LocalizedMessages.INSTANCE.getMaxValueMessage(maxValue);
   }
 }

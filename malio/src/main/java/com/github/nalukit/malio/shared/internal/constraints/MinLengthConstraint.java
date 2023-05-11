@@ -23,25 +23,24 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 public class MinLengthConstraint
     extends AbstractConstraint<String> {
 
-  private String message;
-
   private int minLength;
 
   public MinLengthConstraint(String packageName,
                              String simpleName,
                              String fieldName,
-                             int minLength) {
+                             int minLength,
+                             String message) {
     super(packageName,
           simpleName,
-          fieldName);
-    this.message   = LocalizedMessages.INSTANCE.getMinLengthMessage(minLength);
+          fieldName,
+            message);
     this.minLength = minLength;
   }
 
   public void check(String value)
       throws MalioValidationException {
     if (value != null && value.length() < minLength) {
-      throw new MalioValidationException(this.message);
+      throw new MalioValidationException(getMessage(value));
     }
   }
 
@@ -49,10 +48,15 @@ public class MinLengthConstraint
                       ValidationResult validationResult) {
     if (value != null && value.length() < minLength) {
       validationResult.getMessages()
-                      .add(new ErrorMessage(this.message,
+                      .add(new ErrorMessage(getMessage(value),
                                             super.getClassName(),
                                             super.getSimpleName(),
                                             super.getFieldName()));
     }
+  }
+
+  @Override
+  protected String getSpecializedMessage(String value) {
+    return LocalizedMessages.INSTANCE.getMinLengthMessage(minLength);
   }
 }

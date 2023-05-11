@@ -23,25 +23,25 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 public class MinConstraint
     extends AbstractConstraint<Number> {
 
-  private String message;
 
   private Long minValue;
 
   public MinConstraint(String packageName,
                        String simpleName,
                        String fieldName,
-                       Number minValue) {
+                       Number minValue,
+                       String message) {
     super(packageName,
           simpleName,
-          fieldName);
-    this.message  = LocalizedMessages.INSTANCE.getMinValueMessage(minValue.longValue());
+          fieldName,
+            message);
     this.minValue = minValue.longValue();
   }
 
   public void check(Number value)
       throws MalioValidationException {
     if (value != null && value.longValue() < this.minValue) {
-      throw new MalioValidationException(this.message);
+      throw new MalioValidationException(getMessage(value));
     }
   }
 
@@ -49,10 +49,15 @@ public class MinConstraint
                       ValidationResult validationResult) {
     if (value != null && value.longValue() < this.minValue) {
       validationResult.getMessages()
-                      .add(new ErrorMessage(this.message,
+                      .add(new ErrorMessage(getMessage(value),
                                             super.getClassName(),
                                             super.getSimpleName(),
                                             super.getFieldName()));
     }
+  }
+
+  @Override
+  protected String getSpecializedMessage(Number value) {
+    return LocalizedMessages.INSTANCE.getMinValueMessage(minValue);
   }
 }

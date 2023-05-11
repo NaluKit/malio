@@ -16,6 +16,7 @@
 package com.github.nalukit.malio.test;
 
 
+import com.github.nalukit.malio.test.model.notzero.Person;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
@@ -106,6 +107,22 @@ public class ValidatorNotZeroTest {
                  messages.size());
     assertEquals("Wert muss ungleich/größer als 0 sein!",
                  errorMessage.getMessage());
+  }
+
+  @Test
+  public void testValidateFail01MessageOverride() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Person model = new Person(12, 2121, 86, null, 0);
+
+    ValidationResult   validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    List<ErrorMessage> messages         = validationResult.getMessages();
+    ErrorMessage       errorMessage     = messages.get(0);
+
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+            messages.size());
+    assertEquals("Override",
+            errorMessage.getMessage());
   }
 }
 

@@ -26,6 +26,7 @@ public class Address {
 
   @Whitelist({ "Home Town",
                "My Town" }) private String city;
+  @Whitelist(value = "54321", message = "Override") private         String override;
 
   public Address() {
   }
@@ -36,6 +37,21 @@ public class Address {
     this.street = street;
     this.zip    = zip;
     this.city   = city;
+  }
+
+  public Address(String street, String zip, String city, String override) {
+    this.street = street;
+    this.zip = zip;
+    this.city = city;
+    this.override = override;
+  }
+
+  public String getOverride() {
+    return override;
+  }
+
+  public void setOverride(String override) {
+    this.override = override;
   }
 
   public String getStreet() {

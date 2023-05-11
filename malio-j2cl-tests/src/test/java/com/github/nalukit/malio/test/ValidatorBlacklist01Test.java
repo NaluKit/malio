@@ -15,6 +15,7 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.test.model.blacklist01.Address;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
@@ -125,6 +126,25 @@ public class ValidatorBlacklist01Test {
                  messages.size());
     assertEquals("String 'Secret' ist nicht erlaubt!",
                  errorMessage.getMessage());
+  }
+
+  @Test
+  public void testValidateFailMessageOverride() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Address model = new Address("Hello",
+            "1245",
+            "City",
+            "123");
+
+    ValidationResult   validationResult = AddressMalioValidator.INSTANCE.validate(model);
+    List<ErrorMessage> messages         = validationResult.getMessages();
+    ErrorMessage       errorMessage     = messages.get(0);
+
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+            messages.size());
+    assertEquals("Override",
+            errorMessage.getMessage());
   }
 }
 

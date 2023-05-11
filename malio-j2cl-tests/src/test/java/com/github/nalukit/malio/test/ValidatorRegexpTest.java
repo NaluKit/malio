@@ -15,6 +15,7 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.test.model.regexp01.Address;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
@@ -124,6 +125,25 @@ public class ValidatorRegexpTest {
                  messages.size());
     assertEquals("String 'Street' ist nicht erlaubt!",
                  errorMessage.getMessage());
+  }
+
+  @Test
+  public void testValidateFail01MessageOverride() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Address model = new Address("Malio Street",
+            "12345",
+            "Malio City",
+            "Bla");
+
+    ValidationResult   validationResult = AddressMalioValidator.INSTANCE.validate(model);
+    List<ErrorMessage> messages         = validationResult.getMessages();
+    ErrorMessage       errorMessage     = messages.get(0);
+
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+            messages.size());
+    assertEquals("Override",
+            errorMessage.getMessage());
   }
 }
 

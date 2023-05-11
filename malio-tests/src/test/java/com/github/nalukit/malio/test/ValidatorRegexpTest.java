@@ -122,6 +122,25 @@ public class ValidatorRegexpTest {
     assertEquals("String 'Street' ist nicht erlaubt!",
                  errorMessage.getMessage());
   }
+
+  @Test
+  public void testValidateFail01MessageOverride() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Address model = new Address("Malio Street",
+            "12345",
+            "Malio City",
+            "Bla");
+
+    ValidationResult   validationResult = AddressMalioValidator.INSTANCE.validate(model);
+    List<ErrorMessage> messages         = validationResult.getMessages();
+    ErrorMessage       errorMessage     = messages.get(0);
+
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+            messages.size());
+    assertEquals("Override",
+            errorMessage.getMessage());
+  }
 }
 
 

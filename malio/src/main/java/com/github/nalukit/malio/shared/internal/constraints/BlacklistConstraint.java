@@ -28,33 +28,40 @@ public class BlacklistConstraint
 
   private List<String> blacklist;
 
+
   public BlacklistConstraint(String packageName,
                              String simpleName,
                              String fieldName,
-                             String[] blacklist) {
+                             String[] blacklist,
+                             String message) {
     super(packageName,
           simpleName,
-          fieldName);
+          fieldName,
+            message);
     this.blacklist = Arrays.asList(blacklist);
   }
 
   public void check(String value)
       throws MalioValidationException {
-    String message = LocalizedMessages.INSTANCE.getBlacklistMessage(value);
+
     if (value != null && blacklist.contains(value)) {
-      throw new MalioValidationException(message);
+      throw new MalioValidationException(getMessage(value));
     }
   }
 
   public void isValid(String value,
                       ValidationResult validationResult) {
-    String message = LocalizedMessages.INSTANCE.getBlacklistMessage(value);
     if (value != null && blacklist.contains(value)) {
       validationResult.getMessages()
-                      .add(new ErrorMessage(message,
+                      .add(new ErrorMessage(getMessage(value),
                                             super.getClassName(),
                                             super.getSimpleName(),
                                             super.getFieldName()));
     }
+  }
+
+  @Override
+  protected String getSpecializedMessage(String value) {
+    return LocalizedMessages.INSTANCE.getBlacklistMessage(value);
   }
 }

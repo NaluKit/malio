@@ -22,8 +22,22 @@ import com.github.nalukit.malio.shared.annotation.field.Email;
 public class Person {
 
   @Email private String email;
+  @Email(message = "Override") private String emailPrivate;
 
   public Person() {
+  }
+
+  public Person(String email, String emailPrivate) {
+    this.email = email;
+    this.emailPrivate = emailPrivate;
+  }
+
+  public String getEmailPrivate() {
+    return emailPrivate;
+  }
+
+  public void setEmailPrivate(String emailPrivate) {
+    this.emailPrivate = emailPrivate;
   }
 
   public Person(String email) {

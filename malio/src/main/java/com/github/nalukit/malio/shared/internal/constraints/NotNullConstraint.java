@@ -25,21 +25,26 @@ import java.util.Objects;
 public class NotNullConstraint<T>
     extends AbstractConstraint<T> {
 
-  private String message;
 
   public NotNullConstraint(String packageName,
                            String simpleName,
-                           String fieldName) {
+                           String fieldName,
+                           String message) {
     super(packageName,
           simpleName,
-          fieldName);
-    this.message = LocalizedMessages.INSTANCE.getNotNullMessage();
+          fieldName,
+            message);
+  }
+
+  @Override
+  protected String getSpecializedMessage(T value) {
+    return LocalizedMessages.INSTANCE.getNotNullMessage();
   }
 
   public void check(T value)
       throws MalioValidationException {
     if (Objects.isNull(value)) {
-      throw new MalioValidationException(this.message);
+      throw new MalioValidationException(getMessage(value));
     }
   }
 
@@ -47,7 +52,7 @@ public class NotNullConstraint<T>
                       ValidationResult validationResult) {
     if (Objects.isNull(value)) {
       validationResult.getMessages()
-                      .add(new ErrorMessage(this.message,
+                      .add(new ErrorMessage(getMessage(value),
                                             super.getClassName(),
                                             super.getSimpleName(),
                                             super.getFieldName()));

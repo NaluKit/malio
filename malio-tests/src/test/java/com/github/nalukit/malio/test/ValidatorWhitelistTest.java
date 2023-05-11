@@ -122,6 +122,26 @@ public class ValidatorWhitelistTest {
     assertEquals("String 'Street' ist nicht erlaubt!",
                  errorMessage.getMessage());
   }
+
+  @Test
+  public void testValidateFail01MessageOverride() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Address model = new Address("My Street",
+            "54321",
+            "My Town",
+            "454");
+
+    ValidationResult   validationResult = AddressMalioValidator.INSTANCE.validate(model);
+    List<ErrorMessage> messages         = validationResult.getMessages();
+    ErrorMessage       errorMessage     = messages.get(0);
+
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+            messages.size());
+    assertEquals("Override",
+            errorMessage.getMessage());
+  }
+
 }
 
 

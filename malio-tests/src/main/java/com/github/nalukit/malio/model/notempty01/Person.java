@@ -24,8 +24,22 @@ import java.util.List;
 public class Person {
 
   @NotEmpty private List<String> pocket;
+  @NotEmpty(message = "Override") private List<String> override;
 
   public Person() {
+  }
+
+  public Person(List<String> pocket, List<String> override) {
+    this.pocket = pocket;
+    this.override = override;
+  }
+
+  public List<String> getOverride() {
+    return override;
+  }
+
+  public void setOverride(List<String> override) {
+    this.override = override;
   }
 
   public Person(List<String> things) {

@@ -29,34 +29,39 @@ public class RegexpConstraint
   public RegexpConstraint(String packageName,
                           String simpleName,
                           String fieldName,
-                          String regExp) {
+                          String regExp,
+                          String message) {
     super(packageName,
           simpleName,
-          fieldName);
+          fieldName,
+            message);
     this.regExp = RegExp.compile(regExp);
   }
 
   public void check(String value)
       throws MalioValidationException {
-    String message = LocalizedMessages.INSTANCE.getRegexpMessage(value);
     if (value != null) {
       if (!this.regExp.test(value)) {
-        throw new MalioValidationException(message);
+        throw new MalioValidationException(getMessage(value));
       }
     }
   }
 
   public void isValid(String value,
                       ValidationResult validationResult) {
-    String message = LocalizedMessages.INSTANCE.getRegexpMessage(value);
     if (value != null) {
       if (!this.regExp.test(value)) {
         validationResult.getMessages()
-                        .add(new ErrorMessage(message,
+                        .add(new ErrorMessage(getMessage(value),
                                               super.getClassName(),
                                               super.getSimpleName(),
                                               super.getFieldName()));
       }
     }
+  }
+
+  @Override
+  protected String getSpecializedMessage(String value) {
+    return LocalizedMessages.INSTANCE.getRegexpMessage(value);
   }
 }

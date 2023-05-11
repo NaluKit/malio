@@ -26,21 +26,26 @@ import java.util.Objects;
 public class NotEmptyConstraint<T extends Collection<?>>
     extends AbstractConstraint<T> {
 
-  private final String message;
 
   public NotEmptyConstraint(String packageName,
                             String simpleName,
-                            String fieldName) {
+                            String fieldName,
+                            String message) {
     super(packageName,
           simpleName,
-          fieldName);
-    this.message = LocalizedMessages.INSTANCE.getNotEmptyMessage();
+          fieldName,
+            message);
+  }
+
+  @Override
+  protected String getSpecializedMessage(T value) {
+    return LocalizedMessages.INSTANCE.getNotEmptyMessage();
   }
 
   public void check(T value)
       throws MalioValidationException {
     if (Objects.nonNull(value) && value.isEmpty()) {
-      throw new MalioValidationException(this.message);
+      throw new MalioValidationException(getMessage(value));
     }
   }
 
@@ -48,7 +53,7 @@ public class NotEmptyConstraint<T extends Collection<?>>
                       ValidationResult validationResult) {
     if (Objects.nonNull(value) && value.isEmpty()) {
       validationResult.getMessages()
-                      .add(new ErrorMessage(this.message,
+                      .add(new ErrorMessage(getMessage(value),
                                             super.getClassName(),
                                             super.getSimpleName(),
                                             super.getFieldName()));

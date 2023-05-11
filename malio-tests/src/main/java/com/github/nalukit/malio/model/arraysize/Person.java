@@ -26,7 +26,16 @@ public class Person {
   @ArraySize(min = 2, max = 4)
   private int[] coins;
 
+  @ArraySize(min=0, max=1, message = "Override")
+  private String[] things;
+
   public Person() {
+  }
+
+  public Person(String[] pocket, int[] coins, String[] things) {
+    this.pocket = pocket;
+    this.coins = coins;
+    this.things = things;
   }
 
   public Person(String[] things, int[] coins) {
@@ -48,5 +57,13 @@ public class Person {
 
   public void setCoins(int[] coins) {
     this.coins = coins;
+  }
+
+  public String[] getThings() {
+    return things;
+  }
+
+  public void setThings(String[] things) {
+    this.things = things;
   }
 }
