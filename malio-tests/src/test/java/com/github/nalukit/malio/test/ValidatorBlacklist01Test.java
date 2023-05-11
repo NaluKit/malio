@@ -123,6 +123,25 @@ public class ValidatorBlacklist01Test {
     assertEquals("String 'Secret' ist nicht erlaubt!",
                  errorMessage.getMessage());
   }
+
+  @Test
+  public void testValidateFailMessageOverride() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Address model = new Address("Hello",
+            "1245",
+            "City",
+            "123");
+
+    ValidationResult   validationResult = AddressMalioValidator.INSTANCE.validate(model);
+    List<ErrorMessage> messages         = validationResult.getMessages();
+    ErrorMessage       errorMessage     = messages.get(0);
+
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+            messages.size());
+    assertEquals("Override",
+            errorMessage.getMessage());
+  }
 }
 
 

@@ -15,12 +15,12 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.test.model.max01.Person;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.max01.Person;
 import com.github.nalukit.malio.test.model.max01.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
 import org.junit.Before;
@@ -149,6 +149,26 @@ public class ValidatorMax01Test {
                  validationResult.getMessages()
                                  .get(0)
                                  .getMessage());
+  }
+
+  @Test
+  public void testValidateFail01MessageOverride() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Person model = new Person("Name",
+            10,
+            10,
+            10,
+            100);
+
+    ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+            validationResult.getMessages()
+                    .size());
+    assertEquals("Override",
+            validationResult.getMessages()
+                    .get(0)
+                    .getMessage());
   }
 }
 

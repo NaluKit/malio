@@ -16,7 +16,10 @@
 package com.github.nalukit.malio.test.model.notzero;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
+import com.github.nalukit.malio.shared.annotation.field.NotNull;
 import com.github.nalukit.malio.shared.annotation.field.NotZero;
+
+import java.util.List;
 
 @MalioValidator
 public class Person {
@@ -34,6 +37,9 @@ public class Person {
   @NotZero
   private Long addressNrLong;
 
+  @NotZero(message = "Override")
+  private int override;
+
   public Person() {
   }
 
@@ -42,6 +48,23 @@ public class Person {
     this.age = age;
     this.addressNr = addressNr;
     this.addressNrLong = addressNrLong;
+    this.override = 10;
+  }
+
+  public Person(int personNr, Integer age, long addressNr, Long addressNrLong, int override) {
+    this.personNr = personNr;
+    this.age = age;
+    this.addressNr = addressNr;
+    this.addressNrLong = addressNrLong;
+    this.override = override;
+  }
+
+  public int getOverride() {
+    return override;
+  }
+
+  public void setOverride(int override) {
+    this.override = override;
   }
 
   public int getPersonNr() {

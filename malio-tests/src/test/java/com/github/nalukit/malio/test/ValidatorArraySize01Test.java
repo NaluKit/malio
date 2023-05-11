@@ -113,6 +113,25 @@ public class ValidatorArraySize01Test {
                  messages.get(0)
                          .getMessage());
   }
+
+  @Test
+  public void testValidateFailMessageOverride() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Person model = new Person(new String[]{"Card",
+            "Mobile Phone", "These"},
+            new int[]{0, 1, 3},
+            new String[]{"Card",
+                    "Mobile Phone", "These", "That", "Those"});
+
+    ValidationResult   validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    List<ErrorMessage> messages         = validationResult.getMessages();
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+            messages.size());
+    assertEquals("Override",
+            messages.get(0)
+                    .getMessage());
+  }
 }
 
 

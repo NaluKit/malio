@@ -26,15 +26,15 @@ public class NotZeroConstraint
     extends AbstractConstraint<Number> {
 
   private boolean allowNegativeValues;
-  private String message;
   public NotZeroConstraint(String packageName,
                            String simpleName,
                            String fieldName,
-                           boolean allowNegativeValues) {
+                           boolean allowNegativeValues,
+                           String message) {
     super(packageName,
           simpleName,
-          fieldName);
-    this.message  = LocalizedMessages.INSTANCE.getNotZeroMessage();
+          fieldName,
+          message);
     this.allowNegativeValues = allowNegativeValues;
   }
 
@@ -46,12 +46,12 @@ public class NotZeroConstraint
 
     if (!this.allowNegativeValues) {
       if( value.longValue() < 0){
-        throw new MalioValidationException(message);
+        throw new MalioValidationException(getMessage(value));
       }
     }
 
     if (value.longValue() == 0) {
-      throw new MalioValidationException(message);
+      throw new MalioValidationException(getMessage(value));
     }
   }
 
@@ -65,7 +65,7 @@ public class NotZeroConstraint
     if (!this.allowNegativeValues) {
       if(value.longValue() < 0){
         validationResult.getMessages()
-                .add(new ErrorMessage(message,
+                .add(new ErrorMessage(getMessage(value),
                         super.getClassName(),
                         super.getSimpleName(),
                         super.getFieldName()));
@@ -75,11 +75,16 @@ public class NotZeroConstraint
 
     if (value.longValue() == 0) {
       validationResult.getMessages()
-              .add(new ErrorMessage(message,
+              .add(new ErrorMessage(getMessage(value),
                       super.getClassName(),
                       super.getSimpleName(),
                       super.getFieldName()));
     }
 
+  }
+
+  @Override
+  protected String getSpecializedMessage(Number value) {
+    return LocalizedMessages.INSTANCE.getNotZeroMessage();
   }
 }

@@ -55,7 +55,7 @@ public class ConstraintWhitelistGenerator
     String   arraySyntax = processorUtils.createStringInitializationFromArray(whitelist);
 
     return CodeBlock.builder().add(
-            "new $T($S, $S, $S, $L)" + suffix,
+            "new $T($S, $S, $S, $L, $S)" + suffix,
             constraint.getValidationClass(field),
             this.processorUtils.getPackage(field),
             this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
@@ -64,6 +64,7 @@ public class ConstraintWhitelistGenerator
             field.getSimpleName()
                     .toString(),
             arraySyntax,
+            field.getAnnotation(constraint.annotationType()).message(),
             this.processorUtils.createGetMethodName(field.getSimpleName().toString())
     ).build();
   }

@@ -26,7 +26,6 @@ import java.util.Objects;
 public class SizeConstraint<T extends Collection<?>>
     extends AbstractConstraint<T> {
 
-  private final String message;
   private final int    min;
   private final int    max;
 
@@ -34,12 +33,12 @@ public class SizeConstraint<T extends Collection<?>>
                         String simpleName,
                         String fieldName,
                         int min,
-                        int max) {
+                        int max,
+                        String message) {
     super(packageName,
           simpleName,
-          fieldName);
-    this.message = LocalizedMessages.INSTANCE.getSizeMessage(min,
-                                                             max);
+          fieldName,
+            message);
     this.min     = min;
     this.max     = max;
   }
@@ -50,7 +49,7 @@ public class SizeConstraint<T extends Collection<?>>
       int size = value.size();
 
       if (size < this.min || size > this.max) {
-        throw new MalioValidationException(this.message);
+        throw new MalioValidationException(getMessage(value));
       }
     }
   }
@@ -62,11 +61,16 @@ public class SizeConstraint<T extends Collection<?>>
 
       if (size < this.min || size > this.max) {
         validationResult.getMessages()
-                        .add(new ErrorMessage(this.message,
+                        .add(new ErrorMessage(getMessage(value),
                                               super.getClassName(),
                                               super.getSimpleName(),
                                               super.getFieldName()));
       }
     }
+  }
+
+  @Override
+  protected String getSpecializedMessage(T value) {
+    return LocalizedMessages.INSTANCE.getSizeMessage(min, max);
   }
 }

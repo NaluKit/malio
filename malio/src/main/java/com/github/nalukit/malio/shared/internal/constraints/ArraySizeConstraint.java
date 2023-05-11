@@ -25,7 +25,6 @@ import java.util.Objects;
 public class ArraySizeConstraint
     extends AbstractConstraint<Object[]> {
 
-  private final String message;
   private final int    min;
   private final int    max;
 
@@ -33,12 +32,12 @@ public class ArraySizeConstraint
                              String simpleName,
                              String fieldName,
                              int min,
-                             int max) {
+                             int max,
+                             String message) {
     super(packageName,
           simpleName,
-          fieldName);
-    this.message = LocalizedMessages.INSTANCE.getSizeMessage(min,
-                                                             max);
+          fieldName,
+            message);
     this.min     = min;
     this.max     = max;
   }
@@ -100,7 +99,7 @@ public class ArraySizeConstraint
 
   private void internCheck(int size) {
       if (size < this.min || size > this.max) {
-        throw new MalioValidationException(this.message);
+        throw new MalioValidationException(getMessage(null));
       }
 
   }
@@ -181,10 +180,15 @@ public class ArraySizeConstraint
   private void internIsValid(int size, ValidationResult validationResult) {
     if (size < this.min || size > this.max) {
       validationResult.getMessages()
-              .add(new ErrorMessage(this.message,
+              .add(new ErrorMessage(getMessage(null),
                       super.getClassName(),
                       super.getSimpleName(),
                       super.getFieldName()));
     }
+  }
+
+  @Override
+  protected String getSpecializedMessage(Object[] value) {
+    return LocalizedMessages.INSTANCE.getSizeMessage(min, max);
   }
 }

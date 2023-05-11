@@ -105,6 +105,22 @@ public class ValidatorNotZeroTest {
     assertEquals("Wert muss ungleich/größer als 0 sein!",
                  errorMessage.getMessage());
   }
+
+  @Test
+  public void testValidateFail01MessageOverride() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Person model = new Person(12, 2121, 86, null, 0);
+
+    ValidationResult   validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    List<ErrorMessage> messages         = validationResult.getMessages();
+    ErrorMessage       errorMessage     = messages.get(0);
+
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+            messages.size());
+    assertEquals("Override",
+            errorMessage.getMessage());
+  }
 }
 
 

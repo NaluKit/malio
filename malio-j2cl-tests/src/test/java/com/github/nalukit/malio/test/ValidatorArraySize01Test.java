@@ -15,6 +15,7 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.test.model.arraysize.Person;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
@@ -110,6 +111,25 @@ public class ValidatorArraySize01Test {
     assertEquals(1,
             messages.size());
     assertEquals("Collection Länge muss zwischen 2 und 4 sein!",
+            messages.get(0)
+                    .getMessage());
+  }
+
+  @Test
+  public void testValidateFailMessageOverride() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Person model = new Person(new String[]{"Card",
+            "Mobile Phone", "These"},
+            new int[]{0, 1, 3},
+            new String[]{"Card",
+                    "Mobile Phone", "These", "That", "Those"});
+
+    ValidationResult   validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    List<ErrorMessage> messages         = validationResult.getMessages();
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+            messages.size());
+    assertEquals("Override",
             messages.get(0)
                     .getMessage());
   }

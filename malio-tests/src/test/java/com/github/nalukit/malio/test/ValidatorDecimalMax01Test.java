@@ -122,6 +122,22 @@ public class ValidatorDecimalMax01Test {
                                  .get(0)
                                  .getMessage());
   }
+
+  @Test
+  public void testValidateFail01MessageOverride() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Person model = new Person(BigDecimal.valueOf(0.5), BigDecimal.valueOf(22));
+
+    ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+            validationResult.getMessages()
+                    .size());
+    assertEquals("Override",
+            validationResult.getMessages()
+                    .get(0)
+                    .getMessage());
+  }
 }
 
 

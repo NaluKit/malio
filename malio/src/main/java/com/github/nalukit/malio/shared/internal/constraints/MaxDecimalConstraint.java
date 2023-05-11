@@ -25,24 +25,24 @@ import java.math.BigDecimal;
 public class MaxDecimalConstraint
     extends AbstractConstraint<BigDecimal> {
 
-  private String     message;
   private BigDecimal maxValue;
 
   public MaxDecimalConstraint(String packageName,
                               String simpleName,
                               String fieldName,
-                              String maxValue) {
+                              String maxValue,
+                              String message) {
     super(packageName,
           simpleName,
-          fieldName);
+          fieldName,
+            message);
     this.maxValue = new BigDecimal(maxValue);
-    this.message  = LocalizedMessages.INSTANCE.getMaxDecimalValueMessage(this.maxValue);
   }
 
   public void check(BigDecimal value)
       throws MalioValidationException {
     if (value != null && value.compareTo(this.maxValue) > 0) {
-      throw new MalioValidationException(this.message);
+      throw new MalioValidationException(getMessage(value));
     }
   }
 
@@ -50,10 +50,15 @@ public class MaxDecimalConstraint
                       ValidationResult validationResult) {
     if (value != null && value.compareTo(this.maxValue) > 0) {
       validationResult.getMessages()
-                      .add(new ErrorMessage(this.message,
+                      .add(new ErrorMessage(getMessage(value),
                                             super.getClassName(),
                                             super.getSimpleName(),
                                             super.getFieldName()));
     }
+  }
+
+  @Override
+  protected String getSpecializedMessage(BigDecimal value) {
+    return  LocalizedMessages.INSTANCE.getMaxDecimalValueMessage(this.maxValue);
   }
 }

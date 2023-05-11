@@ -34,5 +34,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface MinLength {
 
+  String message() default "";
   int value();
 }

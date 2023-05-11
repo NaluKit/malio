@@ -25,21 +25,26 @@ import java.util.Objects;
 public class NotBlankConstraint
     extends AbstractConstraint<String> {
 
-  private String message;
 
   public NotBlankConstraint(String packageName,
                             String simpleName,
-                            String fieldName) {
+                            String fieldName,
+                            String message) {
     super(packageName,
           simpleName,
-          fieldName);
-    this.message = LocalizedMessages.INSTANCE.getNotBlankMessage();
+          fieldName,
+            message);
+  }
+
+  @Override
+  protected String getSpecializedMessage(String value) {
+    return LocalizedMessages.INSTANCE.getNotBlankMessage();
   }
 
   public void check(String value)
       throws MalioValidationException {
     if (Objects.nonNull(value) && value.isEmpty()) {
-      throw new MalioValidationException(this.message);
+      throw new MalioValidationException(getMessage(value));
     }
   }
 
@@ -47,7 +52,7 @@ public class NotBlankConstraint
                       ValidationResult validationResult) {
     if (Objects.nonNull(value) && value.isEmpty()) {
       validationResult.getMessages()
-                      .add(new ErrorMessage(this.message,
+                      .add(new ErrorMessage(getMessage(value),
                                             super.getClassName(),
                                             super.getSimpleName(),
                                             super.getFieldName()));
