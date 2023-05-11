@@ -25,11 +25,26 @@ public class Person {
 
   @DecimalMax("0.5") private BigDecimal taxRate;
 
+  @DecimalMax(value = "10", message = "Override") private BigDecimal these;
+
   public Person() {
   }
 
   public Person(BigDecimal taxRate) {
     this.taxRate = taxRate;
+  }
+
+  public Person(BigDecimal taxRate, BigDecimal these) {
+    this.taxRate = taxRate;
+    this.these = these;
+  }
+
+  public BigDecimal getThese() {
+    return these;
+  }
+
+  public void setThese(BigDecimal these) {
+    this.these = these;
   }
 
   public BigDecimal getTaxRate() {

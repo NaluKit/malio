@@ -195,4 +195,32 @@ public class ValidatorNotNull01Test {
                  errorMessage01.getMessage());
   }
 
+  @Test
+  public void testValidateFail03MessageOverride() {
+    Person model = new Person("Fred",
+            "Flintstones",
+            new Address("safasf",
+                    "123456",
+                    "Test City"),
+            null);
+
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+
+    assertFalse(result.isValid());
+    assertEquals(1,
+            result.getMessages()
+                    .size());
+
+    ErrorMessage errorMessage01 = result.getMessages()
+            .get(0);
+    assertEquals("com.github.nalukit.malio.model.notnull01.Person",
+            errorMessage01.getClassname());
+    assertEquals("Person",
+            errorMessage01.getSimpleClassname());
+    assertEquals("override",
+            errorMessage01.getField());
+    assertEquals("Override",
+            errorMessage01.getMessage());
+  }
+
 }

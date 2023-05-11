@@ -22,12 +22,26 @@ import com.github.nalukit.malio.shared.annotation.field.Uuid;
 public class Person {
 
   @Uuid private String uuid;
+  @Uuid(message = "Override") private String override;
 
   public Person() {
   }
 
   public Person(String uuid) {
     this.uuid = uuid;
+  }
+
+  public Person(String uuid, String override) {
+    this.uuid = uuid;
+    this.override = override;
+  }
+
+  public String getOverride() {
+    return override;
+  }
+
+  public void setOverride(String override) {
+    this.override = override;
   }
 
   public String getUuid() {

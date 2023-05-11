@@ -25,6 +25,7 @@ public class Address {
   @Regexp(regexp = "\\d{5}") private    String zip;
 
   @Regexp(regexp = ".+ City") private String city;
+  @Regexp(regexp = ".+ City", message = "Override") private String override;
 
   public Address() {
   }
@@ -35,6 +36,21 @@ public class Address {
     this.street = street;
     this.zip    = zip;
     this.city   = city;
+  }
+
+  public Address(String street, String zip, String city, String override) {
+    this.street = street;
+    this.zip = zip;
+    this.city = city;
+    this.override = override;
+  }
+
+  public String getOverride() {
+    return override;
+  }
+
+  public void setOverride(String override) {
+    this.override = override;
   }
 
   public String getStreet() {

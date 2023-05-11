@@ -15,6 +15,7 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.test.model.minlength01.Address;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
@@ -141,6 +142,25 @@ public class ValidatorMinLength01Test
                  validationResult.getMessages()
                                  .get(0)
                                  .getMessage());
+  }
+
+  @Test
+  public void testValidateFail01MessageOverride() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Address model = new Address("Street",
+            "12345",
+            "City",
+            "12");
+
+    ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+            validationResult.getMessages()
+                    .size());
+    assertEquals("Override",
+            validationResult.getMessages()
+                    .get(0)
+                    .getMessage());
   }
 }
 

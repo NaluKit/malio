@@ -24,8 +24,22 @@ import java.math.BigDecimal;
 public class Person {
 
   @DecimalMin("0.1") private BigDecimal taxRate;
+  @DecimalMin(value = "0.1", message = "Override") private BigDecimal these;
 
   public Person() {
+  }
+
+  public Person(BigDecimal taxRate, BigDecimal these) {
+    this.taxRate = taxRate;
+    this.these = these;
+  }
+
+  public BigDecimal getThese() {
+    return these;
+  }
+
+  public void setThese(BigDecimal these) {
+    this.these = these;
   }
 
   public Person(BigDecimal taxRate) {

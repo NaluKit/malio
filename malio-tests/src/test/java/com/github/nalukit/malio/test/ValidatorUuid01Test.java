@@ -126,6 +126,21 @@ public class ValidatorUuid01Test {
                                  .get(0)
                                  .getMessage());
   }
+
+  @Test
+  public void testValidateFail01MessageOverride() {
+    LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
+    Person           model            = new Person(UUID, "944ee2b0-dd52-46c2-a57b-dbf4bbafd53z");
+    ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
+    assertFalse(validationResult.isValid());
+    assertEquals(1,
+            validationResult.getMessages()
+                    .size());
+    assertEquals("Override",
+            validationResult.getMessages()
+                    .get(0)
+                    .getMessage());
+  }
 }
 
 
