@@ -15,7 +15,35 @@
  */
 package com.github.nalukit.malio;
 
-import com.github.nalukit.malio.test.*;
+import com.github.nalukit.malio.test.SubValidator01Test;
+import com.github.nalukit.malio.test.SubValidator02Test;
+import com.github.nalukit.malio.test.SubValidator03Test;
+import com.github.nalukit.malio.test.ValidateItem01Test;
+import com.github.nalukit.malio.test.ValidatorArraySize01Test;
+import com.github.nalukit.malio.test.ValidatorBlacklist01Test;
+import com.github.nalukit.malio.test.ValidatorDecimalMax01Test;
+import com.github.nalukit.malio.test.ValidatorDecimalMin01Test;
+import com.github.nalukit.malio.test.ValidatorEmail01Test;
+import com.github.nalukit.malio.test.ValidatorMax01Test;
+import com.github.nalukit.malio.test.ValidatorMaxLength01Test;
+import com.github.nalukit.malio.test.ValidatorMin01Test;
+import com.github.nalukit.malio.test.ValidatorMinLength01Test;
+import com.github.nalukit.malio.test.ValidatorMixedUp01Test;
+import com.github.nalukit.malio.test.ValidatorMixedUp02Test;
+import com.github.nalukit.malio.test.ValidatorNotBlank01Test;
+import com.github.nalukit.malio.test.ValidatorNotEmpty01Test;
+import com.github.nalukit.malio.test.ValidatorNotNull01Test;
+import com.github.nalukit.malio.test.ValidatorNotNull02Test;
+import com.github.nalukit.malio.test.ValidatorNotNull03Test;
+import com.github.nalukit.malio.test.ValidatorNotNull04Test;
+import com.github.nalukit.malio.test.ValidatorNotNull05Test;
+import com.github.nalukit.malio.test.ValidatorNotNull06Test;
+import com.github.nalukit.malio.test.ValidatorNotNull07Test;
+import com.github.nalukit.malio.test.ValidatorNotZeroTest;
+import com.github.nalukit.malio.test.ValidatorRegexpTest;
+import com.github.nalukit.malio.test.ValidatorSize01Test;
+import com.github.nalukit.malio.test.ValidatorUuid01Test;
+import com.github.nalukit.malio.test.ValidatorWhitelistTest;
 import com.google.gwt.junit.tools.GWTTestSuite;
 import junit.framework.Test;
 
@@ -26,6 +54,7 @@ public class GwtSuite {
     suite.addTestSuite(SubValidator01Test.class);
     suite.addTestSuite(SubValidator02Test.class);
     suite.addTestSuite(SubValidator03Test.class);
+    suite.addTestSuite(ValidateItem01Test.class);
     suite.addTestSuite(ValidatorBlacklist01Test.class);
     suite.addTestSuite(ValidatorDecimalMax01Test.class);
     suite.addTestSuite(ValidatorDecimalMin01Test.class);

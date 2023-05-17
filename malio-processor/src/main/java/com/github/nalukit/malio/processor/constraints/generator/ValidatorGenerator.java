@@ -18,7 +18,8 @@ package com.github.nalukit.malio.processor.constraints.generator;
 import com.github.nalukit.malio.processor.MalioValidatorGenerator;
 import com.github.nalukit.malio.processor.model.ValidatorModel;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
-import com.squareup.javapoet.*;
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.CodeBlock;
 
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Element;
@@ -91,22 +92,34 @@ public class ValidatorGenerator
                                         ClassName.get(Objects.class),
                                         this.processorUtils.createGetMethodName(model.getFieldName()));
     switch (model.getType()) {
-      case NATIVE:
-        String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
-        builder.add("$T.INSTANCE.check(bean.$L());",
-                                        ClassName.get(model.getPackageName(),
-                                                      vaidatorClassName),
-                                        this.processorUtils.createGetMethodName(model.getFieldName()));
+      case ARRAY:
+        String vaidatorClassNameArray = model.getPackageName() + "." + model.getSimpleClassName() + model.getPostFix();
+        builder.beginControlFlow("for (int i = 1; i< bean.$L().length; i++)",
+                                 this.processorUtils.createGetMethodName(model.getFieldName()))
+               .addStatement("$T item = bean.$L()[i]",
+                             ClassName.get(model.getPackageName(),
+                                           model.getSimpleClassName()),
+                             this.processorUtils.createGetMethodName(model.getFieldName()))
+               .add("$L.INSTANCE.check(item);",
+                    vaidatorClassNameArray)
+               .endControlFlow();
         break;
       case LIST:
         String vaidatorClassNameList = model.getGenericTypeElement01()
                                             .toString() + model.getPostFix();
         builder.beginControlFlow("for ($T model : bean.$L())",
-                                            ClassName.get(model.getGenericTypeElement01()),
-                                            this.processorUtils.createGetMethodName(model.getFieldName()))
-                          .add("$L.INSTANCE.check(model);",
-                                        vaidatorClassNameList)
-                          .endControlFlow();
+                                 ClassName.get(model.getGenericTypeElement01()),
+                                 this.processorUtils.createGetMethodName(model.getFieldName()))
+               .add("$L.INSTANCE.check(model);",
+                    vaidatorClassNameList)
+               .endControlFlow();
+        break;
+      case NATIVE:
+        String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
+        builder.add("$T.INSTANCE.check(bean.$L());",
+                    ClassName.get(model.getPackageName(),
+                                  vaidatorClassName),
+                    this.processorUtils.createGetMethodName(model.getFieldName()));
         break;
     }
     builder.endControlFlow();
@@ -151,22 +164,34 @@ public class ValidatorGenerator
                                                     ClassName.get(Objects.class),
                                                     this.processorUtils.createGetMethodName(model.getFieldName()));
     switch (model.getType()) {
-      case NATIVE:
-        String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
-        builder.add("validationResult = $T.INSTANCE.validate(bean.$L(), validationResult);",
-                                                    ClassName.get(model.getPackageName(),
-                                                                  vaidatorClassName),
-                                                    this.processorUtils.createGetMethodName(model.getFieldName()));
+      case ARRAY:
+        String vaidatorClassNameArray = model.getPackageName() + "." + model.getSimpleClassName() + model.getPostFix();
+        builder.beginControlFlow("for (int i = 1; i< bean.$L().length; i++)",
+                                 this.processorUtils.createGetMethodName(model.getFieldName()))
+               .addStatement("$T item = bean.$L()[i]",
+                             ClassName.get(model.getPackageName(),
+                                           model.getSimpleClassName()),
+                             this.processorUtils.createGetMethodName(model.getFieldName()))
+               .add("$L.INSTANCE.validate(item, validationResult);",
+                    vaidatorClassNameArray)
+               .endControlFlow();
         break;
       case LIST:
         String vaidatorClassNameList = model.getGenericTypeElement01()
                                             .toString() + model.getPostFix();
         builder.beginControlFlow("for ($T model : bean.$L())",
-                                                        ClassName.get(model.getGenericTypeElement01()),
-                                                        this.processorUtils.createGetMethodName(model.getFieldName()))
-                                      .add("validationResult = $L.INSTANCE.validate(model, validationResult);",
-                                                    vaidatorClassNameList)
-                                      .endControlFlow();
+                                 ClassName.get(model.getGenericTypeElement01()),
+                                 this.processorUtils.createGetMethodName(model.getFieldName()))
+               .add("validationResult = $L.INSTANCE.validate(model, validationResult);",
+                    vaidatorClassNameList)
+               .endControlFlow();
+        break;
+      case NATIVE:
+        String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
+        builder.add("validationResult = $T.INSTANCE.validate(bean.$L(), validationResult);",
+                    ClassName.get(model.getPackageName(),
+                                  vaidatorClassName),
+                    this.processorUtils.createGetMethodName(model.getFieldName()));
         break;
     }
 

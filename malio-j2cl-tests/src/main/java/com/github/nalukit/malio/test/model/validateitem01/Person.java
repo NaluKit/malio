@@ -13,29 +13,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.model.notnull07;
+package com.github.nalukit.malio.test.model.validateitem01;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
+import com.github.nalukit.malio.shared.annotation.field.ArraySize;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
 
 @MalioValidator
 public class Person {
 
-  @NotNull private Address address;
+  @NotNull private String name;
+
+  @NotNull private String firstName;
+
+  @ArraySize(min = 1, max = 8) private Address[] address;
 
   public Person() {
   }
 
-  public Person(Address address) {
-    this.address = address;
+  public Person(String name,
+                String firstName,
+                Address[] address) {
+    this.name      = name;
+    this.firstName = firstName;
+    this.address   = address;
   }
 
-  public Address getAddress() {
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public Address[] getAddress() {
     return address;
   }
 
-  public void setAddress(Address address) {
+  public void setAddress(Address[] address) {
     this.address = address;
   }
-
 }

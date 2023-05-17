@@ -111,6 +111,7 @@
                 <test>com.github.nalukit.malio.test.ValidatorWhitelistTest</test>
                 <test>com.github.nalukit.malio.test.ValidatorArraySize01Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorNotZeroTest</test>
+                <test>com.github.nalukit.malio.test.ValidateItem01Test</test>
               </tests>
             </configuration>
           </execution>

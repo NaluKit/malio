@@ -101,11 +101,14 @@ public class ValidatorScanner
 
   private void checkNeedForSubvalidator(VariableElement variableElement) {
     TypeElement elementOfVariableType = null;
-    if (variableElement.asType().getKind().equals(TypeKind.ARRAY)) {
-      ArrayType arrayType = (ArrayType) variableElement.asType();
+    if (variableElement.asType()
+                       .getKind()
+                       .equals(TypeKind.ARRAY)) {
+      ArrayType  arrayType   = (ArrayType) variableElement.asType();
       TypeMirror elementType = arrayType.getComponentType();
 
-      if (elementType.getKind().isPrimitive()) {
+      if (elementType.getKind()
+                     .isPrimitive()) {
         return; // We do have to check for subvalidators if type is primitive :)
       }
       elementOfVariableType = (TypeElement) types.asElement(elementType);
@@ -115,18 +118,24 @@ public class ValidatorScanner
 
     this.checkForDirectSubValidators(variableElement,
                                      elementOfVariableType);
+    this.checkForSubValidatorAsGenricInArrays(variableElement,
+                                              elementOfVariableType);
     this.checkForSubValidatorAsGenricInCollections(variableElement,
                                                    elementOfVariableType);
   }
 
   private void checkForDirectSubValidators(VariableElement variableElement,
                                            TypeElement elementOfVariableType) {
-    if (elementOfVariableType.getAnnotation(MalioValidator.class) != null) {
-      this.addValidatorToValidatorGenerationList(variableElement,
-                                                 elementOfVariableType,
-                                                 ValidatorModel.Type.NATIVE,
-                                                 null,
-                                                 null);
+    String elementOfVariableTypeString = variableElement.asType()
+                                                        .toString();
+    if (!elementOfVariableTypeString.contains("[]")) {
+      if (elementOfVariableType.getAnnotation(MalioValidator.class) != null) {
+        this.addValidatorToValidatorGenerationList(variableElement,
+                                                   elementOfVariableType,
+                                                   ValidatorModel.Type.NATIVE,
+                                                   null,
+                                                   null);
+      }
     }
   }
 
@@ -161,6 +170,24 @@ public class ValidatorScanner
                                                      null);
         }
 
+      }
+    }
+  }
+
+  private void checkForSubValidatorAsGenricInArrays(VariableElement variableElement,
+                                                    TypeElement elementOfVariableType) {
+    String elementOfVariableTypeString = variableElement.asType()
+                                                        .toString();
+    // check for generic ... if there is none, we can't do anything ...
+    if (variableElement.asType()
+                       .getKind()
+                       .equals(TypeKind.ARRAY)) {
+      if (elementOfVariableType.getAnnotation(MalioValidator.class) != null) {
+        this.addValidatorToValidatorGenerationList(variableElement,
+                                                   elementOfVariableType,
+                                                   ValidatorModel.Type.ARRAY,
+                                                   elementOfVariableType,
+                                                   null);
       }
     }
   }
