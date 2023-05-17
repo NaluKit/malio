@@ -85,17 +85,17 @@ public class MalioProcessor
     EmailConstraint emailConstraint = new EmailConstraint(this.processingEnv,
                                                           this.processorUtils);
     MaxDecimalConstraint maxDecimalConstraint = new MaxDecimalConstraint(this.processingEnv,
-                                                                                        this.processorUtils);
+                                                                         this.processorUtils);
     MaxLengthConstraint maxLengthConstraint = new MaxLengthConstraint(this.processingEnv,
                                                                       this.processorUtils);
     MaxConstraint maxConstraint = new MaxConstraint(this.processingEnv,
-                                                                   this.processorUtils);
+                                                    this.processorUtils);
     MinDecimalConstraint minDecimalConstraint = new MinDecimalConstraint(this.processingEnv,
-                                                                                        this.processorUtils);
+                                                                         this.processorUtils);
     MinLengthConstraint minLengthConstraint = new MinLengthConstraint(this.processingEnv,
                                                                       this.processorUtils);
     MinConstraint minConstraint = new MinConstraint(this.processingEnv,
-                                                                   this.processorUtils);
+                                                    this.processorUtils);
     NotBlankConstraint notBlankConstraint = new NotBlankConstraint(this.processingEnv,
                                                                    this.processorUtils);
     NotEmptyConstraint notEmptyConstraint = new NotEmptyConstraint(this.processingEnv,
@@ -107,26 +107,27 @@ public class MalioProcessor
     SizeConstraint sizeConstraint = new SizeConstraint(this.processingEnv,
                                                        this.processorUtils);
     ArraySizeConstraint arraySizeConstraint = new ArraySizeConstraint(this.processingEnv,
-            this.processorUtils);
+                                                                      this.processorUtils);
     UuidConstraint uuidConstraint = new UuidConstraint(this.processingEnv,
                                                        this.processorUtils);
     WhitelistConstraint whitelistConstraint = new WhitelistConstraint(this.processingEnv,
                                                                       this.processorUtils);
-    NotZeroConstraint notZeroConstraint = new NotZeroConstraint(this.processingEnv, this.processorUtils);
+    NotZeroConstraint notZeroConstraint = new NotZeroConstraint(this.processingEnv,
+                                                                this.processorUtils);
 
     this.constraints = Arrays.asList(notNullConstraint,
                                      notBlankConstraint,
                                      regexpConstraint,
                                      emailConstraint,
                                      uuidConstraint,
-            maxConstraint,
-            minConstraint,
+                                     maxConstraint,
+                                     minConstraint,
                                      maxLengthConstraint,
                                      minLengthConstraint,
                                      blacklistConstraint,
                                      whitelistConstraint,
-            maxDecimalConstraint,
-            minDecimalConstraint,
+                                     maxDecimalConstraint,
+                                     minDecimalConstraint,
                                      notEmptyConstraint,
                                      sizeConstraint,
                                      arraySizeConstraint,
@@ -175,31 +176,40 @@ public class MalioProcessor
 
   private void processClass(Element clazz)
       throws ProcessorException {
-    MalioValidatorGenerator malioValidatorGenerator = new MalioValidatorGenerator(this.processingEnv, processorUtils, clazz);
-    this.processVariable(clazz.asType(), malioValidatorGenerator);
-    this.createSubAndSuperValidators(clazz, malioValidatorGenerator);
+    MalioValidatorGenerator malioValidatorGenerator = new MalioValidatorGenerator(this.processingEnv,
+                                                                                  processorUtils,
+                                                                                  clazz);
+    this.processVariable(clazz.asType(),
+                         malioValidatorGenerator);
+    this.createSubAndSuperValidators(clazz,
+                                     malioValidatorGenerator);
     malioValidatorGenerator.writeFile();
   }
 
-  private void processVariable(TypeMirror mirror, MalioValidatorGenerator malioValidatorGenerator)
+  private void processVariable(TypeMirror mirror,
+                               MalioValidatorGenerator malioValidatorGenerator)
       throws ProcessorException {
     Element element = this.processingEnv.getTypeUtils()
                                         .asElement(mirror);
-    createConstraints(element, malioValidatorGenerator);
+    createConstraints(element,
+                      malioValidatorGenerator);
   }
 
-  private void createConstraints(Element clazz, MalioValidatorGenerator malioValidatorGenerator)
+  private void createConstraints(Element clazz,
+                                 MalioValidatorGenerator malioValidatorGenerator)
       throws ProcessorException {
 
     for (
         @SuppressWarnings("rawtypes") AbstractConstraint constraint : this.constraints) {
       for (Object varWithAnnotation : constraint.getVarsWithAnnotation((TypeElement) clazz)) {
         Element         elementWithAnnotation = (Element) varWithAnnotation;
-        VariableElement field       = (VariableElement) elementWithAnnotation;
+        VariableElement field                 = (VariableElement) elementWithAnnotation;
 
         constraint.check(field);
-        CodeBlock checkBlock = constraint.generateCheck(clazz, field);
-        CodeBlock validBlock = constraint.generateValid(clazz, field);
+        CodeBlock checkBlock = constraint.generateCheck(clazz,
+                                                        field);
+        CodeBlock validBlock = constraint.generateValid(clazz,
+                                                        field);
 
         malioValidatorGenerator.appendCheckStatement(checkBlock);
         malioValidatorGenerator.appendValidStatement(validBlock);
@@ -208,7 +218,8 @@ public class MalioProcessor
 
   }
 
-  private void createSubAndSuperValidators(Element validatorElement, MalioValidatorGenerator malioValidatorGenerator)
+  private void createSubAndSuperValidators(Element validatorElement,
+                                           MalioValidatorGenerator malioValidatorGenerator)
       throws ProcessorException {
     List<ValidatorModel> subValidatorList = ValidatorScanner.builder()
                                                             .elements(this.processingEnv.getElementUtils())
@@ -227,14 +238,14 @@ public class MalioProcessor
                                                               .createSuperValidatorList();
 
     ValidatorGenerator generator = ValidatorGenerator.builder()
-            .elements(this.processingEnv.getElementUtils())
-            .filer(this.processingEnv.getFiler())
-            .types(this.processingEnv.getTypeUtils())
-            .superValidatorList(superValidatorList)
-            .subValidatorList(subValidatorList)
-            .malioValidatorGenerator(malioValidatorGenerator)
-            .processorUtils(this.processorUtils)
-            .build();
+                                                     .elements(this.processingEnv.getElementUtils())
+                                                     .filer(this.processingEnv.getFiler())
+                                                     .types(this.processingEnv.getTypeUtils())
+                                                     .superValidatorList(superValidatorList)
+                                                     .subValidatorList(subValidatorList)
+                                                     .malioValidatorGenerator(malioValidatorGenerator)
+                                                     .processorUtils(this.processorUtils)
+                                                     .build();
     generator.appendSuperAndSubValidatorsCheck();
     generator.appendSuperAndSubValidatorsValid();
   }
