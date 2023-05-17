@@ -36,6 +36,7 @@ public class ValidatorGenerator
   private       List<ValidatorModel>  superValidatorList;
 
   private MalioValidatorGenerator malioValidatorGenerator;
+
   private ValidatorGenerator(Builder builder) {
     this.superValidatorList = builder.superValidatorList;
     this.subValidatorList   = builder.subValidatorList;
