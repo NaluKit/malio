@@ -45,6 +45,11 @@ public class RegexpConstraint
   }
 
   @Override
+  public Target getTargetForCollectionAndList() {
+    return Target.ITEM;
+  }
+
+  @Override
   public String getImplementationName() {
     return Constants.MALIO_CONSTRAINT_REGEXP_IMPL_NAME;
   }

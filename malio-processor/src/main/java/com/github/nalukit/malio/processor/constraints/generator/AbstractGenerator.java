@@ -18,15 +18,12 @@ package com.github.nalukit.malio.processor.constraints.generator;
 import com.github.nalukit.malio.processor.ProcessorException;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.squareup.javapoet.CodeBlock;
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeSpec;
 
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
-import java.io.IOException;
 
 public abstract class AbstractGenerator
     implements IsGenerator {
@@ -42,14 +39,38 @@ public abstract class AbstractGenerator
   protected abstract CodeBlock generate(Element clazz, VariableElement field, String suffix);
 
   @Override
-  public final CodeBlock generateCheck(Element clazz,
-                                 VariableElement field)
+  public final CodeBlock generateCheckArray(Element clazz,
+                                             VariableElement field)
+          throws ProcessorException {
+    return generate(clazz, field, ".check(bean.$L()[i])");
+  }
+
+  @Override
+  public final CodeBlock generateValidArray(Element clazz, VariableElement field) throws ProcessorException {
+    return generate(clazz, field, ".isValid(bean.$L()[i], validationResult)");
+  }
+
+  @Override
+  public final CodeBlock generateCheckList(Element clazz,
+                                             VariableElement field)
+          throws ProcessorException {
+    return generate(clazz, field, ".check(bean.$L().get(i).$L())");
+  }
+
+  @Override
+  public final CodeBlock generateValidList(Element clazz, VariableElement field) throws ProcessorException {
+    return generate(clazz, field, ".isValid(bean.$L().get(i), validationResult)");
+  }
+
+  @Override
+  public final CodeBlock generateCheckNative(Element clazz,
+                                             VariableElement field)
           throws ProcessorException {
     return generate(clazz, field, ".check(bean.$L())");
   }
 
   @Override
-  public final CodeBlock generateValid(Element clazz, VariableElement field) throws ProcessorException {
+  public final CodeBlock generateValidNative(Element clazz, VariableElement field) throws ProcessorException {
     return generate(clazz, field, ".isValid(bean.$L(), validationResult)");
   }
 }

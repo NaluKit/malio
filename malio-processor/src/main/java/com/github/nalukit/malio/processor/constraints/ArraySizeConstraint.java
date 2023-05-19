@@ -46,6 +46,11 @@ public class ArraySizeConstraint
   }
 
   @Override
+  public Target getTargetForCollectionAndList() {
+    return Target.ROOT;
+  }
+
+  @Override
   public String getImplementationName() {
     return Constants.MALIO_CONSTRAINT_ARRAYSIZE_IMPL_NAME;
   }
@@ -57,7 +62,7 @@ public class ArraySizeConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.ArraySizeConstraint.class);
+    return ClassName.get(ArraySizeConstraint.class);
   }
 
   @Override

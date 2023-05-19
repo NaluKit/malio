@@ -45,6 +45,11 @@ public class MaxLengthConstraint
   }
 
   @Override
+  public Target getTargetForCollectionAndList() {
+    return Target.ITEM;
+  }
+
+  @Override
   public String getImplementationName() {
     return Constants.MALIO_CONSTRAINT_MAXLENGTH_IMPL_NAME;
   }

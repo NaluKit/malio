@@ -20,12 +20,19 @@ import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.internal.validator.AbstractValidator;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.squareup.javapoet.*;
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.CodeBlock;
+import com.squareup.javapoet.FieldSpec;
+import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterSpec;
+import com.squareup.javapoet.TypeSpec;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.VariableElement;
 import java.io.IOException;
 
 public class MalioValidatorGenerator {
@@ -131,15 +138,29 @@ public class MalioValidatorGenerator {
         this.validMethodTwoParameterBuilder.addStatement(checkBlock);
     }
 
-    private TypeSpec build() {
-        this.validMethodTwoParameterBuilder.addStatement("return validationResult");
-        return this.typeSpec
-                .addMethod(this.checkMethodBuilder.build())
-                .addMethod(this.validMethodTwoParameterBuilder.build())
-                .build();
+    public void appendBeginControlFlowArray(VariableElement field) {
+        this.checkMethodBuilder.beginControlFlow("for (int i; i < bean.$L().length; i++)",
+                                                 this.processorUtils.createGetMethodName(field.getSimpleName()
+                                                                                              .toString()));
+        this.validMethodTwoParameterBuilder.beginControlFlow("for (int i; i < bean.$L().length; i++)",
+                                                             this.processorUtils.createGetMethodName(field.getSimpleName()
+                                                                                                          .toString()));
     }
 
-    public void writeFile() throws ProcessorException {
+    public void appendEndControlFlow() {
+        this.checkMethodBuilder.endControlFlow();
+        this.validMethodTwoParameterBuilder.endControlFlow();
+    }
+
+    private TypeSpec build() {
+        this.validMethodTwoParameterBuilder.addStatement("return validationResult");
+        return this.typeSpec.addMethod(this.checkMethodBuilder.build())
+                            .addMethod(this.validMethodTwoParameterBuilder.build())
+                            .build();
+    }
+
+    public void writeFile()
+        throws ProcessorException {
         TypeSpec typeSpec = this.build();
         this.writeFile(this.clazz,
                 Constants.MALIO_VALIDATOR_IMPL_NAME,

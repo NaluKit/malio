@@ -46,6 +46,11 @@ public class NotNullConstraint
   }
 
   @Override
+  public Target getTargetForCollectionAndList() {
+    return Target.ROOT;
+  }
+
+  @Override
   public String getImplementationName() {
     return Constants.MALIO_CONSTRAINT_NOT_NULL_IMPL_NAME;
   }
@@ -57,7 +62,7 @@ public class NotNullConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ParameterizedTypeName.get(ClassName.get(com.github.nalukit.malio.shared.internal.constraints.NotNullConstraint.class),
+    return ParameterizedTypeName.get(ClassName.get(NotNullConstraint.class),
                                      ClassName.get(variableElement.asType()));
   }
 
@@ -69,7 +74,8 @@ public class NotNullConstraint
   @Override
   protected List<Class<?>> getSupportedDeclaredType() {
     return Arrays.asList(Object.class,
-                         Enum.class);
+                         Enum.class,
+                         Object[].class);
   }
 
   @Override

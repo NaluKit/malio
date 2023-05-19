@@ -46,6 +46,11 @@ public class MinDecimalConstraint
   }
 
   @Override
+  public Target getTargetForCollectionAndList() {
+    return Target.ITEM;
+  }
+
+  @Override
   public String getImplementationName() {
     return Constants.MALIO_CONSTRAINT_MINDECIMALVALUE_IMPL_NAME;
   }

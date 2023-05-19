@@ -46,6 +46,11 @@ public class BlacklistConstraint
   }
 
   @Override
+  public Target getTargetForCollectionAndList() {
+    return Target.ITEM;
+  }
+
+  @Override
   public String getImplementationName() {
     return Constants.MALIO_CONSTRAINT_BLACKLIST_IMPL_NAME;
   }
@@ -57,7 +62,7 @@ public class BlacklistConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.BlacklistConstraint.class);
+    return ClassName.get(BlacklistConstraint.class);
   }
 
   @Override

@@ -45,6 +45,11 @@ public class NotZeroConstraint
   }
 
   @Override
+  public Target getTargetForCollectionAndList() {
+    return Target.ITEM;
+  }
+
+  @Override
   public String getImplementationName() {
     return Constants.MALIO_CONSTRAINT_NOTZERO_IMPL_NAME;
   }

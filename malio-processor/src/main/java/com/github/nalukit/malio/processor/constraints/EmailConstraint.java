@@ -45,6 +45,11 @@ public class EmailConstraint
   }
 
   @Override
+  public Target getTargetForCollectionAndList() {
+    return Target.ITEM;
+  }
+
+  @Override
   public String getImplementationName() {
     return Constants.MALIO_CONSTRAINT_EMAIL_IMPL_NAME;
   }
@@ -56,7 +61,7 @@ public class EmailConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.EmailConstraint.class);
+    return ClassName.get(EmailConstraint.class);
   }
 
   @Override

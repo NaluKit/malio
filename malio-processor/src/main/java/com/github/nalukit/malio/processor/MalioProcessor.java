@@ -15,7 +15,24 @@
  */
 package com.github.nalukit.malio.processor;
 
-import com.github.nalukit.malio.processor.constraints.*;
+import com.github.nalukit.malio.processor.constraints.AbstractConstraint;
+import com.github.nalukit.malio.processor.constraints.ArraySizeConstraint;
+import com.github.nalukit.malio.processor.constraints.BlacklistConstraint;
+import com.github.nalukit.malio.processor.constraints.EmailConstraint;
+import com.github.nalukit.malio.processor.constraints.MaxConstraint;
+import com.github.nalukit.malio.processor.constraints.MaxDecimalConstraint;
+import com.github.nalukit.malio.processor.constraints.MaxLengthConstraint;
+import com.github.nalukit.malio.processor.constraints.MinConstraint;
+import com.github.nalukit.malio.processor.constraints.MinDecimalConstraint;
+import com.github.nalukit.malio.processor.constraints.MinLengthConstraint;
+import com.github.nalukit.malio.processor.constraints.NotBlankConstraint;
+import com.github.nalukit.malio.processor.constraints.NotEmptyConstraint;
+import com.github.nalukit.malio.processor.constraints.NotNullConstraint;
+import com.github.nalukit.malio.processor.constraints.NotZeroConstraint;
+import com.github.nalukit.malio.processor.constraints.RegexpConstraint;
+import com.github.nalukit.malio.processor.constraints.SizeConstraint;
+import com.github.nalukit.malio.processor.constraints.UuidConstraint;
+import com.github.nalukit.malio.processor.constraints.WhitelistConstraint;
 import com.github.nalukit.malio.processor.constraints.generator.ValidatorGenerator;
 import com.github.nalukit.malio.processor.constraints.scanner.ValidatorScanner;
 import com.github.nalukit.malio.processor.model.ValidatorModel;
@@ -32,12 +49,17 @@ import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toSet;
@@ -186,36 +208,101 @@ public class MalioProcessor
     malioValidatorGenerator.writeFile();
   }
 
-  private void processVariable(TypeMirror mirror,
+  private void processVariable(TypeMirror clazz,
                                MalioValidatorGenerator malioValidatorGenerator)
       throws ProcessorException {
-    Element element = this.processingEnv.getTypeUtils()
-                                        .asElement(mirror);
-    createConstraints(element,
-                      malioValidatorGenerator);
+    TypeElement element = (TypeElement) this.processingEnv.getTypeUtils()
+                                                          .asElement(clazz);
+    List<VariableElement> listOfDirectVariables = this.processingEnv.getElementUtils()
+                                                                    .getAllMembers(element)
+                                                                    .stream()
+                                                                    .filter(e -> e.getKind() == ElementKind.FIELD)
+                                                                    .filter(e -> e.getEnclosingElement()
+                                                                                  .toString()
+                                                                                  .equals(element.toString()))
+                                                                    .map(e -> (VariableElement) e)
+                                                                    .collect(Collectors.toList());
+    for (VariableElement field : listOfDirectVariables) {
+      ValidatorModel.Type type = this.getTypeFromVariableElement(field);
+      switch (type) {
+        case ARRAY:
+          this.createConstraintsForArray(field,
+                                         malioValidatorGenerator);
+          break;
+        case COLLECTION:
+          System.out.println("LIST");
+          break;
+        case NATIVE:
+          this.createConstraintsForNative(field,
+                                          malioValidatorGenerator);
+          break;
+      }
+    }
   }
 
-  private void createConstraints(Element clazz,
-                                 MalioValidatorGenerator malioValidatorGenerator)
+  private void createConstraintsForArray(VariableElement field,
+                                         MalioValidatorGenerator malioValidatorGenerator)
       throws ProcessorException {
+    for (AbstractConstraint<?> constraint : this.constraints) {
+      if (AbstractConstraint.Target.ROOT == constraint.getTargetForCollectionAndList()) {
+        if (Objects.nonNull(field.getAnnotation(constraint.annotationType()))) {
+          constraint.checkDataType(field,
+                                   ValidatorModel.Type.ARRAY,
+                                   constraint.getTargetForCollectionAndList());
+          CodeBlock checkBlock = constraint.generateCheckNative(field,
+                                                                field);
+          CodeBlock validBlock = constraint.generateValidNative(field,
+                                                                field);
 
-    for (
-        @SuppressWarnings("rawtypes") AbstractConstraint constraint : this.constraints) {
-      for (Object varWithAnnotation : constraint.getVarsWithAnnotation((TypeElement) clazz)) {
-        Element         elementWithAnnotation = (Element) varWithAnnotation;
-        VariableElement field                 = (VariableElement) elementWithAnnotation;
+          malioValidatorGenerator.appendCheckStatement(checkBlock);
+          malioValidatorGenerator.appendValidStatement(validBlock);
+        }
+      }
+    }
 
-        constraint.check(field);
-        CodeBlock checkBlock = constraint.generateCheck(clazz,
-                                                        field);
-        CodeBlock validBlock = constraint.generateValid(clazz,
-                                                        field);
+    boolean beginControlFlowCreated = false;
+    for (AbstractConstraint<?> constraint : this.constraints) {
+      if (AbstractConstraint.Target.ROOT != constraint.getTargetForCollectionAndList()) {
+        if (Objects.nonNull(field.getAnnotation(constraint.annotationType()))) {
+          if (!beginControlFlowCreated) {
+            malioValidatorGenerator.appendBeginControlFlowArray(field);
+            beginControlFlowCreated = true;
+          }
+          constraint.checkDataType(field,
+                                   ValidatorModel.Type.ARRAY,
+                                   constraint.getTargetForCollectionAndList());
+          CodeBlock checkBlock = constraint.generateCheckArray(field,
+                                                                field);
+          CodeBlock validBlock = constraint.generateValidArray(field,
+                                                                field);
+
+          malioValidatorGenerator.appendCheckStatement(checkBlock);
+          malioValidatorGenerator.appendValidStatement(validBlock);
+        }
+      }
+    }
+    if (beginControlFlowCreated) {
+      malioValidatorGenerator.appendEndControlFlow();
+    }
+  }
+
+  private void createConstraintsForNative(VariableElement field,
+                                          MalioValidatorGenerator malioValidatorGenerator)
+      throws ProcessorException {
+    for (AbstractConstraint<?> constraint : this.constraints) {
+      if (Objects.nonNull(field.getAnnotation(constraint.annotationType()))) {
+        constraint.checkDataType(field,
+                                 ValidatorModel.Type.NATIVE,
+                                 constraint.getTargetForCollectionAndList());
+        CodeBlock checkBlock = constraint.generateCheckNative(field,
+                                                              field);
+        CodeBlock validBlock = constraint.generateValidNative(field,
+                                                              field);
 
         malioValidatorGenerator.appendCheckStatement(checkBlock);
         malioValidatorGenerator.appendValidStatement(validBlock);
       }
     }
-
   }
 
   private void createSubAndSuperValidators(Element validatorElement,
@@ -248,6 +335,31 @@ public class MalioProcessor
                                                      .build();
     generator.appendSuperAndSubValidatorsCheck();
     generator.appendSuperAndSubValidatorsValid();
+  }
+
+  private ValidatorModel.Type getTypeFromVariableElement(VariableElement variableElement) {
+    if (variableElement.asType()
+                       .getKind()
+                       .equals(TypeKind.ARRAY)) {
+      return ValidatorModel.Type.ARRAY;
+    }
+
+    String elementOfVariableTypeString = variableElement.asType()
+                                                        .toString();
+    // check for generic ... if there is none, we can't do anything ...
+    if (elementOfVariableTypeString.contains("<")) {
+      // get flatten super type list and look for Collection class
+      Set<TypeMirror> superClasses = this.processorUtils.getFlattenedSupertypeHierarchy(this.processingEnv.getTypeUtils(),
+                                                                                        variableElement.asType());
+      for (TypeMirror tm : superClasses) {
+        if (tm.toString()
+              .startsWith(Collection.class.getCanonicalName())) {
+          return ValidatorModel.Type.COLLECTION;
+        }
+      }
+    }
+
+    return ValidatorModel.Type.NATIVE;
   }
 
 }

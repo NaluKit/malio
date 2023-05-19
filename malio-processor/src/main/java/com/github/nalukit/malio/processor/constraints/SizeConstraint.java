@@ -46,6 +46,11 @@ public class SizeConstraint
   }
 
   @Override
+  public Target getTargetForCollectionAndList() {
+    return Target.ROOT;
+  }
+
+  @Override
   public String getImplementationName() {
     return Constants.MALIO_CONSTRAINT_SIZE_IMPL_NAME;
   }

@@ -165,11 +165,10 @@ public class ValidatorScanner
         if (elementOfGenericList.getAnnotation(MalioValidator.class) != null) {
           this.addValidatorToValidatorGenerationList(variableElement,
                                                      elementOfVariableType,
-                                                     ValidatorModel.Type.LIST,
+                                                     ValidatorModel.Type.COLLECTION,
                                                      elementOfGenericList,
                                                      null);
         }
-
       }
     }
   }

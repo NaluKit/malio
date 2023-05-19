@@ -104,7 +104,7 @@ public class ValidatorGenerator
                     vaidatorClassNameArray)
                .endControlFlow();
         break;
-      case LIST:
+      case COLLECTION:
         String vaidatorClassNameList = model.getGenericTypeElement01()
                                             .toString() + model.getPostFix();
         builder.beginControlFlow("for ($T model : bean.$L())",
@@ -176,7 +176,7 @@ public class ValidatorGenerator
                     vaidatorClassNameArray)
                .endControlFlow();
         break;
-      case LIST:
+      case COLLECTION:
         String vaidatorClassNameList = model.getGenericTypeElement01()
                                             .toString() + model.getPostFix();
         builder.beginControlFlow("for ($T model : bean.$L())",

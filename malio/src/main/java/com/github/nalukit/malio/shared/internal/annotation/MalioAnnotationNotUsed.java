@@ -13,26 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.shared.annotation.field;
+package com.github.nalukit.malio.shared.internal.annotation;
 
-import java.lang.annotation.Annotation;
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 /**
- * <p>The annotation tells Malio to validate an item
- * of a Collection or Array</p>
- *
- * <p>This annotation can only be used on fields of type <b>Array, Collection</b>.</p>
+ * Annotation to mark classes, which will used by the framework.
+ * <br>
+ * <p>Do not use classes annotated with MalioInternalUse! This
+ * classes can change without any announcement.</p>
  *
  * @author Frank Hossfeld, Philipp Kohl
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface ValidateItem {
-
-  Class<? extends Annotation>[] value();
-
+public @interface MalioAnnotationNotUsed {
 }

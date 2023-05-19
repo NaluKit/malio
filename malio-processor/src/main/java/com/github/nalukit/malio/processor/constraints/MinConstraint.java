@@ -45,6 +45,11 @@ public class MinConstraint
   }
 
   @Override
+  public Target getTargetForCollectionAndList() {
+    return Target.ITEM;
+  }
+
+  @Override
   public String getImplementationName() {
     return Constants.MALIO_CONSTRAINT_MINVALUE_IMPL_NAME;
   }

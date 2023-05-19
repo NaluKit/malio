@@ -99,8 +99,7 @@ public class ValidatorModel {
 
   public enum Type {
     ARRAY,
-    LIST,
-    MAP,
+    COLLECTION,
     NATIVE
   }
 }

@@ -21,6 +21,7 @@ import com.github.nalukit.malio.processor.constraints.generator.IsGenerator;
 import com.github.nalukit.malio.processor.exceptions.UnsupportedTypeException;
 import com.github.nalukit.malio.processor.model.ConstraintModel;
 import com.github.nalukit.malio.processor.model.ConstraintType;
+import com.github.nalukit.malio.processor.model.ValidatorModel;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.TypeName;
@@ -56,12 +57,16 @@ public abstract class AbstractConstraint<T extends Annotation>
                                getConstraintType());
   }
 
-  public void check(VariableElement variableElement) {
+  public void checkDataType(VariableElement variableElement,
+                            ValidatorModel.Type type,
+                            Target targetForCollectionAndList) {
     if (getSupportedDeclaredType() == null && getSupportedPrimitives() == null) {
       return;
     }
 
     if (!processorUtils.checkDataType(variableElement,
+                                      type,
+                                      targetForCollectionAndList,
                                       getSupportedPrimitives(),
                                       getSupportedDeclaredType())) {
       throw new UnsupportedTypeException("Class >>" +
@@ -82,6 +87,8 @@ public abstract class AbstractConstraint<T extends Annotation>
                                                                         this.annotationType());
   }
 
+  public abstract Target getTargetForCollectionAndList();
+
   public abstract String getImplementationName();
 
   public abstract ConstraintType getConstraintType();
@@ -95,20 +102,74 @@ public abstract class AbstractConstraint<T extends Annotation>
   protected abstract AbstractGenerator createGenerator();
 
   @Override
-  public CodeBlock generateCheck(Element clazz,
-                                 VariableElement field)
+  public CodeBlock generateCheckArray(Element clazz,
+                                      VariableElement field)
       throws ProcessorException {
     return this.createGenerator()
-        .generateCheck(clazz,
-                  field);
+               .generateCheckArray(clazz,
+                                   field);
   }
 
   @Override
-  public CodeBlock generateValid(Element clazz,
-                                 VariableElement field)
-          throws ProcessorException {
+  public CodeBlock generateValidArray(Element clazz,
+                                      VariableElement field)
+      throws ProcessorException {
     return this.createGenerator()
-            .generateValid(clazz,
-                    field);
+               .generateValidArray(clazz,
+                                   field);
+  }
+
+  @Override
+  public CodeBlock generateCheckList(Element clazz,
+                                     VariableElement field)
+      throws ProcessorException {
+    return this.createGenerator()
+               .generateCheckList(clazz,
+                                  field);
+  }
+
+  @Override
+  public CodeBlock generateValidList(Element clazz,
+                                     VariableElement field)
+      throws ProcessorException {
+    return this.createGenerator()
+               .generateValidList(clazz,
+                                  field);
+  }
+
+  @Override
+  public CodeBlock generateCheckNative(Element clazz,
+                                       VariableElement field)
+      throws ProcessorException {
+    return this.createGenerator()
+               .generateCheckNative(clazz,
+                                    field);
+  }
+
+  @Override
+  public CodeBlock generateValidNative(Element clazz,
+                                       VariableElement field)
+      throws ProcessorException {
+    return this.createGenerator()
+               .generateValidNative(clazz,
+                                    field);
+  }
+
+  /**
+   * Describes the target of a constraint depending on the field type:
+   * <ul>
+   *   <li>field type NATIVE: the value will be ignored</li>
+   *   <li>field type ARRAY or COLLECTION: the value will define the target of the constraint:
+   *   <ol>
+   *     <li>NOT_PERMITTED: constraint not allowed here</li>
+   *     <li>ROOT: used on the variable itself</li>
+   *     <li>ITEM: used on the ARRAY or Collection member</li>
+   *   </ol></li>
+   * </ul>
+   */
+  public enum Target {
+    ROOT,
+    ITEM,
+    NOT_PERMITTED
   }
 }
