@@ -30,11 +30,14 @@ public class Person extends AbstractPerson {
   @MinLength(1)
   private String profession;
 
-  @ArraySize(min = 1, max = 8)
-  @NotNull
-  @NotBlank
-  @MaxLength(128)
+//  @ArraySize(min = 1, max = 8)
+//  @NotNull
+//  @NotBlank
+//  @MaxLength(128)
   private String[] entities;
+
+//  @ArraySize(min = 1, max = 8)
+  private int[] myNumbers;
 
   public Person() {
   }
@@ -42,10 +45,13 @@ public class Person extends AbstractPerson {
   public Person(String firstName,
                 String name,
                 String profession,
-                String[] entities) {
-    super(firstName, name);
+                String[] entities,
+                int[] myNumbers) {
+    super(firstName,
+          name);
     this.profession = profession;
-    this.entities  = entities;
+    this.entities   = entities;
+    this.myNumbers  = myNumbers;
   }
 
   public String getProfession() {
@@ -62,5 +68,13 @@ public class Person extends AbstractPerson {
 
   public void setEntities(String[] entities) {
     this.entities = entities;
+  }
+
+  public int[] getMyNumbers() {
+    return myNumbers;
+  }
+
+  public void setMyNumbers(int[] myNumbers) {
+    this.myNumbers = myNumbers;
   }
 }

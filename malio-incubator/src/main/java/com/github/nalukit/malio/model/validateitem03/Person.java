@@ -33,10 +33,10 @@ public class Person
   @MinLength(1)
   private String profession;
 
-  @ArraySize(min = 1, max = 8)
-  @NotNull
-  @NotBlank
-  @MaxLength(128)
+//  @ArraySize(min = 1, max = 8)
+//  @NotNull
+//  @NotBlank
+//  @MaxLength(128)
   private List<String> entities;
 
   public Person() {

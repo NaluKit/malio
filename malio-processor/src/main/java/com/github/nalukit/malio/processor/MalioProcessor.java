@@ -15,30 +15,48 @@
  */
 package com.github.nalukit.malio.processor;
 
-import com.github.nalukit.malio.processor.constraints.AbstractConstraint;
-import com.github.nalukit.malio.processor.constraints.ArraySizeConstraint;
-import com.github.nalukit.malio.processor.constraints.BlacklistConstraint;
-import com.github.nalukit.malio.processor.constraints.EmailConstraint;
-import com.github.nalukit.malio.processor.constraints.MaxConstraint;
-import com.github.nalukit.malio.processor.constraints.MaxDecimalConstraint;
-import com.github.nalukit.malio.processor.constraints.MaxLengthConstraint;
-import com.github.nalukit.malio.processor.constraints.MinConstraint;
-import com.github.nalukit.malio.processor.constraints.MinDecimalConstraint;
-import com.github.nalukit.malio.processor.constraints.MinLengthConstraint;
-import com.github.nalukit.malio.processor.constraints.NotBlankConstraint;
-import com.github.nalukit.malio.processor.constraints.NotEmptyConstraint;
-import com.github.nalukit.malio.processor.constraints.NotNullConstraint;
-import com.github.nalukit.malio.processor.constraints.NotZeroConstraint;
-import com.github.nalukit.malio.processor.constraints.RegexpConstraint;
-import com.github.nalukit.malio.processor.constraints.SizeConstraint;
-import com.github.nalukit.malio.processor.constraints.UuidConstraint;
-import com.github.nalukit.malio.processor.constraints.WhitelistConstraint;
-import com.github.nalukit.malio.processor.constraints.generator.ValidatorGenerator;
-import com.github.nalukit.malio.processor.constraints.scanner.ValidatorScanner;
+import com.github.nalukit.malio.processor.constraint.AbstractProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.ArraySizeProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.BlacklistProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.DecimalMaxProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.DecimalMinProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.EmailProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.MaxProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.MaxLengthProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.MinProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.MinLengthProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.NotBlankProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.NotEmptyProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.NotNullProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.NotZeroProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.RegexpProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.SizeProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.UuidProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.WhitelistProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.generator.ValidatorGenerator;
+import com.github.nalukit.malio.processor.constraint.scanner.ValidatorScanner;
+import com.github.nalukit.malio.processor.exception.UnsupportedTypeException;
 import com.github.nalukit.malio.processor.model.ValidatorModel;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.Malio;
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
+import com.github.nalukit.malio.shared.annotation.field.ArraySize;
+import com.github.nalukit.malio.shared.annotation.field.Blacklist;
+import com.github.nalukit.malio.shared.annotation.field.DecimalMax;
+import com.github.nalukit.malio.shared.annotation.field.DecimalMin;
+import com.github.nalukit.malio.shared.annotation.field.Email;
+import com.github.nalukit.malio.shared.annotation.field.Max;
+import com.github.nalukit.malio.shared.annotation.field.MaxLength;
+import com.github.nalukit.malio.shared.annotation.field.Min;
+import com.github.nalukit.malio.shared.annotation.field.MinLength;
+import com.github.nalukit.malio.shared.annotation.field.NotBlank;
+import com.github.nalukit.malio.shared.annotation.field.NotEmpty;
+import com.github.nalukit.malio.shared.annotation.field.NotNull;
+import com.github.nalukit.malio.shared.annotation.field.NotZero;
+import com.github.nalukit.malio.shared.annotation.field.Regexp;
+import com.github.nalukit.malio.shared.annotation.field.Size;
+import com.github.nalukit.malio.shared.annotation.field.Uuid;
+import com.github.nalukit.malio.shared.annotation.field.Whitelist;
 import com.google.auto.service.AutoService;
 import com.google.common.base.Stopwatch;
 import com.squareup.javapoet.CodeBlock;
@@ -48,15 +66,18 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import java.util.Arrays;
+import javax.lang.model.util.Elements;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -68,12 +89,13 @@ import static java.util.stream.Collectors.toSet;
 public class MalioProcessor
     extends AbstractProcessor {
 
-  @SuppressWarnings("rawtypes") List<AbstractConstraint> constraints;
+  Map<String, AbstractProcessorConstraint<?>> constraints;
   private ProcessorUtils processorUtils;
   private Stopwatch      stopwatch;
 
   public MalioProcessor() {
     super();
+    this.constraints = new HashMap<>();
   }
 
   @Override
@@ -99,61 +121,62 @@ public class MalioProcessor
 
   private void setUp() {
     this.processorUtils = ProcessorUtils.builder()
-                                        .processingEnvironment(processingEnv)
+                                        .processingEnvironment(this.processingEnv)
                                         .build();
 
-    BlacklistConstraint blacklistConstraint = new BlacklistConstraint(this.processingEnv,
-                                                                      this.processorUtils);
-    EmailConstraint emailConstraint = new EmailConstraint(this.processingEnv,
-                                                          this.processorUtils);
-    MaxDecimalConstraint maxDecimalConstraint = new MaxDecimalConstraint(this.processingEnv,
-                                                                         this.processorUtils);
-    MaxLengthConstraint maxLengthConstraint = new MaxLengthConstraint(this.processingEnv,
-                                                                      this.processorUtils);
-    MaxConstraint maxConstraint = new MaxConstraint(this.processingEnv,
-                                                    this.processorUtils);
-    MinDecimalConstraint minDecimalConstraint = new MinDecimalConstraint(this.processingEnv,
-                                                                         this.processorUtils);
-    MinLengthConstraint minLengthConstraint = new MinLengthConstraint(this.processingEnv,
-                                                                      this.processorUtils);
-    MinConstraint minConstraint = new MinConstraint(this.processingEnv,
-                                                    this.processorUtils);
-    NotBlankConstraint notBlankConstraint = new NotBlankConstraint(this.processingEnv,
-                                                                   this.processorUtils);
-    NotEmptyConstraint notEmptyConstraint = new NotEmptyConstraint(this.processingEnv,
-                                                                   this.processorUtils);
-    NotNullConstraint notNullConstraint = new NotNullConstraint(this.processingEnv,
-                                                                this.processorUtils);
-    RegexpConstraint regexpConstraint = new RegexpConstraint(this.processingEnv,
-                                                             this.processorUtils);
-    SizeConstraint sizeConstraint = new SizeConstraint(this.processingEnv,
-                                                       this.processorUtils);
-    ArraySizeConstraint arraySizeConstraint = new ArraySizeConstraint(this.processingEnv,
-                                                                      this.processorUtils);
-    UuidConstraint uuidConstraint = new UuidConstraint(this.processingEnv,
-                                                       this.processorUtils);
-    WhitelistConstraint whitelistConstraint = new WhitelistConstraint(this.processingEnv,
-                                                                      this.processorUtils);
-    NotZeroConstraint notZeroConstraint = new NotZeroConstraint(this.processingEnv,
-                                                                this.processorUtils);
+    Elements elements = super.processingEnv.getElementUtils();
 
-    this.constraints = Arrays.asList(notNullConstraint,
-                                     notBlankConstraint,
-                                     regexpConstraint,
-                                     emailConstraint,
-                                     uuidConstraint,
-                                     maxConstraint,
-                                     minConstraint,
-                                     maxLengthConstraint,
-                                     minLengthConstraint,
-                                     blacklistConstraint,
-                                     whitelistConstraint,
-                                     maxDecimalConstraint,
-                                     minDecimalConstraint,
-                                     notEmptyConstraint,
-                                     sizeConstraint,
-                                     arraySizeConstraint,
-                                     notZeroConstraint);
+    this.constraints.put(Blacklist.class.getCanonicalName(),
+                         new BlacklistProcessorConstraint().setUp(this.processingEnv,
+                                                                  this.processorUtils));
+    this.constraints.put(Email.class.getCanonicalName(),
+                         new EmailProcessorConstraint().setUp(this.processingEnv,
+                                                              this.processorUtils));
+    this.constraints.put(DecimalMax.class.getCanonicalName(),
+                         new DecimalMaxProcessorConstraint().setUp(this.processingEnv,
+                                                                   this.processorUtils));
+    this.constraints.put(MaxLength.class.getCanonicalName(),
+                         new MaxLengthProcessorConstraint().setUp(this.processingEnv,
+                                                                  this.processorUtils));
+    this.constraints.put(Max.class.getCanonicalName(),
+                         new MaxProcessorConstraint().setUp(this.processingEnv,
+                                                            this.processorUtils));
+    this.constraints.put(DecimalMin.class.getCanonicalName(),
+                         new DecimalMinProcessorConstraint().setUp(this.processingEnv,
+                                                                   this.processorUtils));
+    this.constraints.put(MinLength.class.getCanonicalName(),
+                         new MinLengthProcessorConstraint().setUp(this.processingEnv,
+                                                                  this.processorUtils));
+    this.constraints.put(Min.class.getCanonicalName(),
+                         new MinProcessorConstraint().setUp(this.processingEnv,
+                                                            this.processorUtils));
+    this.constraints.put(NotBlank.class.getCanonicalName(),
+                         new NotBlankProcessorConstraint().setUp(this.processingEnv,
+                                                                 this.processorUtils));
+    this.constraints.put(NotEmpty.class.getCanonicalName(),
+                         new NotEmptyProcessorConstraint().setUp(this.processingEnv,
+                                                                 this.processorUtils));
+    this.constraints.put(NotNull.class.getCanonicalName(),
+                         new NotNullProcessorConstraint().setUp(this.processingEnv,
+                                                                this.processorUtils));
+    this.constraints.put(Regexp.class.getCanonicalName(),
+                         new RegexpProcessorConstraint().setUp(this.processingEnv,
+                                                               this.processorUtils));
+    this.constraints.put(Size.class.getCanonicalName(),
+                         new SizeProcessorConstraint().setUp(this.processingEnv,
+                                                             this.processorUtils));
+    this.constraints.put(ArraySize.class.getCanonicalName(),
+                         new ArraySizeProcessorConstraint().setUp(this.processingEnv,
+                                                                  this.processorUtils));
+    this.constraints.put(Uuid.class.getCanonicalName(),
+                         new UuidProcessorConstraint().setUp(this.processingEnv,
+                                                             this.processorUtils));
+    this.constraints.put(Whitelist.class.getCanonicalName(),
+                         new WhitelistProcessorConstraint().setUp(this.processingEnv,
+                                                                  this.processorUtils));
+    this.constraints.put(NotZero.class.getCanonicalName(),
+                         new NotZeroProcessorConstraint().setUp(this.processingEnv,
+                                                                this.processorUtils));
   }
 
   @Override
@@ -243,66 +266,96 @@ public class MalioProcessor
   private void createConstraintsForArray(VariableElement field,
                                          MalioValidatorGenerator malioValidatorGenerator)
       throws ProcessorException {
-    for (AbstractConstraint<?> constraint : this.constraints) {
-      if (AbstractConstraint.Target.ROOT == constraint.getTargetForCollectionAndList()) {
-        if (Objects.nonNull(field.getAnnotation(constraint.annotationType()))) {
-          constraint.checkDataType(field,
-                                   ValidatorModel.Type.ARRAY,
-                                   constraint.getTargetForCollectionAndList());
-          CodeBlock checkBlock = constraint.generateCheckNative(field,
-                                                                field);
-          CodeBlock validBlock = constraint.generateValidNative(field,
-                                                                field);
+    //    for (AbstractConstraint<?> constraint : this.constraints) {
+    //      if (AbstractConstraint.Target.ROOT == constraint.getTargetForCollectionAndList()) {
+    //        if (Objects.nonNull(field.getAnnotation(constraint.annotationType()))) {
+    //          constraint.checkDataType(field,
+    //                                   ValidatorModel.Type.ARRAY,
+    //                                   constraint.getTargetForCollectionAndList());
+    //          CodeBlock checkBlock = constraint.generateCheckNative(field,
+    //                                                                field);
+    //          CodeBlock validBlock = constraint.generateValidNative(field,
+    //                                                                field);
+    //
+    //          malioValidatorGenerator.appendCheckStatement(checkBlock);
+    //          malioValidatorGenerator.appendValidStatement(validBlock);
+    //        }
+    //      }
+    //    }
 
-          malioValidatorGenerator.appendCheckStatement(checkBlock);
-          malioValidatorGenerator.appendValidStatement(validBlock);
-        }
-      }
-    }
-
-    boolean beginControlFlowCreated = false;
-    for (AbstractConstraint<?> constraint : this.constraints) {
-      if (AbstractConstraint.Target.ROOT != constraint.getTargetForCollectionAndList()) {
-        if (Objects.nonNull(field.getAnnotation(constraint.annotationType()))) {
-          if (!beginControlFlowCreated) {
-            malioValidatorGenerator.appendBeginControlFlowArray(field);
-            beginControlFlowCreated = true;
-          }
-          constraint.checkDataType(field,
-                                   ValidatorModel.Type.ARRAY,
-                                   constraint.getTargetForCollectionAndList());
-          CodeBlock checkBlock = constraint.generateCheckArray(field,
-                                                                field);
-          CodeBlock validBlock = constraint.generateValidArray(field,
-                                                                field);
-
-          malioValidatorGenerator.appendCheckStatement(checkBlock);
-          malioValidatorGenerator.appendValidStatement(validBlock);
-        }
-      }
-    }
-    if (beginControlFlowCreated) {
-      malioValidatorGenerator.appendEndControlFlow();
-    }
+    //    boolean beginControlFlowCreated = false;
+    //    for (AbstractConstraint<?> constraint : this.constraints) {
+    //      if (AbstractConstraint.Target.ROOT != constraint.getTargetForCollectionAndList()) {
+    //        if (Objects.nonNull(field.getAnnotation(constraint.annotationType()))) {
+    //          if (!beginControlFlowCreated) {
+    //            malioValidatorGenerator.appendBeginControlFlowArray(field);
+    //            beginControlFlowCreated = true;
+    //          }
+    //          constraint.checkDataType(field,
+    //                                   ValidatorModel.Type.ARRAY,
+    //                                   constraint.getTargetForCollectionAndList());
+    //          CodeBlock checkBlock = constraint.generateCheckArray(field,
+    //                                                                field);
+    //          CodeBlock validBlock = constraint.generateValidArray(field,
+    //                                                                field);
+    //
+    //          malioValidatorGenerator.appendCheckStatement(checkBlock);
+    //          malioValidatorGenerator.appendValidStatement(validBlock);
+    //        }
+    //      }
+    //    }
+    //    if (beginControlFlowCreated) {
+    //      malioValidatorGenerator.appendEndControlFlow();
+    //    }
   }
 
   private void createConstraintsForNative(VariableElement field,
                                           MalioValidatorGenerator malioValidatorGenerator)
       throws ProcessorException {
-    for (AbstractConstraint<?> constraint : this.constraints) {
-      if (Objects.nonNull(field.getAnnotation(constraint.annotationType()))) {
-        constraint.checkDataType(field,
-                                 ValidatorModel.Type.NATIVE,
-                                 constraint.getTargetForCollectionAndList());
-        CodeBlock checkBlock = constraint.generateCheckNative(field,
-                                                              field);
-        CodeBlock validBlock = constraint.generateValidNative(field,
-                                                              field);
-
-        malioValidatorGenerator.appendCheckStatement(checkBlock);
-        malioValidatorGenerator.appendValidStatement(validBlock);
+    for (AnnotationMirror annotation : field.getAnnotationMirrors()) {
+      AbstractProcessorConstraint<?> constraint = this.constraints.get(annotation.getAnnotationType()
+                                                                                 .toString());
+      // c heck whether he annotation is related to Malio or not ...
+      if (Objects.isNull(constraint)) {
+        continue;
       }
+      // can we use this annotation on fields?
+      if (!constraint.isSupportingNative()) {
+        throw new UnsupportedTypeException("Class >>" +
+                                           field.getEnclosingElement() +
+                                           "<< - Type >>" +
+                                           field.asType() +
+                                           "<< not supported for >>" +
+                                           getClass().getSimpleName() +
+                                           "<<");
+      }
+
+      constraint.checkDataType(field,
+                               ValidatorModel.Type.NATIVE,
+                               constraint.getTargetForCollectionAndList());
+      CodeBlock checkBlock = constraint.generateCheckNative(field,
+                                                            field);
+      CodeBlock validBlock = constraint.generateValidNative(field,
+                                                            field);
+
+      malioValidatorGenerator.appendCheckStatement(checkBlock);
+      malioValidatorGenerator.appendValidStatement(validBlock);
     }
+
+    //    for (AbstractConstraint<?> constraint : this.constraints) {
+    //      if (Objects.nonNull(field.getAnnotation(constraint.annotationType()))) {
+    //        constraint.checkDataType(field,
+    //                                 ValidatorModel.Type.NATIVE,
+    //                                 constraint.getTargetForCollectionAndList());
+    //        CodeBlock checkBlock = constraint.generateCheckNative(field,
+    //                                                              field);
+    //        CodeBlock validBlock = constraint.generateValidNative(field,
+    //                                                              field);
+    //
+    //        malioValidatorGenerator.appendCheckStatement(checkBlock);
+    //        malioValidatorGenerator.appendValidStatement(validBlock);
+    //      }
+    //    }
   }
 
   private void createSubAndSuperValidators(Element validatorElement,

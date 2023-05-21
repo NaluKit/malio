@@ -19,7 +19,6 @@ import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.ArraySize;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
 import com.github.nalukit.malio.shared.annotation.field.Size;
-import com.github.nalukit.malio.shared.annotation.field.ValidateItem;
 
 import java.util.List;
 

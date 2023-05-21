@@ -15,7 +15,7 @@
  */
 package com.github.nalukit.malio.processor.util;
 
-import com.github.nalukit.malio.processor.constraints.AbstractConstraint;
+import com.github.nalukit.malio.processor.constraint.AbstractProcessorConstraint;
 import com.github.nalukit.malio.processor.model.ValidatorModel;
 
 import javax.annotation.processing.Messager;
@@ -172,7 +172,7 @@ public class ProcessorUtils {
 
   public boolean checkDataType(VariableElement variableElement,
                                ValidatorModel.Type type,
-                               AbstractConstraint.Target targetForCollectionAndList,
+                               AbstractProcessorConstraint.Target targetForCollectionAndList,
                                List<TypeKind> supportedPrimitiveTypes,
                                List<Class<?>> supportedDeclaredTypes) {
     switch (type) {
@@ -195,10 +195,10 @@ public class ProcessorUtils {
   }
 
   public boolean checkDataTypeArray(VariableElement variableElement,
-                                    AbstractConstraint.Target targetForCollectionAndList,
+                                    AbstractProcessorConstraint.Target targetForCollectionAndList,
                                     List<TypeKind> supportedPrimitiveTypes,
                                     List<Class<?>> supportedDeclaredTypes) {
-    if (AbstractConstraint.Target.ROOT == targetForCollectionAndList) {
+    if (AbstractProcessorConstraint.Target.ROOT == targetForCollectionAndList) {
       ArrayType  arrayType   = (ArrayType) variableElement.asType();
       TypeMirror elementType = arrayType.getComponentType();
 
