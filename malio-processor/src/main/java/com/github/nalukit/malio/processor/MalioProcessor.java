@@ -246,21 +246,60 @@ public class MalioProcessor
                                                                     .map(e -> (VariableElement) e)
                                                                     .collect(Collectors.toList());
     for (VariableElement field : listOfDirectVariables) {
-      ValidatorModel.Type type = this.getTypeFromVariableElement(field);
-      switch (type) {
-        case ARRAY:
-          this.createConstraintsForArray(field,
-                                         malioValidatorGenerator);
-          break;
-        case COLLECTION:
-          System.out.println("LIST");
-          break;
-        case NATIVE:
-          this.createConstraintsForNative(field,
-                                          malioValidatorGenerator);
-          break;
+      this.createConstraints(field,
+                                     malioValidatorGenerator);
+
+
+
+//      ValidatorModel.ComponentType componentType = this.getComponentTypeFromVariableElement(field);
+//      switch (componentType) {
+//        case ARRAY:
+//          this.createConstraintsForArray(field,
+//                                         malioValidatorGenerator);
+//          break;
+//        case COLLECTION:
+//          System.out.println("LIST");
+//          break;
+//        case NATIVE:
+//          this.createConstraintsForNative(field,
+//                                          malioValidatorGenerator);
+//          break;
+//      }
+    }
+  }
+
+  private void createConstraints(VariableElement field,
+                                         MalioValidatorGenerator malioValidatorGenerator)
+      throws ProcessorException {
+    for (AnnotationMirror annotation : field.getAnnotationMirrors()) {
+      AbstractProcessorConstraint<?> constraint = this.constraints.get(annotation.getAnnotationType()
+                                                                                 .toString());
+      // c heck whether he annotation is related to Malio or not ...
+      if (Objects.isNull(constraint)) {
+        continue;
+      }
+      constraint.checkDataType(field);
+      if (constraint.isTargetingNative()) {
+        this.createCodeForNativeConstrant(field,
+                                          malioValidatorGenerator,
+                                          constraint);
+      }
+      if (constraint.isTargetingArray()) {
+
       }
     }
+  }
+
+  private void createCodeForNativeConstrant(VariableElement field,
+                                            MalioValidatorGenerator malioValidatorGenerator,
+                                            AbstractProcessorConstraint<?> constraint)
+      throws ProcessorException {
+    CodeBlock checkBlock = constraint.generateCheckNative(field,
+                                                          field);
+    CodeBlock validBlock = constraint.generateValidNative(field,
+                                                          field);
+    malioValidatorGenerator.appendCheckStatement(checkBlock);
+    malioValidatorGenerator.appendValidStatement(validBlock);
   }
 
   private void createConstraintsForArray(VariableElement field,
@@ -320,7 +359,7 @@ public class MalioProcessor
         continue;
       }
       // can we use this annotation on fields?
-      if (!constraint.isSupportingNative()) {
+      if (!constraint.isTargetingNative()) {
         throw new UnsupportedTypeException("Class >>" +
                                            field.getEnclosingElement() +
                                            "<< - Type >>" +
@@ -330,9 +369,7 @@ public class MalioProcessor
                                            "<<");
       }
 
-      constraint.checkDataType(field,
-                               ValidatorModel.Type.NATIVE,
-                               constraint.getTargetForCollectionAndList());
+      constraint.checkDataType(field);
       CodeBlock checkBlock = constraint.generateCheckNative(field,
                                                             field);
       CodeBlock validBlock = constraint.generateValidNative(field,
@@ -390,11 +427,11 @@ public class MalioProcessor
     generator.appendSuperAndSubValidatorsValid();
   }
 
-  private ValidatorModel.Type getTypeFromVariableElement(VariableElement variableElement) {
+  private ValidatorModel.ComponentType getComponentTypeFromVariableElement(VariableElement variableElement) {
     if (variableElement.asType()
                        .getKind()
                        .equals(TypeKind.ARRAY)) {
-      return ValidatorModel.Type.ARRAY;
+      return ValidatorModel.ComponentType.ARRAY;
     }
 
     String elementOfVariableTypeString = variableElement.asType()
@@ -407,12 +444,12 @@ public class MalioProcessor
       for (TypeMirror tm : superClasses) {
         if (tm.toString()
               .startsWith(Collection.class.getCanonicalName())) {
-          return ValidatorModel.Type.COLLECTION;
+          return ValidatorModel.ComponentType.COLLECTION;
         }
       }
     }
 
-    return ValidatorModel.Type.NATIVE;
+    return ValidatorModel.ComponentType.NATIVE;
   }
 
 }

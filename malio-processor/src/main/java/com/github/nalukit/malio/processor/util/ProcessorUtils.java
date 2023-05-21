@@ -15,7 +15,6 @@
  */
 package com.github.nalukit.malio.processor.util;
 
-import com.github.nalukit.malio.processor.constraint.AbstractProcessorConstraint;
 import com.github.nalukit.malio.processor.model.ValidatorModel;
 
 import javax.annotation.processing.Messager;
@@ -171,67 +170,76 @@ public class ProcessorUtils {
   }
 
   public boolean checkDataType(VariableElement variableElement,
-                               ValidatorModel.Type type,
-                               AbstractProcessorConstraint.Target targetForCollectionAndList,
                                List<TypeKind> supportedPrimitiveTypes,
                                List<Class<?>> supportedDeclaredTypes) {
-    switch (type) {
-      case ARRAY:
-        return this.checkDataTypeArray(variableElement,
-                                       targetForCollectionAndList,
-                                       supportedPrimitiveTypes,
-                                       supportedDeclaredTypes);
-      case COLLECTION:
-        //        return this.checkDataTypeList(variableElement,
-        //                                       supportedPrimitiveTypes,
-        //                                       supportedDeclaredTypes);
-      case NATIVE:
-        return this.checkDataTypeNative(variableElement,
-                                        supportedPrimitiveTypes,
-                                        supportedDeclaredTypes);
-      default:
-        return false;
+    if (variableElement.asType().getKind().equals(TypeKind.ARRAY)) {
+      ArrayType  arrayType   = (ArrayType) variableElement.asType();
+      TypeMirror elementType = arrayType.getComponentType();
+
+      if (elementType.getKind().isPrimitive()) {
+        return checkPrimitiveDataType(elementType, supportedPrimitiveTypes.toArray(new TypeKind[] {}));
+      }else {
+        Class<?>[] validArrayTypes = supportedDeclaredTypes.stream().filter(Class::isArray)
+                                                           .map(Class::getComponentType).toArray(Class<?>[]::new);
+        DeclaredType typeToCheck = (DeclaredType) elementType;
+        return checkDeclaredDataType(typeToCheck, validArrayTypes);
+      }
     }
+
+    if (variableElement.asType()
+                       .getKind()
+                       .isPrimitive()) {
+      if (supportedPrimitiveTypes == null) {
+        return false;
+      }
+      return checkPrimitiveDataType(variableElement.asType(),
+                                    supportedPrimitiveTypes.toArray(new TypeKind[] {}));
+    }
+    if (supportedDeclaredTypes == null) {
+      return false;
+    }
+    return checkDeclaredDataType((DeclaredType) variableElement.asType(),
+                                 supportedDeclaredTypes.toArray(new Class<?>[] {}));
   }
 
   public boolean checkDataTypeArray(VariableElement variableElement,
-                                    AbstractProcessorConstraint.Target targetForCollectionAndList,
                                     List<TypeKind> supportedPrimitiveTypes,
                                     List<Class<?>> supportedDeclaredTypes) {
-    if (AbstractProcessorConstraint.Target.ROOT == targetForCollectionAndList) {
-      ArrayType  arrayType   = (ArrayType) variableElement.asType();
-      TypeMirror elementType = arrayType.getComponentType();
-
-      if (elementType.getKind()
-                     .isPrimitive()) {
-        return checkPrimitiveDataType(elementType,
-                                      supportedPrimitiveTypes.toArray(new TypeKind[] {}));
-      }
-      Class<?>[] validArrayTypes = supportedDeclaredTypes.stream()
-                                                         .filter(Class::isArray)
-                                                         .map(Class::getComponentType)
-                                                         .toArray(Class<?>[]::new);
-      DeclaredType typeToCheck = (DeclaredType) elementType;
-      return checkDeclaredDataType(typeToCheck,
-                                   validArrayTypes);
-    } else {
-      ArrayType  arrayType   = (ArrayType) variableElement.asType();
-      TypeMirror elementType = arrayType.getComponentType();
-      if (elementType.getKind()
-                     .isPrimitive()) {
-        if (supportedPrimitiveTypes == null) {
-          return false;
-        }
-        return checkPrimitiveDataType(elementType,
-                                      supportedPrimitiveTypes.toArray(new TypeKind[] {}));
-      }
-      if (supportedDeclaredTypes == null) {
-        return false;
-      }
-      // TODO hier schmieren wir ab
-      return checkDeclaredDataType((DeclaredType) elementType,
-                                   supportedDeclaredTypes.toArray(new Class<?>[] {}));
-    }
+//    if (AbstractProcessorConstraint.Target.ROOT == targetForCollectionAndList) {
+//      ArrayType  arrayType   = (ArrayType) variableElement.asType();
+//      TypeMirror elementType = arrayType.getComponentType();
+//
+//      if (elementType.getKind()
+//                     .isPrimitive()) {
+//        return checkPrimitiveDataType(elementType,
+//                                      supportedPrimitiveTypes.toArray(new TypeKind[] {}));
+//      }
+//      Class<?>[] validArrayTypes = supportedDeclaredTypes.stream()
+//                                                         .filter(Class::isArray)
+//                                                         .map(Class::getComponentType)
+//                                                         .toArray(Class<?>[]::new);
+//      DeclaredType typeToCheck = (DeclaredType) elementType;
+//      return checkDeclaredDataType(typeToCheck,
+//                                   validArrayTypes);
+//    } else {
+//      ArrayType  arrayType   = (ArrayType) variableElement.asType();
+//      TypeMirror elementType = arrayType.getComponentType();
+//      if (elementType.getKind()
+//                     .isPrimitive()) {
+//        if (supportedPrimitiveTypes == null) {
+//          return false;
+//        }
+//        return checkPrimitiveDataType(elementType,
+//                                      supportedPrimitiveTypes.toArray(new TypeKind[] {}));
+//      }
+//      if (supportedDeclaredTypes == null) {
+//        return false;
+//      }
+//      // TODO hier schmieren wir ab
+//      return checkDeclaredDataType((DeclaredType) elementType,
+//                                   supportedDeclaredTypes.toArray(new Class<?>[] {}));
+//    }
+    return false;
   }
 
   public boolean checkDataTypeNative(VariableElement variableElement,

@@ -20,7 +20,9 @@ import com.github.nalukit.malio.processor.constraint.generator.AbstractGenerator
 import com.github.nalukit.malio.processor.constraint.generator.ConstraintSizeGenerator;
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.shared.annotation.field.Size;
+import com.github.nalukit.malio.shared.internal.constraints.SizeConstraint;
 import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
 import javax.lang.model.element.VariableElement;
@@ -41,11 +43,6 @@ public class SizeProcessorConstraint
   }
 
   @Override
-  public Target getTargetForCollectionAndList() {
-    return Target.ROOT;
-  }
-
-  @Override
   public String getImplementationName() {
     return Constants.MALIO_CONSTRAINT_SIZE_IMPL_NAME;
   }
@@ -57,7 +54,8 @@ public class SizeProcessorConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.SizeConstraint.class);
+    return ParameterizedTypeName.get(ClassName.get(SizeConstraint.class),
+                                     ClassName.get(variableElement.asType()));
   }
 
   @Override
@@ -82,18 +80,18 @@ public class SizeProcessorConstraint
   }
 
   @Override
-  public boolean isSupportingNative() {
+  public boolean isTargetingNative() {
+    return true;
+  }
+
+  @Override
+  public boolean isTargetingArray() {
     return false;
   }
 
   @Override
-  public boolean isSupportingArray() {
-    return true;
-  }
-
-  @Override
-  public boolean isSupportingList() {
-    return true;
+  public boolean isTargrtingList() {
+    return false;
   }
 
 }

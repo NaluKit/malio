@@ -22,34 +22,34 @@ public class ValidatorModel {
   private String      packageName;
   private String      simpleClassName;
   private String      fieldName;
-  private String      postFix;
-  private Type        type;
-  private TypeElement genericTypeElement01;
+  private String        postFix;
+  private ComponentType componentType;
+  private TypeElement   genericTypeElement01;
   private TypeElement genericTypeElement02;
 
   public ValidatorModel(String packageName,
                         String simpleClassName,
                         String fieldName,
                         String postFix,
-                        Type type) {
+                        ComponentType componentType) {
     this.packageName     = packageName;
     this.simpleClassName = simpleClassName;
     this.fieldName       = fieldName;
     this.postFix         = postFix;
-    this.type            = type;
+    this.componentType   = componentType;
   }
 
   public ValidatorModel(String packageName,
                         String simpleClassName,
                         String fieldName,
                         String postFix,
-                        Type type,
+                        ComponentType componentType,
                         TypeElement genericTypeElement01) {
     this(packageName,
          simpleClassName,
          fieldName,
          postFix,
-         type);
+         componentType);
     this.genericTypeElement01 = genericTypeElement01;
   }
 
@@ -57,14 +57,14 @@ public class ValidatorModel {
                         String simpleClassName,
                         String fieldName,
                         String postFix,
-                        Type type,
+                        ComponentType componentType,
                         TypeElement genericTypeElement01,
                         TypeElement genericTypeElement02) {
     this(packageName,
          simpleClassName,
          fieldName,
          postFix,
-         type,
+         componentType,
          genericTypeElement01);
     this.genericTypeElement02 = genericTypeElement02;
   }
@@ -85,8 +85,8 @@ public class ValidatorModel {
     return postFix;
   }
 
-  public Type getType() {
-    return type;
+  public ComponentType getType() {
+    return componentType;
   }
 
   public TypeElement getGenericTypeElement01() {
@@ -97,7 +97,7 @@ public class ValidatorModel {
     return genericTypeElement02;
   }
 
-  public enum Type {
+  public enum ComponentType {
     ARRAY,
     COLLECTION,
     NATIVE

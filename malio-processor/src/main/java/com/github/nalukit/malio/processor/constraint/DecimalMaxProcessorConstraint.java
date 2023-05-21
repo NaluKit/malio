@@ -41,11 +41,6 @@ public class DecimalMaxProcessorConstraint
   }
 
   @Override
-  public Target getTargetForCollectionAndList() {
-    return Target.ITEM;
-  }
-
-  @Override
   public String getImplementationName() {
     return Constants.MALIO_CONSTRAINT_MAXDECIMALVALUE_IMPL_NAME;
   }
@@ -82,17 +77,17 @@ public class DecimalMaxProcessorConstraint
   }
 
   @Override
-  public boolean isSupportingNative() {
+  public boolean isTargetingNative() {
     return true;
   }
 
   @Override
-  public boolean isSupportingArray() {
+  public boolean isTargetingArray() {
     return false;
   }
 
   @Override
-  public boolean isSupportingList() {
+  public boolean isTargrtingList() {
     return false;
   }
 

@@ -81,7 +81,7 @@ public class ValidatorScanner
                                                                       .toString(),
                                                     null,
                                                     Constants.MALIO_VALIDATOR_IMPL_NAME,
-                                                    ValidatorModel.Type.NATIVE));
+                                                    ValidatorModel.ComponentType.NATIVE));
         }
       }
     }
@@ -132,7 +132,7 @@ public class ValidatorScanner
       if (elementOfVariableType.getAnnotation(MalioValidator.class) != null) {
         this.addValidatorToValidatorGenerationList(variableElement,
                                                    elementOfVariableType,
-                                                   ValidatorModel.Type.NATIVE,
+                                                   ValidatorModel.ComponentType.NATIVE,
                                                    null,
                                                    null);
       }
@@ -165,7 +165,7 @@ public class ValidatorScanner
         if (elementOfGenericList.getAnnotation(MalioValidator.class) != null) {
           this.addValidatorToValidatorGenerationList(variableElement,
                                                      elementOfVariableType,
-                                                     ValidatorModel.Type.COLLECTION,
+                                                     ValidatorModel.ComponentType.COLLECTION,
                                                      elementOfGenericList,
                                                      null);
         }
@@ -184,7 +184,7 @@ public class ValidatorScanner
       if (elementOfVariableType.getAnnotation(MalioValidator.class) != null) {
         this.addValidatorToValidatorGenerationList(variableElement,
                                                    elementOfVariableType,
-                                                   ValidatorModel.Type.ARRAY,
+                                                   ValidatorModel.ComponentType.ARRAY,
                                                    elementOfVariableType,
                                                    null);
       }
@@ -193,7 +193,7 @@ public class ValidatorScanner
 
   private void addValidatorToValidatorGenerationList(VariableElement variableElement,
                                                      TypeElement elementOfVariableType,
-                                                     ValidatorModel.Type type,
+                                                     ValidatorModel.ComponentType componentType,
                                                      TypeElement typeElement01,
                                                      TypeElement typeElement02) {
     boolean found = this.subValidatorList.stream()
@@ -212,7 +212,7 @@ public class ValidatorScanner
                                                                         .toString(),
                                                    variableElement.toString(),
                                                    Constants.MALIO_VALIDATOR_IMPL_NAME,
-                                                   type,
+                                                   componentType,
                                                    typeElement01,
                                                    typeElement02));
     }

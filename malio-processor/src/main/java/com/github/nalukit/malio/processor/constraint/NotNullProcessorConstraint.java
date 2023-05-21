@@ -42,11 +42,6 @@ public class NotNullProcessorConstraint
   }
 
   @Override
-  public Target getTargetForCollectionAndList() {
-    return Target.ROOT;
-  }
-
-  @Override
   public String getImplementationName() {
     return Constants.MALIO_CONSTRAINT_NOT_NULL_IMPL_NAME;
   }
@@ -85,17 +80,17 @@ public class NotNullProcessorConstraint
   }
 
   @Override
-  public boolean isSupportingNative() {
+  public boolean isTargetingNative() {
     return true;
   }
 
   @Override
-  public boolean isSupportingArray() {
+  public boolean isTargetingArray() {
     return true;
   }
 
   @Override
-  public boolean isSupportingList() {
+  public boolean isTargrtingList() {
     return true;
   }
 

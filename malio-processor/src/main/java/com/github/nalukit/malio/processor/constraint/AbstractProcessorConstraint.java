@@ -21,7 +21,6 @@ import com.github.nalukit.malio.processor.constraint.generator.IsGenerator;
 import com.github.nalukit.malio.processor.exception.UnsupportedTypeException;
 import com.github.nalukit.malio.processor.model.ConstraintModel;
 import com.github.nalukit.malio.processor.model.ConstraintType;
-import com.github.nalukit.malio.processor.model.ValidatorModel;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.TypeName;
@@ -61,16 +60,12 @@ public abstract class AbstractProcessorConstraint<T extends Annotation>
     return this;
   }
 
-  public void checkDataType(VariableElement variableElement,
-                            ValidatorModel.Type type,
-                            Target targetForCollectionAndList) {
+  public void checkDataType(VariableElement variableElement) {
     if (getSupportedDeclaredType() == null && getSupportedPrimitives() == null) {
       return;
     }
 
     if (!processorUtils.checkDataType(variableElement,
-                                      type,
-                                      targetForCollectionAndList,
                                       getSupportedPrimitives(),
                                       getSupportedDeclaredType())) {
       throw new UnsupportedTypeException("Class >>" +
@@ -91,8 +86,6 @@ public abstract class AbstractProcessorConstraint<T extends Annotation>
                                                                         this.annotationType());
   }
 
-  public abstract Target getTargetForCollectionAndList();
-
   public abstract String getImplementationName();
 
   public abstract ConstraintType getConstraintType();
@@ -105,11 +98,11 @@ public abstract class AbstractProcessorConstraint<T extends Annotation>
 
   protected abstract AbstractGenerator createGenerator();
 
-  public abstract boolean isSupportingNative();
+  public abstract boolean isTargetingNative();
 
-  public abstract boolean isSupportingArray();
+  public abstract boolean isTargetingArray();
 
-  public abstract boolean isSupportingList();
+  public abstract boolean isTargrtingList();
 
   @Override
   public CodeBlock generateCheckArray(Element clazz,
@@ -163,23 +156,5 @@ public abstract class AbstractProcessorConstraint<T extends Annotation>
     return this.createGenerator()
                .generateValidNative(clazz,
                                     field);
-  }
-
-  /**
-   * Describes the target of a constraint depending on the field type:
-   * <ul>
-   *   <li>field type NATIVE: the value will be ignored</li>
-   *   <li>field type ARRAY or COLLECTION: the value will define the target of the constraint:
-   *   <ol>
-   *     <li>NOT_PERMITTED: constraint not allowed here</li>
-   *     <li>ROOT: used on the variable itself</li>
-   *     <li>ITEM: used on the ARRAY or Collection member</li>
-   *   </ol></li>
-   * </ul>
-   */
-  public enum Target {
-    ROOT,
-    ITEM,
-    NOT_PERMITTED
   }
 }

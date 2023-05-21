@@ -42,11 +42,6 @@ public class ArraySizeProcessorConstraint
   }
 
   @Override
-  public Target getTargetForCollectionAndList() {
-    return Target.ROOT;
-  }
-
-  @Override
   public String getImplementationName() {
     return Constants.MALIO_CONSTRAINT_ARRAYSIZE_IMPL_NAME;
   }
@@ -85,17 +80,17 @@ public class ArraySizeProcessorConstraint
   }
 
   @Override
-  public boolean isSupportingNative() {
-    return false;
-  }
-
-  @Override
-  public boolean isSupportingArray() {
+  public boolean isTargetingNative() {
     return true;
   }
 
   @Override
-  public boolean isSupportingList() {
+  public boolean isTargetingArray() {
+    return false;
+  }
+
+  @Override
+  public boolean isTargrtingList() {
     return false;
   }
 
