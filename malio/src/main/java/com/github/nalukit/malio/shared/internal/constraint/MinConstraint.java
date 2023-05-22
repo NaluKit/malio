@@ -13,40 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.shared.internal.constraints;
+package com.github.nalukit.malio.shared.internal.constraint;
 
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
-public class MaxConstraint
+public class MinConstraint
     extends AbstractConstraint<Number> {
 
-  private Long   maxValue;
 
-  public MaxConstraint(String packageName,
+  private Long minValue;
+
+  public MinConstraint(String packageName,
                        String simpleName,
                        String fieldName,
-                       Number maxValue,
+                       Number minValue,
                        String message) {
     super(packageName,
           simpleName,
           fieldName,
             message);
-    this.maxValue = maxValue.longValue();
+    this.minValue = minValue.longValue();
   }
 
   public void check(Number value)
       throws MalioValidationException {
-    if (value != null && value.longValue() > this.maxValue) {
+    if (value != null && value.longValue() < this.minValue) {
       throw new MalioValidationException(getMessage(value));
     }
   }
 
   public void isValid(Number value,
                       ValidationResult validationResult) {
-    if (value != null && value.longValue() > this.maxValue) {
+    if (value != null && value.longValue() < this.minValue) {
       validationResult.getMessages()
                       .add(new ErrorMessage(getMessage(value),
                                             super.getClassName(),
@@ -57,6 +58,6 @@ public class MaxConstraint
 
   @Override
   protected String getSpecializedMessage(Number value) {
-    return LocalizedMessages.INSTANCE.getMaxValueMessage(maxValue);
+    return LocalizedMessages.INSTANCE.getMinValueMessage(minValue);
   }
 }

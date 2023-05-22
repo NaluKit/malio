@@ -20,7 +20,7 @@ import com.github.nalukit.malio.processor.constraint.generator.AbstractGenerator
 import com.github.nalukit.malio.processor.constraint.generator.ConstraintSizeGenerator;
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.shared.annotation.field.Size;
-import com.github.nalukit.malio.shared.internal.constraints.SizeConstraint;
+import com.github.nalukit.malio.shared.internal.constraint.SizeConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
@@ -85,12 +85,12 @@ public class SizeProcessorConstraint
   }
 
   @Override
-  public boolean isTargetingArray() {
+  public boolean isTargetingArrayItem() {
     return false;
   }
 
   @Override
-  public boolean isTargrtingList() {
+  public boolean isTargetingListItem() {
     return false;
   }
 

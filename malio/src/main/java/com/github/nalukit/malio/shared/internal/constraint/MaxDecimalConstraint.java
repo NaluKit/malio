@@ -13,43 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.shared.internal.constraints;
+package com.github.nalukit.malio.shared.internal.constraint;
 
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
-import java.util.Arrays;
-import java.util.List;
+import java.math.BigDecimal;
 
-public class WhitelistConstraint
-    extends AbstractConstraint<String> {
+public class MaxDecimalConstraint
+    extends AbstractConstraint<BigDecimal> {
 
-  private List<String> whitelist;
+  private BigDecimal maxValue;
 
-  public WhitelistConstraint(String packageName,
-                             String simpleName,
-                             String fieldName,
-                             String[] whitelist,
-                             String message) {
+  public MaxDecimalConstraint(String packageName,
+                              String simpleName,
+                              String fieldName,
+                              String maxValue,
+                              String message) {
     super(packageName,
           simpleName,
           fieldName,
             message);
-    this.whitelist = Arrays.asList(whitelist);
+    this.maxValue = new BigDecimal(maxValue);
   }
 
-  public void check(String value)
+  public void check(BigDecimal value)
       throws MalioValidationException {
-    if (value != null && !whitelist.contains(value)) {
+    if (value != null && value.compareTo(this.maxValue) > 0) {
       throw new MalioValidationException(getMessage(value));
     }
   }
 
-  public void isValid(String value,
+  public void isValid(BigDecimal value,
                       ValidationResult validationResult) {
-    if (value != null && !whitelist.contains(value)) {
+    if (value != null && value.compareTo(this.maxValue) > 0) {
       validationResult.getMessages()
                       .add(new ErrorMessage(getMessage(value),
                                             super.getClassName(),
@@ -59,7 +58,7 @@ public class WhitelistConstraint
   }
 
   @Override
-  protected String getSpecializedMessage(String value) {
-    return LocalizedMessages.INSTANCE.getWhitelistMessage(value);
+  protected String getSpecializedMessage(BigDecimal value) {
+    return  LocalizedMessages.INSTANCE.getMaxDecimalValueMessage(this.maxValue);
   }
 }

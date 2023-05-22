@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.shared.internal.constraints;
+package com.github.nalukit.malio.shared.internal.constraint;
 
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
@@ -21,43 +21,47 @@ import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 import org.gwtproject.regexp.shared.RegExp;
 
-import java.util.Objects;
-
-public class EmailConstraint
+public class RegexpConstraint
     extends AbstractConstraint<String> {
 
-  private final static RegExp regExp = RegExp.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
+  private RegExp regExp;
 
-  public EmailConstraint(String packageName,
-                         String simpleName,
-                         String fieldName,
-                         String message) {
+  public RegexpConstraint(String packageName,
+                          String simpleName,
+                          String fieldName,
+                          String regExp,
+                          String message) {
     super(packageName,
           simpleName,
           fieldName,
             message);
-  }
-
-  @Override
-  protected String getSpecializedMessage(String value) {
-    return LocalizedMessages.INSTANCE.getEmailMessage();
+    this.regExp = RegExp.compile(regExp);
   }
 
   public void check(String value)
       throws MalioValidationException {
-    if (Objects.nonNull(value) && !EmailConstraint.regExp.test(value)) {
-      throw new MalioValidationException(getMessage(value));
+    if (value != null) {
+      if (!this.regExp.test(value)) {
+        throw new MalioValidationException(getMessage(value));
+      }
     }
   }
 
   public void isValid(String value,
                       ValidationResult validationResult) {
-    if (Objects.nonNull(value) && !EmailConstraint.regExp.test(value)) {
-      validationResult.getMessages()
-                      .add(new ErrorMessage(getMessage(value),
-                                            super.getClassName(),
-                                            super.getSimpleName(),
-                                            super.getFieldName()));
+    if (value != null) {
+      if (!this.regExp.test(value)) {
+        validationResult.getMessages()
+                        .add(new ErrorMessage(getMessage(value),
+                                              super.getClassName(),
+                                              super.getSimpleName(),
+                                              super.getFieldName()));
+      }
     }
+  }
+
+  @Override
+  protected String getSpecializedMessage(String value) {
+    return LocalizedMessages.INSTANCE.getRegexpMessage(value);
   }
 }

@@ -350,7 +350,7 @@ This annotation can only be used on fields of types extending **Collection** (Li
 
 The annotation indicates that the variable should not be null.
 
-This annotation can be used on any complex type of a field.
+This annotation can be used on any complex type of field.
 
 #### RegExp
 
@@ -400,10 +400,25 @@ This annotation can only be used on fields of type **String**.
 ```
 
 The annotation accepts a list of String values that are allowed for the field. The constrain will look for the String
-values inside the variable and in case a value is not contained inside the list, an error is created - if the value is not
+values inside the variable and in case a value is not contained inside the list, an error is created - if the value is
+not
 null.
 
 This annotation can only be used on fields of type **String**.
+
+### Annotations for variables of type array
+
+The following annotation can only be used on variable types that are arrays.
+
+#### ArrayItemNotNull
+
+```java
+@ArrayItemNotNull
+```
+
+The annotation indicates that an item of an array should not be null.
+
+This annotation can be used on any array that uses a complex type of field.
 
 ## To get in touch with the developer
 

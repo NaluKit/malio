@@ -20,7 +20,7 @@ import com.github.nalukit.malio.processor.constraint.generator.AbstractGenerator
 import com.github.nalukit.malio.processor.constraint.generator.ConstraintNotNullGenerator;
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
-import com.github.nalukit.malio.shared.internal.constraints.NotNullConstraint;
+import com.github.nalukit.malio.shared.internal.constraint.NotNullConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
@@ -85,13 +85,13 @@ public class NotNullProcessorConstraint
   }
 
   @Override
-  public boolean isTargetingArray() {
-    return true;
+  public boolean isTargetingArrayItem() {
+    return false;
   }
 
   @Override
-  public boolean isTargrtingList() {
-    return true;
+  public boolean isTargetingListItem() {
+    return false;
   }
 
 }

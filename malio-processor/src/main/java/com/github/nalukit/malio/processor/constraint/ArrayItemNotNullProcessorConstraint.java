@@ -17,75 +17,80 @@ package com.github.nalukit.malio.processor.constraint;
 
 import com.github.nalukit.malio.processor.Constants;
 import com.github.nalukit.malio.processor.constraint.generator.AbstractGenerator;
-import com.github.nalukit.malio.processor.constraint.generator.ConstraintNotZeroGenerator;
+import com.github.nalukit.malio.processor.constraint.generator.ConstraintArrayItemNotNullGenerator;
 import com.github.nalukit.malio.processor.model.ConstraintType;
-import com.github.nalukit.malio.shared.annotation.field.NotZero;
-import com.github.nalukit.malio.shared.internal.constraint.NotZeroConstraint;
+import com.github.nalukit.malio.shared.annotation.field.ArrayItemNotNull;
+import com.github.nalukit.malio.shared.internal.constraint.ArrayItemNotNullConstraint;
 import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
 import java.util.Arrays;
 import java.util.List;
 
-public class NotZeroProcessorConstraint
-    extends AbstractProcessorConstraint<NotZero> {
+public class ArrayItemNotNullProcessorConstraint
+    extends AbstractProcessorConstraint<ArrayItemNotNull> {
 
-  public NotZeroProcessorConstraint() {
+  public ArrayItemNotNullProcessorConstraint() {
   }
 
   @Override
-  public Class<NotZero> annotationType() {
-    return NotZero.class;
+  public Class<ArrayItemNotNull> annotationType() {
+    return ArrayItemNotNull.class;
   }
 
   @Override
   public String getImplementationName() {
-    return Constants.MALIO_CONSTRAINT_NOTZERO_IMPL_NAME;
+    return Constants.MALIO_CONSTRAINT_ARRAY_ITEM_NOT_NULL_IMPL_NAME;
   }
 
   @Override
   public ConstraintType getConstraintType() {
-    return ConstraintType.NOT_ZERO_CONSTRAINT;
+    return ConstraintType.ARRAY_ITEM_NOT_NULL_CONSTRAINT;
   }
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(NotZeroConstraint.class);
+    ArrayType  arrayType   = (ArrayType) variableElement.asType();
+    TypeMirror elementType = arrayType.getComponentType();
+    return ParameterizedTypeName.get(ClassName.get(ArrayItemNotNullConstraint.class),
+                                     ClassName.get(elementType));
   }
 
   @Override
   protected List<TypeKind> getSupportedPrimitives() {
-    return Arrays.asList(TypeKind.INT,
-                         TypeKind.LONG);
+    return null;
   }
 
   @Override
   protected List<Class<?>> getSupportedDeclaredType() {
-    return Arrays.asList(Integer.class,
-                         Long.class);
+    return Arrays.asList(Object.class,
+                         Enum.class);
   }
 
   @Override
   protected AbstractGenerator createGenerator() {
-    return ConstraintNotZeroGenerator.builder()
-                                      .elements(this.processingEnvironment.getElementUtils())
-                                      .filer(this.processingEnvironment.getFiler())
-                                      .types(this.processingEnvironment.getTypeUtils())
-                                      .processorUtils(this.processorUtils)
-                                      .constraint(this)
-                                      .build();
+    return ConstraintArrayItemNotNullGenerator.builder()
+                                              .elements(this.processingEnvironment.getElementUtils())
+                                              .filer(this.processingEnvironment.getFiler())
+                                              .types(this.processingEnvironment.getTypeUtils())
+                                              .processorUtils(this.processorUtils)
+                                              .constraint(this)
+                                              .build();
   }
 
   @Override
   public boolean isTargetingNative() {
-    return true;
+    return false;
   }
 
   @Override
   public boolean isTargetingArrayItem() {
-    return false;
+    return true;
   }
 
   @Override

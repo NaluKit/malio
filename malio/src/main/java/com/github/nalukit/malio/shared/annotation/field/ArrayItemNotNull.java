@@ -13,19 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.shared.internal.constraints;
+package com.github.nalukit.malio.shared.annotation.field;
 
-import com.github.nalukit.malio.shared.internal.annotation.MalioInternalUse;
-import com.github.nalukit.malio.shared.model.ValidationResult;
-import com.github.nalukit.malio.shared.util.MalioValidationException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@MalioInternalUse
-public interface IsMalioConstraint<T> {
-
-  void check(T value)
-      throws MalioValidationException;
-
-  void isValid(T value,
-               ValidationResult validationResult);
-
+/**
+ * <p>The annotation indicates that the variable should not be null.</p>
+ *
+ * <p>This annotation can be used on items of an array.</p>
+ *
+ * @author Frank Hossfeld, Philipp Kohl
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface ArrayItemNotNull {
+  String message() default "";
 }

@@ -20,6 +20,7 @@ import com.github.nalukit.malio.processor.constraint.generator.AbstractGenerator
 import com.github.nalukit.malio.processor.constraint.generator.ConstraintMinGenerator;
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.shared.annotation.field.Min;
+import com.github.nalukit.malio.shared.internal.constraint.MinConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
@@ -51,7 +52,7 @@ public class MinProcessorConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.MinConstraint.class);
+    return ClassName.get(MinConstraint.class);
   }
 
   @Override
@@ -83,12 +84,12 @@ public class MinProcessorConstraint
   }
 
   @Override
-  public boolean isTargetingArray() {
+  public boolean isTargetingArrayItem() {
     return false;
   }
 
   @Override
-  public boolean isTargrtingList() {
+  public boolean isTargetingListItem() {
     return false;
   }
 

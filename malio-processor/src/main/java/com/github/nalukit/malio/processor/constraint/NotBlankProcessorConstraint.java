@@ -20,6 +20,7 @@ import com.github.nalukit.malio.processor.constraint.generator.AbstractGenerator
 import com.github.nalukit.malio.processor.constraint.generator.ConstraintNotBlankGenerator;
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.shared.annotation.field.NotBlank;
+import com.github.nalukit.malio.shared.internal.constraint.NotBlankConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
@@ -51,7 +52,7 @@ public class NotBlankProcessorConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.NotBlankConstraint.class);
+    return ClassName.get(NotBlankConstraint.class);
   }
 
   @Override
@@ -81,12 +82,12 @@ public class NotBlankProcessorConstraint
   }
 
   @Override
-  public boolean isTargetingArray() {
+  public boolean isTargetingArrayItem() {
     return false;
   }
 
   @Override
-  public boolean isTargrtingList() {
+  public boolean isTargetingListItem() {
     return false;
   }
 

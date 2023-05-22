@@ -13,41 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.shared.internal.constraints;
+package com.github.nalukit.malio.shared.internal.constraint;
 
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import org.gwtproject.regexp.shared.RegExp;
 
-import java.util.Objects;
+import java.math.BigDecimal;
 
-public class UuidConstraint
-    extends AbstractConstraint<String> {
+public class MinDecimalConstraint
+    extends AbstractConstraint<BigDecimal> {
 
-  private final static RegExp regExp = RegExp.compile("^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$");
+  private BigDecimal minValue;
 
-  public UuidConstraint(String packageName,
-                        String simpleName,
-                        String fieldName,
-                        String message) {
+  public MinDecimalConstraint(String packageName,
+                              String simpleName,
+                              String fieldName,
+                              String minValue,
+                              String message) {
     super(packageName,
           simpleName,
           fieldName,
             message);
+    this.minValue = new BigDecimal(minValue);
   }
 
-  public void check(String value)
+  public void check(BigDecimal value)
       throws MalioValidationException {
-    if (Objects.nonNull(value) && !UuidConstraint.regExp.test(value)) {
+    if (value != null && value.compareTo(this.minValue) < 0) {
       throw new MalioValidationException(getMessage(value));
     }
   }
 
-  public void isValid(String value,
+  public void isValid(BigDecimal value,
                       ValidationResult validationResult) {
-    if (Objects.nonNull(value) && !UuidConstraint.regExp.test(value)) {
+    if (value != null && value.compareTo(this.minValue) < 0) {
       validationResult.getMessages()
                       .add(new ErrorMessage(getMessage(value),
                                             super.getClassName(),
@@ -57,7 +58,7 @@ public class UuidConstraint
   }
 
   @Override
-  protected String getSpecializedMessage(String value) {
-    return LocalizedMessages.INSTANCE.getUuidMessage();
+  protected String getSpecializedMessage(BigDecimal value) {
+    return LocalizedMessages.INSTANCE.getMinDecimalValueMessage(this.minValue);
   }
 }

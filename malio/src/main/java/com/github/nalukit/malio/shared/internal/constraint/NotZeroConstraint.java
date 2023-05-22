@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.shared.internal.constraints;
+package com.github.nalukit.malio.shared.internal.constraint;
 
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
@@ -22,40 +22,69 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 
 import java.util.Objects;
 
-public class NotNullConstraint<T>
-    extends AbstractConstraint<T> {
+public class NotZeroConstraint
+    extends AbstractConstraint<Number> {
 
-
-  public NotNullConstraint(String packageName,
+  private boolean allowNegativeValues;
+  public NotZeroConstraint(String packageName,
                            String simpleName,
                            String fieldName,
+                           boolean allowNegativeValues,
                            String message) {
     super(packageName,
           simpleName,
           fieldName,
-            message);
+          message);
+    this.allowNegativeValues = allowNegativeValues;
   }
 
-  @Override
-  protected String getSpecializedMessage(T value) {
-    return LocalizedMessages.INSTANCE.getNotNullMessage();
-  }
-
-  public void check(T value)
+  public void check(Number value)
       throws MalioValidationException {
     if (Objects.isNull(value)) {
+      return;
+    }
+
+    if (!this.allowNegativeValues) {
+      if( value.longValue() < 0){
+        throw new MalioValidationException(getMessage(value));
+      }
+    }
+
+    if (value.longValue() == 0) {
       throw new MalioValidationException(getMessage(value));
     }
   }
 
-  public void isValid(T value,
+  public void isValid(Number value,
                       ValidationResult validationResult) {
     if (Objects.isNull(value)) {
-      validationResult.getMessages()
-                      .add(new ErrorMessage(getMessage(value),
-                                            super.getClassName(),
-                                            super.getSimpleName(),
-                                            super.getFieldName()));
+      return;
     }
+
+
+    if (!this.allowNegativeValues) {
+      if(value.longValue() < 0){
+        validationResult.getMessages()
+                .add(new ErrorMessage(getMessage(value),
+                        super.getClassName(),
+                        super.getSimpleName(),
+                        super.getFieldName()));
+        return;
+      }
+    }
+
+    if (value.longValue() == 0) {
+      validationResult.getMessages()
+              .add(new ErrorMessage(getMessage(value),
+                      super.getClassName(),
+                      super.getSimpleName(),
+                      super.getFieldName()));
+    }
+
+  }
+
+  @Override
+  protected String getSpecializedMessage(Number value) {
+    return LocalizedMessages.INSTANCE.getNotZeroMessage();
   }
 }

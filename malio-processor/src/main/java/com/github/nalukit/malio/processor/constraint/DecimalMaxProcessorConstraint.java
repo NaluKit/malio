@@ -20,6 +20,7 @@ import com.github.nalukit.malio.processor.constraint.generator.AbstractGenerator
 import com.github.nalukit.malio.processor.constraint.generator.ConstraintMaxDecimalGenerator;
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.shared.annotation.field.DecimalMax;
+import com.github.nalukit.malio.shared.internal.constraint.MaxDecimalConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
@@ -52,7 +53,7 @@ public class DecimalMaxProcessorConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.MaxDecimalConstraint.class);
+    return ClassName.get(MaxDecimalConstraint.class);
   }
 
   @Override
@@ -82,12 +83,12 @@ public class DecimalMaxProcessorConstraint
   }
 
   @Override
-  public boolean isTargetingArray() {
+  public boolean isTargetingArrayItem() {
     return false;
   }
 
   @Override
-  public boolean isTargrtingList() {
+  public boolean isTargetingListItem() {
     return false;
   }
 

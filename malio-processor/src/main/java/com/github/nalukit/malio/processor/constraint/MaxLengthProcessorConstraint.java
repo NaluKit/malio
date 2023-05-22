@@ -20,6 +20,7 @@ import com.github.nalukit.malio.processor.constraint.generator.AbstractGenerator
 import com.github.nalukit.malio.processor.constraint.generator.ConstraintMaxLengthGenerator;
 import com.github.nalukit.malio.processor.model.ConstraintType;
 import com.github.nalukit.malio.shared.annotation.field.MaxLength;
+import com.github.nalukit.malio.shared.internal.constraint.MaxLengthConstraint;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
@@ -51,7 +52,7 @@ public class MaxLengthProcessorConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    return ClassName.get(com.github.nalukit.malio.shared.internal.constraints.MaxLengthConstraint.class);
+    return ClassName.get(MaxLengthConstraint.class);
   }
 
   @Override
@@ -81,12 +82,12 @@ public class MaxLengthProcessorConstraint
   }
 
   @Override
-  public boolean isTargetingArray() {
+  public boolean isTargetingArrayItem() {
     return false;
   }
 
   @Override
-  public boolean isTargrtingList() {
+  public boolean isTargetingListItem() {
     return false;
   }
 

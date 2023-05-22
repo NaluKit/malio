@@ -13,45 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.shared.internal.constraints;
+package com.github.nalukit.malio.shared.internal.constraint;
 
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
-import java.util.Arrays;
-import java.util.List;
+public class MaxConstraint
+    extends AbstractConstraint<Number> {
 
-public class BlacklistConstraint
-    extends AbstractConstraint<String> {
+  private Long   maxValue;
 
-  private List<String> blacklist;
-
-
-  public BlacklistConstraint(String packageName,
-                             String simpleName,
-                             String fieldName,
-                             String[] blacklist,
-                             String message) {
+  public MaxConstraint(String packageName,
+                       String simpleName,
+                       String fieldName,
+                       Number maxValue,
+                       String message) {
     super(packageName,
           simpleName,
           fieldName,
             message);
-    this.blacklist = Arrays.asList(blacklist);
+    this.maxValue = maxValue.longValue();
   }
 
-  public void check(String value)
+  public void check(Number value)
       throws MalioValidationException {
-
-    if (value != null && blacklist.contains(value)) {
+    if (value != null && value.longValue() > this.maxValue) {
       throw new MalioValidationException(getMessage(value));
     }
   }
 
-  public void isValid(String value,
+  public void isValid(Number value,
                       ValidationResult validationResult) {
-    if (value != null && blacklist.contains(value)) {
+    if (value != null && value.longValue() > this.maxValue) {
       validationResult.getMessages()
                       .add(new ErrorMessage(getMessage(value),
                                             super.getClassName(),
@@ -61,7 +56,7 @@ public class BlacklistConstraint
   }
 
   @Override
-  protected String getSpecializedMessage(String value) {
-    return LocalizedMessages.INSTANCE.getBlacklistMessage(value);
+  protected String getSpecializedMessage(Number value) {
+    return LocalizedMessages.INSTANCE.getMaxValueMessage(maxValue);
   }
 }

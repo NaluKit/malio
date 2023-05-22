@@ -13,54 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.model.validateitem02;
+package com.github.nalukit.malio.model.arrayitemnotnull01;
 
+import com.github.nalukit.malio.model.validateitem02.AbstractPerson;
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.ArrayItemNotNull;
-import com.github.nalukit.malio.shared.annotation.field.ArraySize;
-import com.github.nalukit.malio.shared.annotation.field.MaxLength;
-import com.github.nalukit.malio.shared.annotation.field.MinLength;
-import com.github.nalukit.malio.shared.annotation.field.NotNull;
 
 @MalioValidator
 public class Person
     extends AbstractPerson {
 
-  @NotNull
-  @MaxLength(64)
-  @MinLength(1)
-  private String profession;
-
-  @ArraySize(min = 1, max = 8)
-  @ArrayItemNotNull
-  //  @NotBlank
-  //  @MaxLength(128)
-  private String[] entities;
-
-  //  @ArraySize(min = 1, max = 8)
-  private int[] myNumbers;
+  @ArrayItemNotNull private String[] entities;
 
   public Person() {
   }
 
   public Person(String firstName,
                 String name,
-                String profession,
-                String[] entities,
-                int[] myNumbers) {
+                String[] entities) {
     super(firstName,
           name);
-    this.profession = profession;
-    this.entities   = entities;
-    this.myNumbers  = myNumbers;
-  }
-
-  public String getProfession() {
-    return profession;
-  }
-
-  public void setProfession(String profession) {
-    this.profession = profession;
+    this.entities = entities;
   }
 
   public String[] getEntities() {
@@ -71,11 +44,4 @@ public class Person
     this.entities = entities;
   }
 
-  public int[] getMyNumbers() {
-    return myNumbers;
-  }
-
-  public void setMyNumbers(int[] myNumbers) {
-    this.myNumbers = myNumbers;
-  }
 }

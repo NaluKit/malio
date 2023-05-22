@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.shared.internal.constraints;
+package com.github.nalukit.malio.shared.internal.constraint;
 
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
@@ -22,69 +22,40 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 
 import java.util.Objects;
 
-public class NotZeroConstraint
-    extends AbstractConstraint<Number> {
+public class NotNullConstraint<T>
+    extends AbstractConstraint<T> {
 
-  private boolean allowNegativeValues;
-  public NotZeroConstraint(String packageName,
+
+  public NotNullConstraint(String packageName,
                            String simpleName,
                            String fieldName,
-                           boolean allowNegativeValues,
                            String message) {
     super(packageName,
           simpleName,
           fieldName,
-          message);
-    this.allowNegativeValues = allowNegativeValues;
+            message);
   }
 
-  public void check(Number value)
+  @Override
+  protected String getSpecializedMessage(T value) {
+    return LocalizedMessages.INSTANCE.getNotNullMessage();
+  }
+
+  public void check(T value)
       throws MalioValidationException {
     if (Objects.isNull(value)) {
-      return;
-    }
-
-    if (!this.allowNegativeValues) {
-      if( value.longValue() < 0){
-        throw new MalioValidationException(getMessage(value));
-      }
-    }
-
-    if (value.longValue() == 0) {
       throw new MalioValidationException(getMessage(value));
     }
   }
 
-  public void isValid(Number value,
+  public void isValid(T value,
                       ValidationResult validationResult) {
     if (Objects.isNull(value)) {
-      return;
-    }
-
-
-    if (!this.allowNegativeValues) {
-      if(value.longValue() < 0){
-        validationResult.getMessages()
-                .add(new ErrorMessage(getMessage(value),
-                        super.getClassName(),
-                        super.getSimpleName(),
-                        super.getFieldName()));
-        return;
-      }
-    }
-
-    if (value.longValue() == 0) {
       validationResult.getMessages()
-              .add(new ErrorMessage(getMessage(value),
-                      super.getClassName(),
-                      super.getSimpleName(),
-                      super.getFieldName()));
+                      .add(new ErrorMessage(getMessage(value),
+                                            super.getClassName(),
+                                            super.getSimpleName(),
+                                            super.getFieldName()));
     }
-
-  }
-
-  @Override
-  protected String getSpecializedMessage(Number value) {
-    return LocalizedMessages.INSTANCE.getNotZeroMessage();
   }
 }

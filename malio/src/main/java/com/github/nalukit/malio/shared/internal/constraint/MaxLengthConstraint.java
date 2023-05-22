@@ -13,55 +13,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.shared.internal.constraints;
+package com.github.nalukit.malio.shared.internal.constraint;
 
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import org.gwtproject.regexp.shared.RegExp;
 
-public class RegexpConstraint
+public class MaxLengthConstraint
     extends AbstractConstraint<String> {
 
-  private RegExp regExp;
+  private int maxLength;
 
-  public RegexpConstraint(String packageName,
-                          String simpleName,
-                          String fieldName,
-                          String regExp,
-                          String message) {
+  public MaxLengthConstraint(String packageName,
+                             String simpleName,
+                             String fieldName,
+                             int maxLength,
+                             String message) {
     super(packageName,
           simpleName,
           fieldName,
             message);
-    this.regExp = RegExp.compile(regExp);
+    this.maxLength = maxLength;
   }
 
   public void check(String value)
       throws MalioValidationException {
-    if (value != null) {
-      if (!this.regExp.test(value)) {
-        throw new MalioValidationException(getMessage(value));
-      }
+    if (value != null && value.length() > maxLength) {
+      throw new MalioValidationException(getMessage(value));
     }
   }
 
   public void isValid(String value,
                       ValidationResult validationResult) {
-    if (value != null) {
-      if (!this.regExp.test(value)) {
-        validationResult.getMessages()
-                        .add(new ErrorMessage(getMessage(value),
-                                              super.getClassName(),
-                                              super.getSimpleName(),
-                                              super.getFieldName()));
-      }
+    if (value != null && value.length() > maxLength) {
+      validationResult.getMessages()
+                      .add(new ErrorMessage(getMessage(value),
+                                            super.getClassName(),
+                                            super.getSimpleName(),
+                                            super.getFieldName()));
     }
   }
 
   @Override
   protected String getSpecializedMessage(String value) {
-    return LocalizedMessages.INSTANCE.getRegexpMessage(value);
+    return LocalizedMessages.INSTANCE.getMaxLengthMessage(maxLength);
   }
 }

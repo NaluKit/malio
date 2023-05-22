@@ -139,10 +139,10 @@ public class MalioValidatorGenerator {
     }
 
     public void appendBeginControlFlowArray(VariableElement field) {
-        this.checkMethodBuilder.beginControlFlow("for (int i; i < bean.$L().length; i++)",
+        this.checkMethodBuilder.beginControlFlow("for (int i = 0; i < bean.$L().length; i++)",
                                                  this.processorUtils.createGetMethodName(field.getSimpleName()
                                                                                               .toString()));
-        this.validMethodTwoParameterBuilder.beginControlFlow("for (int i; i < bean.$L().length; i++)",
+        this.validMethodTwoParameterBuilder.beginControlFlow("for (int i = 0; i < bean.$L().length; i++)",
                                                              this.processorUtils.createGetMethodName(field.getSimpleName()
                                                                                                           .toString()));
     }

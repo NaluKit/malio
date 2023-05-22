@@ -13,52 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.shared.internal.constraints;
+package com.github.nalukit.malio.shared.internal.constraint;
 
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
 
-import java.math.BigDecimal;
+import java.util.Objects;
 
-public class MinDecimalConstraint
-    extends AbstractConstraint<BigDecimal> {
+public class NotBlankConstraint
+    extends AbstractConstraint<String> {
 
-  private BigDecimal minValue;
 
-  public MinDecimalConstraint(String packageName,
-                              String simpleName,
-                              String fieldName,
-                              String minValue,
-                              String message) {
+  public NotBlankConstraint(String packageName,
+                            String simpleName,
+                            String fieldName,
+                            String message) {
     super(packageName,
           simpleName,
           fieldName,
             message);
-    this.minValue = new BigDecimal(minValue);
   }
 
-  public void check(BigDecimal value)
+  @Override
+  protected String getSpecializedMessage(String value) {
+    return LocalizedMessages.INSTANCE.getNotBlankMessage();
+  }
+
+  public void check(String value)
       throws MalioValidationException {
-    if (value != null && value.compareTo(this.minValue) < 0) {
+    if (Objects.nonNull(value) && value.isEmpty()) {
       throw new MalioValidationException(getMessage(value));
     }
   }
 
-  public void isValid(BigDecimal value,
+  public void isValid(String value,
                       ValidationResult validationResult) {
-    if (value != null && value.compareTo(this.minValue) < 0) {
+    if (Objects.nonNull(value) && value.isEmpty()) {
       validationResult.getMessages()
                       .add(new ErrorMessage(getMessage(value),
                                             super.getClassName(),
                                             super.getSimpleName(),
                                             super.getFieldName()));
     }
-  }
-
-  @Override
-  protected String getSpecializedMessage(BigDecimal value) {
-    return LocalizedMessages.INSTANCE.getMinDecimalValueMessage(this.minValue);
   }
 }

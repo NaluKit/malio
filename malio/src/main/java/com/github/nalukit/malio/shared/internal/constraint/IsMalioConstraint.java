@@ -13,25 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.processor.model;
+package com.github.nalukit.malio.shared.internal.constraint;
 
-public enum ConstraintType {
-  ARRAY_ITEM_NOT_NULL_CONSTRAINT,
-  MAX_VALUE_CONSTRAINT,
-  MIN_VALUE_CONSTRAINT,
-  BLACKLIST_CONSTRAINT,
-  WHITELIST_CONSTRAINT,
-  REGEXP_CONSTRAINT,
-  MAX_LENGTH_CONSTRAINT,
-  MIN_LENGTH_CONSTRAINT,
-  EMAIL_CONSTRAINT,
-  UUID_CONSTRAINT,
-  MAX_DECIMAL_VALUE_CONSTRAINT,
-  MIN_DECIMAL_VALUE_CONSTRAINT,
-  NOT_BLANK_CONSTRAINT,
-  NOT_EMPTY_CONSTRAINT,
-  SIZE_CONSTRAINT,
-  ARRAY_SIZE_CONSTRAINT,
-  NOT_NULL_CONSTRAINT,
-  NOT_ZERO_CONSTRAINT
+import com.github.nalukit.malio.shared.internal.annotation.MalioInternalUse;
+import com.github.nalukit.malio.shared.model.ValidationResult;
+import com.github.nalukit.malio.shared.util.MalioValidationException;
+
+@MalioInternalUse
+public interface IsMalioConstraint<T> {
+
+  void check(T value)
+      throws MalioValidationException;
+
+  void isValid(T value,
+               ValidationResult validationResult);
+
 }

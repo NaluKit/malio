@@ -78,6 +78,24 @@ public abstract class AbstractProcessorConstraint<T extends Annotation>
     }
   }
 
+  public void checkDataTypeArrayItem(VariableElement variableElement) {
+    if (getSupportedDeclaredType() == null && getSupportedPrimitives() == null) {
+      return;
+    }
+
+    if (!processorUtils.checkDataTypeArrayItem(variableElement,
+                                               getSupportedPrimitives(),
+                                               getSupportedDeclaredType())) {
+      throw new UnsupportedTypeException("Class >>" +
+                                         variableElement.getEnclosingElement() +
+                                         "<< - Type >>" +
+                                         variableElement.asType() +
+                                         "<< not supported for >>" +
+                                         getClass().getSimpleName() +
+                                         "<<");
+    }
+  }
+
   public abstract Class<T> annotationType();
 
   public List<Element> getVarsWithAnnotation(TypeElement element) {
@@ -100,9 +118,9 @@ public abstract class AbstractProcessorConstraint<T extends Annotation>
 
   public abstract boolean isTargetingNative();
 
-  public abstract boolean isTargetingArray();
+  public abstract boolean isTargetingArrayItem();
 
-  public abstract boolean isTargrtingList();
+  public abstract boolean isTargetingListItem();
 
   @Override
   public CodeBlock generateCheckArray(Element clazz,
