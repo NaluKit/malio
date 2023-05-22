@@ -220,6 +220,30 @@ public class ProcessorUtils {
                                  supportedDeclaredTypes.toArray(new Class<?>[] {}));
   }
 
+  public boolean checkDataTypeCollectionItem(VariableElement variableElement,
+                                             List<TypeKind> supportedPrimitiveTypes,
+                                             List<Class<?>> supportedDeclaredTypes) {
+    if (!variableElement.asType().toString().contains("<")) {
+      return false;
+    }
+    DeclaredType               declaredType  = (DeclaredType) variableElement.asType();
+    List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
+    if (typeArguments.size() == 0) {
+      return  false;
+    }
+    TypeMirror genericTypeMirror = typeArguments.get(0);
+
+    if (genericTypeMirror.getKind()
+                   .isPrimitive()) {
+        return false;
+    }
+    if (supportedDeclaredTypes == null) {
+      return false;
+    }
+    return checkDeclaredDataType((DeclaredType) genericTypeMirror,
+                                 supportedDeclaredTypes.toArray(new Class<?>[] {}));
+  }
+
   public boolean checkDataTypeNative(VariableElement variableElement,
                                      List<TypeKind> supportedPrimitiveTypes,
                                      List<Class<?>> supportedDeclaredTypes) {

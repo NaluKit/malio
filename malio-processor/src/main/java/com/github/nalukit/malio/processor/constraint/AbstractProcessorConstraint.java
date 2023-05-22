@@ -96,6 +96,24 @@ public abstract class AbstractProcessorConstraint<T extends Annotation>
     }
   }
 
+  public void checkDataTypeCollectionItem(VariableElement variableElement) {
+    if (getSupportedDeclaredType() == null && getSupportedPrimitives() == null) {
+      return;
+    }
+
+    if (!processorUtils.checkDataTypeCollectionItem(variableElement,
+                                                    getSupportedPrimitives(),
+                                                    getSupportedDeclaredType())) {
+      throw new UnsupportedTypeException("Class >>" +
+                                         variableElement.getEnclosingElement() +
+                                         "<< - Type >>" +
+                                         variableElement.asType() +
+                                         "<< not supported for >>" +
+                                         getClass().getSimpleName() +
+                                         "<<");
+    }
+  }
+
   public abstract Class<T> annotationType();
 
   public List<Element> getVarsWithAnnotation(TypeElement element) {
@@ -141,21 +159,21 @@ public abstract class AbstractProcessorConstraint<T extends Annotation>
   }
 
   @Override
-  public CodeBlock generateCheckList(Element clazz,
-                                     VariableElement field)
+  public CodeBlock generateCheckCollection(Element clazz,
+                                           VariableElement field)
       throws ProcessorException {
     return this.createGenerator()
-               .generateCheckList(clazz,
-                                  field);
+               .generateCheckCollection(clazz,
+                                        field);
   }
 
   @Override
-  public CodeBlock generateValidList(Element clazz,
-                                     VariableElement field)
+  public CodeBlock generateValidCollection(Element clazz,
+                                           VariableElement field)
       throws ProcessorException {
     return this.createGenerator()
-               .generateValidList(clazz,
-                                  field);
+               .generateValidCollection(clazz,
+                                        field);
   }
 
   @Override

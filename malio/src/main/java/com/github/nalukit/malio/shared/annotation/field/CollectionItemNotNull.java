@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>The annotation indicates that an item of an array should not be null.</p>
+ * <p>The annotation indicates that an item of a list should not be null.</p>
  *
  * <p>This annotation can be used on items of an array.</p>
  *
@@ -29,6 +29,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface ArrayItemNotNull {
+public @interface CollectionItemNotNull {
   String message() default "";
 }

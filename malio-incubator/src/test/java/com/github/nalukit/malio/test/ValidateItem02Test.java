@@ -35,26 +35,27 @@ public class ValidateItem02Test {
     LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
   }
 
-//  @Test
-//  public void testCheckOk()
-//      throws MalioValidationException {
-//    Person model = new Person("Firestone",
-//                              "Fred",
-//                              "coder",
-//                              new String[] { "entity01","entity02", "entity03" });
-//    PersonMalioValidator.INSTANCE.check(model);
-//  }
-//
-//  @Test
-//  public void testValidateOk() {
-//    Person model = new Person("Firestone",
-//                              "Fred",
-//                              "coder",
-//                              new String[] { "entity01","entity02", "entity03" });
-//
-//    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-//    assertTrue(result.isValid());
-//  }
+  @Test
+  public void testCheckOk()
+      throws MalioValidationException {
+    Person model = new Person("Firestone",
+                              "Fred",
+                              "coder",
+                              new String[] { "entity01","entity02", "entity03" },
+                              new int[] {1, 1, 2, 3, 5, 8});
+    PersonMalioValidator.INSTANCE.check(model);
+  }
+
+  @Test
+  public void testValidateOk() {
+    Person model = new Person("Firestone",
+                              "Fred",
+                              "coder",
+                              new String[] { "entity01","entity02", "entity03" },
+                              new int[] {1, 1, 2, 3, 5, 8});
+    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+    assertTrue(result.isValid());
+  }
 
 //  @Test
 //  public void testCheckFail()

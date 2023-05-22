@@ -31,12 +31,12 @@ public interface IsGenerator {
                                 VariableElement field)
           throws ProcessorException;
 
-  CodeBlock generateCheckList(Element clazz,
-                                VariableElement field)
+  CodeBlock generateCheckCollection(Element clazz,
+                                    VariableElement field)
       throws ProcessorException;
 
-  CodeBlock generateValidList(Element clazz,
-                                VariableElement field)
+  CodeBlock generateValidCollection(Element clazz,
+                                    VariableElement field)
           throws ProcessorException;
 
   CodeBlock generateCheckNative(Element clazz,

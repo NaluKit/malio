@@ -420,6 +420,26 @@ The annotation indicates that an item of an array should not be null.
 
 This annotation can be used on any array that uses a complex type of field.
 
+### Annotations for variables of type Collection
+
+The following annotation can only be used on variable types that are Collection or sub classes of it.
+
+#### CollectionItemNotNull
+
+```java
+@CollectionItemNotNull
+```
+
+The annotation indicates that an item of a collection should not be null.
+
+This annotation can be used on any collection that uses a complex type of field.
+
+Important: Collection need a type. Otherwise, the annotation will not work!
+
+### Annotations for variables of type Map
+
+**Malio does not support the validation of Maps!**
+
 ## To get in touch with the developer
 
 Please use the [Nalu Gitter room](https://gitter.im/Nalukit42/Lobby).

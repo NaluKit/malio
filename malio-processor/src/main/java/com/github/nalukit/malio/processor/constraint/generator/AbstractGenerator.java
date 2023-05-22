@@ -51,14 +51,14 @@ public abstract class AbstractGenerator
   }
 
   @Override
-  public final CodeBlock generateCheckList(Element clazz,
-                                             VariableElement field)
+  public final CodeBlock generateCheckCollection(Element clazz,
+                                                 VariableElement field)
           throws ProcessorException {
-    return generate(clazz, field, ".check(bean.$L().get(i).$L())");
+    return generate(clazz, field, ".check(bean.$L().get(i))");
   }
 
   @Override
-  public final CodeBlock generateValidList(Element clazz, VariableElement field) throws ProcessorException {
+  public final CodeBlock generateValidCollection(Element clazz, VariableElement field) throws ProcessorException {
     return generate(clazz, field, ".isValid(bean.$L().get(i), validationResult)");
   }
 

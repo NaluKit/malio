@@ -16,11 +16,14 @@
 package com.github.nalukit.malio.model.validateitem03;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
+import com.github.nalukit.malio.shared.annotation.field.ArrayItemNotNull;
 import com.github.nalukit.malio.shared.annotation.field.ArraySize;
+import com.github.nalukit.malio.shared.annotation.field.CollectionItemNotNull;
 import com.github.nalukit.malio.shared.annotation.field.MaxLength;
 import com.github.nalukit.malio.shared.annotation.field.MinLength;
 import com.github.nalukit.malio.shared.annotation.field.NotBlank;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
+import com.github.nalukit.malio.shared.annotation.field.Size;
 
 import java.util.List;
 
@@ -33,11 +36,20 @@ public class Person
   @MinLength(1)
   private String profession;
 
-//  @ArraySize(min = 1, max = 8)
-//  @NotNull
-//  @NotBlank
-//  @MaxLength(128)
-  private List<String> entities;
+  @ArraySize(min = 1, max = 8)
+  @ArrayItemNotNull
+  //  @NotBlank
+  //  @MaxLength(128)
+  private String[] entities;
+
+  @ArraySize(min = 1, max = 8)
+  private int[] myNumbers;
+
+  @Size(min = 1, max = 8)
+  @CollectionItemNotNull
+  //  @NotBlank
+  //  @MaxLength(128)
+  private List<String> pockets;
 
   public Person() {
   }
@@ -45,11 +57,15 @@ public class Person
   public Person(String firstName,
                 String name,
                 String profession,
-                List<String> entities) {
+                String[] entities,
+                int[] myNumbers,
+                List<String> pockets) {
     super(firstName,
           name);
     this.profession = profession;
     this.entities   = entities;
+    this.myNumbers  = myNumbers;
+    this.pockets = pockets;
   }
 
   public String getProfession() {
@@ -60,11 +76,27 @@ public class Person
     this.profession = profession;
   }
 
-  public List<String> getEntities() {
+  public String[] getEntities() {
     return entities;
   }
 
-  public void setEntities(List<String> entities) {
+  public void setEntities(String[] entities) {
     this.entities = entities;
+  }
+
+  public int[] getMyNumbers() {
+    return myNumbers;
+  }
+
+  public void setMyNumbers(int[] myNumbers) {
+    this.myNumbers = myNumbers;
+  }
+
+  public List<String> getPockets() {
+    return pockets;
+  }
+
+  public void setPockets(List<String> pockets) {
+    this.pockets = pockets;
   }
 }
