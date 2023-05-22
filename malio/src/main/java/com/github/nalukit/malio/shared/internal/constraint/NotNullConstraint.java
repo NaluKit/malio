@@ -25,7 +25,6 @@ import java.util.Objects;
 public class NotNullConstraint<T>
     extends AbstractConstraint<T> {
 
-
   public NotNullConstraint(String packageName,
                            String simpleName,
                            String fieldName,
@@ -33,7 +32,7 @@ public class NotNullConstraint<T>
     super(packageName,
           simpleName,
           fieldName,
-            message);
+          message);
   }
 
   @Override

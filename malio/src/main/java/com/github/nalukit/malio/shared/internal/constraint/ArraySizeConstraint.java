@@ -25,8 +25,8 @@ import java.util.Objects;
 public class ArraySizeConstraint
     extends AbstractConstraint<Object[]> {
 
-  private final int    min;
-  private final int    max;
+  private final int min;
+  private final int max;
 
   public ArraySizeConstraint(String packageName,
                              String simpleName,
@@ -37,9 +37,9 @@ public class ArraySizeConstraint
     super(packageName,
           simpleName,
           fieldName,
-            message);
-    this.min     = min;
-    this.max     = max;
+          message);
+    this.min = min;
+    this.max = max;
   }
 
   public void check(int[] value) {
@@ -98,18 +98,18 @@ public class ArraySizeConstraint
   }
 
   private void internCheck(int size) {
-      if (size < this.min || size > this.max) {
-        throw new MalioValidationException(getMessage(null));
-      }
+    if (size < this.min || size > this.max) {
+      throw new MalioValidationException(getMessage(null));
+    }
 
   }
-
 
   public void isValid(Object[] value,
                       ValidationResult validationResult) {
     if (Objects.nonNull(value)) {
       int size = value.length;
-        internIsValid(size, validationResult);
+      internIsValid(size,
+                    validationResult);
     }
   }
 
@@ -117,7 +117,8 @@ public class ArraySizeConstraint
                       ValidationResult validationResult) {
     if (Objects.nonNull(value)) {
       int size = value.length;
-      internIsValid(size, validationResult);
+      internIsValid(size,
+                    validationResult);
     }
   }
 
@@ -125,7 +126,8 @@ public class ArraySizeConstraint
                       ValidationResult validationResult) {
     if (Objects.nonNull(value)) {
       int size = value.length;
-      internIsValid(size, validationResult);
+      internIsValid(size,
+                    validationResult);
     }
   }
 
@@ -133,7 +135,8 @@ public class ArraySizeConstraint
                       ValidationResult validationResult) {
     if (Objects.nonNull(value)) {
       int size = value.length;
-      internIsValid(size, validationResult);
+      internIsValid(size,
+                    validationResult);
     }
   }
 
@@ -141,7 +144,8 @@ public class ArraySizeConstraint
                       ValidationResult validationResult) {
     if (Objects.nonNull(value)) {
       int size = value.length;
-      internIsValid(size, validationResult);
+      internIsValid(size,
+                    validationResult);
     }
   }
 
@@ -149,7 +153,8 @@ public class ArraySizeConstraint
                       ValidationResult validationResult) {
     if (Objects.nonNull(value)) {
       int size = value.length;
-      internIsValid(size, validationResult);
+      internIsValid(size,
+                    validationResult);
     }
   }
 
@@ -157,7 +162,8 @@ public class ArraySizeConstraint
                       ValidationResult validationResult) {
     if (Objects.nonNull(value)) {
       int size = value.length;
-      internIsValid(size, validationResult);
+      internIsValid(size,
+                    validationResult);
     }
   }
 
@@ -165,7 +171,8 @@ public class ArraySizeConstraint
                       ValidationResult validationResult) {
     if (Objects.nonNull(value)) {
       int size = value.length;
-      internIsValid(size, validationResult);
+      internIsValid(size,
+                    validationResult);
     }
   }
 
@@ -173,22 +180,25 @@ public class ArraySizeConstraint
                       ValidationResult validationResult) {
     if (Objects.nonNull(value)) {
       int size = value.length;
-      internIsValid(size, validationResult);
+      internIsValid(size,
+                    validationResult);
     }
   }
 
-  private void internIsValid(int size, ValidationResult validationResult) {
+  private void internIsValid(int size,
+                             ValidationResult validationResult) {
     if (size < this.min || size > this.max) {
       validationResult.getMessages()
-              .add(new ErrorMessage(getMessage(null),
-                      super.getClassName(),
-                      super.getSimpleName(),
-                      super.getFieldName()));
+                      .add(new ErrorMessage(getMessage(null),
+                                            super.getClassName(),
+                                            super.getSimpleName(),
+                                            super.getFieldName()));
     }
   }
 
   @Override
   protected String getSpecializedMessage(Object[] value) {
-    return LocalizedMessages.INSTANCE.getSizeMessage(min, max);
+    return LocalizedMessages.INSTANCE.getSizeMessage(min,
+                                                     max);
   }
 }

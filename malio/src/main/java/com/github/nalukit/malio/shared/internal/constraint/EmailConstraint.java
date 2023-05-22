@@ -35,7 +35,7 @@ public class EmailConstraint
     super(packageName,
           simpleName,
           fieldName,
-            message);
+          message);
   }
 
   @Override

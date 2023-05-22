@@ -28,7 +28,6 @@ public class BlacklistConstraint
 
   private List<String> blacklist;
 
-
   public BlacklistConstraint(String packageName,
                              String simpleName,
                              String fieldName,
@@ -37,7 +36,7 @@ public class BlacklistConstraint
     super(packageName,
           simpleName,
           fieldName,
-            message);
+          message);
     this.blacklist = Arrays.asList(blacklist);
   }
 

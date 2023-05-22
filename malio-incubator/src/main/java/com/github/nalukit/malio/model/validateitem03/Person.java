@@ -21,7 +21,6 @@ import com.github.nalukit.malio.shared.annotation.field.ArraySize;
 import com.github.nalukit.malio.shared.annotation.field.CollectionItemNotNull;
 import com.github.nalukit.malio.shared.annotation.field.MaxLength;
 import com.github.nalukit.malio.shared.annotation.field.MinLength;
-import com.github.nalukit.malio.shared.annotation.field.NotBlank;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
 import com.github.nalukit.malio.shared.annotation.field.Size;
 
@@ -42,8 +41,7 @@ public class Person
   //  @MaxLength(128)
   private String[] entities;
 
-  @ArraySize(min = 1, max = 8)
-  private int[] myNumbers;
+  @ArraySize(min = 1, max = 8) private int[] myNumbers;
 
   @Size(min = 1, max = 8)
   @CollectionItemNotNull
@@ -65,7 +63,7 @@ public class Person
     this.profession = profession;
     this.entities   = entities;
     this.myNumbers  = myNumbers;
-    this.pockets = pockets;
+    this.pockets    = pockets;
   }
 
   public String getProfession() {

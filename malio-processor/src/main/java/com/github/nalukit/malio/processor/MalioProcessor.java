@@ -19,10 +19,10 @@ import com.github.nalukit.malio.processor.constraint.AbstractProcessorConstraint
 import com.github.nalukit.malio.processor.constraint.ArrayItemNotNullProcessorConstraint;
 import com.github.nalukit.malio.processor.constraint.ArraySizeProcessorConstraint;
 import com.github.nalukit.malio.processor.constraint.BlacklistProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.CollectionItemNotNullProcessorConstraint;
 import com.github.nalukit.malio.processor.constraint.DecimalMaxProcessorConstraint;
 import com.github.nalukit.malio.processor.constraint.DecimalMinProcessorConstraint;
 import com.github.nalukit.malio.processor.constraint.EmailProcessorConstraint;
-import com.github.nalukit.malio.processor.constraint.CollectionItemNotNullProcessorConstraint;
 import com.github.nalukit.malio.processor.constraint.MaxLengthProcessorConstraint;
 import com.github.nalukit.malio.processor.constraint.MaxProcessorConstraint;
 import com.github.nalukit.malio.processor.constraint.MinLengthProcessorConstraint;
@@ -45,10 +45,10 @@ import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.ArrayItemNotNull;
 import com.github.nalukit.malio.shared.annotation.field.ArraySize;
 import com.github.nalukit.malio.shared.annotation.field.Blacklist;
+import com.github.nalukit.malio.shared.annotation.field.CollectionItemNotNull;
 import com.github.nalukit.malio.shared.annotation.field.DecimalMax;
 import com.github.nalukit.malio.shared.annotation.field.DecimalMin;
 import com.github.nalukit.malio.shared.annotation.field.Email;
-import com.github.nalukit.malio.shared.annotation.field.CollectionItemNotNull;
 import com.github.nalukit.malio.shared.annotation.field.Max;
 import com.github.nalukit.malio.shared.annotation.field.MaxLength;
 import com.github.nalukit.malio.shared.annotation.field.Min;
@@ -254,12 +254,12 @@ public class MalioProcessor
                                                                     .collect(Collectors.toList());
     for (VariableElement field : listOfDirectVariables) {
       this.createConstraints(field,
-                                     malioValidatorGenerator);
+                             malioValidatorGenerator);
     }
   }
 
   private void createConstraints(VariableElement field,
-                                         MalioValidatorGenerator malioValidatorGenerator)
+                                 MalioValidatorGenerator malioValidatorGenerator)
       throws ProcessorException {
     for (AnnotationMirror annotation : field.getAnnotationMirrors()) {
       AbstractProcessorConstraint<?> constraint = this.constraints.get(annotation.getAnnotationType()
@@ -315,15 +315,6 @@ public class MalioProcessor
                                             AbstractProcessorConstraint<?> constraint)
       throws ProcessorException {
     malioValidatorGenerator.appendBeginControlFlowArray(field);
-    //            beginControlFlowCreated = true;
-    //    for (AbstractConstraint<?> constraint : this.constraints) {
-    //      if (AbstractConstraint.Target.ROOT != constraint.getTargetForCollectionAndList()) {
-    //        if (Objects.nonNull(field.getAnnotation(constraint.annotationType()))) {
-    //          if (!beginControlFlowCreated) {
-    //          }
-    //          constraint.checkDataType(field,
-    //                                   ValidatorModel.Type.ARRAY,
-    //                                   constraint.getTargetForCollectionAndList());
     CodeBlock checkBlock = constraint.generateCheckArray(field,
                                                          field);
     CodeBlock validBlock = constraint.generateValidArray(field,
@@ -331,11 +322,6 @@ public class MalioProcessor
 
     malioValidatorGenerator.appendCheckStatement(checkBlock);
     malioValidatorGenerator.appendValidStatement(validBlock);
-    //        }
-    //      }
-    //    }
-    //    if (beginControlFlowCreated) {
-    //    }
     malioValidatorGenerator.appendEndControlFlow();
   }
 
@@ -344,121 +330,14 @@ public class MalioProcessor
                                                  AbstractProcessorConstraint<?> constraint)
       throws ProcessorException {
     malioValidatorGenerator.appendBeginControlFlowCollection(field);
-    //            beginControlFlowCreated = true;
-    //    for (AbstractConstraint<?> constraint : this.constraints) {
-    //      if (AbstractConstraint.Target.ROOT != constraint.getTargetForCollectionAndList()) {
-    //        if (Objects.nonNull(field.getAnnotation(constraint.annotationType()))) {
-    //          if (!beginControlFlowCreated) {
-    //          }
-    //          constraint.checkDataType(field,
-    //                                   ValidatorModel.Type.ARRAY,
-    //                                   constraint.getTargetForCollectionAndList());
     CodeBlock checkBlock = constraint.generateCheckCollection(field,
-                                                         field);
+                                                              field);
     CodeBlock validBlock = constraint.generateValidCollection(field,
-                                                         field);
+                                                              field);
 
     malioValidatorGenerator.appendCheckStatement(checkBlock);
     malioValidatorGenerator.appendValidStatement(validBlock);
-    //        }
-    //      }
-    //    }
-    //    if (beginControlFlowCreated) {
-    //    }
     malioValidatorGenerator.appendEndControlFlow();
-  }
-
-  private void createConstraintsForArray(VariableElement field,
-                                         MalioValidatorGenerator malioValidatorGenerator)
-      throws ProcessorException {
-    //    for (AbstractConstraint<?> constraint : this.constraints) {
-    //      if (AbstractConstraint.Target.ROOT == constraint.getTargetForCollectionAndList()) {
-    //        if (Objects.nonNull(field.getAnnotation(constraint.annotationType()))) {
-    //          constraint.checkDataType(field,
-    //                                   ValidatorModel.Type.ARRAY,
-    //                                   constraint.getTargetForCollectionAndList());
-    //          CodeBlock checkBlock = constraint.generateCheckNative(field,
-    //                                                                field);
-    //          CodeBlock validBlock = constraint.generateValidNative(field,
-    //                                                                field);
-    //
-    //          malioValidatorGenerator.appendCheckStatement(checkBlock);
-    //          malioValidatorGenerator.appendValidStatement(validBlock);
-    //        }
-    //      }
-    //    }
-
-    //    boolean beginControlFlowCreated = false;
-    //    for (AbstractConstraint<?> constraint : this.constraints) {
-    //      if (AbstractConstraint.Target.ROOT != constraint.getTargetForCollectionAndList()) {
-    //        if (Objects.nonNull(field.getAnnotation(constraint.annotationType()))) {
-    //          if (!beginControlFlowCreated) {
-    //            malioValidatorGenerator.appendBeginControlFlowArray(field);
-    //            beginControlFlowCreated = true;
-    //          }
-    //          constraint.checkDataType(field,
-    //                                   ValidatorModel.Type.ARRAY,
-    //                                   constraint.getTargetForCollectionAndList());
-    //          CodeBlock checkBlock = constraint.generateCheckArray(field,
-    //                                                                field);
-    //          CodeBlock validBlock = constraint.generateValidArray(field,
-    //                                                                field);
-    //
-    //          malioValidatorGenerator.appendCheckStatement(checkBlock);
-    //          malioValidatorGenerator.appendValidStatement(validBlock);
-    //        }
-    //      }
-    //    }
-    //    if (beginControlFlowCreated) {
-    //      malioValidatorGenerator.appendEndControlFlow();
-    //    }
-  }
-
-  private void createConstraintsForNative(VariableElement field,
-                                          MalioValidatorGenerator malioValidatorGenerator)
-      throws ProcessorException {
-    for (AnnotationMirror annotation : field.getAnnotationMirrors()) {
-      AbstractProcessorConstraint<?> constraint = this.constraints.get(annotation.getAnnotationType()
-                                                                                 .toString());
-      // c heck whether he annotation is related to Malio or not ...
-      if (Objects.isNull(constraint)) {
-        continue;
-      }
-      // can we use this annotation on fields?
-      if (!constraint.isTargetingNative()) {
-        throw new UnsupportedTypeException("Class >>" +
-                                           field.getEnclosingElement() +
-                                           "<< - Type >>" +
-                                           field.asType() +
-                                           "<< not supported for >>" +
-                                           getClass().getSimpleName() +
-                                           "<<");
-      }
-
-      constraint.checkDataType(field);
-      CodeBlock checkBlock = constraint.generateCheckNative(field,
-                                                            field);
-      CodeBlock validBlock = constraint.generateValidNative(field,
-                                                            field);
-
-      malioValidatorGenerator.appendCheckStatement(checkBlock);
-      malioValidatorGenerator.appendValidStatement(validBlock);
-    }
-
-    //    for (AbstractConstraint<?> constraint : this.constraints) {
-    //      if (Objects.nonNull(field.getAnnotation(constraint.annotationType()))) {
-    //        constraint.checkDataType(field,
-    //                                 ValidatorModel.Type.NATIVE,
-    //                                 constraint.getTargetForCollectionAndList());
-    //        CodeBlock checkBlock = constraint.generateCheckNative(field,
-    //                                                              field);
-    //        CodeBlock validBlock = constraint.generateValidNative(field,
-    //                                                              field);
-    //
-    //        malioValidatorGenerator.appendCheckStatement(checkBlock);
-    //        malioValidatorGenerator.appendValidStatement(validBlock);
-    //      }
-    //    }
   }
 
   private void createSubAndSuperValidators(Element validatorElement,

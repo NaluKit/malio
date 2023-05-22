@@ -185,7 +185,8 @@ public class Person {
 }
 ```
 
-Malio will create a validator for the `Person` class. The validator will be called [name of the class] + 'MalioValidator'.
+Malio will create a validator for the `Person` class. The validator will be called [name of the class] + '
+MalioValidator'.
 To validate an instance of the class, call:
 
 `PersonMalioValidator.INSTANCE.check(myInstenceOfPerson);`
@@ -198,8 +199,10 @@ In case classes are extending user classes, Malio will also look for existing va
 
 ## Custom Messages
 
-Malio comes with predefined and localized messages, which can be set via `LocalizedMessages.INSTANCE.setMessages(new MessagesEN());`.
-At the moment, malio only provides messages for english and german. Contributions are welcome! See [IMessages.java](malio%2Fsrc%2Fmain%2Fjava%2Fcom%2Fgithub%2Fnalukit%2Fmalio%2Fshared%2Fmessages%2FIMessages.java)
+Malio comes with predefined and localized messages, which can be set
+via `LocalizedMessages.INSTANCE.setMessages(new MessagesEN());`.
+At the moment, malio only provides messages for english and german. Contributions are welcome!
+See [IMessages.java](malio%2Fsrc%2Fmain%2Fjava%2Fcom%2Fgithub%2Fnalukit%2Fmalio%2Fshared%2Fmessages%2FIMessages.java)
 and [locales](malio%2Fsrc%2Fmain%2Fjava%2Fcom%2Fgithub%2Fnalukit%2Fmalio%2Fshared%2Fmessages%2Flocales).
 
 The user can overwrite the dynamic messages with own static messages in *every* annotation. E.g., `@MaxLength`:
@@ -369,7 +372,8 @@ This annotation can only be used on fields of type **String**.
 @Size(min=1, max=99)
 ```
 
-The annotation defines the minimum and maximum size of a collection. The constraint will not be checked if the collection is null.
+The annotation defines the minimum and maximum size of a collection. The constraint will not be checked if the
+collection is null.
 
 This annotation can only be used on fields of types extending **Collection** (List, Set, ...).
 
@@ -379,7 +383,8 @@ This annotation can only be used on fields of types extending **Collection** (Li
 @ArraySize(min=1, max=99)
 ```
 
-The annotation defines the minimum and maximum size of an array. The constraint will not be checked if the array is null.
+The annotation defines the minimum and maximum size of an array. The constraint will not be checked if the array is
+null.
 
 This annotation can only be used on fields of types **array** (int[], String[], ...).
 

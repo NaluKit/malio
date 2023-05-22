@@ -25,7 +25,7 @@ public class Person {
 
   @Min(18) private int age;
 
-  @Min(5) private Integer complexTypeTest;
+  @Min(5) private                                Integer complexTypeTest;
   @Min(value = 18, message = "Override") private Integer override;
 
   public Person() {
@@ -39,11 +39,14 @@ public class Person {
     this.complexTypeTest = complexTypeTest;
   }
 
-  public Person(String name, int age, Integer complexTypeTest, Integer override) {
-    this.name = name;
-    this.age = age;
+  public Person(String name,
+                int age,
+                Integer complexTypeTest,
+                Integer override) {
+    this.name            = name;
+    this.age             = age;
     this.complexTypeTest = complexTypeTest;
-    this.override = override;
+    this.override        = override;
   }
 
   public Integer getOverride() {

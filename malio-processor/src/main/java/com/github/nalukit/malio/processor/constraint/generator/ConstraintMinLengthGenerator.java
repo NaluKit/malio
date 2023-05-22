@@ -44,28 +44,32 @@ public class ConstraintMinLengthGenerator
   }
 
   @Override
-  protected CodeBlock generate(Element clazz, VariableElement field, String suffix) {
-    return CodeBlock.builder().add(
-            "new $T($S, $S, $S, $L, $S)" + suffix,
-            constraint.getValidationClass(field),
-            this.processorUtils.getPackage(field),
-            this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
-                    .getSimpleName()
-                    .toString()),
-            field.getSimpleName()
-                    .toString(),
-            field.getAnnotation(MinLength.class)
-                    .value(),
-            field.getAnnotation(constraint.annotationType()).message(),
-            this.processorUtils.createGetMethodName(field.getSimpleName().toString())
-    ).build();
+  protected CodeBlock generate(Element clazz,
+                               VariableElement field,
+                               String suffix) {
+    return CodeBlock.builder()
+                    .add("new $T($S, $S, $S, $L, $S)" + suffix,
+                         constraint.getValidationClass(field),
+                         this.processorUtils.getPackage(field),
+                         this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
+                                                                               .getSimpleName()
+                                                                               .toString()),
+                         field.getSimpleName()
+                              .toString(),
+                         field.getAnnotation(MinLength.class)
+                              .value(),
+                         field.getAnnotation(constraint.annotationType())
+                              .message(),
+                         this.processorUtils.createGetMethodName(field.getSimpleName()
+                                                                      .toString()))
+                    .build();
   }
 
   public static class Builder {
 
-    Elements                      elements;
-    Types                         types;
-    Filer                         filer;
+    Elements                               elements;
+    Types                                  types;
+    Filer                                  filer;
     ProcessorUtils                         processorUtils;
     AbstractProcessorConstraint<MinLength> constraint;
 

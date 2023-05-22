@@ -130,17 +130,18 @@ public class ValidatorDecimalMin01Test {
   @Test
   public void testValidateFail01MessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-    Person model = new Person(BigDecimal.valueOf(2), BigDecimal.valueOf(0.099999));
+    Person model = new Person(BigDecimal.valueOf(2),
+                              BigDecimal.valueOf(0.099999));
 
     ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
     assertFalse(validationResult.isValid());
     assertEquals(1,
-            validationResult.getMessages()
-                    .size());
+                 validationResult.getMessages()
+                                 .size());
     assertEquals("Override",
-            validationResult.getMessages()
-                    .get(0)
-                    .getMessage());
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
   }
 }
 

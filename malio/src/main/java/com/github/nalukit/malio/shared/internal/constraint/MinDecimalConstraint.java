@@ -35,7 +35,7 @@ public class MinDecimalConstraint
     super(packageName,
           simpleName,
           fieldName,
-            message);
+          message);
     this.minValue = new BigDecimal(minValue);
   }
 

@@ -23,15 +23,20 @@ import java.math.BigDecimal;
 @MalioValidator
 public class Person {
 
-  @DecimalMin("0.1") private BigDecimal taxRate;
+  @DecimalMin("0.1") private                               BigDecimal taxRate;
   @DecimalMin(value = "0.1", message = "Override") private BigDecimal these;
 
   public Person() {
   }
 
-  public Person(BigDecimal taxRate, BigDecimal these) {
+  public Person(BigDecimal taxRate,
+                BigDecimal these) {
     this.taxRate = taxRate;
-    this.these = these;
+    this.these   = these;
+  }
+
+  public Person(BigDecimal taxRate) {
+    this.taxRate = taxRate;
   }
 
   public BigDecimal getThese() {
@@ -40,10 +45,6 @@ public class Person {
 
   public void setThese(BigDecimal these) {
     this.these = these;
-  }
-
-  public Person(BigDecimal taxRate) {
-    this.taxRate = taxRate;
   }
 
   public BigDecimal getTaxRate() {

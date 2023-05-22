@@ -19,13 +19,13 @@ import javax.lang.model.element.TypeElement;
 
 public class ValidatorModel {
 
-  private String      packageName;
-  private String      simpleClassName;
-  private String      fieldName;
+  private String        packageName;
+  private String        simpleClassName;
+  private String        fieldName;
   private String        postFix;
   private ComponentType componentType;
   private TypeElement   genericTypeElement01;
-  private TypeElement genericTypeElement02;
+  private TypeElement   genericTypeElement02;
 
   public ValidatorModel(String packageName,
                         String simpleClassName,

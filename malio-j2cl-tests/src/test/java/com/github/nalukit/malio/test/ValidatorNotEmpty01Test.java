@@ -117,17 +117,18 @@ public class ValidatorNotEmpty01Test {
   @Test
   public void testValidateFail01MessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-    Person model = new Person(Arrays.asList("A"), new ArrayList<>());
+    Person model = new Person(Arrays.asList("A"),
+                              new ArrayList<>());
 
     ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
     assertFalse(validationResult.isValid());
     assertEquals(1,
-            validationResult.getMessages()
-                    .size());
+                 validationResult.getMessages()
+                                 .size());
     assertEquals("Override",
-            validationResult.getMessages()
-                    .get(0)
-                    .getMessage());
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
   }
 }
 

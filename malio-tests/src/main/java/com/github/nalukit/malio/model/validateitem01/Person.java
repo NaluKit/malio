@@ -29,8 +29,7 @@ public class Person {
 
   @NotNull private String firstName;
 
-  @ArraySize(min = 1, max = 8)
-  private Address[] address;
+  @ArraySize(min = 1, max = 8) private Address[] address;
 
   public Person() {
   }

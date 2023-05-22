@@ -43,38 +43,40 @@ public class ConstraintBlacklistGenerator
     return new Builder();
   }
 
-
   @Override
-  protected CodeBlock generate(Element clazz, VariableElement field, String suffix) {
-    String           packageName = this.processorUtils.getPackage(field)
-            .toString();
+  protected CodeBlock generate(Element clazz,
+                               VariableElement field,
+                               String suffix) {
+    String packageName = this.processorUtils.getPackage(field)
+                                            .toString();
     String className = this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
-            .getSimpleName()
-            .toString());
-    String   simpleName  = field.getSimpleName()
-            .toString();
-    String[] blacklist   = field.getAnnotation(Blacklist.class)
-            .value();
-    String   arraySyntax = processorUtils.createStringInitializationFromArray(blacklist);
-    String message = field.getAnnotation(Blacklist.class).message();
+                                                                             .getSimpleName()
+                                                                             .toString());
+    String simpleName = field.getSimpleName()
+                             .toString();
+    String[] blacklist = field.getAnnotation(Blacklist.class)
+                              .value();
+    String arraySyntax = processorUtils.createStringInitializationFromArray(blacklist);
+    String message     = field.getAnnotation(Blacklist.class)
+                              .message();
 
-
-    return CodeBlock.builder().add(
-            "new $T($S, $S, $S, $L, $S)" + suffix,
-            constraint.getValidationClass(field),
-            packageName,
-            className,
-            simpleName,
-            arraySyntax,
-            message,
-            this.processorUtils.createGetMethodName(field.getSimpleName().toString())
-    ).build();
+    return CodeBlock.builder()
+                    .add("new $T($S, $S, $S, $L, $S)" + suffix,
+                         constraint.getValidationClass(field),
+                         packageName,
+                         className,
+                         simpleName,
+                         arraySyntax,
+                         message,
+                         this.processorUtils.createGetMethodName(field.getSimpleName()
+                                                                      .toString()))
+                    .build();
   }
 
   public static class Builder {
-    Elements                      elements;
-    Types                         types;
-    Filer                         filer;
+    Elements                               elements;
+    Types                                  types;
+    Filer                                  filer;
     ProcessorUtils                         processorUtils;
     AbstractProcessorConstraint<Blacklist> constraint;
 

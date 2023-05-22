@@ -24,39 +24,40 @@ import java.util.List;
 @MalioValidator
 public class Person {
 
+  @NotZero private int personNr;
 
-  @NotZero
-  private int personNr;
+  @NotZero private Integer age;
 
-  @NotZero
-  private Integer age;
+  @NotZero(allowNegativeValues = true) private long addressNr;
 
-  @NotZero(allowNegativeValues = true)
-  private long addressNr;
+  @NotZero private Long addressNrLong;
 
-  @NotZero
-  private Long addressNrLong;
-
-  @NotZero(message = "Override")
-  private int override;
+  @NotZero(message = "Override") private int override;
 
   public Person() {
   }
 
-  public Person(int personNr, Integer age, long addressNr, Long addressNrLong) {
-    this.personNr = personNr;
-    this.age = age;
-    this.addressNr = addressNr;
+  public Person(int personNr,
+                Integer age,
+                long addressNr,
+                Long addressNrLong) {
+    this.personNr      = personNr;
+    this.age           = age;
+    this.addressNr     = addressNr;
     this.addressNrLong = addressNrLong;
-    this.override = 10;
+    this.override      = 10;
   }
 
-  public Person(int personNr, Integer age, long addressNr, Long addressNrLong, int override) {
-    this.personNr = personNr;
-    this.age = age;
-    this.addressNr = addressNr;
+  public Person(int personNr,
+                Integer age,
+                long addressNr,
+                Long addressNrLong,
+                int override) {
+    this.personNr      = personNr;
+    this.age           = age;
+    this.addressNr     = addressNr;
     this.addressNrLong = addressNrLong;
-    this.override = override;
+    this.override      = override;
   }
 
   public int getOverride() {

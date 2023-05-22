@@ -84,9 +84,9 @@ public class ValidatorBlacklist01Test {
   @Test
   public void testValidateNull()
       throws MalioValidationException {
-    Address          model  = new Address(null,
-                                          "123",
-                                          "City");
+    Address model = new Address(null,
+                                "123",
+                                "City");
     ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }
@@ -132,9 +132,9 @@ public class ValidatorBlacklist01Test {
   public void testValidateFailMessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Address model = new Address("Hello",
-            "1245",
-            "City",
-            "123");
+                                "1245",
+                                "City",
+                                "123");
 
     ValidationResult   validationResult = AddressMalioValidator.INSTANCE.validate(model);
     List<ErrorMessage> messages         = validationResult.getMessages();
@@ -142,9 +142,9 @@ public class ValidatorBlacklist01Test {
 
     assertFalse(validationResult.isValid());
     assertEquals(1,
-            messages.size());
+                 messages.size());
     assertEquals("Override",
-            errorMessage.getMessage());
+                 errorMessage.getMessage());
   }
 }
 

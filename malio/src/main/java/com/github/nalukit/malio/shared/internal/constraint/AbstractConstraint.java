@@ -53,10 +53,12 @@ public abstract class AbstractConstraint<T>
     return this.packageName + "." + this.simpleName;
   }
 
-  protected String getUserMessage() { return this.userMessage; }
+  protected String getUserMessage() {
+    return this.userMessage;
+  }
 
   protected final String getMessage(T value) {
-    if (getUserMessage().isEmpty()){
+    if (getUserMessage().isEmpty()) {
       return getSpecializedMessage(value);
     }
 

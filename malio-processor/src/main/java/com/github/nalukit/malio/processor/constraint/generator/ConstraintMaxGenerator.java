@@ -44,21 +44,25 @@ public class ConstraintMaxGenerator
   }
 
   @Override
-  protected CodeBlock generate(Element clazz, VariableElement field, String suffix) {
-    return CodeBlock.builder().add(
-            "new $T($S, $S, $S, Long.valueOf($L), $S)" + suffix,
-            constraint.getValidationClass(field),
-            this.processorUtils.getPackage(field),
-            this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
-                    .getSimpleName()
-                    .toString()),
-            field.getSimpleName()
-                    .toString(),
-            field.getAnnotation(Max.class)
-                    .value(),
-            field.getAnnotation(Max.class).message(),
-            this.processorUtils.createGetMethodName(field.getSimpleName().toString())
-    ).build();
+  protected CodeBlock generate(Element clazz,
+                               VariableElement field,
+                               String suffix) {
+    return CodeBlock.builder()
+                    .add("new $T($S, $S, $S, Long.valueOf($L), $S)" + suffix,
+                         constraint.getValidationClass(field),
+                         this.processorUtils.getPackage(field),
+                         this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
+                                                                               .getSimpleName()
+                                                                               .toString()),
+                         field.getSimpleName()
+                              .toString(),
+                         field.getAnnotation(Max.class)
+                              .value(),
+                         field.getAnnotation(Max.class)
+                              .message(),
+                         this.processorUtils.createGetMethodName(field.getSimpleName()
+                                                                      .toString()))
+                    .build();
   }
 
   public static class Builder {

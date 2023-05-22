@@ -24,8 +24,6 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ValidateItem02Test {
@@ -41,8 +39,15 @@ public class ValidateItem02Test {
     Person model = new Person("Firestone",
                               "Fred",
                               "coder",
-                              new String[] { "entity01","entity02", "entity03" },
-                              new int[] {1, 1, 2, 3, 5, 8});
+                              new String[] { "entity01",
+                                             "entity02",
+                                             "entity03" },
+                              new int[] { 1,
+                                          1,
+                                          2,
+                                          3,
+                                          5,
+                                          8 });
     PersonMalioValidator.INSTANCE.check(model);
   }
 
@@ -51,41 +56,48 @@ public class ValidateItem02Test {
     Person model = new Person("Firestone",
                               "Fred",
                               "coder",
-                              new String[] { "entity01","entity02", "entity03" },
-                              new int[] {1, 1, 2, 3, 5, 8});
+                              new String[] { "entity01",
+                                             "entity02",
+                                             "entity03" },
+                              new int[] { 1,
+                                          1,
+                                          2,
+                                          3,
+                                          5,
+                                          8 });
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }
 
-//  @Test
-//  public void testCheckFail()
-//      throws MalioValidationException {
-//    Person model = new Person("Firestone",
-//                              "Fred",
-//                              new Address[] { new Address("street01",
-//                                                          "zip01",
-//                                                          "city01"),
-//                                              new Address("street02",
-//                                                          null,
-//                                                          "city02") });
-//    MalioValidationException thrown = assertThrows(MalioValidationException.class,
-//                                                   () -> PersonMalioValidator.INSTANCE.check(model));
-//  }
-//
-//  @Test
-//  public void testValidateFail() {
-//    Person model = new Person("Firestone",
-//                              "Fred",
-//                              new Address[] { new Address("street01",
-//                                                          "zip01",
-//                                                          "city01"),
-//                                              new Address("street02",
-//                                                          null,
-//                                                          "city02") });
-//
-//    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
-//    assertFalse(result.isValid());
-//  }
+  //  @Test
+  //  public void testCheckFail()
+  //      throws MalioValidationException {
+  //    Person model = new Person("Firestone",
+  //                              "Fred",
+  //                              new Address[] { new Address("street01",
+  //                                                          "zip01",
+  //                                                          "city01"),
+  //                                              new Address("street02",
+  //                                                          null,
+  //                                                          "city02") });
+  //    MalioValidationException thrown = assertThrows(MalioValidationException.class,
+  //                                                   () -> PersonMalioValidator.INSTANCE.check(model));
+  //  }
+  //
+  //  @Test
+  //  public void testValidateFail() {
+  //    Person model = new Person("Firestone",
+  //                              "Fred",
+  //                              new Address[] { new Address("street01",
+  //                                                          "zip01",
+  //                                                          "city01"),
+  //                                              new Address("street02",
+  //                                                          null,
+  //                                                          "city02") });
+  //
+  //    ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
+  //    assertFalse(result.isValid());
+  //  }
 }
 
 

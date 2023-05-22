@@ -33,7 +33,7 @@ public class MinLengthConstraint
     super(packageName,
           simpleName,
           fieldName,
-            message);
+          message);
     this.minLength = minLength;
   }
 

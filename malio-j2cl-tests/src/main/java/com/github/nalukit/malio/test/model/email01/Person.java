@@ -21,15 +21,20 @@ import com.github.nalukit.malio.shared.annotation.field.Email;
 @MalioValidator
 public class Person {
 
-  @Email private String email;
+  @Email private                       String email;
   @Email(message = "Override") private String emailPrivate;
 
   public Person() {
   }
 
-  public Person(String email, String emailPrivate) {
-    this.email = email;
+  public Person(String email,
+                String emailPrivate) {
+    this.email        = email;
     this.emailPrivate = emailPrivate;
+  }
+
+  public Person(String email) {
+    this.email = email;
   }
 
   public String getEmailPrivate() {
@@ -38,10 +43,6 @@ public class Person {
 
   public void setEmailPrivate(String emailPrivate) {
     this.emailPrivate = emailPrivate;
-  }
-
-  public Person(String email) {
-    this.email = email;
   }
 
   public String getEmail() {

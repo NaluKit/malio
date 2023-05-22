@@ -43,8 +43,8 @@ public class CollectionItemNotNull01Test {
     Person model = new Person("Firestone",
                               "Fred",
                               Arrays.asList("entity01",
-                                             "entity02",
-                                             "entity03"));
+                                            "entity02",
+                                            "entity03"));
     PersonMalioValidator.INSTANCE.check(model);
   }
 

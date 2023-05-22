@@ -34,7 +34,7 @@ public class RegexpConstraint
     super(packageName,
           simpleName,
           fieldName,
-            message);
+          message);
     this.regExp = RegExp.compile(regExp);
   }
 

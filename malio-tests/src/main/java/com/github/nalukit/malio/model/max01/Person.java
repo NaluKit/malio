@@ -27,8 +27,8 @@ public class Person {
 
   @Max(99) private long numberChildren;
 
-  @Max(123) private Integer complexTypeTest;
-  @Max(value = 99, message = "Override") private int override;
+  @Max(123) private                              Integer complexTypeTest;
+  @Max(value = 99, message = "Override") private int     override;
 
   public Person() {
   }
@@ -43,12 +43,16 @@ public class Person {
     this.complexTypeTest = complexTypeTest;
   }
 
-  public Person(String name, int age, long numberChildren, Integer complexTypeTest, int override) {
-    this.name = name;
-    this.age = age;
-    this.numberChildren = numberChildren;
+  public Person(String name,
+                int age,
+                long numberChildren,
+                Integer complexTypeTest,
+                int override) {
+    this.name            = name;
+    this.age             = age;
+    this.numberChildren  = numberChildren;
     this.complexTypeTest = complexTypeTest;
-    this.override = override;
+    this.override        = override;
   }
 
   public int getOverride() {

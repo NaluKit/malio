@@ -26,6 +26,7 @@ public class NotZeroConstraint
     extends AbstractConstraint<Number> {
 
   private boolean allowNegativeValues;
+
   public NotZeroConstraint(String packageName,
                            String simpleName,
                            String fieldName,
@@ -45,7 +46,7 @@ public class NotZeroConstraint
     }
 
     if (!this.allowNegativeValues) {
-      if( value.longValue() < 0){
+      if (value.longValue() < 0) {
         throw new MalioValidationException(getMessage(value));
       }
     }
@@ -61,24 +62,23 @@ public class NotZeroConstraint
       return;
     }
 
-
     if (!this.allowNegativeValues) {
-      if(value.longValue() < 0){
+      if (value.longValue() < 0) {
         validationResult.getMessages()
-                .add(new ErrorMessage(getMessage(value),
-                        super.getClassName(),
-                        super.getSimpleName(),
-                        super.getFieldName()));
+                        .add(new ErrorMessage(getMessage(value),
+                                              super.getClassName(),
+                                              super.getSimpleName(),
+                                              super.getFieldName()));
         return;
       }
     }
 
     if (value.longValue() == 0) {
       validationResult.getMessages()
-              .add(new ErrorMessage(getMessage(value),
-                      super.getClassName(),
-                      super.getSimpleName(),
-                      super.getFieldName()));
+                      .add(new ErrorMessage(getMessage(value),
+                                            super.getClassName(),
+                                            super.getSimpleName(),
+                                            super.getFieldName()));
     }
 
   }

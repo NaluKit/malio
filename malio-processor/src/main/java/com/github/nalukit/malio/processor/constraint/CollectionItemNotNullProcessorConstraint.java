@@ -26,7 +26,6 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -56,9 +55,9 @@ public class CollectionItemNotNullProcessorConstraint
 
   @Override
   public TypeName getValidationClass(VariableElement variableElement) {
-    DeclaredType            declaredType  = (DeclaredType) variableElement.asType();
-    List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
-    TypeMirror genericTypeElement = typeArguments.get(0);
+    DeclaredType               declaredType       = (DeclaredType) variableElement.asType();
+    List<? extends TypeMirror> typeArguments      = declaredType.getTypeArguments();
+    TypeMirror                 genericTypeElement = typeArguments.get(0);
     return ParameterizedTypeName.get(ClassName.get(CollectionItemNotNullConstraint.class),
                                      ClassName.get(genericTypeElement));
   }

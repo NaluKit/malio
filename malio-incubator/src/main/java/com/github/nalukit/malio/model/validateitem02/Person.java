@@ -37,8 +37,7 @@ public class Person
   //  @MaxLength(128)
   private String[] entities;
 
-  @ArraySize(min = 1, max = 8)
-  private int[] myNumbers;
+  @ArraySize(min = 1, max = 8) private int[] myNumbers;
 
   public Person() {
   }

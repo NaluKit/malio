@@ -70,12 +70,12 @@ public class MaxProcessorConstraint
   @Override
   protected AbstractGenerator createGenerator() {
     return ConstraintMaxGenerator.builder()
-                                      .elements(this.processingEnvironment.getElementUtils())
-                                      .filer(this.processingEnvironment.getFiler())
-                                      .types(this.processingEnvironment.getTypeUtils())
-                                      .processorUtils(this.processorUtils)
-                                      .constraint(this)
-                                      .build();
+                                 .elements(this.processingEnvironment.getElementUtils())
+                                 .filer(this.processingEnvironment.getFiler())
+                                 .types(this.processingEnvironment.getTypeUtils())
+                                 .processorUtils(this.processorUtils)
+                                 .constraint(this)
+                                 .build();
   }
 
   @Override

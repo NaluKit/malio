@@ -36,7 +36,7 @@ public class WhitelistConstraint
     super(packageName,
           simpleName,
           fieldName,
-            message);
+          message);
     this.whitelist = Arrays.asList(whitelist);
   }
 

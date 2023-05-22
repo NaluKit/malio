@@ -44,31 +44,35 @@ public class ConstraintWhitelistGenerator
   }
 
   @Override
-  protected CodeBlock generate(Element clazz, VariableElement field, String suffix) {
-    String[] whitelist   = field.getAnnotation(Whitelist.class)
-            .value();
-    String   arraySyntax = processorUtils.createStringInitializationFromArray(whitelist);
+  protected CodeBlock generate(Element clazz,
+                               VariableElement field,
+                               String suffix) {
+    String[] whitelist = field.getAnnotation(Whitelist.class)
+                              .value();
+    String arraySyntax = processorUtils.createStringInitializationFromArray(whitelist);
 
-    return CodeBlock.builder().add(
-            "new $T($S, $S, $S, $L, $S)" + suffix,
-            constraint.getValidationClass(field),
-            this.processorUtils.getPackage(field),
-            this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
-                    .getSimpleName()
-                    .toString()),
-            field.getSimpleName()
-                    .toString(),
-            arraySyntax,
-            field.getAnnotation(constraint.annotationType()).message(),
-            this.processorUtils.createGetMethodName(field.getSimpleName().toString())
-    ).build();
+    return CodeBlock.builder()
+                    .add("new $T($S, $S, $S, $L, $S)" + suffix,
+                         constraint.getValidationClass(field),
+                         this.processorUtils.getPackage(field),
+                         this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
+                                                                               .getSimpleName()
+                                                                               .toString()),
+                         field.getSimpleName()
+                              .toString(),
+                         arraySyntax,
+                         field.getAnnotation(constraint.annotationType())
+                              .message(),
+                         this.processorUtils.createGetMethodName(field.getSimpleName()
+                                                                      .toString()))
+                    .build();
   }
 
   public static class Builder {
 
-    Elements                      elements;
-    Types                         types;
-    Filer                         filer;
+    Elements                               elements;
+    Types                                  types;
+    Filer                                  filer;
     ProcessorUtils                         processorUtils;
     AbstractProcessorConstraint<Whitelist> constraint;
 

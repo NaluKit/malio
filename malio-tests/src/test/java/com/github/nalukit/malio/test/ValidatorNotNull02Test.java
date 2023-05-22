@@ -52,8 +52,8 @@ public class ValidatorNotNull02Test {
 
   @Test
   public void testValidateOk() {
-    Person           model  = new Person("Flintstones",
-                                         "Fred");
+    Person model = new Person("Flintstones",
+                              "Fred");
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }

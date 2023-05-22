@@ -47,7 +47,7 @@ public interface IMessages {
                         int max);
 
   String getArraySizeMessage(int min,
-                        int max);
+                             int max);
 
   String getUuidMessage();
 

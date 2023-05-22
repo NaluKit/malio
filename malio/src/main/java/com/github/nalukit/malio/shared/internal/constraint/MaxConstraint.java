@@ -23,7 +23,7 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 public class MaxConstraint
     extends AbstractConstraint<Number> {
 
-  private Long   maxValue;
+  private Long maxValue;
 
   public MaxConstraint(String packageName,
                        String simpleName,
@@ -33,7 +33,7 @@ public class MaxConstraint
     super(packageName,
           simpleName,
           fieldName,
-            message);
+          message);
     this.maxValue = maxValue.longValue();
   }
 

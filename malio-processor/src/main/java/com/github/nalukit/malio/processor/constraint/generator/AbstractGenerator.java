@@ -36,41 +36,61 @@ public abstract class AbstractGenerator
   public AbstractGenerator() {
   }
 
-  protected abstract CodeBlock generate(Element clazz, VariableElement field, String suffix);
+  protected abstract CodeBlock generate(Element clazz,
+                                        VariableElement field,
+                                        String suffix);
 
   @Override
   public final CodeBlock generateCheckArray(Element clazz,
-                                             VariableElement field)
-          throws ProcessorException {
-    return generate(clazz, field, ".check(bean.$L()[i])");
+                                            VariableElement field)
+      throws ProcessorException {
+    return generate(clazz,
+                    field,
+                    ".check(bean.$L()[i])");
   }
 
   @Override
-  public final CodeBlock generateValidArray(Element clazz, VariableElement field) throws ProcessorException {
-    return generate(clazz, field, ".isValid(bean.$L()[i], validationResult)");
+  public final CodeBlock generateValidArray(Element clazz,
+                                            VariableElement field)
+      throws ProcessorException {
+    return generate(clazz,
+                    field,
+                    ".isValid(bean.$L()[i], validationResult)");
   }
 
   @Override
   public final CodeBlock generateCheckCollection(Element clazz,
                                                  VariableElement field)
-          throws ProcessorException {
-    return generate(clazz, field, ".check(bean.$L().get(i))");
+      throws ProcessorException {
+    return generate(clazz,
+                    field,
+                    ".check(bean.$L().get(i))");
   }
 
   @Override
-  public final CodeBlock generateValidCollection(Element clazz, VariableElement field) throws ProcessorException {
-    return generate(clazz, field, ".isValid(bean.$L().get(i), validationResult)");
+  public final CodeBlock generateValidCollection(Element clazz,
+                                                 VariableElement field)
+      throws ProcessorException {
+    return generate(clazz,
+                    field,
+                    ".isValid(bean.$L().get(i), validationResult)");
   }
 
   @Override
   public final CodeBlock generateCheckNative(Element clazz,
                                              VariableElement field)
-          throws ProcessorException {
-    return generate(clazz, field, ".check(bean.$L())");
+      throws ProcessorException {
+    return generate(clazz,
+                    field,
+                    ".check(bean.$L())");
   }
 
   @Override
-  public final CodeBlock generateValidNative(Element clazz, VariableElement field) throws ProcessorException {
-    return generate(clazz, field, ".isValid(bean.$L(), validationResult)");
+  public final CodeBlock generateValidNative(Element clazz,
+                                             VariableElement field)
+      throws ProcessorException {
+    return generate(clazz,
+                    field,
+                    ".isValid(bean.$L(), validationResult)");
   }
 }

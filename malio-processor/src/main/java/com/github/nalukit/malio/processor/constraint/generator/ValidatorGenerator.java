@@ -33,18 +33,18 @@ import java.util.Objects;
 public class ValidatorGenerator
     extends AbstractGenerator {
 
-  private final List<ValidatorModel>  subValidatorList;
-  private       List<ValidatorModel>  superValidatorList;
+  private final List<ValidatorModel> subValidatorList;
+  private       List<ValidatorModel> superValidatorList;
 
   private MalioValidatorGenerator malioValidatorGenerator;
 
   private ValidatorGenerator(Builder builder) {
-    this.superValidatorList = builder.superValidatorList;
-    this.subValidatorList   = builder.subValidatorList;
-    this.elements           = builder.elements;
-    this.types              = builder.types;
-    this.filer              = builder.filer;
-    this.processorUtils     = builder.processorUtils;
+    this.superValidatorList      = builder.superValidatorList;
+    this.subValidatorList        = builder.subValidatorList;
+    this.elements                = builder.elements;
+    this.types                   = builder.types;
+    this.filer                   = builder.filer;
+    this.processorUtils          = builder.processorUtils;
     this.malioValidatorGenerator = builder.malioValidatorGenerator;
   }
 
@@ -52,15 +52,16 @@ public class ValidatorGenerator
     return new Builder();
   }
 
-
   @Override
-  protected CodeBlock generate(Element clazz, VariableElement field, String suffix) {
+  protected CodeBlock generate(Element clazz,
+                               VariableElement field,
+                               String suffix) {
     return null;
   }
 
   public void appendSuperAndSubValidatorsCheck() {
     List<CodeBlock> checkMethod = createCheckMethod();
-    for( CodeBlock codeBlock : checkMethod){
+    for (CodeBlock codeBlock : checkMethod) {
       this.malioValidatorGenerator.appendCheckBlock(codeBlock);
     }
   }
@@ -81,16 +82,18 @@ public class ValidatorGenerator
 
   private CodeBlock createCheckMethodForSuperValidator(ValidatorModel model) {
     String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
-    return CodeBlock.builder().add("$T.INSTANCE.check(bean);",
-                                    ClassName.get(model.getPackageName(),
-                                                  vaidatorClassName)).build();
+    return CodeBlock.builder()
+                    .add("$T.INSTANCE.check(bean);",
+                         ClassName.get(model.getPackageName(),
+                                       vaidatorClassName))
+                    .build();
   }
 
   private CodeBlock createCheckMethodForSubValidator(ValidatorModel model) {
     CodeBlock.Builder builder = CodeBlock.builder();
     builder.beginControlFlow("if ($T.nonNull(bean.$L()))",
-                                        ClassName.get(Objects.class),
-                                        this.processorUtils.createGetMethodName(model.getFieldName()));
+                             ClassName.get(Objects.class),
+                             this.processorUtils.createGetMethodName(model.getFieldName()));
     switch (model.getType()) {
       case ARRAY:
         String vaidatorClassNameArray = model.getPackageName() + "." + model.getSimpleClassName() + model.getPostFix();
@@ -127,11 +130,9 @@ public class ValidatorGenerator
     return builder.build();
   }
 
-
-
   public void appendSuperAndSubValidatorsValid() {
     List<CodeBlock> checkMethod = createValidMethod();
-    for( CodeBlock codeBlock : checkMethod){
+    for (CodeBlock codeBlock : checkMethod) {
       this.malioValidatorGenerator.appendValidBlock(codeBlock);
     }
   }
@@ -150,19 +151,20 @@ public class ValidatorGenerator
     return checks;
   }
 
-
   private CodeBlock createSuperValidateMethod(ValidatorModel model) {
     String vaidatorClassName = model.getSimpleClassName() + model.getPostFix();
-    return CodeBlock.builder().add("$T.INSTANCE.validate(bean, validationResult);",
-                                                ClassName.get(model.getPackageName(),
-                                                              vaidatorClassName)).build();
+    return CodeBlock.builder()
+                    .add("$T.INSTANCE.validate(bean, validationResult);",
+                         ClassName.get(model.getPackageName(),
+                                       vaidatorClassName))
+                    .build();
   }
 
   private CodeBlock createSubValidateMethod(ValidatorModel model) {
     CodeBlock.Builder builder = CodeBlock.builder();
     builder.beginControlFlow("if ($T.nonNull(bean.$L()))",
-                                                    ClassName.get(Objects.class),
-                                                    this.processorUtils.createGetMethodName(model.getFieldName()));
+                             ClassName.get(Objects.class),
+                             this.processorUtils.createGetMethodName(model.getFieldName()));
     switch (model.getType()) {
       case ARRAY:
         String vaidatorClassNameArray = model.getPackageName() + "." + model.getSimpleClassName() + model.getPostFix();
@@ -201,12 +203,12 @@ public class ValidatorGenerator
   }
 
   public static class Builder {
-    List<ValidatorModel>  superValidatorList;
-    List<ValidatorModel>  subValidatorList;
-    Elements              elements;
-    Types                 types;
-    Filer                 filer;
-    ProcessorUtils        processorUtils;
+    List<ValidatorModel>    superValidatorList;
+    List<ValidatorModel>    subValidatorList;
+    Elements                elements;
+    Types                   types;
+    Filer                   filer;
+    ProcessorUtils          processorUtils;
     MalioValidatorGenerator malioValidatorGenerator;
 
     public Builder superValidatorList(List<ValidatorModel> superValidatorList) {

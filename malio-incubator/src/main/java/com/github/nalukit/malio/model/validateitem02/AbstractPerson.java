@@ -16,7 +16,6 @@
 package com.github.nalukit.malio.model.validateitem02;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
-import com.github.nalukit.malio.shared.annotation.field.ArraySize;
 import com.github.nalukit.malio.shared.annotation.field.MaxLength;
 import com.github.nalukit.malio.shared.annotation.field.MinLength;
 import com.github.nalukit.malio.shared.annotation.field.NotBlank;

@@ -39,20 +39,25 @@ public class ValidatorArraySize01Test {
   public void setup() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
   }
+
   @Test
   public void testCheckOk()
-          throws MalioValidationException {
-    Person model = new Person(new String[]{"Card",
-            "Mobile Phone"},
-            new int[]{0, 1, 3});
+      throws MalioValidationException {
+    Person model = new Person(new String[] { "Card",
+                                             "Mobile Phone" },
+                              new int[] { 0,
+                                          1,
+                                          3 });
     PersonMalioValidator.INSTANCE.check(model);
   }
 
   @Test
   public void testValidateOk() {
-    Person model = new Person(new String[]{"Card",
-            "Mobile Phone"},
-            new int[]{0, 1, 3});
+    Person model = new Person(new String[] { "Card",
+                                             "Mobile Phone" },
+                              new int[] { 0,
+                                          1,
+                                          3 });
 
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
@@ -60,14 +65,16 @@ public class ValidatorArraySize01Test {
 
   @Test
   public void testCheckNullOk()
-          throws MalioValidationException {
-    Person model = new Person(null, null);
+      throws MalioValidationException {
+    Person model = new Person(null,
+                              null);
     PersonMalioValidator.INSTANCE.check(model);
   }
 
   @Test
   public void testValidateNullOk() {
-    Person model = new Person(null, null);
+    Person model = new Person(null,
+                              null);
 
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
@@ -75,63 +82,81 @@ public class ValidatorArraySize01Test {
 
   @Test
   public void testCheckFailTooFew() {
-    Person model = new Person(new String[]{"Card",},
-            new int[]{0, 1, 3});
+    Person model = new Person(new String[] { "Card", },
+                              new int[] { 0,
+                                          1,
+                                          3 });
 
     MalioValidationException thrown = assertThrows(MalioValidationException.class,
-            () -> PersonMalioValidator.INSTANCE.check(model));
+                                                   () -> PersonMalioValidator.INSTANCE.check(model));
   }
 
   @Test
   public void testValidateFailTooMany() {
-    Person model = new Person(new String[]{"Card",
-            "Mobile Phone", "These", "That", "Those"},
-            new int[]{0, 1, 3});
+    Person model = new Person(new String[] { "Card",
+                                             "Mobile Phone",
+                                             "These",
+                                             "That",
+                                             "Those" },
+                              new int[] { 0,
+                                          1,
+                                          3 });
 
     ValidationResult   validationResult = PersonMalioValidator.INSTANCE.validate(model);
     List<ErrorMessage> messages         = validationResult.getMessages();
     assertFalse(validationResult.isValid());
     assertEquals(1,
-            messages.size());
+                 messages.size());
     assertEquals("Collection size must be between 2 and 4!",
-            messages.get(0)
-                    .getMessage());
+                 messages.get(0)
+                         .getMessage());
   }
 
   @Test
   public void testValidateFailTooManyGerman() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-    Person model = new Person(new String[]{"Card",
-            "Mobile Phone", "These", "That", "Those"},
-            new int[]{0, 1, 3});
+    Person model = new Person(new String[] { "Card",
+                                             "Mobile Phone",
+                                             "These",
+                                             "That",
+                                             "Those" },
+                              new int[] { 0,
+                                          1,
+                                          3 });
 
     ValidationResult   validationResult = PersonMalioValidator.INSTANCE.validate(model);
     List<ErrorMessage> messages         = validationResult.getMessages();
     assertFalse(validationResult.isValid());
     assertEquals(1,
-            messages.size());
+                 messages.size());
     assertEquals("Collection Länge muss zwischen 2 und 4 sein!",
-            messages.get(0)
-                    .getMessage());
+                 messages.get(0)
+                         .getMessage());
   }
 
   @Test
   public void testValidateFailMessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-    Person model = new Person(new String[]{"Card",
-            "Mobile Phone", "These"},
-            new int[]{0, 1, 3},
-            new String[]{"Card",
-                    "Mobile Phone", "These", "That", "Those"});
+    Person model = new Person(new String[] { "Card",
+                                             "Mobile Phone",
+                                             "These" },
+                              new int[] { 0,
+                                          1,
+                                          3 },
+                              new String[] { "Card",
+                                             "Mobile Phone",
+                                             "These",
+                                             "That",
+                                             "Those" });
 
     ValidationResult   validationResult = PersonMalioValidator.INSTANCE.validate(model);
     List<ErrorMessage> messages         = validationResult.getMessages();
     assertFalse(validationResult.isValid());
     assertEquals(1,
-            messages.size());
+                 messages.size());
     assertEquals("Override",
-            messages.get(0)
-                    .getMessage());
+                 messages.get(0)
+                         .getMessage());
   }
 }
 

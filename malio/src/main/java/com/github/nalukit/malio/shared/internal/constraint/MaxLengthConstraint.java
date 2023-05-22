@@ -33,7 +33,7 @@ public class MaxLengthConstraint
     super(packageName,
           simpleName,
           fieldName,
-            message);
+          message);
     this.maxLength = maxLength;
   }
 

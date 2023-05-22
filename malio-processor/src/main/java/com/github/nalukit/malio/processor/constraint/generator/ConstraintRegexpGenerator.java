@@ -44,32 +44,36 @@ public class ConstraintRegexpGenerator
   }
 
   @Override
-  protected CodeBlock generate(Element clazz, VariableElement field, String suffix) {
+  protected CodeBlock generate(Element clazz,
+                               VariableElement field,
+                               String suffix) {
     String regexp = field.getAnnotation(Regexp.class)
-            .regexp();
-    return CodeBlock.builder().add(
-            "new $T($S, $S, $S, $L, $S)" + suffix,
-            constraint.getValidationClass(field),
-            this.processorUtils.getPackage(field),
-            this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
-                    .getSimpleName()
-                    .toString()),
-            field.getSimpleName()
-                    .toString(),
-            String.format("\"%s\"",
-                            regexp)
-                    .replace("\\",
-                            "\\\\"),
-            field.getAnnotation(constraint.annotationType()).message(),
-            this.processorUtils.createGetMethodName(field.getSimpleName().toString())
-    ).build();
+                         .regexp();
+    return CodeBlock.builder()
+                    .add("new $T($S, $S, $S, $L, $S)" + suffix,
+                         constraint.getValidationClass(field),
+                         this.processorUtils.getPackage(field),
+                         this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
+                                                                               .getSimpleName()
+                                                                               .toString()),
+                         field.getSimpleName()
+                              .toString(),
+                         String.format("\"%s\"",
+                                       regexp)
+                               .replace("\\",
+                                        "\\\\"),
+                         field.getAnnotation(constraint.annotationType())
+                              .message(),
+                         this.processorUtils.createGetMethodName(field.getSimpleName()
+                                                                      .toString()))
+                    .build();
   }
 
   public static class Builder {
 
-    Elements                   elements;
-    Types                      types;
-    Filer                      filer;
+    Elements                            elements;
+    Types                               types;
+    Filer                               filer;
     ProcessorUtils                      processorUtils;
     AbstractProcessorConstraint<Regexp> constraint;
 

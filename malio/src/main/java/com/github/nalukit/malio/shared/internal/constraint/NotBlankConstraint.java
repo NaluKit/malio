@@ -25,7 +25,6 @@ import java.util.Objects;
 public class NotBlankConstraint
     extends AbstractConstraint<String> {
 
-
   public NotBlankConstraint(String packageName,
                             String simpleName,
                             String fieldName,
@@ -33,7 +32,7 @@ public class NotBlankConstraint
     super(packageName,
           simpleName,
           fieldName,
-            message);
+          message);
   }
 
   @Override

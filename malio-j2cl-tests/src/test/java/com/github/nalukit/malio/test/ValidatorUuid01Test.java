@@ -73,7 +73,7 @@ public class ValidatorUuid01Test {
 
   @Test
   public void testCheckFail01() {
-    Person                   model  = new Person("944ee2b0-dd52-46c2-a57b-dbf4bbafd53aa");
+    Person model = new Person("944ee2b0-dd52-46c2-a57b-dbf4bbafd53aa");
     MalioValidationException thrown = assertThrows(MalioValidationException.class,
                                                    () -> PersonMalioValidator.INSTANCE.check(model));
   }
@@ -94,7 +94,7 @@ public class ValidatorUuid01Test {
 
   @Test
   public void testCheckFail02() {
-    Person                   model  = new Person("944ee2b0-dd52-46c2-a57b-dbf4bbafd53z");
+    Person model = new Person("944ee2b0-dd52-46c2-a57b-dbf4bbafd53z");
     MalioValidationException thrown = assertThrows(MalioValidationException.class,
                                                    () -> PersonMalioValidator.INSTANCE.check(model));
   }
@@ -132,16 +132,17 @@ public class ValidatorUuid01Test {
   @Test
   public void testValidateFail01MessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-    Person model            = new Person(UUID, "944ee2b0-dd52-46c2-a57b-dbf4bbafd53z");
+    Person           model            = new Person(UUID,
+                                                   "944ee2b0-dd52-46c2-a57b-dbf4bbafd53z");
     ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
     assertFalse(validationResult.isValid());
     assertEquals(1,
-            validationResult.getMessages()
-                    .size());
+                 validationResult.getMessages()
+                                 .size());
     assertEquals("Override",
-            validationResult.getMessages()
-                    .get(0)
-                    .getMessage());
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
   }
 }
 

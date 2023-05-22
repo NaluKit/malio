@@ -25,8 +25,8 @@ public class Person {
 
   @NotNull private String firstName;
 
-  @NotNull private Address address;
-  @NotNull(message = "Override") private String override;
+  @NotNull private                       Address address;
+  @NotNull(message = "Override") private String  override;
 
   public Person() {
   }
@@ -37,14 +37,17 @@ public class Person {
     this.name      = name;
     this.firstName = firstName;
     this.address   = address;
-    this.override = "";
+    this.override  = "";
   }
 
-  public Person(String name, String firstName, Address address, String override) {
-    this.name = name;
+  public Person(String name,
+                String firstName,
+                Address address,
+                String override) {
+    this.name      = name;
     this.firstName = firstName;
-    this.address = address;
-    this.override = override;
+    this.address   = address;
+    this.override  = override;
   }
 
   public String getOverride() {

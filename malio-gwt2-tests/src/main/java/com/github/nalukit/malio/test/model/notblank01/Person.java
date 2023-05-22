@@ -23,7 +23,7 @@ public class Person {
 
   @NotBlank private String name;
 
-  @NotBlank private String firstName;
+  @NotBlank private                       String firstName;
   @NotBlank(message = "Override") private String override;
 
   public Person() {
@@ -35,10 +35,12 @@ public class Person {
     this.firstName = firstName;
   }
 
-  public Person(String name, String firstName, String override) {
-    this.name = name;
+  public Person(String name,
+                String firstName,
+                String override) {
+    this.name      = name;
     this.firstName = firstName;
-    this.override = override;
+    this.override  = override;
   }
 
   public String getOverride() {

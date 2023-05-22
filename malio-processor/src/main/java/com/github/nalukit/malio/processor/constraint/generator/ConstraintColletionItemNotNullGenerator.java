@@ -64,9 +64,9 @@ public class ConstraintColletionItemNotNullGenerator
 
   public static class Builder {
 
-    Elements                                      elements;
-    Types                                         types;
-    Filer                                         filer;
+    Elements                                           elements;
+    Types                                              types;
+    Filer                                              filer;
     ProcessorUtils                                     processorUtils;
     AbstractProcessorConstraint<CollectionItemNotNull> constraint;
 

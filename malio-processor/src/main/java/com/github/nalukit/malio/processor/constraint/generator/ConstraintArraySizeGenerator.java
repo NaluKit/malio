@@ -44,32 +44,35 @@ public class ConstraintArraySizeGenerator
   }
 
   @Override
-  protected CodeBlock generate(Element clazz, VariableElement field, String suffix) {
+  protected CodeBlock generate(Element clazz,
+                               VariableElement field,
+                               String suffix) {
     ArraySize annotation = field.getAnnotation(ArraySize.class);
-    int minSize = annotation.min();
-    int maxSize = annotation.max();
-    String message = annotation.message();
+    int       minSize    = annotation.min();
+    int       maxSize    = annotation.max();
+    String    message    = annotation.message();
 
-    return CodeBlock.builder().add(
-            "new $T($S, $S, $S, $L, $L, $S)" + suffix,
-            constraint.getValidationClass(field),
-            this.processorUtils.getPackage(field),
-            this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
-                    .getSimpleName()
-                    .toString()),
-            field.getSimpleName()
-                    .toString(),
-            minSize,
-            maxSize,
-            message,
-            this.processorUtils.createGetMethodName(field.getSimpleName().toString())
-    ).build();
+    return CodeBlock.builder()
+                    .add("new $T($S, $S, $S, $L, $L, $S)" + suffix,
+                         constraint.getValidationClass(field),
+                         this.processorUtils.getPackage(field),
+                         this.processorUtils.setFirstCharacterToUpperCase(field.getEnclosingElement()
+                                                                               .getSimpleName()
+                                                                               .toString()),
+                         field.getSimpleName()
+                              .toString(),
+                         minSize,
+                         maxSize,
+                         message,
+                         this.processorUtils.createGetMethodName(field.getSimpleName()
+                                                                      .toString()))
+                    .build();
   }
 
   public static class Builder {
-    Elements                 elements;
-    Types                    types;
-    Filer                    filer;
+    Elements                               elements;
+    Types                                  types;
+    Filer                                  filer;
     ProcessorUtils                         processorUtils;
     AbstractProcessorConstraint<ArraySize> constraint;
 

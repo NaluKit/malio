@@ -35,7 +35,7 @@ public class MaxDecimalConstraint
     super(packageName,
           simpleName,
           fieldName,
-            message);
+          message);
     this.maxValue = new BigDecimal(maxValue);
   }
 
@@ -59,6 +59,6 @@ public class MaxDecimalConstraint
 
   @Override
   protected String getSpecializedMessage(BigDecimal value) {
-    return  LocalizedMessages.INSTANCE.getMaxDecimalValueMessage(this.maxValue);
+    return LocalizedMessages.INSTANCE.getMaxDecimalValueMessage(this.maxValue);
   }
 }

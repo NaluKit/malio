@@ -59,8 +59,14 @@ public class ArraySizeProcessorConstraint
   @Override
   // we miss the array type here and use only the primitive types, which will be used to check the array type.
   protected List<TypeKind> getSupportedPrimitives() {
-    return Arrays.asList(TypeKind.INT, TypeKind.LONG, TypeKind.SHORT, TypeKind.BOOLEAN, TypeKind.BYTE,
-            TypeKind.FLOAT, TypeKind.DOUBLE, TypeKind.CHAR);
+    return Arrays.asList(TypeKind.INT,
+                         TypeKind.LONG,
+                         TypeKind.SHORT,
+                         TypeKind.BOOLEAN,
+                         TypeKind.BYTE,
+                         TypeKind.FLOAT,
+                         TypeKind.DOUBLE,
+                         TypeKind.CHAR);
   }
 
   @Override
@@ -71,12 +77,12 @@ public class ArraySizeProcessorConstraint
   @Override
   protected AbstractGenerator createGenerator() {
     return ConstraintArraySizeGenerator.builder()
-                                  .elements(this.processingEnvironment.getElementUtils())
-                                  .filer(this.processingEnvironment.getFiler())
-                                  .types(this.processingEnvironment.getTypeUtils())
-                                  .processorUtils(this.processorUtils)
-                                  .constraint(this)
-                                  .build();
+                                       .elements(this.processingEnvironment.getElementUtils())
+                                       .filer(this.processingEnvironment.getFiler())
+                                       .types(this.processingEnvironment.getTypeUtils())
+                                       .processorUtils(this.processorUtils)
+                                       .constraint(this)
+                                       .build();
   }
 
   @Override

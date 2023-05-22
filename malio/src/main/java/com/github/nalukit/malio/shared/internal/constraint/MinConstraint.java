@@ -23,7 +23,6 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 public class MinConstraint
     extends AbstractConstraint<Number> {
 
-
   private Long minValue;
 
   public MinConstraint(String packageName,
@@ -34,7 +33,7 @@ public class MinConstraint
     super(packageName,
           simpleName,
           fieldName,
-            message);
+          message);
     this.minValue = minValue.longValue();
   }
 

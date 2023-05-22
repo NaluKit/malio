@@ -15,7 +15,6 @@
  */
 package com.github.nalukit.malio.test;
 
-
 import com.github.nalukit.malio.model.notzero.Person;
 import com.github.nalukit.malio.model.notzero.PersonMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
@@ -41,13 +40,19 @@ public class ValidatorNotZeroTest {
   @Test
   public void testCheckOk()
       throws MalioValidationException {
-    Person model = new Person(1, 2121, 86, 46L);
+    Person model = new Person(1,
+                              2121,
+                              86,
+                              46L);
     PersonMalioValidator.INSTANCE.check(model);
   }
 
   @Test
   public void testValidateOk() {
-    Person model = new Person(1, 2121, -86, 46L);
+    Person           model  = new Person(1,
+                                         2121,
+                                         -86,
+                                         46L);
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }
@@ -55,13 +60,19 @@ public class ValidatorNotZeroTest {
   @Test
   public void testCheckNullOk()
       throws MalioValidationException {
-    Person model = new Person(1, 2121, 86, null);
+    Person model = new Person(1,
+                              2121,
+                              86,
+                              null);
     PersonMalioValidator.INSTANCE.check(model);
   }
 
   @Test
   public void testValidateNullOk() {
-    Person model = new Person(1, 2121, 86, null);
+    Person model = new Person(1,
+                              2121,
+                              86,
+                              null);
 
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
@@ -69,7 +80,10 @@ public class ValidatorNotZeroTest {
 
   @Test
   public void testCheckFail01() {
-    Person model = new Person(0, 2121, 86, null);
+    Person model = new Person(0,
+                              2121,
+                              86,
+                              null);
 
     MalioValidationException thrown = assertThrows(MalioValidationException.class,
                                                    () -> PersonMalioValidator.INSTANCE.check(model));
@@ -77,7 +91,10 @@ public class ValidatorNotZeroTest {
 
   @Test
   public void testValidateFail01() {
-    Person model = new Person(0, -2121, 86, null);
+    Person model = new Person(0,
+                              -2121,
+                              86,
+                              null);
 
     ValidationResult   validationResult = PersonMalioValidator.INSTANCE.validate(model);
     List<ErrorMessage> messages         = validationResult.getMessages();
@@ -93,7 +110,10 @@ public class ValidatorNotZeroTest {
   @Test
   public void testValidateFail01German() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-    Person model = new Person(0, 2121, 86, null);
+    Person model = new Person(0,
+                              2121,
+                              86,
+                              null);
 
     ValidationResult   validationResult = PersonMalioValidator.INSTANCE.validate(model);
     List<ErrorMessage> messages         = validationResult.getMessages();
@@ -109,7 +129,11 @@ public class ValidatorNotZeroTest {
   @Test
   public void testValidateFail01MessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-    Person model = new Person(12, 2121, 86, null, 0);
+    Person model = new Person(12,
+                              2121,
+                              86,
+                              null,
+                              0);
 
     ValidationResult   validationResult = PersonMalioValidator.INSTANCE.validate(model);
     List<ErrorMessage> messages         = validationResult.getMessages();
@@ -117,9 +141,9 @@ public class ValidatorNotZeroTest {
 
     assertFalse(validationResult.isValid());
     assertEquals(1,
-            messages.size());
+                 messages.size());
     assertEquals("Override",
-            errorMessage.getMessage());
+                 errorMessage.getMessage());
   }
 }
 

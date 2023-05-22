@@ -34,9 +34,10 @@ public class Person {
     this.taxRate = taxRate;
   }
 
-  public Person(BigDecimal taxRate, BigDecimal these) {
+  public Person(BigDecimal taxRate,
+                BigDecimal these) {
     this.taxRate = taxRate;
-    this.these = these;
+    this.these   = these;
   }
 
   public BigDecimal getThese() {

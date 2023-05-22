@@ -35,7 +35,7 @@ public class UuidConstraint
     super(packageName,
           simpleName,
           fieldName,
-            message);
+          message);
   }
 
   public void check(String value)

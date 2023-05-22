@@ -137,9 +137,9 @@ public class ValidatorRegexpTest
   public void testValidateFail01MessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Address model = new Address("Malio Street",
-            "12345",
-            "Malio City",
-            "Bla");
+                                "12345",
+                                "Malio City",
+                                "Bla");
 
     ValidationResult   validationResult = AddressMalioValidator.INSTANCE.validate(model);
     List<ErrorMessage> messages         = validationResult.getMessages();
@@ -147,9 +147,9 @@ public class ValidatorRegexpTest
 
     assertFalse(validationResult.isValid());
     assertEquals(1,
-            messages.size());
+                 messages.size());
     assertEquals("Override",
-            errorMessage.getMessage());
+                 errorMessage.getMessage());
   }
 }
 

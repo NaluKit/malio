@@ -131,9 +131,9 @@ public class ValidatorWhitelistTest {
   public void testValidateFail01MessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Address model = new Address("My Street",
-            "54321",
-            "My Town",
-            "454");
+                                "54321",
+                                "My Town",
+                                "454");
 
     ValidationResult   validationResult = AddressMalioValidator.INSTANCE.validate(model);
     List<ErrorMessage> messages         = validationResult.getMessages();
@@ -141,9 +141,9 @@ public class ValidatorWhitelistTest {
 
     assertFalse(validationResult.isValid());
     assertEquals(1,
-            messages.size());
+                 messages.size());
     assertEquals("Override",
-            errorMessage.getMessage());
+                 errorMessage.getMessage());
   }
 }
 

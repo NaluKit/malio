@@ -67,6 +67,8 @@ public class ArrayItemNotNull01Test {
                                              "entity03" });
     MalioValidationException thrown = assertThrows(MalioValidationException.class,
                                                    () -> PersonMalioValidator.INSTANCE.check(model));
+    assertTrue(thrown.getMessage()
+                     .contentEquals("Object must not be null!"));
   }
 
   @Test

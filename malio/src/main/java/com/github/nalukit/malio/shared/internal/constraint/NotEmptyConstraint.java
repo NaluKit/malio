@@ -26,7 +26,6 @@ import java.util.Objects;
 public class NotEmptyConstraint<T extends Collection<?>>
     extends AbstractConstraint<T> {
 
-
   public NotEmptyConstraint(String packageName,
                             String simpleName,
                             String fieldName,
@@ -34,7 +33,7 @@ public class NotEmptyConstraint<T extends Collection<?>>
     super(packageName,
           simpleName,
           fieldName,
-            message);
+          message);
   }
 
   @Override

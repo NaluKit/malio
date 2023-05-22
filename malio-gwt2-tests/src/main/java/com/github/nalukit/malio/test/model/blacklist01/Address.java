@@ -27,17 +27,19 @@ public class Address {
 
   private String city;
 
-  @Blacklist(value = "123", message = "Override")
-  private String number;
+  @Blacklist(value = "123", message = "Override") private String number;
 
   public Address() {
   }
 
-  public Address(String street, String zip, String city, String number) {
+  public Address(String street,
+                 String zip,
+                 String city,
+                 String number) {
     this.street = street;
-    this.zip = zip;
+    this.zip    = zip;
     this.number = number;
-    this.city = city;
+    this.city   = city;
   }
 
   public Address(String street,

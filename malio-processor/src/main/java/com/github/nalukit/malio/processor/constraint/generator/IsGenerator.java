@@ -24,12 +24,12 @@ import javax.lang.model.element.VariableElement;
 public interface IsGenerator {
 
   CodeBlock generateCheckArray(Element clazz,
-                                VariableElement field)
+                               VariableElement field)
       throws ProcessorException;
 
   CodeBlock generateValidArray(Element clazz,
-                                VariableElement field)
-          throws ProcessorException;
+                               VariableElement field)
+      throws ProcessorException;
 
   CodeBlock generateCheckCollection(Element clazz,
                                     VariableElement field)
@@ -37,7 +37,7 @@ public interface IsGenerator {
 
   CodeBlock generateValidCollection(Element clazz,
                                     VariableElement field)
-          throws ProcessorException;
+      throws ProcessorException;
 
   CodeBlock generateCheckNative(Element clazz,
                                 VariableElement field)
@@ -45,5 +45,5 @@ public interface IsGenerator {
 
   CodeBlock generateValidNative(Element clazz,
                                 VariableElement field)
-          throws ProcessorException;
+      throws ProcessorException;
 }

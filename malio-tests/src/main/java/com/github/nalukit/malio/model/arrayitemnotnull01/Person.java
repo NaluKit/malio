@@ -15,7 +15,6 @@
  */
 package com.github.nalukit.malio.model.arrayitemnotnull01;
 
-import com.github.nalukit.malio.model.validateitem02.AbstractPerson;
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.ArrayItemNotNull;
 

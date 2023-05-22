@@ -26,8 +26,8 @@ import java.util.Objects;
 public class SizeConstraint<T extends Collection<?>>
     extends AbstractConstraint<T> {
 
-  private final int    min;
-  private final int    max;
+  private final int min;
+  private final int max;
 
   public SizeConstraint(String packageName,
                         String simpleName,
@@ -38,9 +38,9 @@ public class SizeConstraint<T extends Collection<?>>
     super(packageName,
           simpleName,
           fieldName,
-            message);
-    this.min     = min;
-    this.max     = max;
+          message);
+    this.min = min;
+    this.max = max;
   }
 
   public void check(T value)
@@ -71,6 +71,7 @@ public class SizeConstraint<T extends Collection<?>>
 
   @Override
   protected String getSpecializedMessage(T value) {
-    return LocalizedMessages.INSTANCE.getSizeMessage(min, max);
+    return LocalizedMessages.INSTANCE.getSizeMessage(min,
+                                                     max);
   }
 }
