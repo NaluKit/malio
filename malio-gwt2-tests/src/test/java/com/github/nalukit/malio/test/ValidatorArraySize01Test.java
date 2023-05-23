@@ -15,17 +15,15 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.test.model.arraysize.Person;
+import com.github.nalukit.malio.model.arraysize.Person;
+import com.github.nalukit.malio.model.arraysize.PersonMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.arraysize.Person;
-import com.github.nalukit.malio.test.model.arraysize.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
-import org.junit.Test;
 
 import java.util.List;
 
@@ -42,7 +40,6 @@ public class ValidatorArraySize01Test
     return "com.github.nalukit.malio.MalioGwt2Test";
   }
 
-  @Test
   public void testCheckOk()
       throws MalioValidationException {
     Person model = new Person(new String[] { "Card",
@@ -53,7 +50,6 @@ public class ValidatorArraySize01Test
     PersonMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateOk() {
     Person model = new Person(new String[] { "Card",
                                              "Mobile Phone" },
@@ -65,7 +61,6 @@ public class ValidatorArraySize01Test
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckNullOk()
       throws MalioValidationException {
     Person model = new Person(null,
@@ -73,7 +68,6 @@ public class ValidatorArraySize01Test
     PersonMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateNullOk() {
     Person model = new Person(null,
                               null);
@@ -82,7 +76,6 @@ public class ValidatorArraySize01Test
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckFailTooFew() {
     Person model = new Person(new String[] { "Card", },
                               new int[] { 0,
@@ -97,7 +90,6 @@ public class ValidatorArraySize01Test
     }
   }
 
-  @Test
   public void testValidateFailTooMany() {
     Person model = new Person(new String[] { "Card",
                                              "Mobile Phone",
@@ -118,7 +110,6 @@ public class ValidatorArraySize01Test
                          .getMessage());
   }
 
-  @Test
   public void testValidateFailTooManyGerman() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Person model = new Person(new String[] { "Card",
@@ -140,7 +131,6 @@ public class ValidatorArraySize01Test
                          .getMessage());
   }
 
-  @Test
   public void testValidateFailMessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Person model = new Person(new String[] { "Card",

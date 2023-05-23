@@ -43,7 +43,7 @@ public class NotEmptyProcessorConstraint
 
   @Override
   public String getImplementationName() {
-    return Constants.MALIO_CONSTRAINT_NOTEMPTY_IMPL_NAME;
+    return Constants.MALIO_CONSTRAINT_NOT_EMPTY_IMPL_NAME;
   }
 
   @Override

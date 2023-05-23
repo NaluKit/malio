@@ -43,7 +43,7 @@ public class DecimalMaxProcessorConstraint
 
   @Override
   public String getImplementationName() {
-    return Constants.MALIO_CONSTRAINT_MAXDECIMALVALUE_IMPL_NAME;
+    return Constants.MALIO_CONSTRAINT_MAX_DECIMAL_VALUE_IMPL_NAME;
   }
 
   @Override

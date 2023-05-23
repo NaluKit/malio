@@ -29,7 +29,7 @@ import javax.lang.model.util.Types;
 public class ConstraintMinLengthGenerator
     extends AbstractGenerator {
 
-  private AbstractProcessorConstraint<MinLength> constraint;
+  private final AbstractProcessorConstraint<MinLength> constraint;
 
   private ConstraintMinLengthGenerator(Builder builder) {
     this.elements       = builder.elements;

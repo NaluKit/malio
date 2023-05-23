@@ -94,12 +94,12 @@ public class ValidatorScanner
       if (!variableElement.asType()
                           .getKind()
                           .isPrimitive()) {
-        checkNeedForSubvalidator(variableElement);
+        checkNeedForSubValidator(variableElement);
       }
     }
   }
 
-  private void checkNeedForSubvalidator(VariableElement variableElement) {
+  private void checkNeedForSubValidator(VariableElement variableElement) {
     TypeElement elementOfVariableType = null;
     if (variableElement.asType()
                        .getKind()

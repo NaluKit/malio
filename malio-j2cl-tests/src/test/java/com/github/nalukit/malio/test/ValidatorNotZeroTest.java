@@ -15,22 +15,24 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.test.model.notzero.Person;
+import com.github.nalukit.malio.model.notzero.Person;
+import com.github.nalukit.malio.model.notzero.PersonMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.notzero.Person;
-import com.github.nalukit.malio.test.model.notzero.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 @J2clTestInput(ValidatorNotZeroTest.class)
 public class ValidatorNotZeroTest {
@@ -52,10 +54,10 @@ public class ValidatorNotZeroTest {
 
   @Test
   public void testValidateOk() {
-    Person           model  = new Person(1,
-                                         2121,
-                                         -86,
-                                         46L);
+    Person model = new Person(1,
+                              2121,
+                              -86,
+                              46L);
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }

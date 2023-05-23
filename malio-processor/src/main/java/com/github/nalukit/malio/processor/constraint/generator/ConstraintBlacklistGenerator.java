@@ -29,7 +29,7 @@ import javax.lang.model.util.Types;
 public class ConstraintBlacklistGenerator
     extends AbstractGenerator {
 
-  private AbstractProcessorConstraint<Blacklist> constraint;
+  private final AbstractProcessorConstraint<Blacklist> constraint;
 
   private ConstraintBlacklistGenerator(Builder builder) {
     this.elements       = builder.elements;
@@ -57,8 +57,8 @@ public class ConstraintBlacklistGenerator
     String[] blacklist = field.getAnnotation(Blacklist.class)
                               .value();
     String arraySyntax = processorUtils.createStringInitializationFromArray(blacklist);
-    String message     = field.getAnnotation(Blacklist.class)
-                              .message();
+    String message = field.getAnnotation(Blacklist.class)
+                          .message();
 
     return CodeBlock.builder()
                     .add("new $T($S, $S, $S, $L, $S)" + suffix,

@@ -29,7 +29,7 @@ import javax.lang.model.util.Types;
 public class ConstraintRegexpGenerator
     extends AbstractGenerator {
 
-  private AbstractProcessorConstraint<Regexp> constraint;
+  private final AbstractProcessorConstraint<Regexp> constraint;
 
   private ConstraintRegexpGenerator(Builder builder) {
     this.elements       = builder.elements;

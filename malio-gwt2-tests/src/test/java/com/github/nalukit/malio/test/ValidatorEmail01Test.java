@@ -15,16 +15,14 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.test.model.email01.Person;
+import com.github.nalukit.malio.model.email01.Person;
+import com.github.nalukit.malio.model.email01.PersonMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.email01.Person;
-import com.github.nalukit.malio.test.model.email01.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
-import org.junit.Test;
 
 public class ValidatorEmail01Test
     extends GWTTestCase {
@@ -39,14 +37,12 @@ public class ValidatorEmail01Test
     return "com.github.nalukit.malio.MalioGwt2Test";
   }
 
-  @Test
   public void testCheckOk()
       throws MalioValidationException {
     Person model = new Person("me@domain.com");
     PersonMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateOk() {
     Person model = new Person("me@domain.com");
 
@@ -54,14 +50,12 @@ public class ValidatorEmail01Test
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckNullOk()
       throws MalioValidationException {
     Person model = new Person(null);
     PersonMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateNullOk() {
     Person model = new Person(null);
 
@@ -69,7 +63,6 @@ public class ValidatorEmail01Test
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckFail01() {
     Person model = new Person("medomain.com");
 
@@ -80,7 +73,6 @@ public class ValidatorEmail01Test
     }
   }
 
-  @Test
   public void testValidateFail01() {
     Person model = new Person("medomain.com");
 
@@ -95,7 +87,6 @@ public class ValidatorEmail01Test
                                  .getMessage());
   }
 
-  @Test
   public void testValidateFail01German() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Person model = new Person("medomain.com");
@@ -111,7 +102,6 @@ public class ValidatorEmail01Test
                                  .getMessage());
   }
 
-  @Test
   public void testValidateFail01MessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Person model = new Person("me@domain.com",

@@ -15,17 +15,15 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.test.model.whitelist01.Address;
+import com.github.nalukit.malio.model.whitelist01.Address;
+import com.github.nalukit.malio.model.whitelist01.AddressMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.whitelist01.Address;
-import com.github.nalukit.malio.test.model.whitelist01.AddressMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
-import org.junit.Test;
 
 import java.util.List;
 
@@ -42,7 +40,6 @@ public class ValidatorWhitelistTest
     return "com.github.nalukit.malio.MalioGwt2Test";
   }
 
-  @Test
   public void testCheckOk()
       throws MalioValidationException {
     Address model = new Address("My Street",
@@ -51,7 +48,6 @@ public class ValidatorWhitelistTest
     AddressMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateOk() {
     Address model = new Address("My Street",
                                 "54321",
@@ -61,7 +57,6 @@ public class ValidatorWhitelistTest
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckNullOk()
       throws MalioValidationException {
     Address model = new Address(null,
@@ -70,7 +65,6 @@ public class ValidatorWhitelistTest
     AddressMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateNullOk() {
     Address model = new Address(null,
                                 null,
@@ -80,7 +74,6 @@ public class ValidatorWhitelistTest
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckFail01() {
     Address model = new Address("Street",
                                 "123",
@@ -93,7 +86,6 @@ public class ValidatorWhitelistTest
     }
   }
 
-  @Test
   public void testValidateFail01() {
     Address model = new Address("Street",
                                 "123",
@@ -110,7 +102,6 @@ public class ValidatorWhitelistTest
                  errorMessage.getMessage());
   }
 
-  @Test
   public void testValidateFail01German() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Address model = new Address("Street",
@@ -128,7 +119,6 @@ public class ValidatorWhitelistTest
                  errorMessage.getMessage());
   }
 
-  @Test
   public void testValidateFail01MessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Address model = new Address("My Street",

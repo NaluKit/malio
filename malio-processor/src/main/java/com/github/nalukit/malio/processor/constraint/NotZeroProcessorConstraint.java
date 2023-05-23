@@ -42,7 +42,7 @@ public class NotZeroProcessorConstraint
 
   @Override
   public String getImplementationName() {
-    return Constants.MALIO_CONSTRAINT_NOTZERO_IMPL_NAME;
+    return Constants.MALIO_CONSTRAINT_NOT_ZERO_IMPL_NAME;
   }
 
   @Override

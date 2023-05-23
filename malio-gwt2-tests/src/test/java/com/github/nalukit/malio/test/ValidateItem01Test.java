@@ -15,15 +15,14 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.model.validateitem01.Address;
+import com.github.nalukit.malio.model.validateitem01.Person;
+import com.github.nalukit.malio.model.validateitem01.PersonMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.validateitem01.Address;
-import com.github.nalukit.malio.test.model.validateitem01.Person;
-import com.github.nalukit.malio.test.model.validateitem01.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
-import org.junit.Test;
 
 public class ValidateItem01Test
     extends GWTTestCase {
@@ -38,7 +37,6 @@ public class ValidateItem01Test
     return "com.github.nalukit.malio.MalioGwt2Test";
   }
 
-  @Test
   public void testCheckOk01() {
     Person model = new Person("Firestone",
                               "Fred",
@@ -55,7 +53,6 @@ public class ValidateItem01Test
     }
   }
 
-  @Test
   public void testValidateOk01() {
     Person model = new Person("Firestone",
                               "Fred",
@@ -69,7 +66,6 @@ public class ValidateItem01Test
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckFailed01() {
     Person model = new Person("Firestone",
                               "Fred",
@@ -86,7 +82,6 @@ public class ValidateItem01Test
     }
   }
 
-  @Test
   public void testValidateFailed01() {
     Person model = new Person("Firestone",
                               "Fred",

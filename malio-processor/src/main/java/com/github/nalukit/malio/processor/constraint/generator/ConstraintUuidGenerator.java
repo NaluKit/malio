@@ -29,7 +29,7 @@ import javax.lang.model.util.Types;
 public class ConstraintUuidGenerator
     extends AbstractGenerator {
 
-  private AbstractProcessorConstraint<Uuid> constraint;
+  private final AbstractProcessorConstraint<Uuid> constraint;
 
   private ConstraintUuidGenerator(Builder builder) {
     this.elements       = builder.elements;

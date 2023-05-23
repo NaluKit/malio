@@ -29,7 +29,7 @@ import javax.lang.model.util.Types;
 public class ConstraintWhitelistGenerator
     extends AbstractGenerator {
 
-  private AbstractProcessorConstraint<Whitelist> constraint;
+  private final AbstractProcessorConstraint<Whitelist> constraint;
 
   private ConstraintWhitelistGenerator(Builder builder) {
     this.elements       = builder.elements;

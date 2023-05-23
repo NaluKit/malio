@@ -15,19 +15,18 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.test.model.size.Person;
+import com.github.nalukit.malio.model.size.Person;
+import com.github.nalukit.malio.model.size.PersonMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.size.Person;
-import com.github.nalukit.malio.test.model.size.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
-import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ValidatorSize01Test
@@ -43,7 +42,6 @@ public class ValidatorSize01Test
     return "com.github.nalukit.malio.MalioGwt2Test";
   }
 
-  @Test
   public void testCheckOk()
       throws MalioValidationException {
     Person model = new Person(Arrays.asList("Card",
@@ -51,7 +49,6 @@ public class ValidatorSize01Test
     PersonMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateOk() {
     Person model = new Person(Arrays.asList("Card",
                                             "Mobile Phone",
@@ -61,14 +58,12 @@ public class ValidatorSize01Test
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckNullOk()
       throws MalioValidationException {
     Person model = new Person(null);
     PersonMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateNullOk() {
     Person model = new Person(null);
 
@@ -76,9 +71,8 @@ public class ValidatorSize01Test
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckFailTooFew() {
-    Person model = new Person(Arrays.asList("Card"));
+    Person model = new Person(Collections.singletonList("Card"));
 
     try {
       PersonMalioValidator.INSTANCE.check(model);
@@ -87,7 +81,6 @@ public class ValidatorSize01Test
     }
   }
 
-  @Test
   public void testValidateFailTooMany() {
     Person model = new Person(Arrays.asList("Card",
                                             "Mobile Phone",
@@ -105,7 +98,6 @@ public class ValidatorSize01Test
                          .getMessage());
   }
 
-  @Test
   public void testValidateFailTooManyGerman() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Person model = new Person(Arrays.asList("Card",
@@ -124,7 +116,6 @@ public class ValidatorSize01Test
                          .getMessage());
   }
 
-  @Test
   public void testValidateFailMessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Person model = new Person(Arrays.asList("Card",

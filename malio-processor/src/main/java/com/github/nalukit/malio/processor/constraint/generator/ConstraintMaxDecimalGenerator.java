@@ -29,7 +29,7 @@ import javax.lang.model.util.Types;
 public class ConstraintMaxDecimalGenerator
     extends AbstractGenerator {
 
-  private AbstractProcessorConstraint<DecimalMax> constraint;
+  private final AbstractProcessorConstraint<DecimalMax> constraint;
 
   private ConstraintMaxDecimalGenerator(Builder builder) {
     this.elements       = builder.elements;

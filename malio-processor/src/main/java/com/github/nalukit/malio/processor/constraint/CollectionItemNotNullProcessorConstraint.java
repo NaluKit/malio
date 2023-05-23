@@ -45,12 +45,12 @@ public class CollectionItemNotNullProcessorConstraint
 
   @Override
   public String getImplementationName() {
-    return Constants.MALIO_CONSTRAINT_ARRAY_ITEM_NOT_NULL_IMPL_NAME;
+    return Constants.MALIO_CONSTRAINT_COLLECTION_ITEM_NOT_NULL_IMPL_NAME;
   }
 
   @Override
   public ConstraintType getConstraintType() {
-    return ConstraintType.ARRAY_ITEM_NOT_NULL_CONSTRAINT;
+    return ConstraintType.COLLECTION_ITEM_NOT_NULL_CONSTRAINT;
   }
 
   @Override

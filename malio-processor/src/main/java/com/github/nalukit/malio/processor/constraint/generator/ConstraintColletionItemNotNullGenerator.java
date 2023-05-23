@@ -28,7 +28,7 @@ import javax.lang.model.util.Types;
 
 public class ConstraintColletionItemNotNullGenerator
     extends AbstractGenerator {
-  private AbstractProcessorConstraint<CollectionItemNotNull> constraint;
+  private final AbstractProcessorConstraint<CollectionItemNotNull> constraint;
 
   private ConstraintColletionItemNotNullGenerator(Builder builder) {
     this.elements       = builder.elements;

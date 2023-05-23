@@ -29,7 +29,7 @@ import javax.lang.model.util.Types;
 public class ConstraintEmailGenerator
     extends AbstractGenerator {
 
-  private AbstractProcessorConstraint<Email> constraint;
+  private final AbstractProcessorConstraint<Email> constraint;
 
   private ConstraintEmailGenerator(Builder builder) {
     this.elements       = builder.elements;

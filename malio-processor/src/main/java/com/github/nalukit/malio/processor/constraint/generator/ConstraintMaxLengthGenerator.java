@@ -28,7 +28,7 @@ import javax.lang.model.util.Types;
 
 public class ConstraintMaxLengthGenerator
     extends AbstractGenerator {
-  private AbstractProcessorConstraint<MaxLength> constraint;
+  private final AbstractProcessorConstraint<MaxLength> constraint;
 
   private ConstraintMaxLengthGenerator(Builder builder) {
     this.elements       = builder.elements;

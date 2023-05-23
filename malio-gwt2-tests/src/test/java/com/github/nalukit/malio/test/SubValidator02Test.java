@@ -15,14 +15,13 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.model.subvalidator02.Person;
+import com.github.nalukit.malio.model.subvalidator02.PersonMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.subvalidator02.Person;
-import com.github.nalukit.malio.test.model.subvalidator02.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
-import org.junit.Test;
 
 public class SubValidator02Test
     extends GWTTestCase {
@@ -37,7 +36,6 @@ public class SubValidator02Test
     return "com.github.nalukit.malio.MalioGwt2Test";
   }
 
-  @Test
   public void testCheckOk() {
     Person model = new Person("Flintstones",
                               "Fred");
@@ -49,7 +47,6 @@ public class SubValidator02Test
     }
   }
 
-  @Test
   public void testValidateOk() {
     Person model = new Person("Flintstones",
                               "Fred");

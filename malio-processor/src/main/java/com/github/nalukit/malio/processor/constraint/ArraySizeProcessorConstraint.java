@@ -43,7 +43,7 @@ public class ArraySizeProcessorConstraint
 
   @Override
   public String getImplementationName() {
-    return Constants.MALIO_CONSTRAINT_ARRAYSIZE_IMPL_NAME;
+    return Constants.MALIO_CONSTRAINT_ARRAY_SIZE_IMPL_NAME;
   }
 
   @Override

@@ -15,15 +15,14 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.test.model.blacklist01.Address;
+import com.github.nalukit.malio.model.blacklist01.Address;
+import com.github.nalukit.malio.model.blacklist01.AddressMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.blacklist01.Address;
-import com.github.nalukit.malio.test.model.blacklist01.AddressMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +42,6 @@ public class ValidatorBlacklist01Test {
     LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
   }
 
-  @Test
   public void testCheckOk()
       throws MalioValidationException {
     Address model = new Address("Street",

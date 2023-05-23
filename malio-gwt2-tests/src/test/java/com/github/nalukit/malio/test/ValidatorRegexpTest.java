@@ -15,17 +15,15 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.test.model.regexp01.Address;
+import com.github.nalukit.malio.model.regexp01.Address;
+import com.github.nalukit.malio.model.regexp01.AddressMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.regexp01.Address;
-import com.github.nalukit.malio.test.model.regexp01.AddressMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
-import org.junit.Test;
 
 import java.util.List;
 
@@ -42,7 +40,6 @@ public class ValidatorRegexpTest
     return "com.github.nalukit.malio.MalioGwt2Test";
   }
 
-  @Test
   public void testCheckOk()
       throws MalioValidationException {
     Address model = new Address("My Street",
@@ -56,7 +53,6 @@ public class ValidatorRegexpTest
     }
   }
 
-  @Test
   public void testValidateOk() {
     Address model = new Address("My Street",
                                 "12345",
@@ -66,7 +62,6 @@ public class ValidatorRegexpTest
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckNullOk()
       throws MalioValidationException {
     Address model = new Address(null,
@@ -75,7 +70,6 @@ public class ValidatorRegexpTest
     AddressMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateNullOk() {
     Address model = new Address(null,
                                 null,
@@ -85,7 +79,6 @@ public class ValidatorRegexpTest
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckFail01() {
     Address model = new Address("Street",
                                 "123",
@@ -98,7 +91,6 @@ public class ValidatorRegexpTest
     }
   }
 
-  @Test
   public void testValidateFail01() {
     Address model = new Address("Street",
                                 "123",
@@ -115,7 +107,6 @@ public class ValidatorRegexpTest
                  errorMessage.getMessage());
   }
 
-  @Test
   public void testValidateFail01German() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Address model = new Address("Street",
@@ -133,7 +124,6 @@ public class ValidatorRegexpTest
                  errorMessage.getMessage());
   }
 
-  @Test
   public void testValidateFail01MessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Address model = new Address("Malio Street",

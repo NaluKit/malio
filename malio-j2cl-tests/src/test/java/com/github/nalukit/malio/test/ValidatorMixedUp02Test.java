@@ -15,14 +15,14 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.model.mixedup02.Address;
+import com.github.nalukit.malio.model.mixedup02.Employee;
+import com.github.nalukit.malio.model.mixedup02.EmployeeMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.mixedup02.Address;
-import com.github.nalukit.malio.test.model.mixedup02.Employee;
-import com.github.nalukit.malio.test.model.mixedup02.EmployeeMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
 import org.junit.Before;
 import org.junit.Test;
@@ -142,7 +142,7 @@ public class ValidatorMixedUp02Test {
                        .size());
     ErrorMessage errorMessage = result.getMessages()
                                       .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.mixedup02.Person",
+    assertEquals("com.github.nalukit.malio.model.mixedup02.Person",
                  errorMessage.getClassname());
     assertEquals("Person",
                  errorMessage.getSimpleClassname());
@@ -170,7 +170,7 @@ public class ValidatorMixedUp02Test {
 
     ErrorMessage errorMessage01 = result.getMessages()
                                         .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.mixedup02.Person",
+    assertEquals("com.github.nalukit.malio.model.mixedup02.Person",
                  errorMessage01.getClassname());
     assertEquals("Person",
                  errorMessage01.getSimpleClassname());
@@ -181,7 +181,7 @@ public class ValidatorMixedUp02Test {
 
     ErrorMessage errorMessage02 = result.getMessages()
                                         .get(1);
-    assertEquals("com.github.nalukit.malio.test.model.mixedup02.Person",
+    assertEquals("com.github.nalukit.malio.model.mixedup02.Person",
                  errorMessage02.getClassname());
     assertEquals("Person",
                  errorMessage02.getSimpleClassname());
@@ -209,7 +209,7 @@ public class ValidatorMixedUp02Test {
 
     ErrorMessage errorMessage01 = result.getMessages()
                                         .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.mixedup02.Address",
+    assertEquals("com.github.nalukit.malio.model.mixedup02.Address",
                  errorMessage01.getClassname());
     assertEquals("Address",
                  errorMessage01.getSimpleClassname());
@@ -237,7 +237,7 @@ public class ValidatorMixedUp02Test {
 
     ErrorMessage errorMessage01 = result.getMessages()
                                         .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.mixedup02.Employee",
+    assertEquals("com.github.nalukit.malio.model.mixedup02.Employee",
                  errorMessage01.getClassname());
     assertEquals("Employee",
                  errorMessage01.getSimpleClassname());

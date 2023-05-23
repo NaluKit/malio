@@ -29,7 +29,7 @@ import javax.lang.model.util.Types;
 public class ConstraintMaxGenerator
     extends AbstractGenerator {
 
-  private AbstractProcessorConstraint<Max> constraint;
+  private final AbstractProcessorConstraint<Max> constraint;
 
   private ConstraintMaxGenerator(Builder builder) {
     this.elements       = builder.elements;

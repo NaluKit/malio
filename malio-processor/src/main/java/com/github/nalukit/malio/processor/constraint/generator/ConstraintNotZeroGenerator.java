@@ -29,7 +29,7 @@ import javax.lang.model.util.Types;
 public class ConstraintNotZeroGenerator
     extends AbstractGenerator {
 
-  private AbstractProcessorConstraint<NotZero> constraint;
+  private final AbstractProcessorConstraint<NotZero> constraint;
 
   private ConstraintNotZeroGenerator(Builder builder) {
     this.elements       = builder.elements;

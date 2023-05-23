@@ -103,8 +103,11 @@ public class ValidatorGenerator
                              ClassName.get(model.getPackageName(),
                                            model.getSimpleClassName()),
                              this.processorUtils.createGetMethodName(model.getFieldName()))
+               .beginControlFlow("if ($T.nonNull(item))",
+                                 ClassName.get(Objects.class))
                .add("$L.INSTANCE.check(item);",
                     vaidatorClassNameArray)
+               .endControlFlow()
                .endControlFlow();
         break;
       case COLLECTION:
@@ -113,8 +116,11 @@ public class ValidatorGenerator
         builder.beginControlFlow("for ($T model : bean.$L())",
                                  ClassName.get(model.getGenericTypeElement01()),
                                  this.processorUtils.createGetMethodName(model.getFieldName()))
+               .beginControlFlow("if ($T.nonNull(model))",
+                                 ClassName.get(Objects.class))
                .add("$L.INSTANCE.check(model);",
                     vaidatorClassNameList)
+               .endControlFlow()
                .endControlFlow();
         break;
       case NATIVE:
@@ -174,8 +180,11 @@ public class ValidatorGenerator
                              ClassName.get(model.getPackageName(),
                                            model.getSimpleClassName()),
                              this.processorUtils.createGetMethodName(model.getFieldName()))
+               .beginControlFlow("if ($T.nonNull(item))",
+                                 ClassName.get(Objects.class))
                .add("$L.INSTANCE.validate(item, validationResult);",
                     vaidatorClassNameArray)
+               .endControlFlow()
                .endControlFlow();
         break;
       case COLLECTION:
@@ -184,8 +193,11 @@ public class ValidatorGenerator
         builder.beginControlFlow("for ($T model : bean.$L())",
                                  ClassName.get(model.getGenericTypeElement01()),
                                  this.processorUtils.createGetMethodName(model.getFieldName()))
+               .beginControlFlow("if ($T.nonNull(model))",
+                                 ClassName.get(Objects.class))
                .add("validationResult = $L.INSTANCE.validate(model, validationResult);",
                     vaidatorClassNameList)
+               .endControlFlow()
                .endControlFlow();
         break;
       case NATIVE:

@@ -15,22 +15,24 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.test.model.arraysize.Person;
+import com.github.nalukit.malio.model.arraysize.Person;
+import com.github.nalukit.malio.model.arraysize.PersonMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.arraysize.Person;
-import com.github.nalukit.malio.test.model.arraysize.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 @J2clTestInput(ValidatorArraySize01Test.class)
 public class ValidatorArraySize01Test {

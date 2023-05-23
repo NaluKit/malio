@@ -16,9 +16,15 @@
 package com.github.nalukit.malio.processor;
 
 import com.github.nalukit.malio.processor.constraint.AbstractProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.ArrayItemMaxLengthProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.ArrayItemMinLengthProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.ArrayItemNotBlankProcessorConstraint;
 import com.github.nalukit.malio.processor.constraint.ArrayItemNotNullProcessorConstraint;
 import com.github.nalukit.malio.processor.constraint.ArraySizeProcessorConstraint;
 import com.github.nalukit.malio.processor.constraint.BlacklistProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.CollectionItemMaxLengthProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.CollectionItemMinLengthProcessorConstraint;
+import com.github.nalukit.malio.processor.constraint.CollectionItemNotBlankProcessorConstraint;
 import com.github.nalukit.malio.processor.constraint.CollectionItemNotNullProcessorConstraint;
 import com.github.nalukit.malio.processor.constraint.DecimalMaxProcessorConstraint;
 import com.github.nalukit.malio.processor.constraint.DecimalMinProcessorConstraint;
@@ -42,9 +48,15 @@ import com.github.nalukit.malio.processor.model.ValidatorModel;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.Malio;
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
+import com.github.nalukit.malio.shared.annotation.field.ArrayItemMaxLength;
+import com.github.nalukit.malio.shared.annotation.field.ArrayItemMinLength;
+import com.github.nalukit.malio.shared.annotation.field.ArrayItemNotBlank;
 import com.github.nalukit.malio.shared.annotation.field.ArrayItemNotNull;
 import com.github.nalukit.malio.shared.annotation.field.ArraySize;
 import com.github.nalukit.malio.shared.annotation.field.Blacklist;
+import com.github.nalukit.malio.shared.annotation.field.CollectionItemMaxLength;
+import com.github.nalukit.malio.shared.annotation.field.CollectionItemMinLength;
+import com.github.nalukit.malio.shared.annotation.field.CollectionItemNotBlank;
 import com.github.nalukit.malio.shared.annotation.field.CollectionItemNotNull;
 import com.github.nalukit.malio.shared.annotation.field.DecimalMax;
 import com.github.nalukit.malio.shared.annotation.field.DecimalMin;
@@ -127,18 +139,39 @@ public class MalioProcessor
                                         .processingEnvironment(this.processingEnv)
                                         .build();
 
+    this.constraints.put(ArrayItemMaxLength.class.getCanonicalName(),
+                         new ArrayItemMaxLengthProcessorConstraint().setUp(this.processingEnv,
+                                                                           this.processorUtils));
+    this.constraints.put(ArrayItemMinLength.class.getCanonicalName(),
+                         new ArrayItemMinLengthProcessorConstraint().setUp(this.processingEnv,
+                                                                           this.processorUtils));
+    this.constraints.put(ArrayItemNotBlank.class.getCanonicalName(),
+                         new ArrayItemNotBlankProcessorConstraint().setUp(this.processingEnv,
+                                                                          this.processorUtils));
     this.constraints.put(ArrayItemNotNull.class.getCanonicalName(),
                          new ArrayItemNotNullProcessorConstraint().setUp(this.processingEnv,
                                                                          this.processorUtils));
     this.constraints.put(Blacklist.class.getCanonicalName(),
                          new BlacklistProcessorConstraint().setUp(this.processingEnv,
                                                                   this.processorUtils));
-    this.constraints.put(Email.class.getCanonicalName(),
-                         new EmailProcessorConstraint().setUp(this.processingEnv,
-                                                              this.processorUtils));
+    this.constraints.put(CollectionItemMaxLength.class.getCanonicalName(),
+                         new CollectionItemMaxLengthProcessorConstraint().setUp(this.processingEnv,
+                                                                                this.processorUtils));
+    this.constraints.put(CollectionItemMinLength.class.getCanonicalName(),
+                         new CollectionItemMinLengthProcessorConstraint().setUp(this.processingEnv,
+                                                                                this.processorUtils));
+    this.constraints.put(CollectionItemNotBlank.class.getCanonicalName(),
+                         new CollectionItemNotBlankProcessorConstraint().setUp(this.processingEnv,
+                                                                               this.processorUtils));
+    this.constraints.put(CollectionItemNotNull.class.getCanonicalName(),
+                         new CollectionItemNotNullProcessorConstraint().setUp(this.processingEnv,
+                                                                              this.processorUtils));
     this.constraints.put(DecimalMax.class.getCanonicalName(),
                          new DecimalMaxProcessorConstraint().setUp(this.processingEnv,
                                                                    this.processorUtils));
+    this.constraints.put(Email.class.getCanonicalName(),
+                         new EmailProcessorConstraint().setUp(this.processingEnv,
+                                                              this.processorUtils));
     this.constraints.put(MaxLength.class.getCanonicalName(),
                          new MaxLengthProcessorConstraint().setUp(this.processingEnv,
                                                                   this.processorUtils));
@@ -148,9 +181,6 @@ public class MalioProcessor
     this.constraints.put(DecimalMin.class.getCanonicalName(),
                          new DecimalMinProcessorConstraint().setUp(this.processingEnv,
                                                                    this.processorUtils));
-    this.constraints.put(CollectionItemNotNull.class.getCanonicalName(),
-                         new CollectionItemNotNullProcessorConstraint().setUp(this.processingEnv,
-                                                                              this.processorUtils));
     this.constraints.put(MinLength.class.getCanonicalName(),
                          new MinLengthProcessorConstraint().setUp(this.processingEnv,
                                                                   this.processorUtils));

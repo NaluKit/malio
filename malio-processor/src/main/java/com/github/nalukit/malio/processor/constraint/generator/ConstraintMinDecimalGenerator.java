@@ -29,7 +29,7 @@ import javax.lang.model.util.Types;
 public class ConstraintMinDecimalGenerator
     extends AbstractGenerator {
 
-  private AbstractProcessorConstraint<DecimalMin> constraint;
+  private final AbstractProcessorConstraint<DecimalMin> constraint;
 
   private ConstraintMinDecimalGenerator(Builder builder) {
     this.elements       = builder.elements;

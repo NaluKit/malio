@@ -15,20 +15,20 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.test.model.notempty01.Person;
+import com.github.nalukit.malio.model.notempty01.Person;
+import com.github.nalukit.malio.model.notempty01.PersonMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.notempty01.Person;
-import com.github.nalukit.malio.test.model.notempty01.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -117,7 +117,7 @@ public class ValidatorNotEmpty01Test {
   @Test
   public void testValidateFail01MessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-    Person model = new Person(Arrays.asList("A"),
+    Person model = new Person(Collections.singletonList("A"),
                               new ArrayList<>());
 
     ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);

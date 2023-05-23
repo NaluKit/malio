@@ -43,7 +43,7 @@ public class DecimalMinProcessorConstraint
 
   @Override
   public String getImplementationName() {
-    return Constants.MALIO_CONSTRAINT_MINDECIMALVALUE_IMPL_NAME;
+    return Constants.MALIO_CONSTRAINT_MIN_DECIMAL_VALUE_IMPL_NAME;
   }
 
   @Override

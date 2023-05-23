@@ -42,7 +42,7 @@ public class NotBlankProcessorConstraint
 
   @Override
   public String getImplementationName() {
-    return Constants.MALIO_CONSTRAINT_NOTBLANK_IMPL_NAME;
+    return Constants.MALIO_CONSTRAINT_NOT_BLANK_IMPL_NAME;
   }
 
   @Override

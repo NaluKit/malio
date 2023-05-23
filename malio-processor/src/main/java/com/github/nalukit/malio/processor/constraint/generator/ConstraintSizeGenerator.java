@@ -29,7 +29,7 @@ import javax.lang.model.util.Types;
 public class ConstraintSizeGenerator
     extends AbstractGenerator {
 
-  private AbstractProcessorConstraint<Size> constraint;
+  private final AbstractProcessorConstraint<Size> constraint;
 
   private ConstraintSizeGenerator(Builder builder) {
     this.elements       = builder.elements;

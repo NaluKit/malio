@@ -29,7 +29,7 @@ import javax.lang.model.util.Types;
 public class ConstraintNotEmptyGenerator
     extends AbstractGenerator {
 
-  private AbstractProcessorConstraint<NotEmpty> constraint;
+  private final AbstractProcessorConstraint<NotEmpty> constraint;
 
   private ConstraintNotEmptyGenerator(Builder builder) {
     this.elements       = builder.elements;

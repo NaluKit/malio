@@ -15,16 +15,14 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.test.model.notblank01.Person;
+import com.github.nalukit.malio.model.notblank01.Person;
+import com.github.nalukit.malio.model.notblank01.PersonMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.notblank01.Person;
-import com.github.nalukit.malio.test.model.notblank01.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
-import org.junit.Test;
 
 public class ValidatorNotBlank01Test
     extends GWTTestCase {
@@ -39,7 +37,6 @@ public class ValidatorNotBlank01Test
     return "com.github.nalukit.malio.MalioGwt2Test";
   }
 
-  @Test
   public void testCheckOk()
       throws MalioValidationException {
     Person model = new Person("Simpson",
@@ -47,7 +44,6 @@ public class ValidatorNotBlank01Test
     PersonMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateOk() {
     Person model = new Person("Simpson",
                               "Bart");
@@ -56,7 +52,6 @@ public class ValidatorNotBlank01Test
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckNullOk()
       throws MalioValidationException {
     Person model = new Person(null,
@@ -64,7 +59,6 @@ public class ValidatorNotBlank01Test
     PersonMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateNullOk() {
     Person model = new Person(null,
                               null);
@@ -73,7 +67,6 @@ public class ValidatorNotBlank01Test
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckFail01() {
     Person model = new Person("",
                               "Bart");
@@ -85,7 +78,6 @@ public class ValidatorNotBlank01Test
     }
   }
 
-  @Test
   public void testValidateFail01() {
     Person model = new Person("",
                               "");
@@ -101,7 +93,6 @@ public class ValidatorNotBlank01Test
                                  .getMessage());
   }
 
-  @Test
   public void testValidateFail01German() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Person model = new Person("",
@@ -118,7 +109,6 @@ public class ValidatorNotBlank01Test
                                  .getMessage());
   }
 
-  @Test
   public void testValidateFail01MessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Person model = new Person("gfsdg",
