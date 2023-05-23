@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
  *
  * <p>The validation will only occur in case the value is not null.</p>
  *
- * <p>This annotation can only be used on fields of type <b>List<String></String></b>.</p>
+ * <p>This annotation can only be used on Collection of type <b>String</b>.</p>
  *
  * @author Frank Hossfeld, Philipp Kohl
  */

@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 /**
  * <p>The annotation indicates that an item of a list should not be null.</p>
  *
- * <p>This annotation can be used on items of an array.</p>
+ * <p>This annotation can be used on items of an collection.</p>
  *
  * @author Frank Hossfeld, Philipp Kohl
  */
