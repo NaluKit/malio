@@ -35,5 +35,6 @@ import java.lang.annotation.Target;
 public @interface NotZero {
 
   String message() default "";
+
   boolean allowNegativeValues() default false;
 }

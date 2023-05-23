@@ -15,25 +15,20 @@
  */
 package com.github.nalukit.malio.test;
 
-
-
-import com.github.nalukit.malio.test.model.notzero.Person;
+import com.github.nalukit.malio.model.notzero.Person;
+import com.github.nalukit.malio.model.notzero.PersonMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.notzero.Person;
-import com.github.nalukit.malio.test.model.notzero.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
-import org.junit.Test;
 
 import java.util.List;
 
-
-
-public class ValidatorNotZeroTest extends GWTTestCase {
+public class ValidatorNotZeroTest
+    extends GWTTestCase {
 
   @Override
   public void gwtSetUp() {
@@ -45,38 +40,48 @@ public class ValidatorNotZeroTest extends GWTTestCase {
     return "com.github.nalukit.malio.MalioGwt2Test";
   }
 
-  
   public void testCheckOk()
       throws MalioValidationException {
-    Person model = new Person(1, 2121, 86, 46L);
+    Person model = new Person(1,
+                              2121,
+                              86,
+                              46L);
     PersonMalioValidator.INSTANCE.check(model);
   }
 
-  
   public void testValidateOk() {
-    Person model = new Person(1, 2121, -86, 46L);
+    Person model = new Person(1,
+                              2121,
+                              -86,
+                              46L);
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }
 
-  
   public void testCheckNullOk()
       throws MalioValidationException {
-    Person model = new Person(1, 2121, 86, null);
+    Person model = new Person(1,
+                              2121,
+                              86,
+                              null);
     PersonMalioValidator.INSTANCE.check(model);
   }
 
-  
   public void testValidateNullOk() {
-    Person model = new Person(1, 2121, 86, null);
+    Person model = new Person(1,
+                              2121,
+                              86,
+                              null);
 
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }
 
-  
   public void testCheckFail01() {
-    Person model = new Person(0, 2121, 86, null);
+    Person model = new Person(0,
+                              2121,
+                              86,
+                              null);
 
     try {
       PersonMalioValidator.INSTANCE.check(model);
@@ -86,9 +91,11 @@ public class ValidatorNotZeroTest extends GWTTestCase {
     }
   }
 
-  
   public void testValidateFail01() {
-    Person model = new Person(0, -2121, 86, null);
+    Person model = new Person(0,
+                              -2121,
+                              86,
+                              null);
 
     ValidationResult   validationResult = PersonMalioValidator.INSTANCE.validate(model);
     List<ErrorMessage> messages         = validationResult.getMessages();
@@ -101,10 +108,12 @@ public class ValidatorNotZeroTest extends GWTTestCase {
                  errorMessage.getMessage());
   }
 
-  
   public void testValidateFail01German() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-    Person model = new Person(0, 2121, 86, null);
+    Person model = new Person(0,
+                              2121,
+                              86,
+                              null);
 
     ValidationResult   validationResult = PersonMalioValidator.INSTANCE.validate(model);
     List<ErrorMessage> messages         = validationResult.getMessages();
@@ -117,10 +126,13 @@ public class ValidatorNotZeroTest extends GWTTestCase {
                  errorMessage.getMessage());
   }
 
-  @Test
   public void testValidateFail01MessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
-    Person model = new Person(12, 2121, 86, null, 0);
+    Person model = new Person(12,
+                              2121,
+                              86,
+                              null,
+                              0);
 
     ValidationResult   validationResult = PersonMalioValidator.INSTANCE.validate(model);
     List<ErrorMessage> messages         = validationResult.getMessages();
@@ -128,9 +140,9 @@ public class ValidatorNotZeroTest extends GWTTestCase {
 
     assertFalse(validationResult.isValid());
     assertEquals(1,
-            messages.size());
+                 messages.size());
     assertEquals("Override",
-            errorMessage.getMessage());
+                 errorMessage.getMessage());
   }
 }
 

@@ -35,5 +35,6 @@ import java.lang.annotation.Target;
 public @interface Max {
 
   String message() default "";
+
   long value();
 }

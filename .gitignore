@@ -228,3 +228,4 @@ fabric.properties
 target
 *.info
 docker-run-clipboard.txt
+#malio-incubator

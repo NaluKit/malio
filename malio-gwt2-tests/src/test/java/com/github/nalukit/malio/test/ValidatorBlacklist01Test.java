@@ -15,17 +15,15 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.test.model.blacklist01.Address;
+import com.github.nalukit.malio.model.blacklist01.Address;
+import com.github.nalukit.malio.model.blacklist01.AddressMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.blacklist01.Address;
-import com.github.nalukit.malio.test.model.blacklist01.AddressMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
-import org.junit.Test;
 
 import java.util.List;
 
@@ -42,7 +40,6 @@ public class ValidatorBlacklist01Test
     return "com.github.nalukit.malio.MalioGwt2Test";
   }
 
-  @Test
   public void testCheckOk()
       throws MalioValidationException {
     Address model = new Address("Street",
@@ -51,7 +48,6 @@ public class ValidatorBlacklist01Test
     AddressMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateOk() {
     Address model = new Address("Street",
                                 "13579",
@@ -61,7 +57,6 @@ public class ValidatorBlacklist01Test
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckFail01() {
     Address model = new Address("Secret",
                                 "123",
@@ -74,7 +69,6 @@ public class ValidatorBlacklist01Test
     }
   }
 
-  @Test
   public void testCheckNull()
       throws MalioValidationException {
     Address model = new Address(null,
@@ -83,17 +77,15 @@ public class ValidatorBlacklist01Test
     AddressMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateNull()
       throws MalioValidationException {
-    Address          model  = new Address(null,
-                                          "123",
-                                          "City");
+    Address model = new Address(null,
+                                "123",
+                                "City");
     ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testValidateFail01() {
     Address model = new Address("Secret",
                                 "12345",
@@ -111,7 +103,6 @@ public class ValidatorBlacklist01Test
 
   }
 
-  @Test
   public void testValidateFail01German() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Address model = new Address("Secret",
@@ -129,13 +120,12 @@ public class ValidatorBlacklist01Test
                  errorMessage.getMessage());
   }
 
-  @Test
   public void testValidateFailMessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Address model = new Address("Hello",
-            "1245",
-            "City",
-            "123");
+                                "1245",
+                                "City",
+                                "123");
 
     ValidationResult   validationResult = AddressMalioValidator.INSTANCE.validate(model);
     List<ErrorMessage> messages         = validationResult.getMessages();
@@ -143,9 +133,9 @@ public class ValidatorBlacklist01Test
 
     assertFalse(validationResult.isValid());
     assertEquals(1,
-            messages.size());
+                 messages.size());
     assertEquals("Override",
-            errorMessage.getMessage());
+                 errorMessage.getMessage());
   }
 }
 

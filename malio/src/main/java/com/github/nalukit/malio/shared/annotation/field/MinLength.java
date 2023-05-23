@@ -35,5 +35,6 @@ import java.lang.annotation.Target;
 public @interface MinLength {
 
   String message() default "";
+
   int value();
 }

@@ -15,15 +15,14 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.model.subvalidator03.Address;
+import com.github.nalukit.malio.model.subvalidator03.Person;
+import com.github.nalukit.malio.model.subvalidator03.PersonMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.subvalidator03.Address;
-import com.github.nalukit.malio.test.model.subvalidator03.Person;
-import com.github.nalukit.malio.test.model.subvalidator03.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
-import org.junit.Test;
 
 import java.util.ArrayList;
 
@@ -40,7 +39,6 @@ public class SubValidator03Test
     return "com.github.nalukit.malio.MalioGwt2Test";
   }
 
-  @Test
   public void testCheckOk01() {
     Person model = new Person("Flintstones",
                               "Fred",
@@ -55,7 +53,6 @@ public class SubValidator03Test
     }
   }
 
-  @Test
   public void testValidateOk01() {
     Person model = new Person("Flintstones",
                               "Fred",
@@ -67,7 +64,6 @@ public class SubValidator03Test
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckOk02() {
     Person model = new Person("Flintstones",
                               "Fred",
@@ -89,7 +85,6 @@ public class SubValidator03Test
     }
   }
 
-  @Test
   public void testValidateOk02() {
     Person model = new Person("Flintstones",
                               "Fred",
@@ -108,7 +103,6 @@ public class SubValidator03Test
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckFailed01() {
     Person model = new Person("Flintstones",
                               "Fred",
@@ -122,7 +116,6 @@ public class SubValidator03Test
     }
   }
 
-  @Test
   public void testValidateFailed01() {
     Person model = new Person("Flintstones",
                               "Fred",
@@ -133,7 +126,6 @@ public class SubValidator03Test
     assertFalse(result.isValid());
   }
 
-  @Test
   public void testCheckFailed02() {
     Person model = new Person("Flintstones",
                               "Fred",
@@ -154,7 +146,6 @@ public class SubValidator03Test
     }
   }
 
-  @Test
   public void testValidateFailed02() {
     Person model = new Person("Flintstones",
                               "Fred",
@@ -172,7 +163,6 @@ public class SubValidator03Test
     assertFalse(result.isValid());
   }
 
-  @Test
   public void testCheckFailed03() {
     Person model = new Person("Flintstones",
                               "Fred",
@@ -193,7 +183,6 @@ public class SubValidator03Test
     }
   }
 
-  @Test
   public void testValidateFailed03() {
     Person model = new Person("Flintstones",
                               "Fred",
