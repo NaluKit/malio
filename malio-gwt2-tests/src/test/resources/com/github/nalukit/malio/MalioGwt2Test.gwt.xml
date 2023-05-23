@@ -4,5 +4,5 @@
   <inherits name="com.github.nalukit.malio.Malio"/>
 
   <!-- sources -->
-  <source path="test"/>
+  <source path=""/>
 </module>

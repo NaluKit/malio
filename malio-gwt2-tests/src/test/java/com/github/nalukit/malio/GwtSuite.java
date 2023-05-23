@@ -22,18 +22,32 @@ import junit.framework.Test;
 public class GwtSuite {
 
   public static Test suite() {
-    GWTTestSuite suite = new GWTTestSuite("Test suite for lib");
+    GWTTestSuite suite = new GWTTestSuite("Test suite for malio");
+
+    suite.addTestSuite(ArrayItemMaxLength01Test.class);
+    suite.addTestSuite(ArrayItemMinLength01Test.class);
+    suite.addTestSuite(ArrayItemNotBlank01Test.class);
+    suite.addTestSuite(ArrayItemNotNull01Test.class);
+    suite.addTestSuite(ArrayItemNotNull02Test.class);
+    suite.addTestSuite(CollectionItemMaxLength01Test.class);
+    suite.addTestSuite(CollectionItemMinLength01Test.class);
+    suite.addTestSuite(CollectionItemNotBlank01Test.class);
+    suite.addTestSuite(CollectionItemNotNull01Test.class);
     suite.addTestSuite(SubValidator01Test.class);
     suite.addTestSuite(SubValidator02Test.class);
     suite.addTestSuite(SubValidator03Test.class);
+    suite.addTestSuite(ValidateItem01Test.class);
+    suite.addTestSuite(ValidateItem02Test.class);
+    suite.addTestSuite(ValidateItem03Test.class);
+    suite.addTestSuite(ValidatorArraySize01Test.class);
     suite.addTestSuite(ValidatorBlacklist01Test.class);
     suite.addTestSuite(ValidatorDecimalMax01Test.class);
     suite.addTestSuite(ValidatorDecimalMin01Test.class);
     suite.addTestSuite(ValidatorEmail01Test.class);
-    suite.addTestSuite(ValidatorMaxLength01Test.class);
     suite.addTestSuite(ValidatorMax01Test.class);
-    suite.addTestSuite(ValidatorMinLength01Test.class);
+    suite.addTestSuite(ValidatorMaxLength01Test.class);
     suite.addTestSuite(ValidatorMin01Test.class);
+    suite.addTestSuite(ValidatorMinLength01Test.class);
     suite.addTestSuite(ValidatorMixedUp01Test.class);
     suite.addTestSuite(ValidatorMixedUp02Test.class);
     suite.addTestSuite(ValidatorNotBlank01Test.class);
@@ -45,12 +59,12 @@ public class GwtSuite {
     suite.addTestSuite(ValidatorNotNull05Test.class);
     suite.addTestSuite(ValidatorNotNull06Test.class);
     suite.addTestSuite(ValidatorNotNull07Test.class);
+    suite.addTestSuite(ValidatorNotZeroTest.class);
     suite.addTestSuite(ValidatorRegexpTest.class);
     suite.addTestSuite(ValidatorSize01Test.class);
     suite.addTestSuite(ValidatorUuid01Test.class);
     suite.addTestSuite(ValidatorWhitelistTest.class);
-    suite.addTestSuite(ValidatorArraySize01Test.class);
-    suite.addTestSuite(ValidatorNotZeroTest.class);
+
     return suite;
   }
 }

@@ -82,6 +82,19 @@ Running the validation:
     PersonMalioValidator.INSTANCE.check(model);
 ```
 
+## Motivation
+
+As we moved from GWT RPC to Spring Boot Rest Controller and
+[Domino-Rest](https://github.com/DominoKit/domino-rest), we expose the services of our web
+application. As long as we have GET-calls, we can use Spring security for the parameters. As sson as
+we work with POST, we have to validate more complex objects. We started looking for a solution but
+did not find a suitable solution that work with GWT or J2CL.
+
+So we decided to create a simple solution to validate our input classes (which are located inside the
+shared project).
+
+We don't want to create a replacement for bean-validation. Just a simple tin framework to validate objects.
+
 ## Usage
 
 Let's assume, we have a POJO like this:
@@ -185,7 +198,8 @@ public class Person {
 }
 ```
 
-Malio will create a validator for the `Person` class. The validator will be called [name of the class] + 'MalioValidator'.
+Malio will create a validator for the `Person` class. The validator will be called [name of the class] + '
+MalioValidator'.
 To validate an instance of the class, call:
 
 `PersonMalioValidator.INSTANCE.check(myInstenceOfPerson);`
@@ -198,8 +212,10 @@ In case classes are extending user classes, Malio will also look for existing va
 
 ## Custom Messages
 
-Malio comes with predefined and localized messages, which can be set via `LocalizedMessages.INSTANCE.setMessages(new MessagesEN());`.
-At the moment, malio only provides messages for english and german. Contributions are welcome! See [IMessages.java](malio%2Fsrc%2Fmain%2Fjava%2Fcom%2Fgithub%2Fnalukit%2Fmalio%2Fshared%2Fmessages%2FIMessages.java)
+Malio comes with predefined and localized messages, which can be set
+via `LocalizedMessages.INSTANCE.setMessages(new MessagesEN());`.
+At the moment, malio only provides messages for english and german. Contributions are welcome!
+See [IMessages.java](malio%2Fsrc%2Fmain%2Fjava%2Fcom%2Fgithub%2Fnalukit%2Fmalio%2Fshared%2Fmessages%2FIMessages.java)
 and [locales](malio%2Fsrc%2Fmain%2Fjava%2Fcom%2Fgithub%2Fnalukit%2Fmalio%2Fshared%2Fmessages%2Flocales).
 
 The user can overwrite the dynamic messages with own static messages in *every* annotation. E.g., `@MaxLength`:
@@ -350,7 +366,7 @@ This annotation can only be used on fields of types extending **Collection** (Li
 
 The annotation indicates that the variable should not be null.
 
-This annotation can be used on any complex type of a field.
+This annotation can be used on any complex type of field.
 
 #### RegExp
 
@@ -369,7 +385,8 @@ This annotation can only be used on fields of type **String**.
 @Size(min=1, max=99)
 ```
 
-The annotation defines the minimum and maximum size of a collection. The constraint will not be checked if the collection is null.
+The annotation defines the minimum and maximum size of a collection. The constraint will not be checked if the
+collection is null.
 
 This annotation can only be used on fields of types extending **Collection** (List, Set, ...).
 
@@ -379,7 +396,8 @@ This annotation can only be used on fields of types extending **Collection** (Li
 @ArraySize(min=1, max=99)
 ```
 
-The annotation defines the minimum and maximum size of an array. The constraint will not be checked if the array is null.
+The annotation defines the minimum and maximum size of an array. The constraint will not be checked if the array is
+null.
 
 This annotation can only be used on fields of types **array** (int[], String[], ...).
 
@@ -400,10 +418,105 @@ This annotation can only be used on fields of type **String**.
 ```
 
 The annotation accepts a list of String values that are allowed for the field. The constrain will look for the String
-values inside the variable and in case a value is not contained inside the list, an error is created - if the value is not
+values inside the variable and in case a value is not contained inside the list, an error is created - if the value is
+not
 null.
 
 This annotation can only be used on fields of type **String**.
+
+### Annotations for variables of type array
+
+The following annotation can only be used on variable types that are arrays.
+
+#### ArrayItemMaxLength
+
+```java
+@ArrayItemMaxLength(20)
+```
+
+The annotation accepts a int value of the maximal numbers of characters. This is the maximal length allowed for an
+item inside a String array - if the value is not null.
+
+This annotation can only be used on fields of type **String[]**.
+
+#### ArrayItemMinLength
+
+```java
+@ArrayItemMinLength(20)
+```
+
+The annotation accepts a int value of the minimal numbers of characters. This is the minimal length allowed for an
+item inside a String array - if the value is not null.
+
+This annotation can only be used on fields of type **String[]**.
+
+#### ArrayItemNotBlank
+
+```java
+@ArrayItemNotBlank
+```
+
+The annotation indicates that the String of an array should not be empty - if the value is not null.
+
+This annotation can only be used on fields of type **String[]**.
+
+#### ArrayItemNotNull
+
+```java
+@ArrayItemNotNull
+```
+
+The annotation indicates that an item of an array should not be null.
+
+This annotation can be used on any array that uses a complex type of field.
+
+### Annotations for variables of type Collection
+
+The following annotation can only be used on variable types that are Collection or sub classes of it.
+
+#### CollectionItemMaxLength
+
+```java
+@CollectionItemMaxLength(20)
+```
+
+The annotation accepts a int value of the maximal numbers of characters. This is the maximal length allowed for an
+item inside a collection of String - if the value of the item is not null.
+
+This annotation can only be used on fields of type **List<String>**.
+
+#### CollectionItemMinLength
+
+```java
+@CollectionItemMinLength(20)
+```
+
+The annotation accepts a int value of the minimal numbers of characters. This is the minimal length allowed for an
+item inside a collection of String - if the value of the item is not null.
+
+This annotation can only be used on fields of type **List<String>**.
+
+#### CollectionItemNotBlank
+
+```java
+@CollectionItemNotBlank
+```
+
+The annotation indicates that the String of a collection should not be empty - if the value is not null.
+
+This annotation can only be used on fields of type **List<String>**.
+
+#### CollectionItemNotNull
+
+```java
+@CollectionItemNotNull
+```
+
+The annotation indicates that an item of a collection should not be null.
+
+This annotation can be used on any collection that uses a complex type of field.
+
+Important: Collection need a type. Otherwise, the annotation will not work!
 
 ## To get in touch with the developer
 
@@ -417,3 +530,12 @@ Examples can be found inside the test cases.
 
 In case you find a bug, please open an issue or post it inside
 the [Nalu Gitter room](https://gitter.im/Nalukit42/Lobby).
+
+## Not supported data types
+
+Malio does not support the validation of the following data types:
+
+* multi dimensional arrays f.e.: String[][]
+* Collections of type Collection f.e.: List<List<String>>
+* Collections of type array List<String[]>
+* Maps

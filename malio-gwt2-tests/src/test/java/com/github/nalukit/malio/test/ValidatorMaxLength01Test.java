@@ -15,16 +15,14 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.test.model.maxlength01.Address;
+import com.github.nalukit.malio.model.maxlength01.Address;
+import com.github.nalukit.malio.model.maxlength01.AddressMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.maxlength01.Address;
-import com.github.nalukit.malio.test.model.maxlength01.AddressMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
-import org.junit.Test;
 
 public class ValidatorMaxLength01Test
     extends GWTTestCase {
@@ -39,7 +37,6 @@ public class ValidatorMaxLength01Test
     return "com.github.nalukit.malio.MalioGwt2Test";
   }
 
-  @Test
   public void testCheckOk()
       throws MalioValidationException {
     Address model = new Address("Street",
@@ -48,7 +45,6 @@ public class ValidatorMaxLength01Test
     AddressMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateOk() {
     Address model = new Address("Street",
                                 "12345",
@@ -58,7 +54,6 @@ public class ValidatorMaxLength01Test
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckNullOk()
       throws MalioValidationException {
     Address model = new Address(null,
@@ -67,7 +62,6 @@ public class ValidatorMaxLength01Test
     AddressMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateNullOk() {
     Address model = new Address(null,
                                 "12345",
@@ -77,7 +71,6 @@ public class ValidatorMaxLength01Test
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckFail01() {
     Address model = new Address("Street",
                                 "123456",
@@ -90,7 +83,6 @@ public class ValidatorMaxLength01Test
     }
   }
 
-  @Test
   public void testValidateFail01() {
     Address model = new Address("Street",
                                 "123456",
@@ -107,7 +99,6 @@ public class ValidatorMaxLength01Test
                                  .getMessage());
   }
 
-  @Test
   public void testValidateFail01German() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Address model = new Address("Street",
@@ -125,23 +116,22 @@ public class ValidatorMaxLength01Test
                                  .getMessage());
   }
 
-  @Test
   public void testValidateFail01MessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Address model = new Address("Street",
-            "12345",
-            "City",
-            "123456");
+                                "12345",
+                                "City",
+                                "123456");
 
     ValidationResult validationResult = AddressMalioValidator.INSTANCE.validate(model);
     assertFalse(validationResult.isValid());
     assertEquals(1,
-            validationResult.getMessages()
-                    .size());
+                 validationResult.getMessages()
+                                 .size());
     assertEquals("Override",
-            validationResult.getMessages()
-                    .get(0)
-                    .getMessage());
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
   }
 }
 

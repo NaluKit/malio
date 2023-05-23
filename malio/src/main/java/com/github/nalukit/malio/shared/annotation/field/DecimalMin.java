@@ -35,5 +35,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface DecimalMin {
   String message() default "";
+
   String value();
 }

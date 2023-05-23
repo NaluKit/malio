@@ -15,20 +15,20 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.test.model.size.Person;
+import com.github.nalukit.malio.model.size.Person;
+import com.github.nalukit.malio.model.size.PersonMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.size.Person;
-import com.github.nalukit.malio.test.model.size.PersonMalioValidator;
 import com.google.j2cl.junit.apt.J2clTestInput;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -79,7 +79,7 @@ public class ValidatorSize01Test {
 
   @Test
   public void testCheckFailTooFew() {
-    Person model = new Person(Arrays.asList("Card"));
+    Person model = new Person(Collections.singletonList("Card"));
 
     MalioValidationException thrown = assertThrows(MalioValidationException.class,
                                                    () -> PersonMalioValidator.INSTANCE.check(model));
@@ -126,23 +126,23 @@ public class ValidatorSize01Test {
   public void testValidateFailMessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Person model = new Person(Arrays.asList("Card",
-            "Mobile Phone",
-            "Keys",
-            "Sun Creme"),
-            Arrays.asList("Card",
-                    "Mobile Phone",
-                    "Keys",
-                    "Sun Creme",
-                    "Screws"));
+                                            "Mobile Phone",
+                                            "Keys",
+                                            "Sun Creme"),
+                              Arrays.asList("Card",
+                                            "Mobile Phone",
+                                            "Keys",
+                                            "Sun Creme",
+                                            "Screws"));
 
     ValidationResult   validationResult = PersonMalioValidator.INSTANCE.validate(model);
     List<ErrorMessage> messages         = validationResult.getMessages();
     assertFalse(validationResult.isValid());
     assertEquals(1,
-            messages.size());
+                 messages.size());
     assertEquals("Override",
-            messages.get(0)
-                    .getMessage());
+                 messages.get(0)
+                         .getMessage());
   }
 }
 
