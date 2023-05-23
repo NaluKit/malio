@@ -15,14 +15,14 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.model.whitelist01.Address;
+import com.github.nalukit.malio.model.whitelist01.AddressMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.model.whitelist01.Address;
-import com.github.nalukit.malio.model.whitelist01.AddressMalioValidator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -127,9 +127,9 @@ public class ValidatorWhitelistTest {
   public void testValidateFail01MessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Address model = new Address("My Street",
-            "54321",
-            "My Town",
-            "454");
+                                "54321",
+                                "My Town",
+                                "454");
 
     ValidationResult   validationResult = AddressMalioValidator.INSTANCE.validate(model);
     List<ErrorMessage> messages         = validationResult.getMessages();
@@ -137,9 +137,9 @@ public class ValidatorWhitelistTest {
 
     assertFalse(validationResult.isValid());
     assertEquals(1,
-            messages.size());
+                 messages.size());
     assertEquals("Override",
-            errorMessage.getMessage());
+                 errorMessage.getMessage());
   }
 
 }

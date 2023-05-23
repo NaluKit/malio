@@ -15,16 +15,15 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.model.notnull04.Person;
+import com.github.nalukit.malio.model.notnull04.PersonMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.notnull04.Person;
-import com.github.nalukit.malio.test.model.notnull04.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
-import org.junit.Test;
 
 public class ValidatorNotNull04Test
     extends GWTTestCase {
@@ -95,7 +94,7 @@ public class ValidatorNotNull04Test
                        .size());
     ErrorMessage errorMessage = result.getMessages()
                                       .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.notnull04.helper.AbstractPerson",
+    assertEquals("com.github.nalukit.malio.model.notnull04.helper.AbstractPerson",
                  errorMessage.getClassname());
     assertEquals("AbstractPerson",
                  errorMessage.getSimpleClassname());
@@ -118,7 +117,7 @@ public class ValidatorNotNull04Test
 
     ErrorMessage errorMessage01 = result.getMessages()
                                         .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.notnull04.Person",
+    assertEquals("com.github.nalukit.malio.model.notnull04.Person",
                  errorMessage01.getClassname());
     assertEquals("Person",
                  errorMessage01.getSimpleClassname());
@@ -129,7 +128,7 @@ public class ValidatorNotNull04Test
 
     ErrorMessage errorMessage02 = result.getMessages()
                                         .get(1);
-    assertEquals("com.github.nalukit.malio.test.model.notnull04.helper.AbstractPerson",
+    assertEquals("com.github.nalukit.malio.model.notnull04.helper.AbstractPerson",
                  errorMessage02.getClassname());
     assertEquals("AbstractPerson",
                  errorMessage02.getSimpleClassname());
@@ -139,7 +138,6 @@ public class ValidatorNotNull04Test
                  errorMessage02.getMessage());
   }
 
-  @Test
   public void testValidateFail01GermanMessage() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
 
@@ -154,7 +152,7 @@ public class ValidatorNotNull04Test
                        .size());
     ErrorMessage errorMessage = result.getMessages()
                                       .get(0);
-    assertEquals("com.github.nalukit.malio.test.model.notnull04.helper.AbstractPerson",
+    assertEquals("com.github.nalukit.malio.model.notnull04.helper.AbstractPerson",
                  errorMessage.getClassname());
     assertEquals("AbstractPerson",
                  errorMessage.getSimpleClassname());

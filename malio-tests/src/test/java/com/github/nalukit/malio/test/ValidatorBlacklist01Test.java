@@ -15,6 +15,7 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.model.blacklist01.Address;
 import com.github.nalukit.malio.model.blacklist01.AddressMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
@@ -22,8 +23,6 @@ import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.model.blacklist01.Address;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -81,9 +80,9 @@ public class ValidatorBlacklist01Test {
   @Test
   public void testValidateNull()
       throws MalioValidationException {
-    Address          model  = new Address(null,
-                                          "123",
-                                          "City");
+    Address model = new Address(null,
+                                "123",
+                                "City");
     ValidationResult result = AddressMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }
@@ -128,9 +127,9 @@ public class ValidatorBlacklist01Test {
   public void testValidateFailMessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Address model = new Address("Hello",
-            "1245",
-            "City",
-            "123");
+                                "1245",
+                                "City",
+                                "123");
 
     ValidationResult   validationResult = AddressMalioValidator.INSTANCE.validate(model);
     List<ErrorMessage> messages         = validationResult.getMessages();
@@ -138,9 +137,9 @@ public class ValidatorBlacklist01Test {
 
     assertFalse(validationResult.isValid());
     assertEquals(1,
-            messages.size());
+                 messages.size());
     assertEquals("Override",
-            errorMessage.getMessage());
+                 errorMessage.getMessage());
   }
 }
 

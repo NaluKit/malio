@@ -116,10 +116,12 @@ public class LocalizedMessages
   }
 
   @Override
-  public String getArraySizeMessage(int min, int max) {
-    return format(messages.getArraySizeMessage(min, max),
-            String.valueOf(min),
-            String.valueOf(max));
+  public String getArraySizeMessage(int min,
+                                    int max) {
+    return format(messages.getArraySizeMessage(min,
+                                               max),
+                  String.valueOf(min),
+                  String.valueOf(max));
   }
 
   @Override

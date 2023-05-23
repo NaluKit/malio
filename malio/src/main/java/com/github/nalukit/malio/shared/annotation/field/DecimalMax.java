@@ -34,5 +34,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface DecimalMax {
   String message() default "";
+
   String value();
 }

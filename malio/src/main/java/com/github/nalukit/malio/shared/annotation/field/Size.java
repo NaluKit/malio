@@ -32,6 +32,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface Size {
   String message() default "";
+
   int min();
 
   int max();

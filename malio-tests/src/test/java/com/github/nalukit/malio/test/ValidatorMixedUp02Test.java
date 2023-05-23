@@ -15,14 +15,14 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.model.mixedup02.Address;
+import com.github.nalukit.malio.model.mixedup02.Employee;
+import com.github.nalukit.malio.model.mixedup02.EmployeeMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.model.mixedup02.Address;
-import com.github.nalukit.malio.model.mixedup02.Employee;
-import com.github.nalukit.malio.model.mixedup02.EmployeeMalioValidator;
 import org.junit.Before;
 import org.junit.Test;
 

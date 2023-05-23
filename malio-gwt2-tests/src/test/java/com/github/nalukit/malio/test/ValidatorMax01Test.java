@@ -15,16 +15,14 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.test.model.max01.Person;
+import com.github.nalukit.malio.model.max01.Person;
+import com.github.nalukit.malio.model.max01.PersonMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesDE;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.test.model.max01.Person;
-import com.github.nalukit.malio.test.model.max01.PersonMalioValidator;
 import com.google.gwt.junit.client.GWTTestCase;
-import org.junit.Test;
 
 public class ValidatorMax01Test
     extends GWTTestCase {
@@ -39,7 +37,6 @@ public class ValidatorMax01Test
     return "com.github.nalukit.malio.MalioGwt2Test";
   }
 
-  @Test
   public void testCheckOk()
       throws MalioValidationException {
     Person model = new Person("Name",
@@ -49,7 +46,6 @@ public class ValidatorMax01Test
     PersonMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateOk() {
     Person model = new Person("Name",
                               18,
@@ -60,7 +56,6 @@ public class ValidatorMax01Test
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckEdgeOk()
       throws MalioValidationException {
     Person model = new Person("Name",
@@ -70,7 +65,6 @@ public class ValidatorMax01Test
     PersonMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateEdgeOk() {
     Person model = new Person("Name",
                               99,
@@ -81,7 +75,6 @@ public class ValidatorMax01Test
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckNullOk()
       throws MalioValidationException {
     Person model = new Person("Name",
@@ -91,7 +84,6 @@ public class ValidatorMax01Test
     PersonMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateNullOk() {
     Person model = new Person("Name",
                               18,
@@ -102,7 +94,6 @@ public class ValidatorMax01Test
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckFail01() {
     Person model = new Person("Name",
                               112,
@@ -116,7 +107,6 @@ public class ValidatorMax01Test
     }
   }
 
-  @Test
   public void testValidateFail01() {
     Person model = new Person("Name",
                               112,
@@ -134,7 +124,6 @@ public class ValidatorMax01Test
                                  .getMessage());
   }
 
-  @Test
   public void testValidateFail01German() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Person model = new Person("Name",
@@ -153,24 +142,23 @@ public class ValidatorMax01Test
                                  .getMessage());
   }
 
-  @Test
   public void testValidateFail01MessageOverride() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesDE());
     Person model = new Person("Name",
-            10,
-            10,
-            10,
-            100);
+                              10,
+                              10,
+                              10,
+                              100);
 
     ValidationResult validationResult = PersonMalioValidator.INSTANCE.validate(model);
     assertFalse(validationResult.isValid());
     assertEquals(1,
-            validationResult.getMessages()
-                    .size());
+                 validationResult.getMessages()
+                                 .size());
     assertEquals("Override",
-            validationResult.getMessages()
-                    .get(0)
-                    .getMessage());
+                 validationResult.getMessages()
+                                 .get(0)
+                                 .getMessage());
   }
 }
 

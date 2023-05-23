@@ -15,14 +15,14 @@
  */
 package com.github.nalukit.malio.test;
 
+import com.github.nalukit.malio.model.notnull03.Person;
+import com.github.nalukit.malio.model.notnull03.PersonMalioValidator;
+import com.github.nalukit.malio.model.notnull03.helper.Address;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ErrorMessage;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import com.github.nalukit.malio.model.notnull03.Person;
-import com.github.nalukit.malio.model.notnull03.PersonMalioValidator;
-import com.github.nalukit.malio.model.notnull03.helper.Address;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,11 +55,11 @@ public class ValidatorNotNull03Test {
 
   @Test
   public void testValidateOk() {
-    Person           model  = new Person("Flintstones",
-                                         "Fred",
-                                         new Address("Test Avenue 21",
-                                                     "123456",
-                                                     "Test City"));
+    Person model = new Person("Flintstones",
+                              "Fred",
+                              new Address("Test Avenue 21",
+                                          "123456",
+                                          "Test City"));
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }

@@ -89,7 +89,8 @@ public class MessagesEN
   }
 
   @Override
-  public String getArraySizeMessage(int min, int max) {
+  public String getArraySizeMessage(int min,
+                                    int max) {
     return "Array size must be between {0} and {1}!";
   }
 
