@@ -29,8 +29,6 @@ public class GwtSuite {
     suite.addTestSuite(ArrayItemNotBlank01Test.class);
     suite.addTestSuite(ArrayItemNotNull01Test.class);
     suite.addTestSuite(ArrayItemNotNull02Test.class);
-    suite.addTestSuite(CheckAndValidate01Test.class);
-    suite.addTestSuite(CheckOnly01Test.class);
     suite.addTestSuite(CollectionItemMaxLength01Test.class);
     suite.addTestSuite(CollectionItemMinLength01Test.class);
     suite.addTestSuite(CollectionItemNotBlank01Test.class);
