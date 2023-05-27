@@ -32,6 +32,8 @@ public abstract class AbstractGenerator
   protected Types          types;
   protected Filer          filer;
   protected ProcessorUtils processorUtils;
+  protected boolean        generateCheckMethod;
+  protected boolean        generateValidateMethod;
 
   public AbstractGenerator() {
   }

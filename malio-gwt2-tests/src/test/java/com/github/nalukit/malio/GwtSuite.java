@@ -39,6 +39,7 @@ public class GwtSuite {
     suite.addTestSuite(ValidateItem01Test.class);
     suite.addTestSuite(ValidateItem02Test.class);
     suite.addTestSuite(ValidateItem03Test.class);
+    suite.addTestSuite(ValidateOnly01Test.class);
     suite.addTestSuite(ValidatorArraySize01Test.class);
     suite.addTestSuite(ValidatorBlacklist01Test.class);
     suite.addTestSuite(ValidatorDecimalMax01Test.class);

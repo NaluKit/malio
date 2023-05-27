@@ -29,4 +29,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface MalioValidator {
+
+  boolean generateCheckMethod() default true;
+
+  boolean generateValidateMethod() default true;
+
 }
