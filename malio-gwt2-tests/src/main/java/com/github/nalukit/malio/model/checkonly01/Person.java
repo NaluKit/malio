@@ -13,35 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.model.collectionitemnotblank01;
+package com.github.nalukit.malio.model.checkonly01;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
-import com.github.nalukit.malio.shared.annotation.field.CollectionItemNotBlank;
+import com.github.nalukit.malio.shared.annotation.field.ArrayItemNotBlank;
 
-import java.util.List;
-
-@MalioValidator
+@MalioValidator(generateValidateMethod = false)
 public class Person
     extends AbstractPerson {
 
-  @CollectionItemNotBlank private List<String> entities;
+  @ArrayItemNotBlank private String[] entities;
 
   public Person() {
   }
 
   public Person(String firstName,
                 String name,
-                List<String> entities) {
+                String[] entities) {
     super(firstName,
           name);
     this.entities = entities;
   }
 
-  public List<String> getEntities() {
+  public String[] getEntities() {
     return entities;
   }
 
-  public void setEntities(List<String> entities) {
+  public void setEntities(String[] entities) {
     this.entities = entities;
   }
 

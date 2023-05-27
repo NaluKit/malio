@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.model.arrayitemnotblank01;
+package com.github.nalukit.malio.model.checkonly01;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.ArrayItemNotBlank;
 
-@MalioValidator
+@MalioValidator(generateValidateMethod = false)
 public class Person
     extends AbstractPerson {
 

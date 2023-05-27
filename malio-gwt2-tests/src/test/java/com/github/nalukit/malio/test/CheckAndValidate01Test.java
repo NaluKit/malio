@@ -15,69 +15,67 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.model.collectionitemnotnull01.Person;
-import com.github.nalukit.malio.model.collectionitemnotnull01.PersonMalioValidator;
+import com.github.nalukit.malio.model.checkandvalidate01.Person;
+import com.github.nalukit.malio.model.checkandvalidate01.PersonMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
 import com.github.nalukit.malio.shared.util.MalioValidationException;
-import org.junit.Before;
-import org.junit.Test;
+import com.google.gwt.junit.client.GWTTestCase;
 
-import java.util.Arrays;
+public class CheckAndValidate01Test
+    extends GWTTestCase {
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-public class CollectionItemNotNull01Test {
-
-  @Before
-  public void setup() {
+  @Override
+  public void gwtSetUp() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
   }
 
-  @Test
-  public void testCheckOk()
+  @Override
+  public String getModuleName() {
+    return "com.github.nalukit.malio.MalioGwt2Test";
+  }
+
+  public void testCheckOk01()
       throws MalioValidationException {
     Person model = new Person("Firestone",
                               "Fred",
-                              Arrays.asList("entity01",
-                                            "entity02",
-                                            "entity03"));
+                              new String[] { "entity01",
+                                             "entity02",
+                                             "entity03" });
     PersonMalioValidator.INSTANCE.check(model);
   }
 
-  @Test
   public void testValidateOk() {
     Person model = new Person("Firestone",
                               "Fred",
-                              Arrays.asList("entity01",
-                                            "entity02",
-                                            "entity03"));
+                              new String[] { "entity01",
+                                             "entity02",
+                                             "entity03" });
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
   }
 
-  @Test
   public void testCheckFail01()
       throws MalioValidationException {
     Person model = new Person("Firestone",
                               "Fred",
-                              Arrays.asList("entity01",
-                                            null,
-                                            "entity03"));
-    MalioValidationException thrown = assertThrows(MalioValidationException.class,
-                                                   () -> PersonMalioValidator.INSTANCE.check(model));
+                              new String[] { "entity01",
+                                             "",
+                                             "entity03" });
+    try {
+      PersonMalioValidator.INSTANCE.check(model);
+      fail();
+    } catch (MalioValidationException ignored) {
+    }
   }
 
-  @Test
   public void testValidateFail01() {
     Person model = new Person("Firestone",
                               "Fred",
-                              Arrays.asList("entity01",
-                                            null,
-                                            "entity03"));
+                              new String[] { "entity01",
+                                             "",
+                                             "entity03" });
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertFalse(result.isValid());
   }

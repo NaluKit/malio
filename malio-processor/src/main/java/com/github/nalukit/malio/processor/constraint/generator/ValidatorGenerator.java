@@ -33,10 +33,9 @@ import java.util.Objects;
 public class ValidatorGenerator
     extends AbstractGenerator {
 
-  private final List<ValidatorModel> subValidatorList;
-  private       List<ValidatorModel> superValidatorList;
-
-  private MalioValidatorGenerator malioValidatorGenerator;
+  private final List<ValidatorModel>    subValidatorList;
+  private final List<ValidatorModel>    superValidatorList;
+  private final MalioValidatorGenerator malioValidatorGenerator;
 
   private ValidatorGenerator(Builder builder) {
     this.superValidatorList      = builder.superValidatorList;
@@ -76,7 +75,6 @@ public class ValidatorGenerator
       CodeBlock validateMethodForSubValidator = this.createCheckMethodForSubValidator(model);
       checks.add(validateMethodForSubValidator);
     }
-
     return checks;
   }
 
@@ -144,17 +142,16 @@ public class ValidatorGenerator
   }
 
   private List<CodeBlock> createValidMethod() {
-    List<CodeBlock> checks = new ArrayList<>();
+    List<CodeBlock> validate = new ArrayList<>();
     for (ValidatorModel model : this.superValidatorList) {
       CodeBlock validateMethodForSuperValidator = this.createSuperValidateMethod(model);
-      checks.add(validateMethodForSuperValidator);
+      validate.add(validateMethodForSuperValidator);
     }
     for (ValidatorModel model : this.subValidatorList) {
       CodeBlock validateMethodForSubValidator = this.createSubValidateMethod(model);
-      checks.add(validateMethodForSubValidator);
+      validate.add(validateMethodForSubValidator);
     }
-
-    return checks;
+    return validate;
   }
 
   private CodeBlock createSuperValidateMethod(ValidatorModel model) {
@@ -253,13 +250,13 @@ public class ValidatorGenerator
       return this;
     }
 
-    public ValidatorGenerator build() {
-      return new ValidatorGenerator(this);
-    }
-
     public Builder malioValidatorGenerator(MalioValidatorGenerator malioValidatorGenerator) {
       this.malioValidatorGenerator = malioValidatorGenerator;
       return this;
+    }
+
+    public ValidatorGenerator build() {
+      return new ValidatorGenerator(this);
     }
   }
 }

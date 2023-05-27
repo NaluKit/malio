@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.nalukit.malio.model.validateitem03;
+package com.github.nalukit.malio.model.validateonly01;
 
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
 import com.github.nalukit.malio.shared.annotation.field.MaxLength;
@@ -21,12 +21,12 @@ import com.github.nalukit.malio.shared.annotation.field.MinLength;
 import com.github.nalukit.malio.shared.annotation.field.NotBlank;
 import com.github.nalukit.malio.shared.annotation.field.NotNull;
 
-@MalioValidator
+@MalioValidator(generateCheckMethod = false)
 public abstract class AbstractPerson {
 
   @NotNull
   @MaxLength(64)
-  @MinLength(2)
+  @MinLength(1)
   private String name;
 
   @NotNull

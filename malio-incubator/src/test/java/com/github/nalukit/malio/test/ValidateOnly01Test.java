@@ -15,35 +15,22 @@
  */
 package com.github.nalukit.malio.test;
 
-import com.github.nalukit.malio.model.arrayitemnotblank01.Person;
-import com.github.nalukit.malio.model.arrayitemnotblank01.PersonMalioValidator;
+import com.github.nalukit.malio.model.validateonly01.Person;
+import com.github.nalukit.malio.model.validateonly01.PersonMalioValidator;
 import com.github.nalukit.malio.shared.messages.LocalizedMessages;
 import com.github.nalukit.malio.shared.messages.locales.MessagesEN;
 import com.github.nalukit.malio.shared.model.ValidationResult;
-import com.github.nalukit.malio.shared.util.MalioValidationException;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ArrayItemNotBlank01Test {
+public class ValidateOnly01Test {
 
   @Before
   public void setup() {
     LocalizedMessages.INSTANCE.setMessages(new MessagesEN());
-  }
-
-  @Test
-  public void testCheckOk()
-      throws MalioValidationException {
-    Person model = new Person("Firestone",
-                              "Fred",
-                              new String[] { "entity01",
-                                             "entity02",
-                                             "entity03" });
-    PersonMalioValidator.INSTANCE.check(model);
   }
 
   @Test
@@ -55,20 +42,6 @@ public class ArrayItemNotBlank01Test {
                                              "entity03" });
     ValidationResult result = PersonMalioValidator.INSTANCE.validate(model);
     assertTrue(result.isValid());
-  }
-
-  @Test
-  public void testCheckFail01()
-      throws MalioValidationException {
-    Person model = new Person("Firestone",
-                              "Fred",
-                              new String[] { "entity01",
-                                             "",
-                                             "entity03" });
-    MalioValidationException thrown = assertThrows(MalioValidationException.class,
-                                                   () -> PersonMalioValidator.INSTANCE.check(model));
-    assertTrue(thrown.getMessage()
-                     .contentEquals("String must not be empty."));
   }
 
   @Test

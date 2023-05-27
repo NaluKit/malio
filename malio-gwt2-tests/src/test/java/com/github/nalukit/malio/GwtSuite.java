@@ -29,6 +29,8 @@ public class GwtSuite {
     suite.addTestSuite(ArrayItemNotBlank01Test.class);
     suite.addTestSuite(ArrayItemNotNull01Test.class);
     suite.addTestSuite(ArrayItemNotNull02Test.class);
+    suite.addTestSuite(CheckAndValidate01Test.class);
+    suite.addTestSuite(CheckOnly01Test.class);
     suite.addTestSuite(CollectionItemMaxLength01Test.class);
     suite.addTestSuite(CollectionItemMinLength01Test.class);
     suite.addTestSuite(CollectionItemNotBlank01Test.class);
@@ -39,6 +41,7 @@ public class GwtSuite {
     suite.addTestSuite(ValidateItem01Test.class);
     suite.addTestSuite(ValidateItem02Test.class);
     suite.addTestSuite(ValidateItem03Test.class);
+    suite.addTestSuite(ValidateOnly01Test.class);
     suite.addTestSuite(ValidatorArraySize01Test.class);
     suite.addTestSuite(ValidatorBlacklist01Test.class);
     suite.addTestSuite(ValidatorDecimalMax01Test.class);
