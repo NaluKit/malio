@@ -31,11 +31,13 @@ public class ConstraintArrayItemMaxLengthGenerator
   private final AbstractProcessorConstraint<ArrayItemMaxLength> constraint;
 
   private ConstraintArrayItemMaxLengthGenerator(Builder builder) {
-    this.elements       = builder.elements;
-    this.types          = builder.types;
-    this.filer          = builder.filer;
-    this.processorUtils = builder.processorUtils;
-    this.constraint     = builder.constraint;
+    this.elements               = builder.elements;
+    this.types                  = builder.types;
+    this.filer                  = builder.filer;
+    this.processorUtils         = builder.processorUtils;
+    this.constraint             = builder.constraint;
+    this.generateCheckMethod    = builder.generateCheckMethod;
+    this.generateValidateMethod = builder.generateValidateMethod;
   }
 
   public static Builder builder() {
@@ -70,6 +72,8 @@ public class ConstraintArrayItemMaxLengthGenerator
     Types          types;
     Filer          filer;
     ProcessorUtils processorUtils;
+    boolean        generateCheckMethod;
+    boolean        generateValidateMethod;
 
     AbstractProcessorConstraint<ArrayItemMaxLength> constraint;
 
@@ -95,6 +99,16 @@ public class ConstraintArrayItemMaxLengthGenerator
 
     public Builder constraint(AbstractProcessorConstraint<ArrayItemMaxLength> constraint) {
       this.constraint = constraint;
+      return this;
+    }
+
+    public Builder generateCheckMethod(boolean generateCheckMethod) {
+      this.generateCheckMethod = generateCheckMethod;
+      return this;
+    }
+
+    public Builder generateValidateMethod(boolean generateValidateMethod) {
+      this.generateValidateMethod = generateValidateMethod;
       return this;
     }
 

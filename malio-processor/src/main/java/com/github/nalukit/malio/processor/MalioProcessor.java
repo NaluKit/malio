@@ -107,6 +107,8 @@ public class MalioProcessor
   Map<String, AbstractProcessorConstraint<?>> constraints;
   private ProcessorUtils processorUtils;
   private Stopwatch      stopwatch;
+  private boolean        generateCheckMethod;
+  private boolean        generateValidateMethod;
 
   public MalioProcessor() {
     super();
@@ -252,6 +254,12 @@ public class MalioProcessor
   private void processMalioValidator(RoundEnvironment roundEnv)
       throws ProcessorException {
     for (Element validatorElement : roundEnv.getElementsAnnotatedWith(MalioValidator.class)) {
+      TypeElement typeElement = (TypeElement) validatorElement;
+      this.generateCheckMethod    = typeElement.getAnnotation(MalioValidator.class)
+                                               .generateCheckMethod();
+      this.generateValidateMethod = typeElement.getAnnotation(MalioValidator.class)
+                                               .generateValidateMethod();
+
       processClass(validatorElement);
     }
   }
@@ -260,12 +268,15 @@ public class MalioProcessor
       throws ProcessorException {
     MalioValidatorGenerator malioValidatorGenerator = new MalioValidatorGenerator(this.processingEnv,
                                                                                   processorUtils,
-                                                                                  clazz);
+                                                                                  clazz,
+                                                                                  this.generateCheckMethod,
+                                                                                  this.generateValidateMethod);
     this.processVariable(clazz.asType(),
                          malioValidatorGenerator);
     this.createSubAndSuperValidators(clazz,
                                      malioValidatorGenerator);
-    malioValidatorGenerator.writeFile();
+    malioValidatorGenerator.writeFile(this.generateCheckMethod,
+                                      this.generateValidateMethod);
   }
 
   private void processVariable(TypeMirror clazz,
@@ -332,42 +343,58 @@ public class MalioProcessor
                                              MalioValidatorGenerator malioValidatorGenerator,
                                              AbstractProcessorConstraint<?> constraint)
       throws ProcessorException {
-    CodeBlock checkBlock = constraint.generateCheckNative(field,
-                                                          field);
-    CodeBlock validBlock = constraint.generateValidNative(field,
-                                                          field);
-    malioValidatorGenerator.appendCheckStatement(checkBlock);
-    malioValidatorGenerator.appendValidStatement(validBlock);
+    if (this.generateCheckMethod) {
+      CodeBlock checkBlock = constraint.generateCheckNative(field,
+                                                            field);
+      malioValidatorGenerator.appendCheckStatement(checkBlock);
+    }
+    if (this.generateValidateMethod) {
+      CodeBlock validBlock = constraint.generateValidNative(field,
+                                                            field);
+      malioValidatorGenerator.appendValidStatement(validBlock);
+    }
   }
 
   private void createCodeForArrayConstraint(VariableElement field,
                                             MalioValidatorGenerator malioValidatorGenerator,
                                             AbstractProcessorConstraint<?> constraint)
       throws ProcessorException {
-    malioValidatorGenerator.appendBeginControlFlowArray(field);
-    CodeBlock checkBlock = constraint.generateCheckArray(field,
-                                                         field);
-    CodeBlock validBlock = constraint.generateValidArray(field,
-                                                         field);
-
-    malioValidatorGenerator.appendCheckStatement(checkBlock);
-    malioValidatorGenerator.appendValidStatement(validBlock);
-    malioValidatorGenerator.appendEndControlFlow();
+    malioValidatorGenerator.appendBeginControlFlowArray(field,
+                                                        this.generateCheckMethod,
+                                                        this.generateValidateMethod);
+    if (this.generateCheckMethod) {
+      CodeBlock checkBlock = constraint.generateCheckArray(field,
+                                                           field);
+      malioValidatorGenerator.appendCheckStatement(checkBlock);
+    }
+    if (this.generateValidateMethod) {
+      CodeBlock validBlock = constraint.generateValidArray(field,
+                                                           field);
+      malioValidatorGenerator.appendValidStatement(validBlock);
+    }
+    malioValidatorGenerator.appendEndControlFlow(this.generateCheckMethod,
+                                                 this.generateValidateMethod);
   }
 
   private void createCodeForCollectionConstraint(VariableElement field,
                                                  MalioValidatorGenerator malioValidatorGenerator,
                                                  AbstractProcessorConstraint<?> constraint)
       throws ProcessorException {
-    malioValidatorGenerator.appendBeginControlFlowCollection(field);
-    CodeBlock checkBlock = constraint.generateCheckCollection(field,
-                                                              field);
-    CodeBlock validBlock = constraint.generateValidCollection(field,
-                                                              field);
-
-    malioValidatorGenerator.appendCheckStatement(checkBlock);
-    malioValidatorGenerator.appendValidStatement(validBlock);
-    malioValidatorGenerator.appendEndControlFlow();
+    malioValidatorGenerator.appendBeginControlFlowCollection(field,
+                                                             this.generateCheckMethod,
+                                                             this.generateValidateMethod);
+    if (this.generateCheckMethod) {
+      CodeBlock checkBlock = constraint.generateCheckCollection(field,
+                                                                field);
+      malioValidatorGenerator.appendCheckStatement(checkBlock);
+    }
+    if (this.generateValidateMethod) {
+      CodeBlock validBlock = constraint.generateValidCollection(field,
+                                                                field);
+      malioValidatorGenerator.appendValidStatement(validBlock);
+    }
+    malioValidatorGenerator.appendEndControlFlow(this.generateCheckMethod,
+                                                 this.generateValidateMethod);
   }
 
   private void createSubAndSuperValidators(Element validatorElement,
@@ -398,8 +425,12 @@ public class MalioProcessor
                                                      .malioValidatorGenerator(malioValidatorGenerator)
                                                      .processorUtils(this.processorUtils)
                                                      .build();
-    generator.appendSuperAndSubValidatorsCheck();
-    generator.appendSuperAndSubValidatorsValid();
+    if (this.generateCheckMethod) {
+      generator.appendSuperAndSubValidatorsCheck();
+    }
+    if (this.generateValidateMethod) {
+      generator.appendSuperAndSubValidatorsValid();
+    }
   }
 
   private ValidatorModel.ComponentType getComponentTypeFromVariableElement(VariableElement variableElement) {

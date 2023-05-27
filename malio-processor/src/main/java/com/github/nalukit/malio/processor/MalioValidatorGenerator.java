@@ -40,14 +40,15 @@ public class MalioValidatorGenerator {
   private final ProcessorUtils     processorUtils;
   private final TypeSpec.Builder   typeSpec;
   private final MethodSpec.Builder checkMethodBuilder;
-
   private final MethodSpec.Builder validMethodTwoParameterBuilder;
   private final Filer              filer;
   private final Element            clazz;
 
   public MalioValidatorGenerator(ProcessingEnvironment processingEnv,
                                  ProcessorUtils processorUtils,
-                                 Element clazz) {
+                                 Element clazz,
+                                 boolean generateCheckMethod,
+                                 boolean generateValidateMethod) {
     this.filer          = processingEnv.getFiler();
     this.processorUtils = processorUtils;
     this.typeSpec       = this.createValidatorTypeSpec(clazz);
@@ -56,35 +57,43 @@ public class MalioValidatorGenerator {
     addSingletonVariable(clazz,
                          typeSpec);
 
-    this.checkMethodBuilder = MethodSpec.methodBuilder("check")
-                                        .addModifiers(Modifier.PUBLIC)
-                                        .addParameter(ParameterSpec.builder(ClassName.get(clazz.asType()),
-                                                                            "bean")
-                                                                   .build())
-                                        .returns(void.class)
-                                        .addException(ClassName.get(MalioValidationException.class));
+    if (generateCheckMethod) {
+      this.checkMethodBuilder = MethodSpec.methodBuilder("check")
+                                          .addModifiers(Modifier.PUBLIC)
+                                          .addParameter(ParameterSpec.builder(ClassName.get(clazz.asType()),
+                                                                              "bean")
+                                                                     .build())
+                                          .returns(void.class)
+                                          .addException(ClassName.get(MalioValidationException.class));
+    } else {
+      this.checkMethodBuilder = null;
+    }
 
-    this.validMethodTwoParameterBuilder = MethodSpec.methodBuilder("validate")
-                                                    .addModifiers(Modifier.PUBLIC)
-                                                    .addParameter(ParameterSpec.builder(ClassName.get(clazz.asType()),
-                                                                                        "bean")
-                                                                               .build())
-                                                    .addParameter(ParameterSpec.builder(ClassName.get(ValidationResult.class),
-                                                                                        "validationResult")
-                                                                               .build())
-                                                    .returns(ClassName.get(ValidationResult.class));
+    if (generateValidateMethod) {
+      this.validMethodTwoParameterBuilder = MethodSpec.methodBuilder("validate")
+                                                      .addModifiers(Modifier.PUBLIC)
+                                                      .addParameter(ParameterSpec.builder(ClassName.get(clazz.asType()),
+                                                                                          "bean")
+                                                                                 .build())
+                                                      .addParameter(ParameterSpec.builder(ClassName.get(ValidationResult.class),
+                                                                                          "validationResult")
+                                                                                 .build())
+                                                      .returns(ClassName.get(ValidationResult.class));
 
-    MethodSpec.Builder validOneParameterMethodBuilder = MethodSpec.methodBuilder("validate")
-                                                                  .addModifiers(Modifier.PUBLIC)
-                                                                  .addParameter(ParameterSpec.builder(ClassName.get(clazz.asType()),
-                                                                                                      "bean")
-                                                                                             .build())
-                                                                  .returns(ClassName.get(ValidationResult.class))
-                                                                  .addStatement("$T validationResult = new $T()",
-                                                                                ClassName.get(ValidationResult.class),
-                                                                                ClassName.get(ValidationResult.class))
-                                                                  .addStatement("return this.validate(bean, validationResult)");
-    typeSpec.addMethod(validOneParameterMethodBuilder.build());
+      MethodSpec.Builder validOneParameterMethodBuilder = MethodSpec.methodBuilder("validate")
+                                                                    .addModifiers(Modifier.PUBLIC)
+                                                                    .addParameter(ParameterSpec.builder(ClassName.get(clazz.asType()),
+                                                                                                        "bean")
+                                                                                               .build())
+                                                                    .returns(ClassName.get(ValidationResult.class))
+                                                                    .addStatement("$T validationResult = new $T()",
+                                                                                  ClassName.get(ValidationResult.class),
+                                                                                  ClassName.get(ValidationResult.class))
+                                                                    .addStatement("return this.validate(bean, validationResult)");
+      typeSpec.addMethod(validOneParameterMethodBuilder.build());
+    } else {
+      this.validMethodTwoParameterBuilder = null;
+    }
 
   }
 
@@ -140,39 +149,63 @@ public class MalioValidatorGenerator {
     this.validMethodTwoParameterBuilder.addStatement(checkBlock);
   }
 
-  public void appendBeginControlFlowArray(VariableElement field) {
-    this.checkMethodBuilder.beginControlFlow("for (int i = 0; i < bean.$L().length; i++)",
-                                             this.processorUtils.createGetMethodName(field.getSimpleName()
-                                                                                          .toString()));
-    this.validMethodTwoParameterBuilder.beginControlFlow("for (int i = 0; i < bean.$L().length; i++)",
-                                                         this.processorUtils.createGetMethodName(field.getSimpleName()
-                                                                                                      .toString()));
+  public void appendBeginControlFlowArray(VariableElement field,
+                                          boolean generateCheckMethod,
+                                          boolean generateValidateMethod) {
+    if (generateCheckMethod) {
+      this.checkMethodBuilder.beginControlFlow("for (int i = 0; i < bean.$L().length; i++)",
+                                               this.processorUtils.createGetMethodName(field.getSimpleName()
+                                                                                            .toString()));
+    }
+    if (generateValidateMethod) {
+      this.validMethodTwoParameterBuilder.beginControlFlow("for (int i = 0; i < bean.$L().length; i++)",
+                                                           this.processorUtils.createGetMethodName(field.getSimpleName()
+                                                                                                        .toString()));
+    }
   }
 
-  public void appendBeginControlFlowCollection(VariableElement field) {
-    this.checkMethodBuilder.beginControlFlow("for (int i = 0; i < bean.$L().size(); i++)",
-                                             this.processorUtils.createGetMethodName(field.getSimpleName()
-                                                                                          .toString()));
-    this.validMethodTwoParameterBuilder.beginControlFlow("for (int i = 0; i < bean.$L().size(); i++)",
-                                                         this.processorUtils.createGetMethodName(field.getSimpleName()
-                                                                                                      .toString()));
+  public void appendBeginControlFlowCollection(VariableElement field,
+                                               boolean generateCheckMethod,
+                                               boolean generateValidateMethod) {
+    if (generateCheckMethod) {
+      this.checkMethodBuilder.beginControlFlow("for (int i = 0; i < bean.$L().size(); i++)",
+                                               this.processorUtils.createGetMethodName(field.getSimpleName()
+                                                                                            .toString()));
+    }
+    if (generateValidateMethod) {
+      this.validMethodTwoParameterBuilder.beginControlFlow("for (int i = 0; i < bean.$L().size(); i++)",
+                                                           this.processorUtils.createGetMethodName(field.getSimpleName()
+                                                                                                        .toString()));
+    }
   }
 
-  public void appendEndControlFlow() {
-    this.checkMethodBuilder.endControlFlow();
-    this.validMethodTwoParameterBuilder.endControlFlow();
+  public void appendEndControlFlow(boolean generateCheckMethod,
+                                   boolean generateValidateMethod) {
+    if (generateCheckMethod) {
+      this.checkMethodBuilder.endControlFlow();
+    }
+    if (generateValidateMethod) {
+      this.validMethodTwoParameterBuilder.endControlFlow();
+    }
   }
 
-  private TypeSpec build() {
-    this.validMethodTwoParameterBuilder.addStatement("return validationResult");
-    return this.typeSpec.addMethod(this.checkMethodBuilder.build())
-                        .addMethod(this.validMethodTwoParameterBuilder.build())
-                        .build();
+  private TypeSpec build(boolean generateCheckMethod,
+                         boolean generateValidateMethod) {
+    if (generateCheckMethod) {
+      this.typeSpec.addMethod(this.checkMethodBuilder.build());
+    }
+    if (generateValidateMethod) {
+      this.validMethodTwoParameterBuilder.addStatement("return validationResult");
+      this.typeSpec.addMethod(this.validMethodTwoParameterBuilder.build());
+    }
+    return this.typeSpec.build();
   }
 
-  public void writeFile()
+  public void writeFile(boolean generateCheckMethod,
+                        boolean generateValidateMethod)
       throws ProcessorException {
-    TypeSpec typeSpec = this.build();
+    TypeSpec typeSpec = this.build(generateCheckMethod,
+                                   generateValidateMethod);
     this.writeFile(this.clazz,
                    Constants.MALIO_VALIDATOR_IMPL_NAME,
                    typeSpec);

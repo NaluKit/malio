@@ -86,9 +86,9 @@ Running the validation:
 
 As we moved from GWT RPC to Spring Boot Rest Controller and
 [Domino-Rest](https://github.com/DominoKit/domino-rest), we expose the services of our web
-application. As long as we have GET-calls, we can use Spring security for the parameters. As sson as
+application. As long as we have GET-calls, we can use Spring security for the parameters. As soon as
 we work with POST, we have to validate more complex objects. We started looking for a solution but
-did not find a suitable solution that work with GWT or J2CL.
+did not find a suitable one that work with GWT or J2CL.
 
 So we decided to create a simple solution to validate our input classes (which are located inside the
 shared project).
@@ -237,6 +237,14 @@ These are the annotations provided by Malio:
 
 The `MalioValidator`-annotation can be added to a **class**. The annotation is necessary to trigger the creation of a
 validator. Without this annotation no validator or constraint will be created!
+
+THe annotation has two parameters:
+
+* **generateCheckMethod**: to trigger the generation of the `check`-method. (default: **true**)
+* **generateValidateMethod**: to trigger the generation of the `validate`-method. (default: **true**)
+
+In case you only want to generate the `check`-method, set `generateValidateMethod = false` to avoid generating
+the `validate-method`.
 
 This annotation can also be used with abstract classes.
 

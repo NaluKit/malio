@@ -11,7 +11,7 @@
   <artifactId>malio-j2cl-tests</artifactId>
   <version>${revision}</version>
 
-  <name>Malio J2CL Tests</name>
+  <name>malio J2CL Tests</name>
   <description>Test cases for the J2Cl tests</description>
 
 
@@ -89,6 +89,8 @@
                 <test>com.github.nalukit.malio.test.ArrayItemNotBlank01Test</test>
                 <test>com.github.nalukit.malio.test.ArrayItemNotNull01Test</test>
                 <test>com.github.nalukit.malio.test.ArrayItemNotNull02Test</test>
+                <test>com.github.nalukit.malio.test.CheckAndValidate01Test</test>
+                <test>com.github.nalukit.malio.test.CheckOnly01Test</test>
                 <test>com.github.nalukit.malio.test.CollectionItemMaxLength01Test</test>
                 <test>com.github.nalukit.malio.test.CollectionItemMinLength01Test</test>
                 <test>com.github.nalukit.malio.test.CollectionItemNotBlank01Test</test>
@@ -98,6 +100,9 @@
                 <test>com.github.nalukit.malio.test.SubValidator03Test</test>
                 <test>com.github.nalukit.malio.test.SubValidator04Test</test>
                 <test>com.github.nalukit.malio.test.ValidateItem01Test</test>
+                <test>com.github.nalukit.malio.test.ValidateItem02Test</test>
+                <test>com.github.nalukit.malio.test.ValidateItem03Test</test>
+                <test>com.github.nalukit.malio.test.ValidateOnly01Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorArraySize01Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorBlacklist01Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorDecimalMax01Test</test>
@@ -121,7 +126,7 @@
                 <test>com.github.nalukit.malio.test.ValidatorNotZeroTest</test>
                 <test>com.github.nalukit.malio.test.ValidatorRegexpTest</test>
                 <test>com.github.nalukit.malio.test.ValidatorSize01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorUuis01Test</test>
+                <test>com.github.nalukit.malio.test.ValidatorUuid01Test</test>
                 <test>com.github.nalukit.malio.test.ValidatorWhitelistTest</test>
               </tests>
             </configuration>

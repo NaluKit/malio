@@ -41,7 +41,6 @@ public class ValidatorScanner
 
   private final Element              validatorElement;
   private       List<ValidatorModel> subValidatorList;
-  ;
 
   private ValidatorScanner(Builder builder) {
     this.validatorElement = builder.validatorElement;
@@ -175,8 +174,6 @@ public class ValidatorScanner
 
   private void checkForSubValidatorAsGenricInArrays(VariableElement variableElement,
                                                     TypeElement elementOfVariableType) {
-    String elementOfVariableTypeString = variableElement.asType()
-                                                        .toString();
     // check for generic ... if there is none, we can't do anything ...
     if (variableElement.asType()
                        .getKind()
