@@ -238,7 +238,7 @@ These are the annotations provided by Malio:
 The `MalioValidator`-annotation can be added to a **class**. The annotation is necessary to trigger the creation of a
 validator. Without this annotation no validator or constraint will be created!
 
-THe annotation has two parameters:
+The annotation has two parameters:
 
 * **generateCheckMethod**: to trigger the generation of the `check`-method. (default: **true**)
 * **generateValidateMethod**: to trigger the generation of the `validate`-method. (default: **true**)
