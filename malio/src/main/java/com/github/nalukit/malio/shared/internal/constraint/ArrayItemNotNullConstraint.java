@@ -43,7 +43,10 @@ public class ArrayItemNotNullConstraint<T>
   public void check(T value)
       throws MalioValidationException {
     if (Objects.isNull(value)) {
-      throw new MalioValidationException(getMessage(value));
+      throw new MalioValidationException(getMessage(value),
+                                         super.getClassName(),
+                                         super.getSimpleName(),
+                                         super.getFieldName());
     }
   }
 

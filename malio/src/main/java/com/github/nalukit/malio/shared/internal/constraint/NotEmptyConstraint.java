@@ -44,7 +44,10 @@ public class NotEmptyConstraint<T extends Collection<?>>
   public void check(T value)
       throws MalioValidationException {
     if (Objects.nonNull(value) && value.isEmpty()) {
-      throw new MalioValidationException(getMessage(value));
+      throw new MalioValidationException(getMessage(value),
+                                         super.getClassName(),
+                                         super.getSimpleName(),
+                                         super.getFieldName());
     }
   }
 

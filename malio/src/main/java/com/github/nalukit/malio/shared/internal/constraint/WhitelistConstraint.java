@@ -26,7 +26,7 @@ import java.util.List;
 public class WhitelistConstraint
     extends AbstractConstraint<String> {
 
-  private List<String> whitelist;
+  private final List<String> whitelist;
 
   public WhitelistConstraint(String packageName,
                              String simpleName,
@@ -43,7 +43,10 @@ public class WhitelistConstraint
   public void check(String value)
       throws MalioValidationException {
     if (value != null && !whitelist.contains(value)) {
-      throw new MalioValidationException(getMessage(value));
+      throw new MalioValidationException(getMessage(value),
+                                         super.getClassName(),
+                                         super.getSimpleName(),
+                                         super.getFieldName());
     }
   }
 

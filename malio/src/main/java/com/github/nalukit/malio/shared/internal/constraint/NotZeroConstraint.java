@@ -25,7 +25,7 @@ import java.util.Objects;
 public class NotZeroConstraint
     extends AbstractConstraint<Number> {
 
-  private boolean allowNegativeValues;
+  private final boolean allowNegativeValues;
 
   public NotZeroConstraint(String packageName,
                            String simpleName,
@@ -47,12 +47,18 @@ public class NotZeroConstraint
 
     if (!this.allowNegativeValues) {
       if (value.longValue() < 0) {
-        throw new MalioValidationException(getMessage(value));
+        throw new MalioValidationException(getMessage(value),
+                                           super.getClassName(),
+                                           super.getSimpleName(),
+                                           super.getFieldName());
       }
     }
 
     if (value.longValue() == 0) {
-      throw new MalioValidationException(getMessage(value));
+      throw new MalioValidationException(getMessage(value),
+                                         super.getClassName(),
+                                         super.getSimpleName(),
+                                         super.getFieldName());
     }
   }
 

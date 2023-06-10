@@ -99,9 +99,11 @@ public class ArraySizeConstraint
 
   private void internCheck(int size) {
     if (size < this.min || size > this.max) {
-      throw new MalioValidationException(getMessage(null));
+      throw new MalioValidationException(getMessage(null),
+                                         super.getClassName(),
+                                         super.getSimpleName(),
+                                         super.getFieldName());
     }
-
   }
 
   public void isValid(Object[] value,

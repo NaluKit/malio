@@ -15,14 +15,40 @@
  */
 package com.github.nalukit.malio.shared.util;
 
-@SuppressWarnings("serial")
 public class MalioValidationException
     extends RuntimeException {
+
+  private String packageName;
+  private String simpleName;
+  private String fieldName;
 
   public MalioValidationException() {
   }
 
-  public MalioValidationException(String message) {
+  public MalioValidationException(String message,
+                                  String packageName,
+                                  String simpleName,
+                                  String fieldName) {
     super(message);
+    this.packageName = packageName;
+    this.simpleName  = simpleName;
+    this.fieldName   = fieldName;
   }
+
+  public String getPackageName() {
+    return this.packageName;
+  }
+
+  public String getSimpleName() {
+    return this.simpleName;
+  }
+
+  public String getFieldName() {
+    return this.fieldName;
+  }
+
+  public String getClassName() {
+    return this.packageName + "." + this.simpleName;
+  }
+
 }

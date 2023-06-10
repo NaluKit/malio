@@ -26,7 +26,7 @@ import java.util.List;
 public class BlacklistConstraint
     extends AbstractConstraint<String> {
 
-  private List<String> blacklist;
+  private final List<String> blacklist;
 
   public BlacklistConstraint(String packageName,
                              String simpleName,
@@ -44,7 +44,10 @@ public class BlacklistConstraint
       throws MalioValidationException {
 
     if (value != null && blacklist.contains(value)) {
-      throw new MalioValidationException(getMessage(value));
+      throw new MalioValidationException(getMessage(value),
+                                         super.getClassName(),
+                                         super.getSimpleName(),
+                                         super.getFieldName());
     }
   }
 

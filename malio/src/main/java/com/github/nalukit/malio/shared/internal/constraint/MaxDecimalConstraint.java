@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 public class MaxDecimalConstraint
     extends AbstractConstraint<BigDecimal> {
 
-  private BigDecimal maxValue;
+  private final BigDecimal maxValue;
 
   public MaxDecimalConstraint(String packageName,
                               String simpleName,
@@ -42,7 +42,10 @@ public class MaxDecimalConstraint
   public void check(BigDecimal value)
       throws MalioValidationException {
     if (value != null && value.compareTo(this.maxValue) > 0) {
-      throw new MalioValidationException(getMessage(value));
+      throw new MalioValidationException(getMessage(value),
+                                         super.getClassName(),
+                                         super.getSimpleName(),
+                                         super.getFieldName());
     }
   }
 
