@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 public class MinDecimalConstraint
     extends AbstractConstraint<BigDecimal> {
 
-  private BigDecimal minValue;
+  private final BigDecimal minValue;
 
   public MinDecimalConstraint(String packageName,
                               String simpleName,
@@ -42,7 +42,10 @@ public class MinDecimalConstraint
   public void check(BigDecimal value)
       throws MalioValidationException {
     if (value != null && value.compareTo(this.minValue) < 0) {
-      throw new MalioValidationException(getMessage(value));
+      throw new MalioValidationException(getMessage(value),
+                                         super.getClassName(),
+                                         super.getSimpleName(),
+                                         super.getFieldName());
     }
   }
 

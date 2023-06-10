@@ -23,7 +23,7 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 public class MinLengthConstraint
     extends AbstractConstraint<String> {
 
-  private int minLength;
+  private final int minLength;
 
   public MinLengthConstraint(String packageName,
                              String simpleName,
@@ -40,7 +40,10 @@ public class MinLengthConstraint
   public void check(String value)
       throws MalioValidationException {
     if (value != null && value.length() < minLength) {
-      throw new MalioValidationException(getMessage(value));
+      throw new MalioValidationException(getMessage(value),
+                                         super.getClassName(),
+                                         super.getSimpleName(),
+                                         super.getFieldName());
     }
   }
 

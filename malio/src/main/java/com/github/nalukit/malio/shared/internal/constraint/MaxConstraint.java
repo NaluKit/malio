@@ -23,7 +23,7 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 public class MaxConstraint
     extends AbstractConstraint<Number> {
 
-  private Long maxValue;
+  private final Long maxValue;
 
   public MaxConstraint(String packageName,
                        String simpleName,
@@ -40,7 +40,10 @@ public class MaxConstraint
   public void check(Number value)
       throws MalioValidationException {
     if (value != null && value.longValue() > this.maxValue) {
-      throw new MalioValidationException(getMessage(value));
+      throw new MalioValidationException(getMessage(value),
+                                         super.getClassName(),
+                                         super.getSimpleName(),
+                                         super.getFieldName());
     }
   }
 

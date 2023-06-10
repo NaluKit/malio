@@ -23,7 +23,7 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 public class ArrayItemMaxLengthConstraint
     extends AbstractConstraint<String> {
 
-  private int maxLength;
+  private final int maxLength;
 
   public ArrayItemMaxLengthConstraint(String packageName,
                                       String simpleName,
@@ -40,7 +40,10 @@ public class ArrayItemMaxLengthConstraint
   public void check(String value)
       throws MalioValidationException {
     if (value != null && value.length() > maxLength) {
-      throw new MalioValidationException(getMessage(value));
+      throw new MalioValidationException(getMessage(value),
+                                         super.getClassName(),
+                                         super.getSimpleName(),
+                                         super.getFieldName());
     }
   }
 

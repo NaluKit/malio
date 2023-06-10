@@ -43,7 +43,10 @@ public class NotBlankConstraint
   public void check(String value)
       throws MalioValidationException {
     if (Objects.nonNull(value) && value.isEmpty()) {
-      throw new MalioValidationException(getMessage(value));
+      throw new MalioValidationException(getMessage(value),
+                                         super.getClassName(),
+                                         super.getSimpleName(),
+                                         super.getFieldName());
     }
   }
 

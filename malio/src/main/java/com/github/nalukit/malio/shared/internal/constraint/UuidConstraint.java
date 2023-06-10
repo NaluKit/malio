@@ -41,7 +41,10 @@ public class UuidConstraint
   public void check(String value)
       throws MalioValidationException {
     if (Objects.nonNull(value) && !UuidConstraint.regExp.test(value)) {
-      throw new MalioValidationException(getMessage(value));
+      throw new MalioValidationException(getMessage(value),
+                                         super.getClassName(),
+                                         super.getSimpleName(),
+                                         super.getFieldName());
     }
   }
 

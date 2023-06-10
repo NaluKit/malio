@@ -23,7 +23,7 @@ import com.github.nalukit.malio.shared.util.MalioValidationException;
 public class MinConstraint
     extends AbstractConstraint<Number> {
 
-  private Long minValue;
+  private final Long minValue;
 
   public MinConstraint(String packageName,
                        String simpleName,
@@ -40,7 +40,10 @@ public class MinConstraint
   public void check(Number value)
       throws MalioValidationException {
     if (value != null && value.longValue() < this.minValue) {
-      throw new MalioValidationException(getMessage(value));
+      throw new MalioValidationException(getMessage(value),
+                                         super.getClassName(),
+                                         super.getSimpleName(),
+                                         super.getFieldName());
     }
   }
 
