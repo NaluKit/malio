@@ -49,7 +49,10 @@ public class SizeConstraint<T extends Collection<?>>
       int size = value.size();
 
       if (size < this.min || size > this.max) {
-        throw new MalioValidationException(getMessage(value));
+        throw new MalioValidationException(getMessage(value),
+                                           super.getClassName(),
+                                           super.getSimpleName(),
+                                           super.getFieldName());
       }
     }
   }

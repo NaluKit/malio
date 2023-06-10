@@ -24,7 +24,7 @@ import org.gwtproject.regexp.shared.RegExp;
 public class RegexpConstraint
     extends AbstractConstraint<String> {
 
-  private RegExp regExp;
+  private final RegExp regExp;
 
   public RegexpConstraint(String packageName,
                           String simpleName,
@@ -42,7 +42,10 @@ public class RegexpConstraint
       throws MalioValidationException {
     if (value != null) {
       if (!this.regExp.test(value)) {
-        throw new MalioValidationException(getMessage(value));
+        throw new MalioValidationException(getMessage(value),
+                                           super.getClassName(),
+                                           super.getSimpleName(),
+                                           super.getFieldName());
       }
     }
   }
