@@ -131,9 +131,9 @@ public class MalioProcessor
     super.init(processingEnv);
     this.stopwatch = Stopwatch.createStarted();
     this.setUp();
-    this.processorUtils.createNoteMessage("Nalu-Plugin-GWT-Processor started ...");
+    this.processorUtils.createNoteMessage("Malio-Processor started ...");
     String implementationVersion = Malio.getVersion();
-    this.processorUtils.createNoteMessage("Nalu-Plugin-GWT-Processor version >>" + implementationVersion + "<<");
+    this.processorUtils.createNoteMessage("Malio-Processor version >>" + implementationVersion + "<<");
   }
 
   private void setUp() {
