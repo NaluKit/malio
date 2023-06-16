@@ -18,7 +18,7 @@
   <modules>
     <module>malio</module>
     <module>malio-processor</module>
-<!--        <module>malio-incubator</module>-->
+    <!--        <module>malio-incubator</module>-->
     <module>malio-tests</module>
     <module>malio-gwt2-tests</module>
     <module>malio-j2cl-tests</module>
