@@ -78,12 +78,12 @@
   </distributionManagement>
 
   <properties>
-    <revision>1.0.0-rc2</revision>
+    <revision>1.0.0</revision>
     <auto-service.version>1.0.1</auto-service.version>
     <compile-testing.version>0.21.0</compile-testing.version>
     <elemental2.version>1.1.0</elemental2.version>
     <gson.version>2.10.1</gson.version>
-    <guava.version>31.1-jre</guava.version>
+    <guava.version>32.1.1-jre</guava.version>
     <gwt.version>2.10.0</gwt.version>
     <javapoet.version>1.13.0</javapoet.version>
     <junit-jupiter.version>5.9.2</junit-jupiter.version>

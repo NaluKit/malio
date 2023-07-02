@@ -57,7 +57,7 @@ public class ValidatorScanner
     this.subValidatorList = new ArrayList<>();
     // get all variables of validator element
     List<VariableElement> list = this.getAllVariableElements();
-    // examine every variable and look for relevant types ..
+    // examine every variable and look for relevant types ...
     // first step: sub types of Collection.
     for (VariableElement variableElement : list) {
       checkVariable(variableElement);
