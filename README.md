@@ -8,7 +8,7 @@
 
 Malio is a tiny framework to validate POJOs using annotations. It is easy to use by just adding annotations to members
 of a POJO. No writing of validations or validators. Based on the annotations inside the POJO, the processor
-generates a validator.
+generates a validator. The generated validator can be used to check or validate the POJO.
 
 Each validator offers two methods for validation:
 
