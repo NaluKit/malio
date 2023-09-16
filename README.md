@@ -153,6 +153,11 @@ To use Malio, add the following dependencies to your pom (in case they are missi
 
 The processor is only needed at compile time!
 
+### Configuration
+
+Due to a bug in older version of the maven-compiler-plugin, the output of a annotation processor - during a Maven build - will not be logged.
+To ensure, that the processor output is logged, use the latest maven-compiler-plugin.
+
 ### Creating a Malio Validator
 
 First, we need to trigger the creation of a validator. This is done by adding `MalioValidator` to the class:
