@@ -102,6 +102,7 @@
     <gson.version>2.10.1</gson.version>
     <guava.version>33.2.1-jre</guava.version>
     <gwt.version>2.11.0</gwt.version>
+    <java.doc.executable>${java.home}/bin/javadoc</java.doc.executable>
     <javapoet.version>1.13.0</javapoet.version>
     <junit-jupiter.version>5.10.3</junit-jupiter.version>
     <junit-jupiter.engine.version>5.10.2</junit-jupiter.engine.version>
@@ -115,7 +116,7 @@
     <plugin.version.clean>3.1.0</plugin.version.clean>
     <plugin.version.flatten>1.2.2</plugin.version.flatten>
     <plugin.version.gpg.maven>1.6</plugin.version.gpg.maven>
-    <plugin.version.javadoc>3.2.0</plugin.version.javadoc>
+    <plugin.version.javadoc>3.6.3</plugin.version.javadoc>
     <plugin.version.license>4.2</plugin.version.license>
     <plugin.version.nexus.staging>1.6.8</plugin.version.nexus.staging>
     <plugin.version.project.info.report>3.0.0</plugin.version.project.info.report>
@@ -285,7 +286,7 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>${plugin.version.javadoc}</version>
             <configuration>
-              <javadocExecutable>${java.home}/../bin/javadoc</javadocExecutable>
+              <javadocExecutable>${java.doc.executable}</javadocExecutable>
             </configuration>
             <executions>
               <execution>
