@@ -16,6 +16,7 @@
 package com.github.nalukit.malio.processor.constraint.scanner;
 
 import com.github.nalukit.malio.processor.Constants;
+import com.github.nalukit.malio.processor.ProcessorException;
 import com.github.nalukit.malio.processor.model.ValidatorModel;
 import com.github.nalukit.malio.processor.util.ProcessorUtils;
 import com.github.nalukit.malio.shared.annotation.MalioValidator;
@@ -53,7 +54,8 @@ public class ValidatorScanner
     return new Builder();
   }
 
-  public List<ValidatorModel> createSubValidatorList() {
+  public List<ValidatorModel> createSubValidatorList()
+      throws ProcessorException {
     this.subValidatorList = new ArrayList<>();
     // get all variables of validator element
     List<VariableElement> list = this.getAllVariableElements();
@@ -87,7 +89,8 @@ public class ValidatorScanner
     return superValidatorList;
   }
 
-  private void checkVariable(VariableElement variableElement) {
+  private void checkVariable(VariableElement variableElement)
+      throws ProcessorException {
     // check, if variable is excluded ...
     if (variableElement.getAnnotation(MalioIgnore.class) == null) {
       if (!variableElement.asType()
@@ -98,7 +101,8 @@ public class ValidatorScanner
     }
   }
 
-  private void checkNeedForSubValidator(VariableElement variableElement) {
+  private void checkNeedForSubValidator(VariableElement variableElement)
+      throws ProcessorException {
     TypeElement elementOfVariableType = null;
     if (variableElement.asType()
                        .getKind()
@@ -139,7 +143,8 @@ public class ValidatorScanner
   }
 
   private void checkForSubValidatorAsGenricInCollections(VariableElement variableElement,
-                                                         TypeElement elementOfVariableType) {
+                                                         TypeElement elementOfVariableType)
+      throws ProcessorException {
     String elementOfVariableTypeString = variableElement.asType()
                                                         .toString();
     // check for generic ... if there is none, we can't do anything ...
@@ -160,6 +165,18 @@ public class ValidatorScanner
         int close = elementOfVariableTypeString.indexOf(">");
         String genericClassName = elementOfVariableTypeString.substring(open + 1,
                                                                         close);
+        if (genericClassName.isEmpty() || genericClassName.isBlank()) {
+//          throw new RuntimeException("variable element: >>" +
+//                                       variableElement +
+//                                       "<< - type >>" +
+//                                       elementOfVariableType +
+//                                       "<< ==> no generic found or generic is empty");
+          throw new ProcessorException("variable element: >>" +
+                                       variableElement +
+                                       "<< - type >>" +
+                                       elementOfVariableType +
+                                       "<< ==> no generic found or generic is empty");
+        }
         TypeElement elementOfGenericList = elements.getTypeElement(genericClassName);
         if (elementOfGenericList.getAnnotation(MalioValidator.class) != null) {
           this.addValidatorToValidatorGenerationList(variableElement,

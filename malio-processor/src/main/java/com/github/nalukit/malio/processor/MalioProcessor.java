@@ -232,7 +232,6 @@ public class MalioProcessor
       }
     } catch (ProcessorException e) {
       this.processorUtils.createErrorMessage(e.getMessage());
-      this.processorUtils.createErrorMessage(e);
       return true;
     }
     return true;
@@ -241,7 +240,7 @@ public class MalioProcessor
   private void processSingleRun(Set<? extends TypeElement> annotations,
                                 RoundEnvironment roundEnv)
       throws ProcessorException {
-    if (annotations.size() > 0) {
+    if (!annotations.isEmpty()) {
       for (TypeElement annotation : annotations) {
         if (MalioValidator.class.getCanonicalName()
                                 .equals(annotation.toString())) {

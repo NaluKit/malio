@@ -41,6 +41,6 @@ public class ValidationResult {
   }
 
   public boolean isValid() {
-    return this.messages.size() == 0;
+    return this.messages.isEmpty();
   }
 }

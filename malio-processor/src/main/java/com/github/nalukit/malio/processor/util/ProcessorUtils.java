@@ -129,9 +129,20 @@ public class ProcessorUtils {
   }
 
   public String createGetMethodName(String value) {
-    return "get" + value.substring(0,
-                                   1)
-                        .toUpperCase() + value.substring(1);
+    if (value.length() > 1) {
+      char c2 = value.charAt(1);
+      if (Character.isUpperCase(c2)) {
+        return "get" + value;
+      } else {
+        return "get" + value.substring(0,
+                                       1)
+                            .toUpperCase() + value.substring(1);
+      }
+    } else {
+      return "get" + value.substring(0,
+                                     1)
+                          .toUpperCase();
+    }
   }
 
   public String createStringInitializationFromArray(String[] array) {

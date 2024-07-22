@@ -8,7 +8,7 @@
 
 Malio is a tiny framework to validate POJOs using annotations. It is easy to use by just adding annotations to members
 of a POJO. No writing of validations or validators. Based on the annotations inside the POJO, the processor
-generates a validator.
+generates a validator. The generated validator can be used to check or validate the POJO.
 
 Each validator offers two methods for validation:
 
@@ -152,6 +152,11 @@ To use Malio, add the following dependencies to your pom (in case they are missi
 ```
 
 The processor is only needed at compile time!
+
+### Configuration
+
+Due to a bug in older version of the maven-compiler-plugin, the output of a annotation processor - during a Maven build - will not be logged.
+To ensure, that the processor output is logged, use the latest maven-compiler-plugin.
 
 ### Creating a Malio Validator
 
