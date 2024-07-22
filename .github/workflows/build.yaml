@@ -21,6 +21,8 @@ on:
     branches:
       - dev
       - main
+    paths-ignore:
+      - "README.md"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,8 +30,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          distribution: adopt
-          java-version: '8'
+          distribution: temurin
+          java-version: '11'
           cache: maven
       - name: Compile with Maven
         run: mvn compile -ntp
@@ -41,8 +43,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          distribution: adopt
-          java-version: '8'
+          distribution: temurin
+          java-version: '11'
           cache: maven
       - name: Test with Maven
         run: mvn test -ntp
@@ -67,8 +69,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          distribution: adopt
-          java-version: '8'
+          distribution: temurin
+          java-version: '11'
           cache: maven
       - name: Build with Maven
         run: mvn install -ntp
@@ -98,8 +100,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          distribution: adopt
-          java-version: '8'
+          distribution: temurin
+          java-version: '11'
           cache: maven
           server-id: ossrh
           server-username: MAVEN_USERNAME
@@ -136,8 +138,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          distribution: adopt
-          java-version: '8'
+          distribution: temurin
+          java-version: '11'
           cache: maven
           server-id: ossrh
           server-username: MAVEN_USERNAME
