@@ -95,9 +95,10 @@
 
   <properties>
     <revision>HEAD-SNAPSHOT</revision>
+
     <auto-service.version>1.1.1</auto-service.version>
     <compile-testing.version>0.21.0</compile-testing.version>
-    <elemental2.version>1.1.0</elemental2.version>
+    <elemental2.version>1.2.1</elemental2.version>
     <gson.version>2.10.1</gson.version>
     <guava.version>33.2.1-jre</guava.version>
     <gwt.version>2.11.0</gwt.version>
