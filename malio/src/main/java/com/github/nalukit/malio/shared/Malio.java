@@ -19,7 +19,7 @@ public class Malio {
 
   public static String getVersion() {
     // TODO Change this for other versions
-    return "1.0.2";
+    return "1.0.3";
   }
 
 }

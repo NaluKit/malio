@@ -94,7 +94,7 @@
   </distributionManagement>
 
   <properties>
-    <revision>1.0.2</revision>
+    <revision>1.0.3</revision>
 
     <auto-service.version>1.1.1</auto-service.version>
     <compile-testing.version>0.21.0</compile-testing.version>
@@ -114,7 +114,7 @@
 
     <maven.deploy.plugin>3.1.1</maven.deploy.plugin>
     <plugin.version.clean>3.1.0</plugin.version.clean>
-    <plugin.version.flatten>1.2.2</plugin.version.flatten>
+    <plugin.version.flatten>1.5.0</plugin.version.flatten>
     <plugin.version.gpg.maven>1.6</plugin.version.gpg.maven>
     <plugin.version.javadoc>3.6.3</plugin.version.javadoc>
     <plugin.version.license>4.2</plugin.version.license>
