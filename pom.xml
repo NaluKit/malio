@@ -114,6 +114,7 @@
 
     <maven.deploy.plugin>3.1.1</maven.deploy.plugin>
     <plugin.version.clean>3.1.0</plugin.version.clean>
+    <plugin.version.deploy>3.1.2</plugin.version.deploy>
     <plugin.version.flatten>1.5.0</plugin.version.flatten>
     <plugin.version.gpg.maven>1.6</plugin.version.gpg.maven>
     <plugin.version.javadoc>3.6.3</plugin.version.javadoc>
@@ -277,6 +278,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-deploy-plugin</artifactId>
+            <version>${plugin.version.deploy}</version>
             <configuration>
               <skip>false</skip>
             </configuration>
