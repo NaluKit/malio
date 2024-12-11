@@ -93,7 +93,7 @@ did not find a suitable one that work with GWT or J2CL.
 So we decided to create a simple solution to validate our input classes (which are located inside the
 shared project).
 
-We don't want to create a replacement for bean-validation. Just a simple tin framework to validate objects.
+We don't want to create a replacement for bean-validation. Just a simple tiny framework to validate objects.
 
 ## Usage
 

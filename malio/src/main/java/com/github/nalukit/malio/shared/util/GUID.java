@@ -99,6 +99,8 @@ public class GUID {
 
   /**
    * Generate a RFC4122, version 4 ID. Example: "92329D39-6F5C-4520-ABFC-AAB64544E172"
+   *
+   * @return generated UUID
    */
   public static String get() {
     char[] uuid = new char[36];

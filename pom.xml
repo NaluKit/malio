@@ -94,19 +94,19 @@
   </distributionManagement>
 
   <properties>
-    <revision>1.0.4</revision>
+    <revision>1.0.5</revision>
 
     <auto-service.version>1.1.1</auto-service.version>
     <compile-testing.version>0.21.0</compile-testing.version>
     <elemental2.version>1.2.1</elemental2.version>
-    <gson.version>2.10.1</gson.version>
+    <gson.version>2.11.0</gson.version>
     <guava.version>33.2.1-jre</guava.version>
-    <gwt.version>2.11.0</gwt.version>
+    <gwt.version>2.12.1</gwt.version>
     <java.doc.executable>${java.home}/bin/javadoc</java.doc.executable>
     <javapoet.version>1.13.0</javapoet.version>
-    <junit-jupiter.version>5.10.3</junit-jupiter.version>
-    <junit-jupiter.engine.version>5.10.2</junit-jupiter.engine.version>
-    <junit-jupiter-platform.version>1.10.2</junit-jupiter-platform.version>
+    <junit-jupiter.version>5.11.1</junit-jupiter.version>
+    <junit-jupiter.engine.version>5.11.1</junit-jupiter.engine.version>
+    <junit-jupiter-platform.version>1.11.1</junit-jupiter-platform.version>
     <truth.version>1.4.2</truth.version>
 
     <maven.compiler.source>11</maven.compiler.source>
@@ -114,6 +114,7 @@
 
     <maven.deploy.plugin>3.1.1</maven.deploy.plugin>
     <plugin.version.clean>3.1.0</plugin.version.clean>
+    <plugin.version.deploy>3.1.2</plugin.version.deploy>
     <plugin.version.flatten>1.5.0</plugin.version.flatten>
     <plugin.version.gpg.maven>1.6</plugin.version.gpg.maven>
     <plugin.version.javadoc>3.6.3</plugin.version.javadoc>
@@ -277,6 +278,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-deploy-plugin</artifactId>
+            <version>${plugin.version.deploy}</version>
             <configuration>
               <skip>false</skip>
             </configuration>
