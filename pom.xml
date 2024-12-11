@@ -94,13 +94,13 @@
   </distributionManagement>
 
   <properties>
-    <revision>1.0.5</revision>
+    <revision>HEAD-SNAPSHOT</revision>
 
     <auto-service.version>1.1.1</auto-service.version>
     <compile-testing.version>0.21.0</compile-testing.version>
     <elemental2.version>1.2.1</elemental2.version>
     <gson.version>2.11.0</gson.version>
-    <guava.version>33.2.1-jre</guava.version>
+    <guava.version>33.3.1-jre</guava.version>
     <gwt.version>2.12.1</gwt.version>
     <java.doc.executable>${java.home}/bin/javadoc</java.doc.executable>
     <javapoet.version>1.13.0</javapoet.version>
