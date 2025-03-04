@@ -165,7 +165,7 @@ public class ValidatorScanner
         int close = elementOfVariableTypeString.indexOf(">");
         String genericClassName = elementOfVariableTypeString.substring(open + 1,
                                                                         close);
-        if (genericClassName.isEmpty() || genericClassName.isBlank()) {
+        if (genericClassName.isBlank()) {
 //          throw new RuntimeException("variable element: >>" +
 //                                       variableElement +
 //                                       "<< - type >>" +
@@ -178,6 +178,14 @@ public class ValidatorScanner
                                        "<< ==> no generic found or generic is empty");
         }
         TypeElement elementOfGenericList = elements.getTypeElement(genericClassName);
+        if (Objects.isNull(elementOfGenericList)) {
+          throw new ProcessorException("variable element: >>" +
+                                       variableElement +
+                                       "<< - type >>" +
+                                       elementOfVariableType +
+                                       "<< - genericClassName >>" +
+                                       genericClassName + "<< ==> elementOfGenericList is NULL!");
+        }
         if (elementOfGenericList.getAnnotation(MalioValidator.class) != null) {
           this.addValidatorToValidatorGenerationList(variableElement,
                                                      elementOfVariableType,
