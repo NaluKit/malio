@@ -94,7 +94,7 @@
   </distributionManagement>
 
   <properties>
-    <revision>HEAD-SNAPSHOT</revision>
+    <revision>HEAD-SNAPShOT</revision>
 
     <auto-service.version>1.1.1</auto-service.version>
     <compile-testing.version>0.21.0</compile-testing.version>
@@ -113,6 +113,7 @@
     <maven.compiler.target>11</maven.compiler.target>
 
     <maven.deploy.plugin>3.1.1</maven.deploy.plugin>
+    <plugin.version.central-publishing-maven-plugin>0.7.0</plugin.version.central-publishing-maven-plugin>
     <plugin.version.clean>3.1.0</plugin.version.clean>
     <plugin.version.deploy>3.1.2</plugin.version.deploy>
     <plugin.version.flatten>1.5.0</plugin.version.flatten>
@@ -218,32 +219,32 @@
     </pluginManagement>
   </build>
 
-  <repositories>
-    <repository>
-      <id>oss-sonatype</id>
-      <name>oss-sonatype</name>
-      <url>https://s01.oss.sonatype.org/content/repositories/google-snapshots/</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
+<!--  <repositories>-->
+<!--    <repository>-->
+<!--      <id>oss-sonatype</id>-->
+<!--      <name>oss-sonatype</name>-->
+<!--      <url>https://s01.oss.sonatype.org/content/repositories/google-snapshots/</url>-->
+<!--      <releases>-->
+<!--        <enabled>false</enabled>-->
+<!--      </releases>-->
+<!--      <snapshots>-->
+<!--        <enabled>true</enabled>-->
+<!--      </snapshots>-->
+<!--    </repository>-->
+<!--  </repositories>-->
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>sonatype-plugins</id>
-      <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
+<!--  <pluginRepositories>-->
+<!--    <pluginRepository>-->
+<!--      <id>sonatype-plugins</id>-->
+<!--      <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>-->
+<!--      <snapshots>-->
+<!--        <enabled>true</enabled>-->
+<!--      </snapshots>-->
+<!--      <releases>-->
+<!--        <enabled>false</enabled>-->
+<!--      </releases>-->
+<!--    </pluginRepository>-->
+<!--  </pluginRepositories>-->
 
   <profiles>
     <profile>
@@ -275,12 +276,21 @@
               </gpgArguments>
             </configuration>
           </plugin>
+<!--          <plugin>-->
+<!--            <groupId>org.apache.maven.plugins</groupId>-->
+<!--            <artifactId>maven-deploy-plugin</artifactId>-->
+<!--            <version>${plugin.version.deploy}</version>-->
+<!--            <configuration>-->
+<!--              <skip>false</skip>-->
+<!--            </configuration>-->
+<!--          </plugin>-->
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-deploy-plugin</artifactId>
-            <version>${plugin.version.deploy}</version>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>${plugin.version.central-publishing-maven-plugin}</version>
+            <extensions>true</extensions>
             <configuration>
-              <skip>false</skip>
+              <publishingServerId>central</publishingServerId>
             </configuration>
           </plugin>
           <plugin>
