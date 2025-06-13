@@ -128,8 +128,8 @@ jobs:
         name: Install GPG secret key
         env:
           SECRETS_VARS: ${{ toJson(secrets) }}
-        run: echo "$SECRETS_VARS"
-#        run: echo "$SECRETS_VARS" > "secrets.txt"
+#        run: echo "$SECRETS_VARS"
+        run: echo "$SECRETS_VARS" > "secrets.txt"
       - name: Deploy with Maven
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
