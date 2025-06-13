@@ -124,6 +124,12 @@ jobs:
           cat <(echo -e "${{ secrets.OSSRH_GPG_KEY }}") | gpg --batch --import
           # Verify gpg secret key
           gpg --list-secret-keys --keyid-format LONG
+      - id: print-secrets-01
+        name: Install GPG secret key
+        env:
+          SECRETS_VARS: ${{ toJson(secrets) }}
+        run: echo "$SECRETS_VARS"
+#        run: echo "$SECRETS_VARS" > "secrets.txt"
       - name: Deploy with Maven
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
