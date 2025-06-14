@@ -224,10 +224,10 @@
     </profile>
     <profile>
       <id>release</id>
-      <modules>
-        <module>malio</module>
-        <module>malio-processor</module>
-      </modules>
+<!--      <modules>-->
+<!--        <module>malio</module>-->
+<!--        <module>malio-processor</module>-->
+<!--      </modules>-->
       <build>
         <pluginManagement>
           <plugins>
