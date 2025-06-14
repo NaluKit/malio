@@ -165,7 +165,7 @@
               <publishingServerId>central</publishingServerId>
               <centralBaseUrl>https://central.sonatype.com</centralBaseUrl>
               <centralSnapshotsUrl>https://central.sonatype.com/repository/maven-snapshots/</centralSnapshotsUrl>
-              <autoPublish>false</autoPublish>
+              <autoPublish>true</autoPublish>
             </configuration>
           </plugin>
           <plugin>
