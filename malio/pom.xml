@@ -14,7 +14,9 @@
   <version>${revision}</version>
   <packaging>gwt-lib</packaging>
 
-  <!--  <description>Routing based application framework for GWT 2, GWT 3 + J2CL</description>-->
+  <name>malio</name>
+  <description>Malio</description>
+  <url>https://github.com/nalukit/malio</url>
 
   <inceptionYear>2023</inceptionYear>
 
@@ -158,6 +160,7 @@
             <groupId>org.sonatype.central</groupId>
             <artifactId>central-publishing-maven-plugin</artifactId>
             <version>${plugin.version.central-publishing-maven-plugin}</version>
+            <extensions>true</extensions>
             <configuration>
               <publishingServerId>central</publishingServerId>
               <centralBaseUrl>https://central.sonatype.com</centralBaseUrl>

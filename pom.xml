@@ -27,9 +27,7 @@
   <packaging>pom</packaging>
 
   <name>malio-parent</name>
-
   <description>Validation library for Java, GWT and J2CL</description>
-
   <url>https://github.com/nalukit/malio</url>
 
   <inceptionYear>2023</inceptionYear>
