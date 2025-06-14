@@ -32,14 +32,6 @@
 
   <url>https://github.com/nalukit/malio</url>
 
-  <modules>
-    <module>malio</module>
-    <module>malio-processor</module>
-    <module>malio-tests</module>
-    <module>malio-gwt2-tests</module>
-    <module>malio-j2cl-tests</module>
-  </modules>
-
   <inceptionYear>2023</inceptionYear>
 
   <licenses>
@@ -284,13 +276,17 @@
       </build>
     </profile>
     <profile>
-      <id>jdk-8-config</id>
+      <id>test</id>
       <activation>
-        <jdk>1.8</jdk>
+        <activeByDefault>true</activeByDefault>
       </activation>
-      <properties>
-        <javadocExecutable>${java.home}/../bin/javadoc</javadocExecutable>
-      </properties>
+      <modules>
+        <module>malio</module>
+        <module>malio-processor</module>
+        <module>malio-tests</module>
+        <module>malio-gwt2-tests</module>
+        <module>malio-j2cl-tests</module>
+      </modules>
     </profile>
   </profiles>
 </project>
