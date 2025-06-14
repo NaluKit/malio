@@ -128,7 +128,7 @@ jobs:
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-        run: mvn deploy -X -s ./.github/workflows/settings.xml -ntp -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD_NALUKIT_GITHUB_USER }} -DskipTests -Drevision=HEAD-SNAPSHOT
+        run: mvn deploy -X -s ./.github/workflows/settings.xml -ntp -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD_NALUKIT_GITHUB_USER }} -DskipTests -Drevision=HEAD-SNAPSHOT -P release
 
   maven-deploy-main:
     runs-on: ubuntu-latest
