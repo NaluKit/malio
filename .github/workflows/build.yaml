@@ -34,7 +34,7 @@ jobs:
           java-version: '11'
           cache: maven
       - name: Compile with Maven
-        run: mvn compile -ntp
+        run: mvn compile -ntp -P build
 
   test:
     runs-on: ubuntu-latest
@@ -47,7 +47,7 @@ jobs:
           java-version: '11'
           cache: maven
       - name: Test with Maven
-        run: mvn test -ntp
+        run: mvn test -ntp -P development
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
@@ -73,7 +73,7 @@ jobs:
           java-version: '11'
           cache: maven
       - name: Build with Maven
-        run: mvn install -ntp
+        run: mvn install -ntp -P development
       - name: Copy owasp database from container to runner
         run: docker cp $(docker ps -aqf "name=owasp-db"):/dependency-check/data ./dependency-checker-db/
       - name: OWASP Check
@@ -103,7 +103,7 @@ jobs:
           distribution: temurin
           java-version: '11'
           cache: maven
-          server-id: ossrh
+          server-id: central
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
       - name: Extract Maven project version
@@ -126,9 +126,9 @@ jobs:
           gpg --list-secret-keys --keyid-format LONG
       - name: Deploy with Maven
         env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-        run: mvn deploy -ntp -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD_NALUKIT_GITHUB_USER }} -DskipTests -Drevision=HEAD-SNAPSHOT
+          MAVEN_USERNAME: ${{ secrets.CENTRAL_TOKEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.CENTRAL_TOKEN_PASSWORD }}
+        run: mvn deploy -ntp -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD_NALUKIT_GITHUB_USER }} -DskipTests -Drevision=HEAD-SNAPSHOT -P release
 
   maven-deploy-main:
     runs-on: ubuntu-latest
@@ -141,7 +141,7 @@ jobs:
           distribution: temurin
           java-version: '11'
           cache: maven
-          server-id: ossrh
+          server-id: central
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
       - name: Extract Maven project version
@@ -185,7 +185,7 @@ jobs:
           gpg --list-secret-keys --keyid-format LONG
       - name: Deploy with Maven
         env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-        run: mvn deploy -ntp -P release -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD_NALUKIT_GITHUB_USER }} -DskipTests -Daether.checksums.algorithms=MD5 -Drevision=${{ steps.project.outputs.version }}
+          MAVEN_USERNAME: ${{ secrets.CENTRAL_TOKEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.CENTRAL_TOKEN_PASSWORD }}
+        run: mvn deploy -ntp -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD_NALUKIT_GITHUB_USER }} -DskipTests -Daether.checksums.algorithms=MD5 -Drevision=${{ steps.project.outputs.version }} -s ./.github/workflows/settings.xml -P release
 
