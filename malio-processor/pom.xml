@@ -353,7 +353,9 @@
         <artifactId>central-publishing-maven-plugin</artifactId>
         <version>${plugin.version.central-publishing-maven-plugin}</version>
         <configuration>
-          <skipPublishing>false</skipPublishing>
+          <publishingServerId>central</publishingServerId>
+          <autoPublish>true</autoPublish>
+          <waitUntil>published</waitUntil>
         </configuration>
       </plugin>
       <plugin>
