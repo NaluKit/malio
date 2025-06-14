@@ -34,7 +34,7 @@ jobs:
           java-version: '11'
           cache: maven
       - name: Compile with Maven
-        run: mvn compile -ntp
+        run: mvn compile -ntp -Pbuild
 
   test:
     runs-on: ubuntu-latest
@@ -47,7 +47,7 @@ jobs:
           java-version: '11'
           cache: maven
       - name: Test with Maven
-        run: mvn test -ntp
+        run: mvn test -ntp -Pdevelopment
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
@@ -73,7 +73,7 @@ jobs:
           java-version: '11'
           cache: maven
       - name: Build with Maven
-        run: mvn install -ntp
+        run: mvn install -ntp -Pdevelopment
       - name: Copy owasp database from container to runner
         run: docker cp $(docker ps -aqf "name=owasp-db"):/dependency-check/data ./dependency-checker-db/
       - name: OWASP Check
