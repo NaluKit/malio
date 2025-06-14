@@ -96,14 +96,6 @@
           </includes>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.sonatype.central</groupId>
-        <artifactId>central-publishing-maven-plugin</artifactId>
-        <version>${plugin.version.central-publishing-maven-plugin}</version>
-        <configuration>
-          <skipPublishing>true</skipPublishing>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 </project>
