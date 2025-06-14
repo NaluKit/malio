@@ -23,8 +23,10 @@ import java.util.List;
 @MalioValidator
 public class Person {
 
-  @NotEmpty private                       List<String> pocket;
-  @NotEmpty(message = "Override") private List<String> override;
+  @NotEmpty
+  private List<String> pocket;
+  @NotEmpty(message = "Override")
+  private List<String> override;
 
   public Person() {
   }

@@ -23,8 +23,10 @@ import java.util.List;
 @MalioValidator
 public class Person {
 
-  @Size(min = 2, max = 4) private                       List<String> pocket;
-  @Size(min = 2, max = 4, message = "Override") private List<String> override;
+  @Size(min = 2, max = 4)
+  private List<String> pocket;
+  @Size(min = 2, max = 4, message = "Override")
+  private List<String> override;
 
   public Person() {
   }

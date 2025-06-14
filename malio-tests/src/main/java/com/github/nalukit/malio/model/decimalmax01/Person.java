@@ -23,9 +23,11 @@ import java.math.BigDecimal;
 @MalioValidator
 public class Person {
 
-  @DecimalMax("0.5") private BigDecimal taxRate;
+  @DecimalMax("0.5")
+  private BigDecimal taxRate;
 
-  @DecimalMax(value = "10", message = "Override") private BigDecimal these;
+  @DecimalMax(value = "10", message = "Override")
+  private BigDecimal these;
 
   public Person() {
   }

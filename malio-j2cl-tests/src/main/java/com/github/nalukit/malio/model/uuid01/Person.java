@@ -21,8 +21,10 @@ import com.github.nalukit.malio.shared.annotation.field.Uuid;
 @MalioValidator
 public class Person {
 
-  @Uuid private                       String uuid;
-  @Uuid(message = "Override") private String override;
+  @Uuid
+  private String uuid;
+  @Uuid(message = "Override")
+  private String override;
 
   public Person() {
   }

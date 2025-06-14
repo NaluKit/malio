@@ -68,13 +68,7 @@ public abstract class AbstractProcessorConstraint<T extends Annotation>
     if (!processorUtils.checkDataType(variableElement,
                                       getSupportedPrimitives(),
                                       getSupportedDeclaredType())) {
-      throw new UnsupportedTypeException("Class >>" +
-                                         variableElement.getEnclosingElement() +
-                                         "<< - Type >>" +
-                                         variableElement.asType() +
-                                         "<< not supported for >>" +
-                                         getClass().getSimpleName() +
-                                         "<<");
+      throw new UnsupportedTypeException("Class >>" + variableElement.getEnclosingElement() + "<< - Type >>" + variableElement.asType() + "<< not supported for >>" + getClass().getSimpleName() + "<<");
     }
   }
 
@@ -86,13 +80,7 @@ public abstract class AbstractProcessorConstraint<T extends Annotation>
     if (!processorUtils.checkDataTypeArrayItem(variableElement,
                                                getSupportedPrimitives(),
                                                getSupportedDeclaredType())) {
-      throw new UnsupportedTypeException("Class >>" +
-                                         variableElement.getEnclosingElement() +
-                                         "<< - Type >>" +
-                                         variableElement.asType() +
-                                         "<< not supported for >>" +
-                                         getClass().getSimpleName() +
-                                         "<<");
+      throw new UnsupportedTypeException("Class >>" + variableElement.getEnclosingElement() + "<< - Type >>" + variableElement.asType() + "<< not supported for >>" + getClass().getSimpleName() + "<<");
     }
   }
 
@@ -104,13 +92,7 @@ public abstract class AbstractProcessorConstraint<T extends Annotation>
     if (!processorUtils.checkDataTypeCollectionItem(variableElement,
                                                     getSupportedPrimitives(),
                                                     getSupportedDeclaredType())) {
-      throw new UnsupportedTypeException("Class >>" +
-                                         variableElement.getEnclosingElement() +
-                                         "<< - Type >>" +
-                                         variableElement.asType() +
-                                         "<< not supported for >>" +
-                                         getClass().getSimpleName() +
-                                         "<<");
+      throw new UnsupportedTypeException("Class >>" + variableElement.getEnclosingElement() + "<< - Type >>" + variableElement.asType() + "<< not supported for >>" + getClass().getSimpleName() + "<<");
     }
   }
 

@@ -30,7 +30,8 @@ public class Person {
   @MaxLength(128)
   private String firstName;
 
-  @NotNull private Address address;
+  @NotNull
+  private Address address;
 
   public Person() {
   }

@@ -22,7 +22,8 @@ import com.github.nalukit.malio.shared.annotation.field.ArrayItemMaxLength;
 public class Person
     extends AbstractPerson {
 
-  @ArrayItemMaxLength(16) private String[] entities;
+  @ArrayItemMaxLength(16)
+  private String[] entities;
 
   public Person() {
   }

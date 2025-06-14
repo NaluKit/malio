@@ -21,10 +21,13 @@ import com.github.nalukit.malio.shared.annotation.field.NotBlank;
 @MalioValidator
 public class Person {
 
-  @NotBlank private String name;
+  @NotBlank
+  private String name;
 
-  @NotBlank private                       String firstName;
-  @NotBlank(message = "Override") private String override;
+  @NotBlank
+  private String firstName;
+  @NotBlank(message = "Override")
+  private String override;
 
   public Person() {
   }

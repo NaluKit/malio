@@ -25,7 +25,8 @@ import java.util.List;
 public class Person
     extends AbstractPerson {
 
-  @CollectionItemNotNull private List<String> entities;
+  @CollectionItemNotNull
+  private List<String> entities;
 
   public Person() {
   }

@@ -24,11 +24,16 @@ import java.util.List;
 @MalioValidator
 public class Person {
 
-  @NotNull private String       name;
-  @NotNull private String       firstName;
-  @NotNull private Address      address;
-  @NotNull private List<String> roles;
-  @NotNull private List<Person> children;
+  @NotNull
+  private String       name;
+  @NotNull
+  private String       firstName;
+  @NotNull
+  private Address      address;
+  @NotNull
+  private List<String> roles;
+  @NotNull
+  private List<Person> children;
 
   public Person() {
     this.roles = new ArrayList<>();

@@ -23,10 +23,13 @@ public class Person {
 
   private String name;
 
-  @Min(18) private int age;
+  @Min(18)
+  private int age;
 
-  @Min(5) private                                Integer complexTypeTest;
-  @Min(value = 18, message = "Override") private Integer override;
+  @Min(5)
+  private Integer complexTypeTest;
+  @Min(value = 18, message = "Override")
+  private Integer override;
 
   public Person() {
   }

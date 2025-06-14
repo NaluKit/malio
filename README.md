@@ -155,7 +155,8 @@ The processor is only needed at compile time!
 
 ### Configuration
 
-Due to a bug in older version of the maven-compiler-plugin, the output of a annotation processor - during a Maven build - will not be logged.
+Due to a bug in older version of the maven-compiler-plugin, the output of a annotation processor - during a Maven build - will
+not be logged.
 To ensure, that the processor output is logged, use the latest maven-compiler-plugin.
 
 ### Creating a Malio Validator
@@ -211,9 +212,9 @@ To validate an instance of the class, call:
 
 ## How does Malio work?
 
-Malio will generate for each class that is annotated with `@MalioValidator` a validator class. Inside the validator, all 
+Malio will generate for each class that is annotated with `@MalioValidator` a validator class. Inside the validator, all
 constraints are collected and processed. In case the type of a variable has a Malio validator, the validator of this type
-will also be called. In case classes are extending user classes, Malio will also look for existing validators of 
+will also be called. In case classes are extending user classes, Malio will also look for existing validators of
 super classes.
 
 ## Custom Messages

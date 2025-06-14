@@ -24,7 +24,8 @@ import java.util.List;
 public class Person
     extends AbstractPerson {
 
-  @CollectionItemMinLength(4) private List<String> entities;
+  @CollectionItemMinLength(4)
+  private List<String> entities;
 
   public Person() {
   }

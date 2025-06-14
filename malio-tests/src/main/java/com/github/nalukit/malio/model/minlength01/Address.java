@@ -21,10 +21,14 @@ import com.github.nalukit.malio.shared.annotation.field.MinLength;
 @MalioValidator
 public class Address {
 
-  @MinLength(3) private                               String street;
-  @MinLength(5) private                               String zip;
-  @MinLength(3) private                               String city;
-  @MinLength(value = 3, message = "Override") private String override;
+  @MinLength(3)
+  private String street;
+  @MinLength(5)
+  private String zip;
+  @MinLength(3)
+  private String city;
+  @MinLength(value = 3, message = "Override")
+  private String override;
 
   public Address() {
   }
