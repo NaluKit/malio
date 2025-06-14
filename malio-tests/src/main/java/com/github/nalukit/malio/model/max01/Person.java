@@ -23,12 +23,16 @@ public class Person {
 
   private String name;
 
-  @Max(99) private int age;
+  @Max(99)
+  private int age;
 
-  @Max(99) private long numberChildren;
+  @Max(99)
+  private long numberChildren;
 
-  @Max(123) private                              Integer complexTypeTest;
-  @Max(value = 99, message = "Override") private int     override;
+  @Max(123)
+  private Integer complexTypeTest;
+  @Max(value = 99, message = "Override")
+  private int     override;
 
   public Person() {
   }

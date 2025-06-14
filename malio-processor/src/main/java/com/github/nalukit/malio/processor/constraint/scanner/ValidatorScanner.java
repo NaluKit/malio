@@ -166,25 +166,16 @@ public class ValidatorScanner
         String genericClassName = elementOfVariableTypeString.substring(open + 1,
                                                                         close);
         if (genericClassName.isBlank()) {
-//          throw new RuntimeException("variable element: >>" +
-//                                       variableElement +
-//                                       "<< - type >>" +
-//                                       elementOfVariableType +
-//                                       "<< ==> no generic found or generic is empty");
-          throw new ProcessorException("variable element: >>" +
-                                       variableElement +
-                                       "<< - type >>" +
-                                       elementOfVariableType +
-                                       "<< ==> no generic found or generic is empty");
+          //          throw new RuntimeException("variable element: >>" +
+          //                                       variableElement +
+          //                                       "<< - type >>" +
+          //                                       elementOfVariableType +
+          //                                       "<< ==> no generic found or generic is empty");
+          throw new ProcessorException("variable element: >>" + variableElement + "<< - type >>" + elementOfVariableType + "<< ==> no generic found or generic is empty");
         }
         TypeElement elementOfGenericList = elements.getTypeElement(genericClassName);
         if (Objects.isNull(elementOfGenericList)) {
-          throw new ProcessorException("variable element: >>" +
-                                       variableElement +
-                                       "<< - type >>" +
-                                       elementOfVariableType +
-                                       "<< - genericClassName >>" +
-                                       genericClassName + "<< ==> elementOfGenericList is NULL!");
+          throw new ProcessorException("variable element: >>" + variableElement + "<< - type >>" + elementOfVariableType + "<< - genericClassName >>" + genericClassName + "<< ==> elementOfGenericList is NULL!");
         }
         if (elementOfGenericList.getAnnotation(MalioValidator.class) != null) {
           this.addValidatorToValidatorGenerationList(variableElement,

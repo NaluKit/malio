@@ -22,7 +22,8 @@ import com.github.nalukit.malio.shared.annotation.field.ArrayItemNotNull;
 public class Person
     extends AbstractPerson {
 
-  @ArrayItemNotNull private Address[] address;
+  @ArrayItemNotNull
+  private Address[] address;
 
   public Person() {
   }

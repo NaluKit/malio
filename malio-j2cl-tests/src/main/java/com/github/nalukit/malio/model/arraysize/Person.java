@@ -21,10 +21,13 @@ import com.github.nalukit.malio.shared.annotation.field.ArraySize;
 @MalioValidator
 public class Person {
 
-  @ArraySize(min = 2, max = 4) private String[] pocket;
-  @ArraySize(min = 2, max = 4) private int[]    coins;
+  @ArraySize(min = 2, max = 4)
+  private String[] pocket;
+  @ArraySize(min = 2, max = 4)
+  private int[]    coins;
 
-  @ArraySize(min = 0, max = 1, message = "Override") private String[] things;
+  @ArraySize(min = 0, max = 1, message = "Override")
+  private String[] things;
 
   public Person() {
   }

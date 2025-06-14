@@ -115,7 +115,9 @@ public class GUID {
     for (int i = 0; i < 36; i++) {
       if (uuid[i] == 0) {
         r       = (int) (Math.random() * 16);
-        uuid[i] = CHARS[(i == 19) ? (r & 0x3) | 0x8 : r & 0xf];
+        uuid[i] = CHARS[(i == 19) ?
+                        (r & 0x3) | 0x8 :
+                        r & 0xf];
       }
     }
     return new String(uuid);

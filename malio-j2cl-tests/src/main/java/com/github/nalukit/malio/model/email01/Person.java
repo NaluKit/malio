@@ -21,8 +21,10 @@ import com.github.nalukit.malio.shared.annotation.field.Email;
 @MalioValidator
 public class Person {
 
-  @Email private                       String email;
-  @Email(message = "Override") private String emailPrivate;
+  @Email
+  private String email;
+  @Email(message = "Override")
+  private String emailPrivate;
 
   public Person() {
   }

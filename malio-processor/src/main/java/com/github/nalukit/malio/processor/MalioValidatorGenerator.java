@@ -221,11 +221,7 @@ public class MalioValidatorGenerator {
     try {
       javaFile.writeTo(this.filer);
     } catch (IOException e) {
-      throw new ProcessorException("Unable to write generated file: >>" +
-                                   element.toString() +
-                                   postFix +
-                                   "<< -> exception: " +
-                                   e.getMessage());
+      throw new ProcessorException("Unable to write generated file: >>" + element.toString() + postFix + "<< -> exception: " + e.getMessage());
     }
   }
 }

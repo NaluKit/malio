@@ -73,7 +73,7 @@
   </issueManagement>
 
   <properties>
-    <revision>HEAD-SNAPShOT</revision>
+    <revision>HEAD-SNAPSHOT</revision>
 
     <auto-service.version>1.1.1</auto-service.version>
     <compile-testing.version>0.21.0</compile-testing.version>
@@ -261,8 +261,6 @@
                 <publishingServerId>central</publishingServerId>
                 <centralBaseUrl>https://central.sonatype.com</centralBaseUrl>
                 <centralSnapshotsUrl>https://central.sonatype.com/repository/maven-snapshots/</centralSnapshotsUrl>
-                <autoPublish>true</autoPublish>
-                <waitUntil>published</waitUntil>
               </configuration>
             </plugin>
             <plugin>
@@ -327,7 +325,6 @@
               <publishingServerId>central</publishingServerId>
               <centralBaseUrl>https://central.sonatype.com</centralBaseUrl>
               <centralSnapshotsUrl>https://central.sonatype.com/repository/maven-snapshots/</centralSnapshotsUrl>
-              <autoPublish>true</autoPublish>
             </configuration>
           </plugin>
           <plugin>

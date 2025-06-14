@@ -22,11 +22,14 @@ import com.github.nalukit.malio.shared.annotation.field.NotNull;
 @MalioValidator
 public class Person {
 
-  @NotNull private String name;
+  @NotNull
+  private String name;
 
-  @NotNull private String firstName;
+  @NotNull
+  private String firstName;
 
-  @ArraySize(min = 1, max = 8) private Address[] address;
+  @ArraySize(min = 1, max = 8)
+  private Address[] address;
 
   public Person() {
   }

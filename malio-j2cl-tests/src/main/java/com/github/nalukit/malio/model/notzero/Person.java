@@ -21,15 +21,20 @@ import com.github.nalukit.malio.shared.annotation.field.NotZero;
 @MalioValidator
 public class Person {
 
-  @NotZero private int personNr;
+  @NotZero
+  private int personNr;
 
-  @NotZero private Integer age;
+  @NotZero
+  private Integer age;
 
-  @NotZero(allowNegativeValues = true) private long addressNr;
+  @NotZero(allowNegativeValues = true)
+  private long addressNr;
 
-  @NotZero private Long addressNrLong;
+  @NotZero
+  private Long addressNrLong;
 
-  @NotZero(message = "Override") private int override;
+  @NotZero(message = "Override")
+  private int override;
 
   public Person() {
   }

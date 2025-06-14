@@ -22,7 +22,8 @@ import com.github.nalukit.malio.shared.annotation.field.ArrayItemMinLength;
 public class Person
     extends AbstractPerson {
 
-  @ArrayItemMinLength(4) private String[] entities;
+  @ArrayItemMinLength(4)
+  private String[] entities;
 
   public Person() {
   }

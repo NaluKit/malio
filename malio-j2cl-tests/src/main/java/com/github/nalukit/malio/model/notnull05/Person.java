@@ -23,13 +23,17 @@ import java.util.List;
 @MalioValidator
 public class Person {
 
-  @NotNull private String name;
+  @NotNull
+  private String name;
 
-  @NotNull private String firstName;
+  @NotNull
+  private String firstName;
 
-  @NotNull private Address address;
+  @NotNull
+  private Address address;
 
-  @NotNull private List<Person> children;
+  @NotNull
+  private List<Person> children;
 
   public Person() {
   }

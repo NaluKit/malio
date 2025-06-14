@@ -22,12 +22,15 @@ import com.github.nalukit.malio.shared.annotation.field.Blacklist;
 public class Address {
 
   @Blacklist({ "Str",
-               "Secret" }) private String street;
-  @Blacklist("12345") private      String zip;
+               "Secret" })
+  private String street;
+  @Blacklist("12345")
+  private String zip;
 
   private String city;
 
-  @Blacklist(value = "123", message = "Override") private String number;
+  @Blacklist(value = "123", message = "Override")
+  private String number;
 
   public Address() {
   }

@@ -21,10 +21,14 @@ import com.github.nalukit.malio.shared.annotation.field.MaxLength;
 @MalioValidator
 public class Address {
 
-  @MaxLength(20) private                              String street;
-  @MaxLength(5) private                               String zip;
-  @MaxLength(20) private                              String city;
-  @MaxLength(value = 5, message = "Override") private String override;
+  @MaxLength(20)
+  private String street;
+  @MaxLength(5)
+  private String zip;
+  @MaxLength(20)
+  private String city;
+  @MaxLength(value = 5, message = "Override")
+  private String override;
 
   public Address() {
   }
