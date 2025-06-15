@@ -108,7 +108,7 @@
       <plugin>
         <groupId>org.sonatype.central</groupId>
         <artifactId>central-publishing-maven-plugin</artifactId>
-        <version>${plugin.version.central-publishing-maven-plugin}</version>
+        <version>${plugin.version.central}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -159,7 +159,7 @@
           <plugin>
             <groupId>org.sonatype.central</groupId>
             <artifactId>central-publishing-maven-plugin</artifactId>
-            <version>${plugin.version.central-publishing-maven-plugin}</version>
+            <version>${plugin.version.central}</version>
             <extensions>true</extensions>
             <configuration>
               <publishingServerId>central</publishingServerId>
