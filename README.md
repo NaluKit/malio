@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 ![GWT3/J2CL compatible](https://img.shields.io/badge/GWT3/J2CL-compatible-brightgreen.svg)
 [![Join the chat at https://gitter.im/Nalukit42/Lobby](https://badges.gitter.im/Nalukit42/Lobby.svg)](https://gitter.im/Nalukit42/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.nalukit/malio.svg?colorB=44cc11)](https://search.maven.org/artifact/com.github.nalukit/malio)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.nalukit/malio.svg?colorB=44cc11)](https://search.maven.org/artifact/io.github.nalukit/malio)
 [![Build & Deploy](https://github.com/NaluKit/malio/actions/workflows/build.yaml/badge.svg?branch=dev)](https://github.com/NaluKit/malio/actions/workflows/build.yaml)
 
 Malio is a tiny framework to validate POJOs using annotations. It is easy to use by just adding annotations to members
@@ -123,12 +123,12 @@ To use Malio, add the following dependencies to your pom (in case they are missi
 
 ```XML
 <dependency>
-    <groupId>com.github.nalukit</groupId>
+    <groupId>io.github.nalukit</groupId>
     <artifactId>malio</artifactId>
     <version>HEAD-SNAPSHOT</version>
 </dependency>
 <dependency>
-    <groupId>com.github.nalukit</groupId>
+    <groupId>io.github.nalukit</groupId>
     <artifactId>malio-processor</artifactId>
     <version>HEAD-SNAPSHOT</version>
     <scope>provided</scope>
@@ -139,12 +139,12 @@ To use Malio, add the following dependencies to your pom (in case they are missi
 
 ```XML
 <dependency>
-    <groupId>com.github.nalukit</groupId>
+    <groupId>io.github.nalukit</groupId>
     <artifactId>malio</artifactId>
     <version>1.0.0</version>
 </dependency>
 <dependency>
-    <groupId>com.github.nalukit</groupId>
+    <groupId>io.github.nalukit</groupId>
     <artifactId>malio-processor</artifactId>
     <version>1.0.0</version>
     <scope>provided</scope>
