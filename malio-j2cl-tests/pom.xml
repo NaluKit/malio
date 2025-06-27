@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.github.nalukit</groupId>
+    <groupId>io.github.nalukit</groupId>
     <artifactId>malio-parent</artifactId>
     <version>${revision}</version>
   </parent>
@@ -54,13 +54,13 @@
     </dependency>
 
     <dependency>
-      <groupId>com.github.nalukit</groupId>
+      <groupId>io.github.nalukit</groupId>
       <artifactId>malio</artifactId>
       <version>${revision}</version>
     </dependency>
 
     <dependency>
-      <groupId>com.github.nalukit</groupId>
+      <groupId>io.github.nalukit</groupId>
       <artifactId>malio-processor</artifactId>
       <version>${revision}</version>
     </dependency>
@@ -84,50 +84,50 @@
                 <gwt.strictCspTestingEnabled>true</gwt.strictCspTestingEnabled>
               </defines>
               <tests>
-                <test>com.github.nalukit.malio.test.ArrayItemMaxLength01Test</test>
-                <test>com.github.nalukit.malio.test.ArrayItemMinLength01Test</test>
-                <test>com.github.nalukit.malio.test.ArrayItemNotBlank01Test</test>
-                <test>com.github.nalukit.malio.test.ArrayItemNotNull01Test</test>
-                <test>com.github.nalukit.malio.test.ArrayItemNotNull02Test</test>
-                <test>com.github.nalukit.malio.test.CheckAndValidate01Test</test>
-                <test>com.github.nalukit.malio.test.CheckOnly01Test</test>
-                <test>com.github.nalukit.malio.test.CollectionItemMaxLength01Test</test>
-                <test>com.github.nalukit.malio.test.CollectionItemMinLength01Test</test>
-                <test>com.github.nalukit.malio.test.CollectionItemNotBlank01Test</test>
-                <test>com.github.nalukit.malio.test.CollectionItemNotNull01Test</test>
-                <test>com.github.nalukit.malio.test.SubValidator01Test</test>
-                <test>com.github.nalukit.malio.test.SubValidator02Test</test>
-                <test>com.github.nalukit.malio.test.SubValidator03Test</test>
-                <test>com.github.nalukit.malio.test.SubValidator04Test</test>
-                <test>com.github.nalukit.malio.test.ValidateItem01Test</test>
-                <test>com.github.nalukit.malio.test.ValidateItem02Test</test>
-                <test>com.github.nalukit.malio.test.ValidateItem03Test</test>
-                <test>com.github.nalukit.malio.test.ValidateOnly01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorArraySize01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorBlacklist01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorDecimalMax01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorDecimalMin01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorEmail01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorMax01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorMaxLength01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorMin01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorMinLength01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorMixedUp01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorMixedUp02Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorNotBlank01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorNotEmpty01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorNotNull01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorNotNull02Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorNotNull03Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorNotNull04Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorNotNull05Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorNotNull06Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorNotNull07Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorNotZeroTest</test>
-                <test>com.github.nalukit.malio.test.ValidatorRegexpTest</test>
-                <test>com.github.nalukit.malio.test.ValidatorSize01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorUuid01Test</test>
-                <test>com.github.nalukit.malio.test.ValidatorWhitelistTest</test>
+                <test>test.io.github.nalukit.malio.ArrayItemMaxLength01Test</test>
+                <test>test.io.github.nalukit.malio.ArrayItemMinLength01Test</test>
+                <test>test.io.github.nalukit.malio.ArrayItemNotBlank01Test</test>
+                <test>test.io.github.nalukit.malio.ArrayItemNotNull01Test</test>
+                <test>test.io.github.nalukit.malio.ArrayItemNotNull02Test</test>
+                <test>test.io.github.nalukit.malio.CheckAndValidate01Test</test>
+                <test>test.io.github.nalukit.malio.CheckOnly01Test</test>
+                <test>test.io.github.nalukit.malio.CollectionItemMaxLength01Test</test>
+                <test>test.io.github.nalukit.malio.CollectionItemMinLength01Test</test>
+                <test>test.io.github.nalukit.malio.CollectionItemNotBlank01Test</test>
+                <test>test.io.github.nalukit.malio.CollectionItemNotNull01Test</test>
+                <test>test.io.github.nalukit.malio.SubValidator01Test</test>
+                <test>test.io.github.nalukit.malio.SubValidator02Test</test>
+                <test>test.io.github.nalukit.malio.SubValidator03Test</test>
+                <test>test.io.github.nalukit.malio.SubValidator04Test</test>
+                <test>test.io.github.nalukit.malio.ValidateItem01Test</test>
+                <test>test.io.github.nalukit.malio.ValidateItem02Test</test>
+                <test>test.io.github.nalukit.malio.ValidateItem03Test</test>
+                <test>test.io.github.nalukit.malio.ValidateOnly01Test</test>
+                <test>io.github.nalukit.malio.test.ValidatorArraySize01Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorBlacklist01Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorDecimalMax01Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorDecimalMin01Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorEmail01Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorMax01Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorMaxLength01Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorMin01Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorMinLength01Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorMixedUp01Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorMixedUp02Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorNotBlank01Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorNotEmpty01Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorNotNull01Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorNotNull02Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorNotNull03Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorNotNull04Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorNotNull05Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorNotNull06Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorNotNull07Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorNotZeroTest</test>
+                <test>test.io.github.nalukit.malio.ValidatorRegexpTest</test>
+                <test>test.io.github.nalukit.malio.ValidatorSize01Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorUuid01Test</test>
+                <test>test.io.github.nalukit.malio.ValidatorWhitelistTest</test>
               </tests>
             </configuration>
           </execution>

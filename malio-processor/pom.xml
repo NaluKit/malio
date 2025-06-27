@@ -23,7 +23,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.github.nalukit</groupId>
+    <groupId>io.github.nalukit</groupId>
     <artifactId>malio-parent</artifactId>
     <version>${revision}</version>
   </parent>
@@ -80,7 +80,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.github.nalukit</groupId>
+      <groupId>io.github.nalukit</groupId>
       <artifactId>malio</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -303,7 +303,7 @@
             <configuration>
               <artifactSet>
                 <excludes>
-                  <exclude>com.github.nalukit:malio</exclude>
+                  <exclude>io.github.nalukit:malio</exclude>
                   <exclude>com.google.auto.service:*</exclude>
                   <exclude>org.slf4j:slf4j-api</exclude>
                   <exclude>com.google.elemental2:*</exclude>

@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.github.nalukit</groupId>
+    <groupId>io.github.nalukit</groupId>
     <artifactId>malio-parent</artifactId>
     <version>${revision}</version>
   </parent>
@@ -102,7 +102,7 @@
         <version>${maven.gwt.plugin}</version>
         <extensions>true</extensions>
         <configuration>
-          <moduleName>com.github.nalukit.malio.Malio</moduleName>
+          <moduleName>io.github.nalukit.malio.Malio</moduleName>
         </configuration>
       </plugin>
       <plugin>
