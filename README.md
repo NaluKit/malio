@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 ![GWT3/J2CL compatible](https://img.shields.io/badge/GWT3/J2CL-compatible-brightgreen.svg)
 [![Join the chat at https://gitter.im/Nalukit42/Lobby](https://badges.gitter.im/Nalukit42/Lobby.svg)](https://gitter.im/Nalukit42/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.nalukit/malio.svg?colorB=44cc11)](https://search.maven.org/artifact/com.github.nalukit/malio)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.nalukit/malio.svg?colorB=44cc11)](https://search.maven.org/artifact/io.github.nalukit/malio)
 [![Build & Deploy](https://github.com/NaluKit/malio/actions/workflows/build.yaml/badge.svg?branch=dev)](https://github.com/NaluKit/malio/actions/workflows/build.yaml)
 
 Malio is a tiny framework to validate POJOs using annotations. It is easy to use by just adding annotations to members
@@ -123,12 +123,12 @@ To use Malio, add the following dependencies to your pom (in case they are missi
 
 ```XML
 <dependency>
-    <groupId>com.github.nalukit</groupId>
+    <groupId>io.github.nalukit</groupId>
     <artifactId>malio</artifactId>
     <version>HEAD-SNAPSHOT</version>
 </dependency>
 <dependency>
-    <groupId>com.github.nalukit</groupId>
+    <groupId>io.github.nalukit</groupId>
     <artifactId>malio-processor</artifactId>
     <version>HEAD-SNAPSHOT</version>
     <scope>provided</scope>
@@ -139,12 +139,12 @@ To use Malio, add the following dependencies to your pom (in case they are missi
 
 ```XML
 <dependency>
-    <groupId>com.github.nalukit</groupId>
+    <groupId>io.github.nalukit</groupId>
     <artifactId>malio</artifactId>
     <version>1.0.0</version>
 </dependency>
 <dependency>
-    <groupId>com.github.nalukit</groupId>
+    <groupId>io.github.nalukit</groupId>
     <artifactId>malio-processor</artifactId>
     <version>1.0.0</version>
     <scope>provided</scope>
@@ -155,7 +155,8 @@ The processor is only needed at compile time!
 
 ### Configuration
 
-Due to a bug in older version of the maven-compiler-plugin, the output of a annotation processor - during a Maven build - will not be logged.
+Due to a bug in older version of the maven-compiler-plugin, the output of a annotation processor - during a Maven build - will
+not be logged.
 To ensure, that the processor output is logged, use the latest maven-compiler-plugin.
 
 ### Creating a Malio Validator
@@ -211,9 +212,9 @@ To validate an instance of the class, call:
 
 ## How does Malio work?
 
-Malio will generate for each class that is annotated with `@MalioValidator` a validator class. Inside the validator, all 
+Malio will generate for each class that is annotated with `@MalioValidator` a validator class. Inside the validator, all
 constraints are collected and processed. In case the type of a variable has a Malio validator, the validator of this type
-will also be called. In case classes are extending user classes, Malio will also look for existing validators of 
+will also be called. In case classes are extending user classes, Malio will also look for existing validators of
 super classes.
 
 ## Custom Messages
@@ -553,3 +554,10 @@ Malio does not support the validation of the following data types:
 * Collections of type Collection f.e.: List<List<String>>
 * Collections of type array List<String[]>
 * Maps
+
+## Migration to io.github
+
+Migration to the new namespace is quite simple. There only to things to do:
+
+1. change the groupId from `com.github.nalukit` to `ìo.github.nalukit`
+2. replace all imports from `import com.github.nalukit` to `import io.github.nalukit`  

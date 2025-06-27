@@ -21,7 +21,7 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.github.nalukit</groupId>
+  <groupId>io.github.nalukit</groupId>
   <artifactId>malio-parent</artifactId>
   <version>${revision}</version>
   <packaging>pom</packaging>
@@ -73,7 +73,7 @@
   </issueManagement>
 
   <properties>
-    <revision>1.1.0</revision>
+    <revision>2.0.0</revision>
 
     <auto-service.version>1.1.1</auto-service.version>
     <compile-testing.version>0.21.0</compile-testing.version>
@@ -91,15 +91,13 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
 
-    <maven.deploy.plugin>3.1.1</maven.deploy.plugin>
-    <plugin.version.central-publishing-maven-plugin>0.7.0</plugin.version.central-publishing-maven-plugin>
+    <plugin.version.central>0.7.0</plugin.version.central>
     <plugin.version.clean>3.1.0</plugin.version.clean>
     <plugin.version.deploy>3.1.2</plugin.version.deploy>
     <plugin.version.flatten>1.5.0</plugin.version.flatten>
     <plugin.version.gpg.maven>1.6</plugin.version.gpg.maven>
     <plugin.version.javadoc>3.6.3</plugin.version.javadoc>
     <plugin.version.license>4.2</plugin.version.license>
-    <plugin.version.nexus.staging>1.6.8</plugin.version.nexus.staging>
     <plugin.version.project.info.report>3.0.0</plugin.version.project.info.report>
     <plugin.version.replacer>1.5.2</plugin.version.replacer>
     <plugin.version.source>3.2.1</plugin.version.source>
@@ -185,11 +183,6 @@
           <version>${plugin.version.project.info.report}</version>
         </plugin>
         <plugin>
-          <groupId>org.sonatype.plugins</groupId>
-          <artifactId>nexus-staging-maven-plugin</artifactId>
-          <version>${plugin.version.sonatype}</version>
-        </plugin>
-        <plugin>
           <groupId>com.github.github</groupId>
           <artifactId>site-maven-plugin</artifactId>
           <version>${plugin.version.github.site}</version>
@@ -255,14 +248,12 @@
             <plugin>
               <groupId>org.sonatype.central</groupId>
               <artifactId>central-publishing-maven-plugin</artifactId>
-              <version>${plugin.version.central-publishing-maven-plugin}</version>
+              <version>${plugin.version.central}</version>
               <extensions>true</extensions>
               <configuration>
                 <publishingServerId>central</publishingServerId>
                 <centralBaseUrl>https://central.sonatype.com</centralBaseUrl>
                 <centralSnapshotsUrl>https://central.sonatype.com/repository/maven-snapshots/</centralSnapshotsUrl>
-                <autoPublish>true</autoPublish>
-                <waitUntil>published</waitUntil>
               </configuration>
             </plugin>
             <plugin>
@@ -321,13 +312,12 @@
           <plugin>
             <groupId>org.sonatype.central</groupId>
             <artifactId>central-publishing-maven-plugin</artifactId>
-            <version>${plugin.version.central-publishing-maven-plugin}</version>
+            <version>${plugin.version.central}</version>
             <extensions>true</extensions>
             <configuration>
               <publishingServerId>central</publishingServerId>
               <centralBaseUrl>https://central.sonatype.com</centralBaseUrl>
               <centralSnapshotsUrl>https://central.sonatype.com/repository/maven-snapshots/</centralSnapshotsUrl>
-              <autoPublish>true</autoPublish>
             </configuration>
           </plugin>
           <plugin>
