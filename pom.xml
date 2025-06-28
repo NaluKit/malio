@@ -317,7 +317,6 @@
             <configuration>
               <publishingServerId>central</publishingServerId>
               <centralBaseUrl>https://central.sonatype.com</centralBaseUrl>
-              <centralSnapshotsUrl>https://central.sonatype.com/repository/maven-snapshots/</centralSnapshotsUrl>
             </configuration>
           </plugin>
           <plugin>
@@ -353,4 +352,18 @@
       </build>
     </profile>
   </profiles>
+
+  <distributionManagement>
+    <repository>
+      <name>Central Portal Snapshots</name>
+      <id>central-portal-snapshots</id>
+      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </distributionManagement>
 </project>
