@@ -62,9 +62,9 @@
   </developers>
 
   <scm>
-    <connection>scm:git@github.com:nalukit/malio.git</connection>
+    <url>https://github.com/nalukit/malio</url>
+    <connection>scm:git:https://github.com/nalukit/malio.git</connection>
     <developerConnection>scm:git:git@github.com:nalukit/malio.git</developerConnection>
-    <url>scm:git:https://github.com/nalukit/malio</url>
   </scm>
 
   <issueManagement>
