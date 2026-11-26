@@ -540,10 +540,6 @@ This annotation can be used on any collection that uses a complex type of field.
 
 Important: Collection need a type. Otherwise, the annotation will not work!
 
-## To get in touch with the developer
-
-Please use the [Nalu Gitter room](https://gitter.im/Nalukit42/Lobby).
-
 ## Examples
 
 Examples can be found inside the test cases.
@@ -567,4 +563,9 @@ Malio does not support the validation of the following data types:
 Migration to the new namespace is quite simple. There only to things to do:
 
 1. change the groupId from `com.github.nalukit` to `ìo.github.nalukit`
-2. replace all imports from `import com.github.nalukit` to `import io.github.nalukit`  
+2. replace all imports from `import com.github.nalukit` to `import io.github.nalukit`
+
+## To get in touch with the developer
+
+Please use the [Nalu Gitter room](https://gitter.im/Nalukit42/Lobby).
+
