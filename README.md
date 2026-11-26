@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/branding/malio-banner-dark.svg">
+    <img src="docs/branding/malio-banner.svg" alt="Malio" width="480">
+  </picture>
+</p>
+
 # Malio
 
 [![License](https://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
